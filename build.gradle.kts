@@ -8,7 +8,7 @@ plugins {
 group = "com.github.stupremee"
 version = "1.0.0"
 
-allprojects {
+subprojects {
   apply(plugin = "java-library")
   apply(plugin = "pmd")
   apply(plugin = "checkstyle")
@@ -27,7 +27,6 @@ allprojects {
 
     implementation("com.google.inject:guice:4.2.2")
     implementation("com.google.guava:guava:27.1-jre")
-    implementation("io.vavr:vavr:0.10.0")
 
     implementation("com.google.flogger:flogger:0.4")
     runtime("com.google.flogger:flogger-system-backend:0.4")
@@ -114,11 +113,11 @@ allprojects {
 
     pmdMain {
       ignoreFailures = true
-      ruleSetConfig = this@allprojects.resources.text.fromFile(file("$projectDir/config/pmd/ruleset.xml"))
+      ruleSetConfig = this@subprojects.resources.text.fromFile(file("$projectDir/config/pmd/ruleset.xml"))
     }
   }
 
   configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_12
   }
 }
