@@ -22,7 +22,7 @@ public final class ConfigProvider {
   private final ConfigLoader configLoader;
 
   @Inject
-  private ConfigProvider(ConfigSaver configSaver, ConfigLoader configLoader) {
+  ConfigProvider(ConfigSaver configSaver, ConfigLoader configLoader) {
     this.configSaver = configSaver;
     this.configLoader = configLoader;
   }

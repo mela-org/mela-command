@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import net.engio.mbassy.bus.MBassador;
 import net.engio.mbassy.bus.config.IBusConfiguration;
 import net.engio.mbassy.bus.config.IBusConfiguration.Properties;
+import net.engio.mbassy.bus.error.IPublicationErrorHandler;
+import net.engio.mbassy.bus.error.PublicationError;
 import net.engio.mbassy.bus.publication.SyncAsyncPostCommand;
 import net.engio.mbassy.listener.Listener;
 import reactor.core.publisher.EmitterProcessor;
@@ -150,7 +152,20 @@ public final class EventDispatcher {
     return bus;
   }
 
+  private static class DefaultErrorHandler implements IPublicationErrorHandler {
+
+    private DefaultErrorHandler() {
+
+    }
+
+    @Override
+    public void handleError(PublicationError error) {
+      EventDispatcher.LOG.error("An unknown error occurred!", error.getCause());
+    }
+  }
+
   private static MBassador<Object> createBus(IBusConfiguration config) {
+    config.addPublicationErrorHandler(new DefaultErrorHandler());
     MBassador<Object> eventBus = new MBassador<>(config);
     LOG.debug("Initialize new event bus with id {}",
         eventBus.getRuntime()

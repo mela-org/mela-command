@@ -17,7 +17,7 @@
 
 <module name="Checker">
   <module name="SuppressionFilter">
-      <property name="file" value="${config_loc}/suppression.xml"/>
+    <property name="file" value="${config_loc}/suppression.xml"/>
   </module>
 
   <property name="charset" value="UTF-8"/>
