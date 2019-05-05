@@ -23,21 +23,16 @@ subprojects {
   }
 
   dependencies {
-    spotbugs("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
+    implementation("com.discord4j:discord4j-core:3.0.4")
 
     implementation("com.google.inject:guice:4.2.2")
     implementation("com.google.guava:guava:27.1-jre")
 
-    implementation("com.google.flogger:flogger:0.4")
-    runtime("com.google.flogger:flogger-system-backend:0.4")
-    runtime("com.google.flogger:flogger-log4j-backend:0.4") {
-      exclude(group = "com.sun.jdmk")
-      exclude(group = "com.sun.jmx")
-    }
-
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
     testImplementation("org.assertj:assertj-core:3.11.1")
+
+    spotbugs("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
   }
 
   tasks {
@@ -118,6 +113,6 @@ subprojects {
   }
 
   configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_12
+    sourceCompatibility = JavaVersion.VERSION_11
   }
 }

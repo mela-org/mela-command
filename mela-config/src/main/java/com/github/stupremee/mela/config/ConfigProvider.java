@@ -2,13 +2,12 @@ package com.github.stupremee.mela.config;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.github.stupremee.mela.config.internal.ConfigLoader;
-import com.github.stupremee.mela.config.internal.ConfigSaver;
-import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
+import reactor.util.Logger;
+import reactor.util.Loggers;
 
 /**
  * https://github.com/Stupremee
@@ -18,7 +17,7 @@ import java.util.Optional;
  */
 public final class ConfigProvider {
 
-  private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+  private static final Logger LOGGER = Loggers.getLogger("ConfigProvider");
   private final ConfigSaver configSaver;
   private final ConfigLoader configLoader;
 
@@ -42,7 +41,7 @@ public final class ConfigProvider {
     try {
       this.configSaver.save(config, path);
     } catch (IOException cause) {
-      LOGGER.atSevere().withCause(cause).log("Failed to save config!");
+      LOGGER.error("Failed to save config!", cause);
     }
   }
 
@@ -61,7 +60,7 @@ public final class ConfigProvider {
     try {
       return this.configLoader.load(path, type);
     } catch (IOException cause) {
-      LOGGER.atSevere().withCause(cause).log("Failed to load config!");
+      LOGGER.error("Failed to load config!", cause);
       return Optional.empty();
     }
   }
