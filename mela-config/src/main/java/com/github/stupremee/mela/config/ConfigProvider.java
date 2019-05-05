@@ -28,7 +28,7 @@ public final class ConfigProvider {
   }
 
   /**
-   * Saves a config to the given path
+   * Saves a config to the given path.
    *
    * @param config The config
    * @param path The path

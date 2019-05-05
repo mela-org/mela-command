@@ -16,7 +16,7 @@ import java.nio.file.Path;
  * @since 05.05.19
  */
 @Singleton
-public final class ConfigSaver {
+final class ConfigSaver {
 
   private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
 
@@ -24,7 +24,7 @@ public final class ConfigSaver {
 
   }
 
-  public <T> void save(T config, Path path) throws IOException {
+  <T> void save(T config, Path path) throws IOException {
     Preconditions.checkNotNull(config, "config can't be null.");
     Preconditions.checkNotNull(path, "path can't be null.");
 

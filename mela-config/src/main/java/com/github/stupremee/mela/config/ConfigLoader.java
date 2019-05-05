@@ -16,7 +16,7 @@ import java.util.Optional;
  * @since 05.05.19
  */
 @Singleton
-public final class ConfigLoader {
+final class ConfigLoader {
 
   private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
 
@@ -24,7 +24,7 @@ public final class ConfigLoader {
 
   }
 
-  public <T> Optional<T> load(Path path, Class<T> type) throws IOException {
+  <T> Optional<T> load(Path path, Class<T> type) throws IOException {
     Preconditions.checkNotNull(path, "path can't be null.");
     Preconditions.checkNotNull(type, "type can't be null.");
 
