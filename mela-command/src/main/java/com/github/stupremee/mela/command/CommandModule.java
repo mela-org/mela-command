@@ -1,9 +1,9 @@
 package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.annotations.Sender;
-import com.github.stupremee.mela.command.providers.TextChannelProvider;
 import com.github.stupremee.mela.command.providers.MemberProvider;
 import com.github.stupremee.mela.command.providers.NamespaceProvider;
+import com.github.stupremee.mela.command.providers.TextChannelProvider;
 import com.github.stupremee.mela.command.providers.UserProvider;
 import com.google.inject.Inject;
 import com.sk89q.intake.parametric.AbstractModule;

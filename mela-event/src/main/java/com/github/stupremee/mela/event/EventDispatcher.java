@@ -53,17 +53,17 @@ public final class EventDispatcher {
   private void initialize() {
 
     // Scan and register all classes with @AutoSubscribe annotation
-    try (ScanResult scanResult = new ClassGraph()
+    ScanResult scanResult = new ClassGraph()
         .enableAnnotationInfo()
         .enableClassInfo()
-        .scan()) {
-      scanResult.getClassesWithAnnotation(AutoSubscribe.class.getName())
-          .loadClasses()
-          .stream()
-          .filter(clazz -> clazz.isAnnotationPresent(Listener.class))
-          .map(this.injector::getInstance)
-          .forEach(this::subscribe);
-    }
+        .scan();
+    scanResult.close();
+    scanResult.getClassesWithAnnotation(AutoSubscribe.class.getName())
+        .loadClasses()
+        .stream()
+        .filter(clazz -> clazz.isAnnotationPresent(Listener.class))
+        .map(this.injector::getInstance)
+        .forEach(this::subscribe);
 
     this.on(Object.class)
         .doOnNext(this::post)
@@ -71,8 +71,8 @@ public final class EventDispatcher {
   }
 
   /**
-   * Subscribe all handlers of the given listener. Any listener is only subscribed once ->
-   * subsequent subscriptions of an already subscribed listener will be silently ignored
+   * Subscribe all handlers of the given listener. Any listener is only subscribed once {@literal
+   * ->} subsequent subscriptions of an already subscribed listener will be silently ignored
    *
    * @param listener the listener to register
    * @see MBassador#subscribe(Object)
@@ -88,9 +88,9 @@ public final class EventDispatcher {
    * call returns all handlers have effectively been removed and will not receive any messages
    * (provided that running publications (iterators) in other threads have not yet obtained a
    * reference to the listener)
-   * <p/>
-   * A call to this method passing any object that is not subscribed will not have any effect and is
-   * silently ignored.
+   *
+   * <p>A call to this method passing any object that is not subscribed will not have any effect
+   * and is silently ignored.
    *
    * @param listener the listener to remove
    * @return true, if the listener was found and successfully removed false otherwise

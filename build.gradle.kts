@@ -32,7 +32,7 @@ subprojects {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
     testImplementation("org.assertj:assertj-core:3.11.1")
 
-    spotbugs("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
+    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
   }
 
   tasks {
@@ -108,7 +108,7 @@ subprojects {
 
     pmdMain {
       ignoreFailures = true
-      ruleSetConfig = this@subprojects.resources.text.fromFile(file("$projectDir/config/pmd/ruleset.xml"))
+      ruleSetConfig = this@subprojects.resources.text.fromFile(file("${rootProject.projectDir}/config/pmd/ruleset.xml"))
     }
   }
 

@@ -6,6 +6,7 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -32,7 +33,7 @@ final class ConfigSaver {
       Files.createFile(path);
     }
 
-    try (FileWriter writer = new FileWriter(path.toFile())) {
+    try (FileWriter writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
       MAPPER.writeValue(writer, config);
     }
   }
