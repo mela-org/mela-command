@@ -1,6 +1,5 @@
 package com.github.stupremee.mela.command.providers;
 
-import com.google.inject.Inject;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.parametric.Provider;

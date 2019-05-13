@@ -19,8 +19,8 @@ final class PostCommand<T> implements ISyncAsyncPublicationCommand {
   }
 
   private final FluxProcessor<Object, Object> processor;
-  private T message;
-  private EventDispatcher bus;
+  private final T message;
+  private final EventDispatcher bus;
 
   private PostCommand(FluxProcessor<Object, Object> processor, EventDispatcher bus, T message) {
     this.processor = processor;
