@@ -88,7 +88,7 @@ subprojects {
 
     checkstyleMain {
       configFile = file("$rootDir/config/checkstyle/google_checks.xml")
-      configProperties = mapOf("config_loc" to "$projectDir/config/checkstyle")
+      configProperties = mapOf("config_loc" to "${rootProject.projectDir}/config/checkstyle")
     }
 
     spotbugs {

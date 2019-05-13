@@ -1,4 +1,5 @@
 rootProject.name = 'mela'
 include 'mela-config'
 include 'mela-event'
+include 'mela-command'
 
