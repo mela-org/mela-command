@@ -6,6 +6,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import discord4j.core.event.domain.Event;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import java.util.logging.Level;
@@ -35,10 +36,10 @@ public final class EventDispatcher {
 
   private static final Logger LOG = Loggers.getLogger("EventDispatcher");
 
-  private final FluxProcessor<Object, Object> processor;
+  private final FluxProcessor<Event, Event> processor;
   private final Scheduler scheduler;
   private final Injector injector;
-  private final MBassador<Object> bus;
+  private final MBassador<Event> bus;
 
   @Inject
   EventDispatcher(Injector injector,
@@ -65,7 +66,7 @@ public final class EventDispatcher {
         .map(this.injector::getInstance)
         .forEach(this::subscribe);
 
-    this.on(Object.class)
+    this.on(Event.class)
         .doOnNext(this::post)
         .subscribe();
   }
@@ -109,7 +110,7 @@ public final class EventDispatcher {
    * @return The {@link SyncAsyncPostCommand}
    * @see MBassador#post(Object)
    */
-  public PostCommand<Object> post(Object event) {
+  public PostCommand<Event> post(Event event) {
     Preconditions.checkNotNull(event, "event can't be null.");
     return PostCommand.create(processor, this, event);
   }
@@ -135,7 +136,7 @@ public final class EventDispatcher {
    *
    * @return The {@link FluxProcessor}
    */
-  public FluxProcessor<Object, Object> getProcessor() {
+  public FluxProcessor<Event, Event> getProcessor() {
     return processor;
   }
 
@@ -148,7 +149,7 @@ public final class EventDispatcher {
     return scheduler;
   }
 
-  MBassador<Object> getEventBus() {
+  MBassador<Event> getEventBus() {
     return bus;
   }
 
@@ -164,9 +165,9 @@ public final class EventDispatcher {
     }
   }
 
-  private static MBassador<Object> createBus(IBusConfiguration config) {
+  private static MBassador<Event> createBus(IBusConfiguration config) {
     config.addPublicationErrorHandler(new DefaultErrorHandler());
-    MBassador<Object> eventBus = new MBassador<>(config);
+    MBassador<Event> eventBus = new MBassador<>(config);
     LOG.debug("Initialize new event bus with id {}",
         eventBus.getRuntime()
             .<String>get(Properties.BusId));

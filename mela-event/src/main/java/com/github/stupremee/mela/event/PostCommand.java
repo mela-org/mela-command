@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.event;
 
+import discord4j.core.event.domain.Event;
 import java.util.concurrent.TimeUnit;
 import net.engio.mbassy.bus.IMessagePublication;
 import net.engio.mbassy.bus.publication.ISyncAsyncPublicationCommand;
@@ -11,18 +12,19 @@ import reactor.core.publisher.FluxProcessor;
  * @author Stu
  * @since 05.05.19
  */
-final class PostCommand<T> implements ISyncAsyncPublicationCommand {
+final class PostCommand<T extends Event> implements ISyncAsyncPublicationCommand {
 
-  static <T> PostCommand<T> create(FluxProcessor<Object, Object> processor, EventDispatcher bus,
+  static <T extends Event> PostCommand<T> create(FluxProcessor<Event, Event> processor,
+      EventDispatcher bus,
       T message) {
     return new PostCommand<>(processor, bus, message);
   }
 
-  private final FluxProcessor<Object, Object> processor;
+  private final FluxProcessor<Event, Event> processor;
   private final T message;
   private final EventDispatcher bus;
 
-  private PostCommand(FluxProcessor<Object, Object> processor, EventDispatcher bus, T message) {
+  private PostCommand(FluxProcessor<Event, Event> processor, EventDispatcher bus, T message) {
     this.processor = processor;
     this.bus = bus;
     this.message = message;

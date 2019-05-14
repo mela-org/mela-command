@@ -1,7 +1,0 @@
-repositories {
-  maven { url "http://maven.sk89q.com/repo/" }
-}
-
-dependencies {
-  implementation("com.sk89q.intake:intake:4.0-SNAPSHOT")
-}
