@@ -23,14 +23,16 @@ subprojects {
   }
 
   dependencies {
-    implementation("com.discord4j:discord4j-core:3.0.4")
+    compile("com.discord4j:discord4j-core:3.0.4")
 
-    implementation("com.google.inject:guice:4.2.2")
-    implementation("com.google.guava:guava:27.1-jre")
+    compile("com.google.auto.value:auto-value-annotations:1.6.2")
+    annotationProcessor("com.google.auto.value:auto-value:1.6.2")
+    compile("com.google.inject:guice:4.2.2")
+    compile("com.google.guava:guava:27.1-jre")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-    testImplementation("org.assertj:assertj-core:3.11.1")
+    testCompile("org.assertj:assertj-core:3.11.1")
 
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
   }
