@@ -28,7 +28,6 @@ public final class NamespaceProvider<T> implements Provider<T> {
     return true;
   }
 
-  @Nullable
   @Override
   public T get(CommandArgs arguments, List<? extends Annotation> modifiers)
       throws ProvisionException {

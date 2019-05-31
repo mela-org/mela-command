@@ -23,7 +23,7 @@ subprojects {
   }
 
   dependencies {
-    compile("com.discord4j:discord4j-core:3.0.4")
+    compile("com.discord4j:discord4j-core:3.0.6")
 
     compile("com.google.auto.value:auto-value-annotations:1.6.2")
     annotationProcessor("com.google.auto.value:auto-value:1.6.2")

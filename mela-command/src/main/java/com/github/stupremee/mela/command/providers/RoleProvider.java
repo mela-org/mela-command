@@ -1,12 +1,12 @@
 package com.github.stupremee.mela.command.providers;
 
 import com.google.common.base.Preconditions;
-import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.ArgumentParseException;
 import com.sk89q.intake.argument.CommandArgs;
+import com.sk89q.intake.argument.MissingArgumentException;
 import com.sk89q.intake.parametric.Provider;
 import discord4j.core.object.entity.Guild;
-import discord4j.core.object.entity.Member;
+import discord4j.core.object.entity.Role;
 import discord4j.core.object.util.Snowflake;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
@@ -19,18 +19,18 @@ import javax.annotation.Nullable;
  * https://github.com/Stupremee
  *
  * @author Stu
- * @since 13.05.19
+ * @since 31.05.19
  */
-public final class MemberProvider implements Provider<Member> {
+public final class RoleProvider implements Provider<Role> {
 
-  private static final Pattern PATTERN = Pattern.compile("<@!?([0-9]+)>");
+  private static final Pattern PATTERN = Pattern.compile("<#?([0-9]+)>");
 
   private static final class Lazy {
 
-    private static final MemberProvider INSTANCE = new MemberProvider();
+    private static final RoleProvider INSTANCE = new RoleProvider();
   }
 
-  private MemberProvider() {
+  private RoleProvider() {
   }
 
   @Override
@@ -40,23 +40,23 @@ public final class MemberProvider implements Provider<Member> {
 
   @Nullable
   @Override
-  public Member get(CommandArgs arguments, List<? extends Annotation> modifiers)
-      throws ArgumentException {
+  public Role get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws MissingArgumentException, ArgumentParseException {
     String name = arguments.next();
     Guild guild = Preconditions.checkNotNull(arguments.getNamespace().get(Guild.class));
     Matcher matcher = PATTERN.matcher(name);
     if (matcher.matches()) {
       String userId = matcher.group(1);
-      return guild.getMemberById(Snowflake.of(userId))
+      return guild.getRoleById(Snowflake.of(userId))
           .blockOptional()
-          .orElseThrow(() -> new ArgumentParseException("Unknown member!"));
+          .orElseThrow(() -> new ArgumentParseException("Unknown Role!"));
     }
 
-    return guild.getMembers()
-        .filter(member -> member.getUsername().startsWith(name))
+    return guild.getRoles()
+        .filter(channel -> channel.getName().startsWith(name))
         .toStream()
         .findFirst()
-        .orElseThrow(() -> new ArgumentParseException("No member was found with this name!"));
+        .orElseThrow(() -> new ArgumentParseException("No role was found with this name!"));
   }
 
   @Override
@@ -64,7 +64,7 @@ public final class MemberProvider implements Provider<Member> {
     return Collections.emptyList();
   }
 
-  public static Provider<Member> instance() {
+  public static Provider<Role> instance() {
     return Lazy.INSTANCE;
   }
 }

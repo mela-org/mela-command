@@ -1,6 +1,8 @@
 package com.github.stupremee.mela.command.providers;
 
+import com.google.common.base.Preconditions;
 import com.sk89q.intake.argument.ArgumentException;
+import com.sk89q.intake.argument.ArgumentParseException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.parametric.Provider;
 import discord4j.core.DiscordClient;
@@ -22,10 +24,13 @@ import javax.annotation.Nullable;
 public final class UserProvider implements Provider<User> {
 
   private static final Pattern PATTERN = Pattern.compile("<@!?([0-9]+)>");
-  private final DiscordClient client;
 
-  private UserProvider(DiscordClient client) {
-    this.client = client;
+  private static final class Lazy {
+
+    private static final UserProvider INSTANCE = new UserProvider();
+  }
+
+  private UserProvider() {
   }
 
   @Override
@@ -37,21 +42,22 @@ public final class UserProvider implements Provider<User> {
   @Override
   public User get(CommandArgs arguments, List<? extends Annotation> modifiers)
       throws ArgumentException {
-
+    DiscordClient client = arguments.getNamespace().get(DiscordClient.class);
+    Preconditions.checkNotNull(client, "client can't be null.");
     String name = arguments.next();
     Matcher matcher = PATTERN.matcher(name);
     if (matcher.matches()) {
       String userId = matcher.group(1);
       return client.getUserById(Snowflake.of(userId))
           .blockOptional()
-          .orElseThrow(() -> new IllegalArgumentException("Unknown user!"));
+          .orElseThrow(() -> new ArgumentParseException("Unknown user!"));
     }
 
     return client.getUsers()
         .filter(user -> user.getUsername().startsWith(name))
         .toStream()
         .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException("No user found with this username."));
+        .orElseThrow(() -> new ArgumentParseException("No user found with this username."));
   }
 
   @Override
@@ -59,7 +65,7 @@ public final class UserProvider implements Provider<User> {
     return Collections.emptyList();
   }
 
-  public static Provider<User> create(DiscordClient client) {
-    return new UserProvider(client);
+  public static Provider<User> instance() {
+    return Lazy.INSTANCE;
   }
 }
