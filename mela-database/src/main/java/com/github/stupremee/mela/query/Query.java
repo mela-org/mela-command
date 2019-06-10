@@ -7,9 +7,11 @@ import com.github.stupremee.mela.query.criterias.GreaterThanOrEqualCriteria;
 import com.github.stupremee.mela.query.criterias.LessThanCriteria;
 import com.github.stupremee.mela.query.criterias.LessThanOrEqualCriteria;
 import com.github.stupremee.mela.query.criterias.NotEqualsCriteria;
+import com.github.stupremee.mela.query.criterias.RegExCriteria;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 /**
@@ -18,6 +20,7 @@ import javax.annotation.Nonnull;
  * @author Stu
  * @since 10.06.19
  */
+@SuppressWarnings("unused")
 public final class Query {
 
   private final String key;
@@ -144,6 +147,7 @@ public final class Query {
 
     /**
      * Adds a {@link BetweenCriteria} to the {@link Query}.
+     * Warning: This only works for some databases.
      *
      * @param lowerBound The lower bound of the {@link BetweenCriteria}
      * @param upperBound The upper bound of the {@link BetweenCriteria}
@@ -154,6 +158,20 @@ public final class Query {
       Preconditions.checkNotNull(lowerBound, "lowerBound can't be null.");
       Preconditions.checkNotNull(upperBound, "upperBound can't be null.");
       query.criteria.add(BetweenCriteria.create(query.key, lowerBound, upperBound));
+      return query;
+    }
+
+    /**
+     * Adds a {@link BetweenCriteria} to the {@link Query}.
+     * Warning: This only works for some databases.
+     *
+     * @param pattern The {@link Pattern RegEx pattern}
+     * @return The {@link Query}
+     */
+    @Nonnull
+    public Query regex(Pattern pattern) {
+      Preconditions.checkNotNull(pattern, "pattern can't be null.");
+      query.criteria.add(RegExCriteria.create(query.key, pattern));
       return query;
     }
   }
