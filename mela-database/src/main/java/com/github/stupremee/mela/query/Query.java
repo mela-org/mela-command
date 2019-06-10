@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.query;
 
+import com.github.stupremee.mela.query.criterias.BetweenCriteria;
 import com.github.stupremee.mela.query.criterias.EqualsCriteria;
 import com.github.stupremee.mela.query.criterias.GreaterThanCriteria;
 import com.github.stupremee.mela.query.criterias.GreaterThanOrEqualCriteria;
@@ -9,6 +10,7 @@ import com.github.stupremee.mela.query.criterias.NotEqualsCriteria;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 /**
  * https://github.com/Stupremee
@@ -68,6 +70,7 @@ public final class Query {
      * @param value The value
      * @return The {@link Query}
      */
+    @Nonnull
     public Query eq(Object value) {
       Preconditions.checkNotNull(value, "value can't be null.");
       query.criteria.add(EqualsCriteria.create(query.key, value));
@@ -80,6 +83,7 @@ public final class Query {
      * @param value The value
      * @return The {@link Query}
      */
+    @Nonnull
     public Query neq(Object value) {
       Preconditions.checkNotNull(value, "value can't be null.");
       query.criteria.add(NotEqualsCriteria.create(query.key, value));
@@ -92,6 +96,7 @@ public final class Query {
      * @param number The upper bound
      * @return The {@link Query}
      */
+    @Nonnull
     public Query lt(Object number) {
       Preconditions.checkNotNull(number, "value can't be null.");
       query.criteria.add(LessThanCriteria.create(query.key, number));
@@ -104,6 +109,7 @@ public final class Query {
      * @param number The upper bound
      * @return The {@link Query}
      */
+    @Nonnull
     public Query lte(Object number) {
       Preconditions.checkNotNull(number, "value can't be null.");
       query.criteria.add(LessThanOrEqualCriteria.create(query.key, number));
@@ -116,6 +122,7 @@ public final class Query {
      * @param number The lower bound
      * @return The {@link Query}
      */
+    @Nonnull
     public Query gt(Object number) {
       Preconditions.checkNotNull(number, "value can't be null.");
       query.criteria.add(GreaterThanCriteria.create(query.key, number));
@@ -128,9 +135,25 @@ public final class Query {
      * @param number The lower bound
      * @return The {@link Query}
      */
+    @Nonnull
     public Query gte(Object number) {
       Preconditions.checkNotNull(number, "value can't be null.");
       query.criteria.add(GreaterThanOrEqualCriteria.create(query.key, number));
+      return query;
+    }
+
+    /**
+     * Adds a {@link BetweenCriteria} to the {@link Query}.
+     *
+     * @param lowerBound The lower bound of the {@link BetweenCriteria}
+     * @param upperBound The upper bound of the {@link BetweenCriteria}
+     * @return The {@link Query}
+     */
+    @Nonnull
+    public Query between(Object lowerBound, Object upperBound) {
+      Preconditions.checkNotNull(lowerBound, "lowerBound can't be null.");
+      Preconditions.checkNotNull(upperBound, "upperBound can't be null.");
+      query.criteria.add(BetweenCriteria.create(query.key, lowerBound, upperBound));
       return query;
     }
   }

@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.query;
 
+import com.github.stupremee.mela.query.criterias.BetweenCriteria;
 import com.github.stupremee.mela.query.criterias.EqualsCriteria;
 import com.github.stupremee.mela.query.criterias.GreaterThanCriteria;
 import com.github.stupremee.mela.query.criterias.GreaterThanOrEqualCriteria;
@@ -26,5 +27,7 @@ public interface CriteriaVisitor {
   void visitGreaterThan(GreaterThanCriteria criteria);
 
   void visitGreaterThanOrEqual(GreaterThanOrEqualCriteria criteria);
+
+  void visitBetween(BetweenCriteria criteria);
 
 }
