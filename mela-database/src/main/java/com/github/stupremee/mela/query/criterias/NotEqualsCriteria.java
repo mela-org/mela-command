@@ -12,13 +12,13 @@ import javax.annotation.Nonnull;
  * @author Stu
  * @since 10.06.19
  */
-public final class GreaterThanCriteria implements Criteria {
+public final class NotEqualsCriteria implements Criteria {
 
   private final String key;
   private final Object value;
 
 
-  private GreaterThanCriteria(String key, Object value) {
+  private NotEqualsCriteria(String key, Object value) {
     this.key = key;
     this.value = value;
   }
@@ -29,7 +29,7 @@ public final class GreaterThanCriteria implements Criteria {
    * @return The value as an {@link Object}
    */
   @Nonnull
-  public Object getNumber() {
+  public Object getValue() {
     return value;
   }
 
@@ -40,7 +40,7 @@ public final class GreaterThanCriteria implements Criteria {
 
   @Override
   public void accept(CriteriaVisitor visitor) {
-    visitor.visitGreaterThan(this);
+    visitor.visitNotEquals(this);
   }
 
   @Override
@@ -54,6 +54,7 @@ public final class GreaterThanCriteria implements Criteria {
   public static Criteria create(String key, Object value) {
     Preconditions.checkNotNull(key, "key can't be null.");
     Preconditions.checkNotNull(value, "value can't be null.");
-    return new GreaterThanCriteria(key, value);
+    return new NotEqualsCriteria(key, value);
   }
+
 }

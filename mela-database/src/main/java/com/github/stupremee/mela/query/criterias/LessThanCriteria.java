@@ -15,10 +15,10 @@ import javax.annotation.Nonnull;
 public final class LessThanCriteria implements Criteria {
 
   private final String key;
-  private final Number value;
+  private final Object value;
 
 
-  private LessThanCriteria(String key, Number value) {
+  private LessThanCriteria(String key, Object value) {
     this.key = key;
     this.value = value;
   }
@@ -29,7 +29,7 @@ public final class LessThanCriteria implements Criteria {
    * @return The value as an {@link Object}
    */
   @Nonnull
-  public Number getNumber() {
+  public Object getNumber() {
     return value;
   }
 
@@ -51,7 +51,7 @@ public final class LessThanCriteria implements Criteria {
         .toString();
   }
 
-  public static Criteria create(String key, Number value) {
+  public static Criteria create(String key, Object value) {
     Preconditions.checkNotNull(key, "key can't be null.");
     Preconditions.checkNotNull(value, "value can't be null.");
     return new LessThanCriteria(key, value);
