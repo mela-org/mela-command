@@ -1,6 +1,8 @@
 package com.github.stupremee.mela.query;
 
 import com.github.stupremee.mela.query.criterias.EqualsCriteria;
+import com.github.stupremee.mela.query.criterias.GreaterThanCriteria;
+import com.github.stupremee.mela.query.criterias.GreaterThanOrEqualCriteria;
 import com.github.stupremee.mela.query.criterias.LessThanCriteria;
 import com.github.stupremee.mela.query.criterias.LessThanOrEqualCriteria;
 import com.google.common.base.Preconditions;
@@ -92,6 +94,30 @@ public final class Query {
     public Query lte(Number number) {
       Preconditions.checkNotNull(number, "value can't be null.");
       query.criteria.add(LessThanOrEqualCriteria.create(query.key, number));
+      return query;
+    }
+
+    /**
+     * Adds a {@link GreaterThanCriteria} to the {@link Query}.
+     *
+     * @param number The lower bound
+     * @return The {@link Query}
+     */
+    public Query gt(Number number) {
+      Preconditions.checkNotNull(number, "value can't be null.");
+      query.criteria.add(GreaterThanCriteria.create(query.key, number));
+      return query;
+    }
+
+    /**
+     * Adds a {@link GreaterThanOrEqualCriteria} to the {@link Query}.
+     *
+     * @param number The lower bound
+     * @return The {@link Query}
+     */
+    public Query gte(Number number) {
+      Preconditions.checkNotNull(number, "value can't be null.");
+      query.criteria.add(GreaterThanOrEqualCriteria.create(query.key, number));
       return query;
     }
   }
