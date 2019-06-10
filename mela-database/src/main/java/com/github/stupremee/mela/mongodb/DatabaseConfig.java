@@ -1,11 +1,12 @@
 package com.github.stupremee.mela.mongodb;
 
-import com.google.auto.value.AutoValue;
+import com.github.stupremee.mela.mongodb.ImmutableDatabaseConfig.Builder;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import org.immutables.value.Value;
 
 /**
  * https://github.com/Stupremee
@@ -13,7 +14,7 @@ import javax.annotation.Nonnull;
  * @author Stu
  * @since 14.05.19
  */
-@AutoValue
+@Value.Immutable
 public abstract class DatabaseConfig {
 
   /**
@@ -22,7 +23,7 @@ public abstract class DatabaseConfig {
    * @return The builder
    */
   public static Builder builder() {
-    return new AutoValue_DatabaseConfig.Builder();
+    return ImmutableDatabaseConfig.builder();
   }
 
   /**
@@ -48,39 +49,4 @@ public abstract class DatabaseConfig {
    */
   @Nonnull
   public abstract Optional<MongoCredential> credential();
-
-  @AutoValue.Builder
-  public abstract static class Builder {
-
-    /**
-     * Sets the connection string.
-     *
-     * @param connectionString The connection string
-     * @return The builder
-     */
-    public abstract Builder connectionString(ConnectionString connectionString);
-
-    /**
-     * Sets the default database.
-     *
-     * @param defaultDatabase The default database
-     * @return The builder
-     */
-    public abstract Builder defaultDatabase(String defaultDatabase);
-
-    /**
-     * Sets the credential.
-     *
-     * @param credential The credential
-     * @return The builder
-     */
-    public abstract Builder credential(MongoCredential credential);
-
-    /**
-     * Builds a new {@link DatabaseConfig} with all the given values.
-     *
-     * @return The created {@link DatabaseConfig}
-     */
-    public abstract DatabaseConfig build();
-  }
 }

@@ -4,7 +4,6 @@ import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-import com.github.stupremee.mela.repository.mapping.JacksonCodecProvider;
 import com.google.inject.ImplementedBy;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection;
@@ -117,4 +116,4 @@ public interface Database {
   <DocumentT> MongoCollection<DocumentT> getCollection(@Nonnull String databaseName,
       @Nonnull String collection,
       @Nonnull Class<DocumentT> type);
-}
+      }

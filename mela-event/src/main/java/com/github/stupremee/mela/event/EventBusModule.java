@@ -13,6 +13,11 @@ import net.engio.mbassy.bus.config.IBusConfiguration;
  */
 public final class EventBusModule extends AbstractModule {
 
+  private static final class Lazy {
+
+    private static final EventBusModule INSTANCE = new EventBusModule();
+  }
+
   private EventBusModule() {
 
   }
@@ -25,7 +30,7 @@ public final class EventBusModule extends AbstractModule {
         .addFeature(Feature.SyncPubSub.Default()));
   }
 
-  public static EventBusModule create() {
-    return new EventBusModule();
+  public static AbstractModule instance() {
+    return Lazy.INSTANCE;
   }
 }

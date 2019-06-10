@@ -3,4 +3,5 @@ include 'mela-config'
 include 'mela-event'
 include 'mela-command'
 include 'mela-database'
+include 'mela-core'
 
