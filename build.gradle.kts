@@ -23,6 +23,8 @@ subprojects {
   }
 
   dependencies {
+    compile("com.discord4j:discord4j-core:3.0.6")
+    
     compile("com.google.inject:guice:4.2.2")
     compile("com.google.guava:guava:27.1-jre")
 
