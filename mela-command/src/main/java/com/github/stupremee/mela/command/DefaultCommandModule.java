@@ -23,12 +23,12 @@ import java.time.Duration;
  * @author Stu
  * @since 13.05.19
  */
-public final class CommandModule extends AbstractModule {
+public final class DefaultCommandModule extends AbstractModule {
 
   private final DiscordClient client;
 
   @Inject
-  CommandModule(DiscordClient client) {
+  DefaultCommandModule(DiscordClient client) {
     this.client = client;
   }
 
