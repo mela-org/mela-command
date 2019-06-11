@@ -8,6 +8,7 @@ import com.github.stupremee.mela.command.providers.RoleProvider;
 import com.github.stupremee.mela.command.providers.TextChannelProvider;
 import com.github.stupremee.mela.command.providers.UserProvider;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.sk89q.intake.parametric.AbstractModule;
 import discord4j.core.DiscordClient;
 import discord4j.core.object.entity.Guild;
@@ -26,16 +27,21 @@ import java.time.Duration;
 public final class DefaultCommandModule extends AbstractModule {
 
   private final DiscordClient client;
+  private final Injector injector;
 
   @Inject
-  DefaultCommandModule(DiscordClient client) {
+  DefaultCommandModule(Injector injector, DiscordClient client) {
     this.client = client;
+    this.injector = injector;
   }
 
   @Override
   protected void configure() {
     bind(DiscordClient.class)
         .toInstance(client);
+
+    bind(Injector.class)
+        .toInstance(injector);
 
     bind(User.class)
         .annotatedWith(Sender.class)
