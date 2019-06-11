@@ -6,6 +6,7 @@ import com.github.stupremee.mela.query.criterias.GreaterThanCriteria;
 import com.github.stupremee.mela.query.criterias.GreaterThanOrEqualCriteria;
 import com.github.stupremee.mela.query.criterias.LessThanCriteria;
 import com.github.stupremee.mela.query.criterias.LessThanOrEqualCriteria;
+import com.github.stupremee.mela.query.criterias.LikeCriteria;
 import com.github.stupremee.mela.query.criterias.NotEqualsCriteria;
 import com.github.stupremee.mela.query.criterias.RegExCriteria;
 
@@ -32,5 +33,7 @@ public interface CriteriaVisitor {
   void visitBetween(BetweenCriteria criteria);
 
   void visitRegEx(RegExCriteria criteria);
+
+  void visitLike(LikeCriteria criteria);
 
 }
