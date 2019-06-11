@@ -1,7 +1,6 @@
 package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.annotations.Sender;
-import com.github.stupremee.mela.command.providers.DurationProvider;
 import com.github.stupremee.mela.command.providers.MemberProvider;
 import com.github.stupremee.mela.command.providers.NamespaceProvider;
 import com.github.stupremee.mela.command.providers.RoleProvider;
@@ -16,7 +15,6 @@ import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.Role;
 import discord4j.core.object.entity.TextChannel;
 import discord4j.core.object.entity.User;
-import java.time.Duration;
 
 /**
  * https://github.com/Stupremee
@@ -66,8 +64,5 @@ public final class DefaultCommandModule extends AbstractModule {
 
     bind(Role.class)
         .toProvider(RoleProvider.instance());
-
-    bind(Duration.class)
-        .toProvider(DurationProvider.instance());
   }
 }
