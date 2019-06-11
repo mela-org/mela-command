@@ -8,10 +8,6 @@
     This ruleset checks my code for bad stuff
   </description>
 
-  <rule ref="category/java/errorprone.xml">
-    <exclude name="BeanMembersShouldSerialize"/>
-  </rule>
-
   <rule ref="category/java/bestpractices.xml"/>
 
   <rule ref="category/java/design.xml">
