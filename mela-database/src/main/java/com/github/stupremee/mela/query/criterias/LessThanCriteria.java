@@ -3,6 +3,7 @@ package com.github.stupremee.mela.query.criterias;
 import com.github.stupremee.mela.query.Criteria;
 import com.github.stupremee.mela.query.CriteriaVisitor;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 
@@ -49,6 +50,30 @@ public final class LessThanCriteria implements Criteria {
         .add("key", key)
         .add("value", value)
         .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null) {
+      return false;
+    }
+
+    if (o == this) {
+      return true;
+    }
+
+    if (!(o instanceof LessThanCriteria)) {
+      return false;
+    }
+
+    var other = (LessThanCriteria) o;
+    return Objects.equal(this.key, other.key)
+        && Objects.equal(this.value, other.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(key, value);
   }
 
   public static Criteria create(String key, Object value) {

@@ -3,6 +3,7 @@ package com.github.stupremee.mela.query.criterias;
 import com.github.stupremee.mela.query.Criteria;
 import com.github.stupremee.mela.query.CriteriaVisitor;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 
@@ -53,6 +54,31 @@ public final class BetweenCriteria implements Criteria {
   @Override
   public void accept(CriteriaVisitor visitor) {
     visitor.visitBetween(this);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null) {
+      return false;
+    }
+
+    if (o == this) {
+      return true;
+    }
+
+    if (!(o instanceof BetweenCriteria)) {
+      return false;
+    }
+
+    var other = (BetweenCriteria) o;
+    return Objects.equal(this.key, other.key)
+        && Objects.equal(this.lowerBound, other.lowerBound)
+        && Objects.equal(this.upperBound, other.upperBound);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(key, upperBound, lowerBound);
   }
 
   @Override

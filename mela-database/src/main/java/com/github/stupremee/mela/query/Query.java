@@ -8,6 +8,7 @@ import com.github.stupremee.mela.query.criterias.LessThanCriteria;
 import com.github.stupremee.mela.query.criterias.LessThanOrEqualCriteria;
 import com.github.stupremee.mela.query.criterias.NotEqualsCriteria;
 import com.github.stupremee.mela.query.criterias.RegExCriteria;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,35 @@ public final class Query {
   public CriteriaFactory and(String key) {
     Preconditions.checkNotNull(key, "key can't be null.");
     return new CriteriaFactory(this);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(key, criteria);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null) {
+      return false;
+    }
+
+    if (o == this) {
+      return true;
+    }
+
+    if (!(o instanceof Query)) {
+      return false;
+    }
+
+    var other = (Query) o;
+    return Objects.equal(key, other.key)
+        && Objects.equal(criteria, other.criteria);
+  }
+
+  @Override
+  public String toString() {
+    return criteria.toString();
   }
 
   /**

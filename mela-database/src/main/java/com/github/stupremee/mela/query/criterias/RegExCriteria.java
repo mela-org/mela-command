@@ -3,6 +3,7 @@ package com.github.stupremee.mela.query.criterias;
 import com.github.stupremee.mela.query.Criteria;
 import com.github.stupremee.mela.query.CriteriaVisitor;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
@@ -50,6 +51,30 @@ public final class RegExCriteria implements Criteria {
         .add("key", key)
         .add("pattern", pattern)
         .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null) {
+      return false;
+    }
+
+    if (o == this) {
+      return true;
+    }
+
+    if (!(o instanceof RegExCriteria)) {
+      return false;
+    }
+
+    var other = (RegExCriteria) o;
+    return Objects.equal(this.key, other.key)
+        && Objects.equal(this.pattern, other.pattern);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(key, pattern);
   }
 
   public static Criteria create(String key, Pattern pattern) {
