@@ -29,10 +29,6 @@ public final class ConfigProvider {
 
   /**
    * Saves a config to the given path.
-   *
-   * @param config The config
-   * @param path The path
-   * @param <T> The type of the config
    */
   public <T> void save(T config, Path path) {
     checkNotNull(config, "config can't be null.");
@@ -47,11 +43,6 @@ public final class ConfigProvider {
 
   /**
    * Loads a config with the given type from the given path.
-   *
-   * @param path The path
-   * @param type The class of the config
-   * @param <T> The type
-   * @return The config
    */
   public <T> Optional<T> load(Path path, Class<T> type) {
     checkNotNull(path, "path can't be null.");

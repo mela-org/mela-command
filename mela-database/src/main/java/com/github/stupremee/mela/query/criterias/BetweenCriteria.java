@@ -90,6 +90,9 @@ public final class BetweenCriteria implements Criteria {
         .toString();
   }
 
+  /**
+   * Static factory method to create a new {@link BetweenCriteria}.
+   */
   public static Criteria create(String key, Object lowerBound, Object upperBound) {
     Preconditions.checkNotNull(key, "key can't be null.");
     Preconditions.checkNotNull(lowerBound, "lowerBound can't be null.");

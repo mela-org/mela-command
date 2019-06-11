@@ -76,6 +76,9 @@ public final class GreaterThanCriteria implements Criteria {
     return Objects.hashCode(key, value);
   }
 
+  /**
+   * Static factory method to create a new {@link GreaterThanCriteria}.
+   */
   public static Criteria create(String key, Object value) {
     Preconditions.checkNotNull(key, "key can't be null.");
     Preconditions.checkNotNull(value, "value can't be null.");

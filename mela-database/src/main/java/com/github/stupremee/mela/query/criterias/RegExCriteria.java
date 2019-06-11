@@ -77,6 +77,9 @@ public final class RegExCriteria implements Criteria {
     return Objects.hashCode(key, pattern);
   }
 
+  /**
+   * Static factory method to create a new {@link RegExCriteria}.
+   */
   public static Criteria create(String key, Pattern pattern) {
     Preconditions.checkNotNull(key, "key can't be null.");
     Preconditions.checkNotNull(pattern, "pattern can't be null.");
