@@ -50,18 +50,6 @@ subprojects {
       from(javadoc)
     }
 
-    val fatJar by registering(Jar::class) {
-      dependsOn(jar)
-      archiveClassifier.set("shaded")
-      duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-      from(configurations.runtimeClasspath.get()
-          .onEach { println("Add from dependencies: ${it.name}") }
-          .map { if (it.isDirectory) it else zipTree(it) })
-      val sourcesMain = sourceSets.main.get()
-      sourcesMain.allSource.forEach { println("Add from sources: ${it.name}") }
-      from(sourcesMain.output)
-    }
-
     artifacts {
       add("archives", javadocJar)
       add("archives", sourcesJar)
