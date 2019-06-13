@@ -65,7 +65,6 @@ subprojects {
     }
 
     test {
-
       useJUnitPlatform()
     }
 
