@@ -3,6 +3,7 @@ repositories {
 }
 
 dependencies {
-  compile("com.sk89q.intake:intake:4.0-SNAPSHOT")
+  compile(Deps.guice)
+  compile(Deps.intake)
   compile(project(":mela-event"))
 }

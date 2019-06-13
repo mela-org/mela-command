@@ -27,20 +27,11 @@ subprojects {
 
   dependencyManagement {
     imports {
-      mavenBom("io.projectreactor:reactor-bom:Dysprosium-M2")
+      mavenBom("io.projectreactor:reactor-bom:${Versions.reactor_bom}")
     }
   }
 
   dependencies {
-    compile("com.discord4j:discord4j-core:3.0.6")
-
-    compile("com.google.inject:guice:4.2.2")
-    compile("com.google.guava:guava:27.1-jre")
-
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-    testCompile("org.assertj:assertj-core:3.11.1")
-
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
   }
 

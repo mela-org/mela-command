@@ -1,4 +1,7 @@
 dependencies {
-  compile("io.github.classgraph:classgraph:4.8.29")
-  compile("net.engio:mbassador:1.3.2")
+  compile(Deps.guava)
+  compile(Deps.guice)
+  compile(Deps.discord4j)
+  compile(Deps.classgraph)
+  compile(Deps.mbassador)
 }

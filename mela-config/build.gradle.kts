@@ -1,4 +1,7 @@
 dependencies {
-  compile("com.fasterxml.jackson.core:jackson-databind:2.9.4")
-  compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0")
+  compile(Deps.guice)
+  compile(Deps.guava)
+  compile(Deps.reactor_core)
+  compile(Deps.Jackson.databind)
+  compile(Deps.Jackson.Dataformat.yaml)
 }
