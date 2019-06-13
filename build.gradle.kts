@@ -3,6 +3,7 @@ plugins {
   pmd
   checkstyle
   id("com.github.spotbugs") version "1.7.1"
+  id("io.spring.dependency-management") version "1.0.7.RELEASE"
 }
 
 group = "com.github.stupremee"
@@ -13,6 +14,7 @@ subprojects {
   apply(plugin = "pmd")
   apply(plugin = "checkstyle")
   apply(plugin = "com.github.spotbugs")
+  apply(plugin = "io.spring.dependency-management")
 
   group = "com.github.stupremee"
   version = "1.0.0"
@@ -24,7 +26,7 @@ subprojects {
 
   dependencies {
     compile("com.discord4j:discord4j-core:3.0.6")
-    
+
     compile("com.google.inject:guice:4.2.2")
     compile("com.google.guava:guava:27.1-jre")
 
