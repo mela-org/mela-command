@@ -20,8 +20,15 @@ subprojects {
   version = "1.0.0"
 
   repositories {
+    maven("https://repo.spring.io/milestone")
     jcenter()
     mavenCentral()
+  }
+
+  dependencyManagement {
+    imports {
+      mavenBom("io.projectreactor:reactor-bom:Dysprosium-M2")
+    }
   }
 
   dependencies {
