@@ -1,6 +1,6 @@
-package com.github.stupremee.mela.command.implementation.d4j.providers;
+package com.github.stupremee.mela.command.discord.d4j.providers;
 
-import com.github.stupremee.mela.command.implementation.MemberProvider;
+import com.github.stupremee.mela.command.discord.MemberProvider;
 import com.google.common.base.Preconditions;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.ArgumentParseException;
@@ -12,7 +12,6 @@ import discord4j.core.object.util.Snowflake;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -29,11 +28,6 @@ public final class D4JMemberProvider implements MemberProvider<Member> {
   }
 
   private D4JMemberProvider() {
-  }
-
-  @Override
-  public boolean isProvided() {
-    return false;
   }
 
   @Nullable
@@ -55,11 +49,6 @@ public final class D4JMemberProvider implements MemberProvider<Member> {
         .toStream()
         .findFirst()
         .orElseThrow(() -> new ArgumentParseException("No member was found with this name!"));
-  }
-
-  @Override
-  public List<String> getSuggestions(String prefix) {
-    return Collections.emptyList();
   }
 
   public static Provider<Member> instance() {
