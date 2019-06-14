@@ -21,21 +21,16 @@ import discord4j.core.object.entity.*;
 public final class DefaultD4JCommandModule extends AbstractCommandModule {
 
   private final DiscordClient client;
-  private final Injector injector;
 
   @Inject
-  DefaultD4JCommandModule(Injector injector, DiscordClient client) {
+  DefaultD4JCommandModule(DiscordClient client) {
     this.client = client;
-    this.injector = injector;
   }
 
   @Override
   protected void configure() {
     bindParameter(DiscordClient.class)
         .toInstance(client);
-
-    bindParameter(Injector.class)
-        .toInstance(injector);
 
     bindParameter(User.class)
         .annotatedWith(Sender.class)
