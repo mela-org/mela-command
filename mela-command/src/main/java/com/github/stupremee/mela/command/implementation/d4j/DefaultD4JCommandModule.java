@@ -1,6 +1,5 @@
 package com.github.stupremee.mela.command.implementation.d4j;
 
-import com.github.stupremee.mela.command.AbstractCommandModule;
 import com.github.stupremee.mela.command.annotations.Sender;
 import com.github.stupremee.mela.command.implementation.NamespaceDataProvider;
 import com.github.stupremee.mela.command.implementation.d4j.providers.D4JMemberProvider;
@@ -8,7 +7,7 @@ import com.github.stupremee.mela.command.implementation.d4j.providers.D4JRolePro
 import com.github.stupremee.mela.command.implementation.d4j.providers.D4JTextChannelProvider;
 import com.github.stupremee.mela.command.implementation.d4j.providers.D4JUserProvider;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
+import com.sk89q.intake.parametric.AbstractModule;
 import discord4j.core.DiscordClient;
 import discord4j.core.object.entity.*;
 
@@ -18,7 +17,7 @@ import discord4j.core.object.entity.*;
  * @author Stu
  * @since 13.05.19
  */
-public final class DefaultD4JCommandModule extends AbstractCommandModule {
+public final class DefaultD4JCommandModule extends AbstractModule {
 
   private final DiscordClient client;
 
@@ -32,31 +31,28 @@ public final class DefaultD4JCommandModule extends AbstractCommandModule {
     bind(DiscordClient.class)
             .toInstance(client);
 
-    bindParameter(DiscordClient.class)
-        .toInstance(client);
-
-    bindParameter(User.class)
+    bind(User.class)
         .annotatedWith(Sender.class)
         .toProvider(NamespaceDataProvider.create(User.class));
 
-    bindParameter(TextChannel.class)
+    bind(TextChannel.class)
         .annotatedWith(Sender.class)
         .toProvider(NamespaceDataProvider.create(TextChannel.class));
 
-    bindParameter(Guild.class)
+    bind(Guild.class)
         .annotatedWith(Sender.class)
         .toProvider(NamespaceDataProvider.create(Guild.class));
 
-    bindParameter(User.class)
+    bind(User.class)
         .toProvider(D4JUserProvider.instance());
 
-    bindParameter(Member.class)
+    bind(Member.class)
         .toProvider(D4JMemberProvider.instance());
 
-    bindParameter(TextChannel.class)
+    bind(TextChannel.class)
         .toProvider(D4JTextChannelProvider.instance());
 
-    bindParameter(Role.class)
+    bind(Role.class)
         .toProvider(D4JRoleProvider.instance());
   }
 }
