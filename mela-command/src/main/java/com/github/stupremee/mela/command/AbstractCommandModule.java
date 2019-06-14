@@ -34,12 +34,12 @@ public abstract class AbstractCommandModule implements GuiceIntakeModuleBridge {
   private com.sk89q.intake.parametric.binder.Binder intakeBinder;
 
   @Override
-  public synchronized void configure(com.google.inject.Binder binder) {
+  public final synchronized void configure(com.google.inject.Binder binder) {
     configureBinder(binder, BinderType.GUICE);
   }
 
   @Override
-  public synchronized void configure(com.sk89q.intake.parametric.binder.Binder binder) {
+  public final synchronized void configure(com.sk89q.intake.parametric.binder.Binder binder) {
     configureBinder(binder, BinderType.INTAKE);
   }
 
