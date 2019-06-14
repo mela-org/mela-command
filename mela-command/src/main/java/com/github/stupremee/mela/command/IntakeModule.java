@@ -24,8 +24,15 @@ public class IntakeModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(Injector.class).toInstance(injector);
-    bind(ParametricBuilder.class).toProvider(() -> new ParametricBuilder(injector)).in(Singleton.class);
-    bind(Dispatcher.class).to(SimpleDispatcher.class);
+    bind(Injector.class)
+            .toInstance(injector);
+
+    bind(ParametricBuilder.class)
+            .toProvider(() -> new ParametricBuilder(injector))
+            .in(Singleton.class);
+
+    bind(Dispatcher.class)
+            .to(SimpleDispatcher.class)
+            .in(Singleton.class);
   }
 }
