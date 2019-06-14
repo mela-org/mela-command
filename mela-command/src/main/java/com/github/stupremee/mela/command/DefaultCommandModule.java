@@ -22,6 +22,7 @@ import discord4j.core.object.entity.User;
  * @author Stu
  * @since 13.05.19
  */
+// TODO: 14.06.2019 rewrite
 public final class DefaultCommandModule extends AbstractModule {
 
   private final DiscordClient client;
