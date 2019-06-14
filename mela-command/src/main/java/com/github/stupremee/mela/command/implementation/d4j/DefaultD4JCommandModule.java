@@ -29,6 +29,9 @@ public final class DefaultD4JCommandModule extends AbstractCommandModule {
 
   @Override
   protected void configure() {
+    bind(DiscordClient.class)
+            .toInstance(client);
+
     bindParameter(DiscordClient.class)
         .toInstance(client);
 
