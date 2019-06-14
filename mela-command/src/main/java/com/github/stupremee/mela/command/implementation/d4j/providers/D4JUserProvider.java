@@ -1,5 +1,6 @@
-package com.github.stupremee.mela.command.providers;
+package com.github.stupremee.mela.command.implementation.d4j.providers;
 
+import com.github.stupremee.mela.command.implementation.UserProvider;
 import com.google.common.base.Preconditions;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.ArgumentParseException;
@@ -8,12 +9,12 @@ import com.sk89q.intake.parametric.Provider;
 import discord4j.core.DiscordClient;
 import discord4j.core.object.entity.User;
 import discord4j.core.object.util.Snowflake;
+
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.Nullable;
 
 /**
  * https://github.com/Stupremee
@@ -21,16 +22,14 @@ import javax.annotation.Nullable;
  * @author Stu
  * @since 13.05.19
  */
-public final class UserProvider implements Provider<User> {
-
-  private static final Pattern PATTERN = Pattern.compile("<@!?([0-9]+)>");
+public final class D4JUserProvider implements UserProvider<User> {
 
   private static final class Lazy {
 
-    private static final UserProvider INSTANCE = new UserProvider();
+    private static final D4JUserProvider INSTANCE = new D4JUserProvider();
   }
 
-  private UserProvider() {
+  private D4JUserProvider() {
   }
 
   @Override
@@ -45,7 +44,7 @@ public final class UserProvider implements Provider<User> {
     DiscordClient client = arguments.getNamespace().get(DiscordClient.class);
     Preconditions.checkNotNull(client, "client can't be null.");
     String name = arguments.next();
-    Matcher matcher = PATTERN.matcher(name);
+    Matcher matcher = MENTION.matcher(name);
     if (matcher.matches()) {
       String userId = matcher.group(1);
       return client.getUserById(Snowflake.of(userId))

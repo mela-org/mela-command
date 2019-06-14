@@ -1,5 +1,6 @@
-package com.github.stupremee.mela.command.providers;
+package com.github.stupremee.mela.command.implementation.d4j.providers;
 
+import com.github.stupremee.mela.command.implementation.MemberProvider;
 import com.google.common.base.Preconditions;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.ArgumentParseException;
@@ -8,12 +9,12 @@ import com.sk89q.intake.parametric.Provider;
 import discord4j.core.object.entity.Guild;
 import discord4j.core.object.entity.Member;
 import discord4j.core.object.util.Snowflake;
+
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.Nullable;
 
 /**
  * https://github.com/Stupremee
@@ -21,16 +22,13 @@ import javax.annotation.Nullable;
  * @author Stu
  * @since 13.05.19
  */
-public final class MemberProvider implements Provider<Member> {
-
-  private static final Pattern PATTERN = Pattern.compile("<@!?([0-9]+)>");
+public final class D4JMemberProvider implements MemberProvider<Member> {
 
   private static final class Lazy {
-
-    private static final MemberProvider INSTANCE = new MemberProvider();
+    private static final D4JMemberProvider INSTANCE = new D4JMemberProvider();
   }
 
-  private MemberProvider() {
+  private D4JMemberProvider() {
   }
 
   @Override
@@ -44,7 +42,7 @@ public final class MemberProvider implements Provider<Member> {
       throws ArgumentException {
     String name = arguments.next();
     Guild guild = Preconditions.checkNotNull(arguments.getNamespace().get(Guild.class));
-    Matcher matcher = PATTERN.matcher(name);
+    Matcher matcher = MENTION.matcher(name);
     if (matcher.matches()) {
       String userId = matcher.group(1);
       return guild.getMemberById(Snowflake.of(userId))

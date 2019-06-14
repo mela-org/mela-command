@@ -1,36 +1,36 @@
-package com.github.stupremee.mela.command.providers;
+package com.github.stupremee.mela.command.implementation.d4j.providers;
 
+import com.github.stupremee.mela.command.implementation.TextChannelProvider;
 import com.google.common.base.Preconditions;
 import com.sk89q.intake.argument.ArgumentParseException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.MissingArgumentException;
 import com.sk89q.intake.parametric.Provider;
 import discord4j.core.object.entity.Guild;
-import discord4j.core.object.entity.Role;
+import discord4j.core.object.entity.TextChannel;
 import discord4j.core.object.util.Snowflake;
+
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.Nullable;
 
 /**
  * https://github.com/Stupremee
  *
  * @author Stu
- * @since 31.05.19
+ * @since 13.05.19
  */
-public final class RoleProvider implements Provider<Role> {
-
-  private static final Pattern PATTERN = Pattern.compile("<#?([0-9]+)>");
+public final class D4JTextChannelProvider implements TextChannelProvider<TextChannel> {
 
   private static final class Lazy {
 
-    private static final RoleProvider INSTANCE = new RoleProvider();
+    private static final D4JTextChannelProvider INSTANCE = new D4JTextChannelProvider();
   }
 
-  private RoleProvider() {
+  private D4JTextChannelProvider() {
+
   }
 
   @Override
@@ -40,23 +40,25 @@ public final class RoleProvider implements Provider<Role> {
 
   @Nullable
   @Override
-  public Role get(CommandArgs arguments, List<? extends Annotation> modifiers)
+  public TextChannel get(CommandArgs arguments, List<? extends Annotation> modifiers)
       throws MissingArgumentException, ArgumentParseException {
     String name = arguments.next();
     Guild guild = Preconditions.checkNotNull(arguments.getNamespace().get(Guild.class));
-    Matcher matcher = PATTERN.matcher(name);
+    Matcher matcher = MENTION.matcher(name);
     if (matcher.matches()) {
       String userId = matcher.group(1);
-      return guild.getRoleById(Snowflake.of(userId))
+      return guild.getChannelById(Snowflake.of(userId))
+          .ofType(TextChannel.class)
           .blockOptional()
-          .orElseThrow(() -> new ArgumentParseException("Unknown Role!"));
+          .orElseThrow(() -> new ArgumentParseException("Unknown channel!"));
     }
 
-    return guild.getRoles()
+    return guild.getChannels()
+        .ofType(TextChannel.class)
         .filter(channel -> channel.getName().startsWith(name))
         .toStream()
         .findFirst()
-        .orElseThrow(() -> new ArgumentParseException("No role was found with this name!"));
+        .orElseThrow(() -> new ArgumentParseException("No channel was found with this name!"));
   }
 
   @Override
@@ -64,7 +66,7 @@ public final class RoleProvider implements Provider<Role> {
     return Collections.emptyList();
   }
 
-  public static Provider<Role> instance() {
+  public static Provider<TextChannel> instance() {
     return Lazy.INSTANCE;
   }
 }
