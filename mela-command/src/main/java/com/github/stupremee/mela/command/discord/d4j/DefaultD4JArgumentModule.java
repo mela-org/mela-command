@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.discord.d4j;
 
-import com.github.stupremee.mela.command.annotations.Sender;
+import com.github.stupremee.mela.command.annotation.Sender;
 import com.github.stupremee.mela.command.discord.d4j.providers.D4JMemberProvider;
 import com.github.stupremee.mela.command.discord.d4j.providers.D4JRoleProvider;
 import com.github.stupremee.mela.command.discord.d4j.providers.D4JTextChannelProvider;
@@ -9,7 +9,7 @@ import com.sk89q.intake.parametric.AbstractModule;
 import discord4j.core.DiscordClient;
 import discord4j.core.object.entity.*;
 
-import static com.github.stupremee.mela.command.providers.Providers.newNamespaceDataProvider;
+import static com.github.stupremee.mela.command.provider.Providers.newNamespaceDataProvider;
 
 /**
  * https://github.com/Stupremee

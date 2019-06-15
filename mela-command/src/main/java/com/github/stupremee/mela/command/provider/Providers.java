@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.providers;
+package com.github.stupremee.mela.command.provider;
 
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.Namespace;

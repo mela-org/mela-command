@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.annotations;
+package com.github.stupremee.mela.command.annotation;
 
 import com.sk89q.intake.parametric.annotation.Classifier;
 
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Classifier
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ArgumentSize {
+public @interface Flags {
 }

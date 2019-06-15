@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.annotations.CommandClass;
+import com.github.stupremee.mela.command.annotation.CommandClass;
 import com.google.inject.Injector;
 import com.sk89q.intake.dispatcher.Dispatcher;
 import com.sk89q.intake.parametric.ParametricBuilder;

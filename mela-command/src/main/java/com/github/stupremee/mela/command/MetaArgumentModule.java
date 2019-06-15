@@ -1,8 +1,8 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.annotations.ArgumentSize;
-import com.github.stupremee.mela.command.annotations.Flags;
-import com.github.stupremee.mela.command.providers.Providers;
+import com.github.stupremee.mela.command.annotation.ArgumentSize;
+import com.github.stupremee.mela.command.annotation.Flags;
+import com.github.stupremee.mela.command.provider.Providers;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.parametric.AbstractModule;
