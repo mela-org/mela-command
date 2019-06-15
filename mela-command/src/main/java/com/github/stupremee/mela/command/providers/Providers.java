@@ -1,18 +1,14 @@
 package com.github.stupremee.mela.command.providers;
 
-import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.parametric.Provider;
 import com.sk89q.intake.parametric.ProvisionException;
-import reactor.core.Exceptions;
 
 import javax.annotation.Nullable;
-import javax.swing.text.html.Option;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -40,21 +36,11 @@ public final class Providers {
   }
 
   public static <T> Provider<T> newNamespaceDataProvider(Class<T> keyType) {
-    return fromArgs((args) ->
-            Optional.ofNullable(args.getNamespace().get(keyType))
-                    .orElseThrow(() -> wrap(new ProvisionException("Could not find object of type "
-                            + keyType.getName() + " in namespace"))));
+    return fromArgs((args) -> args.getNamespace().get(keyType));
   }
 
   public static Provider<?> newNameSpaceDataProvider(Object key) {
-    return fromArgs((args) ->
-            Optional.ofNullable(args.getNamespace().get(key))
-                    .orElseThrow(() -> wrap(new ProvisionException("Could not find object with key "
-                            + key + " in namespace"))));
-  }
-
-  private static RuntimeException wrap(Exception e) {
-    return new RuntimeException(e);
+    return fromArgs((args) -> args.getNamespace().get(key));
   }
 
   public static <T> Provider<T> fromArgs(Function<CommandArgs, T> function) {
@@ -70,8 +56,11 @@ public final class Providers {
 
     @Nullable
     @Override
-    public T get(CommandArgs arguments, List<? extends Annotation> modifiers) {
-      return function.apply(arguments);
+    public T get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ProvisionException {
+      T t = function.apply(arguments);
+      if (t == null)
+        throw new ProvisionException("Could not provide element for " + arguments + ": it doesn't exist");
+      return t;
     }
   }
 
