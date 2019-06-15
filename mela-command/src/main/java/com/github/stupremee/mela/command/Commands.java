@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class Commands {
+public final class Commands {
 
   public static void registerFromClasspath(Injector injector) {
     try (ScanResult result = scanClasspath()) {
