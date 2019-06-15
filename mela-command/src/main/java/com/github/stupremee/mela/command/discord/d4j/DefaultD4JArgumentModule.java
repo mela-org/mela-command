@@ -5,6 +5,7 @@ import com.github.stupremee.mela.command.discord.d4j.providers.D4JMemberProvider
 import com.github.stupremee.mela.command.discord.d4j.providers.D4JRoleProvider;
 import com.github.stupremee.mela.command.discord.d4j.providers.D4JTextChannelProvider;
 import com.github.stupremee.mela.command.discord.d4j.providers.D4JUserProvider;
+import com.github.stupremee.mela.command.provider.Providers;
 import com.sk89q.intake.parametric.AbstractModule;
 import discord4j.core.DiscordClient;
 import discord4j.core.object.entity.*;
@@ -31,25 +32,11 @@ public final class DefaultD4JArgumentModule extends AbstractModule {
     bind(DiscordClient.class)
             .toInstance(client);
 
-    bind(User.class)
-            .annotatedWith(Sender.class)
-            .toProvider(newNamespaceDataProvider(User.class));
-
-    bind(MessageChannel.class)
-            .annotatedWith(Sender.class)
-            .toProvider(newNamespaceDataProvider(MessageChannel.class));
-
-    bind(PrivateChannel.class)
-            .annotatedWith(Sender.class)
-            .toProvider(newNamespaceDataProvider(PrivateChannel.class));
-
-    bind(TextChannel.class)
-            .annotatedWith(Sender.class)
-            .toProvider(newNamespaceDataProvider(TextChannel.class));
-
-    bind(Guild.class)
-            .annotatedWith(Sender.class)
-            .toProvider(newNamespaceDataProvider(Guild.class));
+    bindNameSpaceData(
+            User.class, MessageChannel.class,
+            PrivateChannel.class, TextChannel.class,
+            Guild.class, User.class
+    );
 
     bind(User.class)
             .toProvider(D4JUserProvider.instance());
@@ -62,6 +49,16 @@ public final class DefaultD4JArgumentModule extends AbstractModule {
 
     bind(Role.class)
             .toProvider(D4JRoleProvider.instance());
+  }
+
+  // bindings use the same class object, so no exceptions will occur; using <?>, type inference fails
+  @SuppressWarnings("unchecked")
+  private void bindNameSpaceData(Class... types) {
+    for (Class type : types) {
+      bind(type)
+              .annotatedWith(Sender.class)
+              .toProvider(Providers.newNamespaceDataProvider(type));
+    }
   }
 
   public static DefaultD4JArgumentModule create(DiscordClient client) {
