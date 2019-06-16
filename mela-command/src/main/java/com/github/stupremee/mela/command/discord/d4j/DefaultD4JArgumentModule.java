@@ -51,7 +51,7 @@ public final class DefaultD4JArgumentModule extends AbstractModule {
             .toProvider(D4JRoleProvider.instance());
   }
 
-  // bindings use the same class object, so no exceptions will occur; using <?>, type inference fails
+  // bindings use the same class object, so no exceptions will occur; when using <?>, type inference fails
   @SuppressWarnings("unchecked")
   private void bindNameSpaceData(Class... types) {
     for (Class type : types) {
