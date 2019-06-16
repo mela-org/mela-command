@@ -20,9 +20,9 @@ public final class Commands {
       ParametricBuilder builder = injector.getInstance(ParametricBuilder.class);
       Dispatcher dispatcher = injector.getInstance(Dispatcher.class);
       getCommandClasses(result)
-              .stream()
-              .map(injector::getInstance)
-              .forEach((object) -> builder.registerMethodsAsCommands(dispatcher, object));
+          .stream()
+          .map(injector::getInstance)
+          .forEach((object) -> builder.registerMethodsAsCommands(dispatcher, object));
     }
   }
 
@@ -32,9 +32,9 @@ public final class Commands {
 
   private static ScanResult scanClasspath() {
     return new ClassGraph()
-            .enableClassInfo()
-            .enableAnnotationInfo()
-            .scan();
+        .enableClassInfo()
+        .enableAnnotationInfo()
+        .scan();
   }
 
 }

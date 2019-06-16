@@ -18,13 +18,13 @@ public class TestCommand {
   public static final String NAME = "test";
 
   @Command(aliases = NAME,
-          desc = "No description",
-          help = "Still no description")
+      desc = "No description",
+      help = "Still no description")
   public void onCommand(
-          @Optional CustomArgument argument,
-          @ArgumentSize int size,
-          @Flags Map<Character, String> flags,
-          Namespace namespace
+      @Optional CustomArgument argument,
+      @ArgumentSize int size,
+      @Flags Map<Character, String> flags,
+      Namespace namespace
   ) {
 
   }

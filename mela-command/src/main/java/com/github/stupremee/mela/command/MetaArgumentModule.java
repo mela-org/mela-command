@@ -17,17 +17,17 @@ public class MetaArgumentModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(Namespace.class)
-            .toProvider(Providers.newNamespaceProvider());
+        .toProvider(Providers.newNamespaceProvider());
 
     bind(CommandArgs.class)
-            .toProvider(Providers.newCommandArgsProvider());
+        .toProvider(Providers.newCommandArgsProvider());
 
     bind(int.class)
-            .annotatedWith(ArgumentSize.class)
-            .toProvider(Providers.newArgSizeProvider());
+        .annotatedWith(ArgumentSize.class)
+        .toProvider(Providers.newArgSizeProvider());
 
     bind(Map.class)
-            .annotatedWith(Flags.class)
-            .toProvider(Providers.newFlagsProvider());
+        .annotatedWith(Flags.class)
+        .toProvider(Providers.newFlagsProvider());
   }
 }
