@@ -36,17 +36,17 @@ public class CommandRegistrationTest {
   @Test
   public void testClasspathRegistration() {
     Commands.registerFromClasspath(injector);
-    assertCommandExistance();
+    assertCommandExistence();
   }
 
   @Test
   public void testManualRegistration() {
     ParametricBuilder builder = injector.getInstance(ParametricBuilder.class);
     builder.registerMethodsAsCommands(dispatcher, new SampleCommand());
-    assertCommandExistance();
+    assertCommandExistence();
   }
 
-  private void assertCommandExistance() {
+  private void assertCommandExistence() {
     Assertions.assertTrue(dispatcher.contains(COMMAND_NAME), "Command was not registered");
   }
 
