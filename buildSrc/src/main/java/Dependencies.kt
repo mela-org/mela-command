@@ -27,11 +27,11 @@ object Deps {
 }
 
 object Versions {
-  const val discord4j = "3.0.6"
+  const val discord4j = "3.0.7"
   const val guice = "4.2.2"
-  const val guava = "27.1-jre"
+  const val guava = "28.0-jre"
   const val reactor_bom = "Dysprosium-M2"
-  const val classgraph = "4.8.29"
+  const val classgraph = "4.8.41"
   const val mbassador = "1.3.2"
   const val intake = "4.2"
 
