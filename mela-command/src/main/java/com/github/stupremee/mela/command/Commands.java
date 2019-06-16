@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.annotation.CommandClass;
+import com.google.inject.ImplementedBy;
 import com.google.inject.Injector;
 import com.sk89q.intake.dispatcher.Dispatcher;
 import com.sk89q.intake.parametric.ParametricBuilder;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class Commands {
+public final class Commands {
 
   public static void registerFromClasspath(Injector injector) {
     try (ScanResult result = scanClasspath()) {

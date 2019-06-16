@@ -9,7 +9,6 @@ import com.sk89q.intake.parametric.AbstractModule;
 
 import java.util.Map;
 
-
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
