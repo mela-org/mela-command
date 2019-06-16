@@ -1,5 +1,7 @@
 repositories {
   maven("http://maven.sk89q.com/repo/")
+  maven("https://dl.bintray.com/stunibert/maven")
+  jcenter()
 }
 
 dependencies {
