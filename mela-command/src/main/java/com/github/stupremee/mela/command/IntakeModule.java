@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.sk89q.intake.Intake;
 import com.sk89q.intake.dispatcher.Dispatcher;
@@ -40,12 +41,14 @@ public class IntakeModule extends AbstractModule {
     bind(Injector.class)
         .toInstance(injector);
 
-    bind(ParametricBuilder.class)
-        .toProvider(() -> new ParametricBuilder(injector))
-        .in(Singleton.class);
-
     bind(Dispatcher.class)
         .to(SimpleDispatcher.class)
         .in(Singleton.class);
+  }
+
+  @Provides
+  @Singleton
+  public ParametricBuilder provideParametricBuilder() {
+    return new ParametricBuilder(injector);
   }
 }
