@@ -13,12 +13,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class DispatcherTest {
 
+  private static final String NAME = "sample";
+
+  private SampleCommand command;
   private Dispatcher dispatcher;
 
   @BeforeEach
   public void setUp() {
     Injector injector = Guice.createInjector(new TestModule());
     this.dispatcher = injector.getInstance(Dispatcher.class);
+    this.command = new SampleCommand();
+    this.dispatcher.registerCommands(command);
   }
 
   @AfterEach
@@ -27,18 +32,23 @@ public class DispatcherTest {
   }
 
   @Test
+  public void testCommandRegistration() {
+    boolean wasRegistered = dispatcher.getCommands()
+        .stream()
+        .map(CommandCallable::getDetails)
+        .map(CommandDetails::getAliases)
+        .anyMatch((aliases) -> aliases.contains(NAME));
+    assertTrue(wasRegistered, "Command was not registered");
+  }
+
+  @Test
   public void testCommandExecution() {
-    registerCommand();
-    boolean success = dispatcher.call("sample", new CommandContext());
+    boolean success = dispatcher.call(NAME, new CommandContext());
     assertTrue(success, "Command execution failed");
   }
 
-  private void registerCommand() {
-    this.dispatcher.registerCommands(new SampleCommand());
-  }
-
   private static class SampleCommand {
-    @Command(aliases = "sample")
+    @Command(aliases = NAME)
     public void sampleCommand() {
 
     }
