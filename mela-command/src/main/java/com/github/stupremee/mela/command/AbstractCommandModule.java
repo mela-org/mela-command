@@ -1,7 +1,7 @@
 package com.github.stupremee.mela.command;
 
-import com.google.inject.*;
 import com.google.inject.Module;
+import com.google.inject.*;
 import com.google.inject.binder.AnnotatedBindingBuilder;
 import com.google.inject.binder.AnnotatedConstantBindingBuilder;
 import com.google.inject.binder.LinkedBindingBuilder;
@@ -41,7 +41,7 @@ public class AbstractCommandModule implements Module {
   protected void configure() {}
 
   private void bindCommandBindings() {
-    // TODO: 19.06.2019  
+    // TODO: 19.06.2019
   }
 
   /** Gets direct access to the underlying {@code Binder}. */
