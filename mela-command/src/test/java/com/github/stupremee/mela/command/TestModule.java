@@ -3,7 +3,7 @@ package com.github.stupremee.mela.command;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class TestModule extends AbstractCommandModule {
+public class TestModule {
 
 
 }
