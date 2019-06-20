@@ -10,6 +10,6 @@ public interface Dispatcher {
 
   boolean call(String command, CommandContext context);
 
-  CommandStash getCommands();
+  CommandStash getCommandStash();
 
 }
