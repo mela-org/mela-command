@@ -6,6 +6,6 @@ repositories {
 
 dependencies {
   compile(Deps.guice)
-  compile(project(":mela-event"))
+  compile(Deps.guava)
   compile(Deps.Test.JUnit.api)
 }
