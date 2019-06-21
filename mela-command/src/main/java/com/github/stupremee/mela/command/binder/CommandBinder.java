@@ -10,4 +10,6 @@ public interface CommandBinder {
 
   <T extends Throwable> ExceptionBindingBuilder<T> handle(Class<T> exceptionType);
 
+  CommandNode commands();
+
 }
