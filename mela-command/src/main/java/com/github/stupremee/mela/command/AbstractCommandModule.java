@@ -6,7 +6,7 @@ import com.google.inject.AbstractModule;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class AbstractCommandModule extends AbstractModule {
+public abstract class AbstractCommandModule extends AbstractModule {
 
   protected CommandBinder commands() {
     return null;
