@@ -4,7 +4,7 @@ import java.util.Set;
 
 public interface CommandCallable {
 
-  void call(String arguments, CommandContext context) throws Exception;
+  boolean call(String arguments, CommandContext context);
 
   Set<CommandCallable> getChildren();
 
