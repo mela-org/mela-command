@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.command;
 
+import java.util.List;
 import java.util.Set;
 
 public interface CommandCallable {
@@ -8,6 +9,6 @@ public interface CommandCallable {
 
   Set<CommandCallable> getChildren();
 
-  CommandDetails getDetails();
+  List<String> getAliases();
 
 }

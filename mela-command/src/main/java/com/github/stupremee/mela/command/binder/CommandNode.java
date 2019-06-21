@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.command.binder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ public interface CommandNode {
 
   CommandNode bind(Class<?> commandClass);
 
-  Set<String> aliases();
+  List<String> aliases();
 
   Set<CommandNode> children();
 
