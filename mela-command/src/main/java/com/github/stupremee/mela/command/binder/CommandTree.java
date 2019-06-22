@@ -6,9 +6,11 @@ public interface CommandTree {
 
   Group current();
 
-  Group stepUp();
+  void stepUp();
 
-  Group stepDown();
+  void stepToRoot();
+
+  Group newChild();
 
   Collection<Group> children();
 
