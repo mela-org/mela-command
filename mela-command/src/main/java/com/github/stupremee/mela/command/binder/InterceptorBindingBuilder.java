@@ -6,6 +6,6 @@ import java.lang.annotation.Annotation;
 
 public interface InterceptorBindingBuilder<T extends Annotation> {
 
-  void with(Interceptor<T> interceptor);
+  CommandNode with(Interceptor<T> interceptor);
 
 }

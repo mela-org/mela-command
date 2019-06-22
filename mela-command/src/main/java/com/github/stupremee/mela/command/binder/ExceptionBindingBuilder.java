@@ -6,6 +6,6 @@ public interface ExceptionBindingBuilder<T extends Throwable> {
 
   ExceptionBindingBuilder<T> ignoringInheritance();
 
-  void with(ExceptionHandler<T> handler);
+  CommandNode with(ExceptionHandler<T> handler);
 
 }
