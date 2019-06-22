@@ -8,8 +8,10 @@ public interface ParameterBindingBuilder<T> {
 
   ParameterBindingBuilder<T> annotatedWith(Class<? extends Annotation> annotationType);
 
-  CommandBindingNode toInstance(T instance);
+  CommandBindingNode to(T instance);
 
-  CommandBindingNode toProvider(ArgumentMapper<T> provider);
+  CommandBindingNode toMapperInstance(ArgumentMapper<T> provider);
+
+  CommandBindingNode toMapper(Class<? extends ArgumentMapper<T>> clazz);
 
 }
