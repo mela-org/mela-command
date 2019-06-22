@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.provider;
+package com.github.stupremee.mela.command.inject;
 
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.compile.CommandCompiler;

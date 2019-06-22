@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.provider.DefaultCallableProvider;
+import com.github.stupremee.mela.command.inject.DefaultCallableProvider;
 import com.google.inject.ProvidedBy;
 
 import java.util.List;

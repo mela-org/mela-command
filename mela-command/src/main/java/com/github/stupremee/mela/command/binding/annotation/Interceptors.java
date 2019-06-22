@@ -1,14 +1,11 @@
-package com.github.stupremee.mela.command;
+package com.github.stupremee.mela.command.binding.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
- */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CommandObjects {
+public @interface Interceptors {
 }
