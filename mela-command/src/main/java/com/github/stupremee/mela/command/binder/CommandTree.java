@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command.binder;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface CommandTree {
 
@@ -10,19 +11,23 @@ public interface CommandTree {
 
   void stepToRoot();
 
-  Group newChild();
+  void stepDown(int childIndex);
 
-  Collection<Group> children();
+  List<Group> children();
 
   interface Group {
 
-    String getName();
+    List<Group> getChildren();
+
+    List<String> getAliases();
 
     ParameterBindings getParameterBindings();
 
     InterceptorBindings getInterceptorBindings();
 
     ExceptionBindings getExceptionBindings();
+
+    Collection<?> getCommandObjects();
 
   }
 }
