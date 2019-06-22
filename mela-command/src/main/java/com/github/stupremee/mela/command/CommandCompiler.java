@@ -1,8 +1,10 @@
 package com.github.stupremee.mela.command;
 
+import com.github.stupremee.mela.command.binder.CommandTree;
+
 // @ImplementedBy
 public interface CommandCompiler {
 
-  CommandCallable compile(Object module);
+  CommandCallable compile(CommandTree tree);
 
 }
