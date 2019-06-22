@@ -1,9 +1,6 @@
 package com.github.stupremee.mela.command.binder;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public interface CommandNode {
 
@@ -18,9 +15,5 @@ public interface CommandNode {
   <T extends Throwable> ExceptionBindingBuilder<T> handle(Class<T> exceptionType);
 
   <T> ParameterBindingBuilder<T> bindParameter(Class<T> parameterType);
-
-  List<String> aliases();
-
-  Set<CommandNode> children();
 
 }
