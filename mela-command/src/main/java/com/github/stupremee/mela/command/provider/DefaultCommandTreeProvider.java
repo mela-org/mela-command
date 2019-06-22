@@ -4,7 +4,6 @@ import com.github.stupremee.mela.command.CommandObjects;
 import com.github.stupremee.mela.command.compile.CommandTree;
 import com.github.stupremee.mela.command.compile.UnboundCommandTree;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import java.util.Collection;
 import java.util.Set;

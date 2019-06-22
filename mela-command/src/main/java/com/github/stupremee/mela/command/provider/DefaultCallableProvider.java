@@ -4,7 +4,6 @@ import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.CommandTree;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
