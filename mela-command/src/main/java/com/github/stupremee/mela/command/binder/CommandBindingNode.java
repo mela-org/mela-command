@@ -2,13 +2,13 @@ package com.github.stupremee.mela.command.binder;
 
 import java.lang.annotation.Annotation;
 
-public interface CommandNode {
+public interface CommandBindingNode {
 
-  CommandNode group(String... aliases);
+  CommandBindingNode group(String... aliases);
 
-  CommandNode parent();
+  CommandBindingNode parent();
 
-  CommandNode bind(Class<?> commandClass);
+  CommandBindingNode bind(Class<?> commandClass);
 
   <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(Class<T> annotationType);
 
