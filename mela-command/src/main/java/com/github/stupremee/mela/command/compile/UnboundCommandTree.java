@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.binder;
+package com.github.stupremee.mela.command.compile;
 
 import java.util.Collection;
 

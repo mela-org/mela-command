@@ -1,12 +1,15 @@
-package com.github.stupremee.mela.command.binder;
+package com.github.stupremee.mela.command.compile;
 
-import com.github.stupremee.mela.command.CommandTreeProvider;
+import com.github.stupremee.mela.command.binding.ExceptionBindings;
+import com.github.stupremee.mela.command.binding.InterceptorBindings;
+import com.github.stupremee.mela.command.binding.ParameterBindings;
+import com.github.stupremee.mela.command.provider.DefaultCommandTreeProvider;
 import com.google.inject.ProvidedBy;
 
 import java.util.Collection;
 import java.util.List;
 
-@ProvidedBy(CommandTreeProvider.class)
+@ProvidedBy(DefaultCommandTreeProvider.class)
 public interface CommandTree {
 
   CommandTree EMPTY = null; // TODO: 22.06.2019

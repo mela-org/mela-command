@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.interceptor;
+package com.github.stupremee.mela.command;
 
 import java.lang.annotation.Annotation;
 

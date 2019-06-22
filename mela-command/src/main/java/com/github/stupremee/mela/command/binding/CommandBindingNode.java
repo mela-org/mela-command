@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.binder;
+package com.github.stupremee.mela.command.binding;
 
 import java.lang.annotation.Annotation;
 
