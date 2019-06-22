@@ -25,14 +25,10 @@ public final class DefaultCommandTreeProvider extends SingletonProvider<CommandT
   }
 
   @Override
-  protected CommandTree provide() {
+  protected CommandTree createInstance() {
     return unboundTrees.stream()
-        .reduce(this::merge)
+        .reduce(UnboundCommandTree::merge)
         .map((tree) -> tree.bind(commandObjects))
         .orElse(CommandTree.EMPTY);
-  }
-
-  private UnboundCommandTree merge(UnboundCommandTree one, UnboundCommandTree two) {
-    return one.merge(two);
   }
 }

@@ -20,7 +20,7 @@ public final class DefaultCallableProvider extends SingletonProvider<CommandCall
   }
 
   @Override
-  protected CommandCallable provide() {
+  protected CommandCallable createInstance() {
     return compiler.compile(tree);
   }
 }

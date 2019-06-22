@@ -14,9 +14,9 @@ public abstract class SingletonProvider<T> implements Provider<T> {
     if (instance != null)
       return instance;
 
-    instance = provide();
+    instance = createInstance();
     return instance;
   }
 
-  protected abstract T provide();
+  protected abstract T createInstance();
 }
