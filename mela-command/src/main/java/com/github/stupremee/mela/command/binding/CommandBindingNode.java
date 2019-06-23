@@ -1,5 +1,7 @@
 package com.github.stupremee.mela.command.binding;
 
+import com.google.inject.TypeLiteral;
+
 import java.lang.annotation.Annotation;
 
 public interface CommandBindingNode {
@@ -10,10 +12,14 @@ public interface CommandBindingNode {
 
   CommandBindingNode bind(Class<?> commandClass);
 
+  CommandBindingNode bind(Object command);
+
   <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(Class<T> annotationType);
 
   <T extends Throwable> ExceptionBindingBuilder<T> handle(Class<T> exceptionType);
 
   <T> ParameterBindingBuilder<T> bindParameter(Class<T> parameterType);
+
+  <T> ParameterBindingBuilder<T> bindParameter(TypeLiteral<T> literal);
 
 }

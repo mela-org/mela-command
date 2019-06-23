@@ -31,7 +31,7 @@ final class CommandMultibinder {
     this.binder = binder;
   }
 
-  void addMapperInstance(ArgumentMapper<?> mapper) {
+  void addMapper(ArgumentMapper<?> mapper) {
     mapperBinder().addBinding().toInstance(mapper);
   }
 
@@ -39,7 +39,7 @@ final class CommandMultibinder {
     mapperBinder().addBinding().to(clazz);
   }
 
-  void addHandlerInstance(ExceptionHandler<?> handler) {
+  void addHandler(ExceptionHandler<?> handler) {
     handlerBinder().addBinding().toInstance(handler);
   }
 
@@ -47,7 +47,7 @@ final class CommandMultibinder {
     handlerBinder().addBinding().to(clazz);
   }
 
-  void addInterceptorInstance(Interceptor<?> interceptor) {
+  void addInterceptor(Interceptor<?> interceptor) {
     interceptorBinder().addBinding().toInstance(interceptor);
   }
 
@@ -55,7 +55,7 @@ final class CommandMultibinder {
     interceptorBinder().addBinding().to(clazz);
   }
 
-  void addCommandInstance(Object command) {
+  void addCommand(Object command) {
     commandObjectBinder().addBinding().toInstance(command);
   }
 
