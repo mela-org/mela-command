@@ -5,6 +5,7 @@ import com.github.stupremee.mela.command.Interceptor;
 import com.github.stupremee.mela.command.binding.ParameterBindings;
 import com.github.stupremee.mela.command.compile.CommandTree;
 import com.github.stupremee.mela.command.compile.InjectableCommandTree;
+import com.github.stupremee.mela.command.exception.ConflictException;
 import com.github.stupremee.mela.command.inject.InjectionObjectHolder;
 import com.github.stupremee.mela.command.mapping.ArgumentMapper;
 import com.google.common.collect.Maps;
@@ -61,7 +62,12 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
     node.commands.putAll(tree.node.commands);
     for (InjectableGroup child : tree.node.children) {
       tree.node = child;
-      this.stepDown(child.aliases);
+      try {
+        this.stepDown(child.aliases);
+      } catch (IllegalArgumentException e) {
+        throw new ConflictException("Two groups from two different CommandBinders that " +
+            "are on the same layer have the same alias", e);
+      }
       mutableMerge(tree);
     }
   }
@@ -84,18 +90,22 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
   }
 
   private void checkNodeForDuplicateChildAliases(InjectableGroup child) {
-    checkArgument(node.children.stream()
-            .filter((c) -> !c.equals(child))
-            .map((c) -> c.aliases)
-            .noneMatch((aliases) -> aliases.stream().anyMatch(child.aliases::contains)),
-        "Different groups must not be described by same aliases");
+    for (InjectableGroup element : node.children) {
+      if (!element.equals(child))
+        continue;
+      for (String alias : element.aliases) {
+        checkArgument(!child.aliases.contains(alias),
+            "Duplicate alias for different groups in the same layer: " + alias);
+      }
+    }
   }
 
   private InjectableGroup getExistingChildReference(InjectableGroup child) {
-    return node.children.stream()
-        .filter(child::equals)
-        .findFirst()
-        .orElseThrow(AssertionError::new);
+    for (InjectableGroup element : node.children) {
+      if (element.equals(child))
+        return element;
+    }
+    return null;
   }
 
   void stepUp() {
