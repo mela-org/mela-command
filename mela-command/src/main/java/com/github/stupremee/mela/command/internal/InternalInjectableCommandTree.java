@@ -42,20 +42,20 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
     this.stepToRoot();
     other.stepToRoot();
     InternalInjectableCommandTree mergingTree = new InternalInjectableCommandTree();
-    mergingTree.mutableMerge(this, other);
+    mergingTree.mutatingMerge(this, other);
     return mergingTree;
   }
 
-  private void mutableMerge(InternalInjectableCommandTree one, InternalInjectableCommandTree two) {
-    mutableMerge(one);
+  private void mutatingMerge(InternalInjectableCommandTree one, InternalInjectableCommandTree two) {
+    mutatingMerge(one);
     one.stepToRoot();
     this.stepToRoot();
-    mutableMerge(two);
+    mutatingMerge(two);
     two.stepToRoot();
     this.stepToRoot();
   }
 
-  private void mutableMerge(InternalInjectableCommandTree tree) {
+  private void mutatingMerge(InternalInjectableCommandTree tree) {
     node.interceptorBindings.putAll(tree.node.interceptorBindings);
     node.parameterBindings.putAll(tree.node.parameterBindings);
     node.exceptionBindings.putAll(tree.node.exceptionBindings);
@@ -68,13 +68,24 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
         throw new ConflictException("Two groups from two different CommandBinders that " +
             "are on the same layer have the same alias", e);
       }
-      mutableMerge(tree);
+      mutatingMerge(tree);
     }
   }
 
   @Override
   public CommandTree inject(InjectionObjectHolder holder) {
-    return null;
+    this.stepToRoot();
+    this.recursiveInject(node, holder);
+  }
+
+  private void recursiveInject(InjectableGroup group, InjectionObjectHolder holder) {
+    for (Object command : holder.getCommandObjects())
+      group.commands.computeIfPresent(command.getClass(), (k, v) -> command);
+    group.parameterBindings.inject(holder.getMappers());
+    group.interceptorBindings.inject(holder.getInterceptors());
+    group.exceptionBindings.inject(holder.getHandlers());
+    for (InjectableGroup child : group.children)
+      recursiveInject(child, holder);
   }
 
   void stepDown(Set<String> childAliases) {
