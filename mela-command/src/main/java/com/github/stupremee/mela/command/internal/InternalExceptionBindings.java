@@ -86,7 +86,7 @@ final class InternalExceptionBindings implements ExceptionBindings {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bindings);
+    return Objects.hashCode(bindings);
   }
 
   private static final class ValueWrapper<T extends Throwable> {

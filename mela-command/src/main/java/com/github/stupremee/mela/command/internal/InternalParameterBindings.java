@@ -63,7 +63,7 @@ final class InternalParameterBindings implements ParameterBindings {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bindings);
+    return Objects.hashCode(bindings);
   }
 
   private static final class ValueWrapper<T> {
