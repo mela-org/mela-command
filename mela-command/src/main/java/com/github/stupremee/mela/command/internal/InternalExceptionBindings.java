@@ -4,10 +4,7 @@ import com.github.stupremee.mela.command.ExceptionHandler;
 import com.github.stupremee.mela.command.binding.ExceptionBindings;
 import com.google.common.collect.Maps;
 
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.Set;
-import java.util.SortedMap;
+import java.util.*;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -73,6 +70,19 @@ final class InternalExceptionBindings implements ExceptionBindings {
 
   InternalExceptionBindings copy() {
     return new InternalExceptionBindings(bindings);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    InternalExceptionBindings that = (InternalExceptionBindings) o;
+    return Objects.equals(bindings, that.bindings);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(bindings);
   }
 
   private static final class ValueWrapper<T extends Throwable> {

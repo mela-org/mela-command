@@ -5,6 +5,7 @@ import com.github.stupremee.mela.command.mapping.ArgumentMapper;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ final class InternalParameterBindings implements ParameterBindings {
         .map((value) -> value.mapper);
   }
 
-  <T> void add(Key<T> key, Class<? extends ArgumentMapper<T>> mapperType) {
+  <T> void put(Key<T> key, Class<? extends ArgumentMapper<T>> mapperType) {
     bindings.put(key, new ValueWrapper<>(mapperType));
   }
 
@@ -46,6 +47,19 @@ final class InternalParameterBindings implements ParameterBindings {
 
   InternalParameterBindings copy() {
     return new InternalParameterBindings(bindings);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    InternalParameterBindings that = (InternalParameterBindings) o;
+    return Objects.equals(bindings, that.bindings);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(bindings);
   }
 
   private static final class ValueWrapper<T> {
