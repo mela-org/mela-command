@@ -2,9 +2,9 @@ package com.github.stupremee.mela.command.compile;
 
 import com.github.stupremee.mela.command.inject.InjectionObjectHolder;
 
-public interface UninjectedCommandTree {
+public interface InjectableCommandTree {
 
-  UninjectedCommandTree merge(UninjectedCommandTree other);
+  InjectableCommandTree merge(InjectableCommandTree other);
 
   CommandTree inject(InjectionObjectHolder holder);
 

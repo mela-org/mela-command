@@ -10,7 +10,7 @@ public interface ParameterBindings {
 
   <T> Optional<ArgumentMapper<T>> getMapper(Key<T> key);
 
-  class Key<T> {
+  final class Key<T> {
 
     // TODO: 22.06.2019 cache, equals/hashcode
 

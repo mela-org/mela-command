@@ -1,6 +1,7 @@
-package com.github.stupremee.mela.command.binding;
+package com.github.stupremee.mela.command.internal;
 
 import com.github.stupremee.mela.command.Interceptor;
+import com.github.stupremee.mela.command.binding.InterceptorBindings;
 import com.google.common.collect.Maps;
 
 import java.lang.annotation.Annotation;
@@ -15,7 +16,7 @@ final class InternalInterceptorBindings implements InterceptorBindings {
 
   private final Map<Class<? extends Annotation>, ValueWrapper<?>> bindings;
 
-  private InternalInterceptorBindings() {
+  InternalInterceptorBindings() {
     this.bindings = Maps.newHashMap();
   }
 

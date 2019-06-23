@@ -1,6 +1,7 @@
-package com.github.stupremee.mela.command.binding;
+package com.github.stupremee.mela.command.internal;
 
 import com.github.stupremee.mela.command.ExceptionHandler;
+import com.github.stupremee.mela.command.binding.ExceptionBindings;
 import com.google.common.collect.Maps;
 
 import java.util.Comparator;

@@ -1,5 +1,6 @@
-package com.github.stupremee.mela.command.binding;
+package com.github.stupremee.mela.command.internal;
 
+import com.github.stupremee.mela.command.binding.ParameterBindings;
 import com.github.stupremee.mela.command.mapping.ArgumentMapper;
 import com.google.common.collect.Maps;
 
