@@ -12,7 +12,10 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -37,23 +40,23 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
         "Must be instance of InternalInjectableCommandTree to merge");
     InternalInjectableCommandTree other = (InternalInjectableCommandTree) o;
     InternalInjectableCommandTree mergingTree = new InternalInjectableCommandTree();
-    mergingTree.mutatingMerge(this, other);
+    mergingTree.mergeMutating(this, other);
     return mergingTree;
   }
 
-  private void mutatingMerge(InternalInjectableCommandTree one, InternalInjectableCommandTree two) {
+  private void mergeMutating(InternalInjectableCommandTree one, InternalInjectableCommandTree two) {
     this.stepToRoot();
     one.stepToRoot();
-    mutatingMerge(one);
+    this.mergeMutating(one);
     one.stepToRoot();
     this.stepToRoot();
     two.stepToRoot();
-    mutatingMerge(two);
+    this.mergeMutating(two);
     two.stepToRoot();
     this.stepToRoot();
   }
 
-  private void mutatingMerge(InternalInjectableCommandTree tree) {
+  private void mergeMutating(InternalInjectableCommandTree tree) {
     node.interceptorBindings.putAll(tree.node.interceptorBindings);
     node.parameterBindings.putAll(tree.node.parameterBindings);
     node.exceptionBindings.putAll(tree.node.exceptionBindings);
@@ -66,7 +69,7 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
         throw new ConflictException("Two groups from two different CommandBinders that " +
             "are on the same layer have the same alias", e);
       }
-      mutatingMerge(tree);
+      mergeMutating(tree);
     }
   }
 

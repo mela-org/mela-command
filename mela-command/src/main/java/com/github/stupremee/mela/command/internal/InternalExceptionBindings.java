@@ -4,7 +4,11 @@ import com.github.stupremee.mela.command.ExceptionHandler;
 import com.github.stupremee.mela.command.binding.ExceptionBindings;
 import com.google.common.collect.Maps;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.SortedMap;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

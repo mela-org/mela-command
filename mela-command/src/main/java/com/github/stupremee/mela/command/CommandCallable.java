@@ -3,7 +3,6 @@ package com.github.stupremee.mela.command;
 import com.github.stupremee.mela.command.inject.DefaultCallableProvider;
 import com.google.inject.ProvidedBy;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,6 +15,6 @@ public interface CommandCallable {
 
   Set<CommandCallable> getChildren();
 
-  List<String> getAliases();
+  Set<String> getAliases();
 
 }

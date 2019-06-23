@@ -4,11 +4,10 @@ import com.github.stupremee.mela.command.binding.ExceptionBindings;
 import com.github.stupremee.mela.command.binding.InterceptorBindings;
 import com.github.stupremee.mela.command.binding.ParameterBindings;
 import com.github.stupremee.mela.command.compile.CommandTree;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,11 +45,6 @@ final class InternalCommandTree implements CommandTree {
   }
 
   @Override
-  public void stepDown(int childIndex) {
-    current = current.getChildren().get(childIndex);
-  }
-
-  @Override
   public void stepDown(Group child) {
     checkArgument(current.getChildren().contains(child),
         "Provided group is not a child of current group");
@@ -80,8 +74,8 @@ final class InternalCommandTree implements CommandTree {
   static final class InternalGroup implements Group {
 
     private final Group parent;
-    private List<Group> children;
-    private final List<String> aliases;
+    private Set<Group> children;
+    private final Set<String> aliases;
     private final ParameterBindings parameterBindings;
     private final InterceptorBindings interceptorBindings;
     private final ExceptionBindings exceptionBindings;
@@ -91,12 +85,12 @@ final class InternalCommandTree implements CommandTree {
                   ParameterBindings parameterBindings, InterceptorBindings interceptorBindings,
                   ExceptionBindings exceptionBindings, Collection<?> commandObjects) {
       this.parent = parent;
-      this.aliases = List.copyOf(aliases);
+      this.aliases = Set.copyOf(aliases);
       this.parameterBindings = parameterBindings;
       this.interceptorBindings = interceptorBindings;
       this.exceptionBindings = exceptionBindings;
       this.commandObjects = Collections.unmodifiableCollection(commandObjects);
-      this.children = Lists.newArrayList();
+      this.children = Sets.newLinkedHashSet();
     }
 
     @Override
@@ -105,12 +99,12 @@ final class InternalCommandTree implements CommandTree {
     }
 
     @Override
-    public List<Group> getChildren() {
+    public Set<Group> getChildren() {
       return children;
     }
 
     @Override
-    public List<String> getAliases() {
+    public Set<String> getAliases() {
       return aliases;
     }
 
@@ -134,12 +128,17 @@ final class InternalCommandTree implements CommandTree {
       return commandObjects;
     }
 
+    @Override
+    public String primaryAlias() {
+      return aliases.isEmpty() ? null : aliases.iterator().next();
+    }
+
     void addChild(Group group) {
       children.add(group);
     }
 
     void makeImmutable() {
-      children = List.copyOf(children);
+      children = Set.copyOf(children);
     }
 
     @Override

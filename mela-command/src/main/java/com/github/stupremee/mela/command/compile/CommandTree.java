@@ -8,6 +8,7 @@ import com.google.inject.ProvidedBy;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @ProvidedBy(DefaultCommandTreeProvider.class)
 public interface CommandTree {
@@ -20,8 +21,6 @@ public interface CommandTree {
 
   void stepToRoot();
 
-  void stepDown(int childIndex);
-
   void stepDown(Group child);
 
   boolean isAtRoot();
@@ -30,9 +29,11 @@ public interface CommandTree {
 
     Group getParent();
 
-    List<Group> getChildren();
+    String primaryAlias();
 
-    List<String> getAliases();
+    Set<Group> getChildren();
+
+    Set<String> getAliases();
 
     ParameterBindings getParameterBindings();
 
