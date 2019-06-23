@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-class CustomCallableInjector<T> implements MembersInjector<T> {
+final class CustomCallableInjector<T> implements MembersInjector<T> {
 
   private final CommandCallable parent;
   private final Group annotation;
@@ -22,11 +22,15 @@ class CustomCallableInjector<T> implements MembersInjector<T> {
 
   @Override
   public void injectMembers(T instance) {
-    field.setAccessible(true);
     try {
       CommandCallable value = parent.selectChild(annotation.value())
           .orElseThrow(() -> new RuntimeException("Invalid group")); // TODO: 22.06.2019 besserer exception type && catchen
-      field.set(instance, value);
+      boolean accessible = field.trySetAccessible();
+      if (accessible) {
+        field.set(instance, value);
+      } else {
+        throw new IllegalAccessException("CommandCallable field cannot be accessed");
+      }
     } catch (IllegalAccessException e) {
       e.printStackTrace(); // TODO logging
     }
