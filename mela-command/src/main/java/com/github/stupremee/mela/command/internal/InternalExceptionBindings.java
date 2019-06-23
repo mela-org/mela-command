@@ -58,6 +58,10 @@ final class InternalExceptionBindings implements ExceptionBindings {
     bindings.put(exceptionType, new ValueWrapper<>(ignoreInheritance, handlerType));
   }
 
+  void putAll(InternalExceptionBindings bindings) {
+    this.bindings.putAll(bindings.bindings);
+  }
+
   void inject(Set<? extends ExceptionHandler<?>> handlers) {
     for (ValueWrapper value : bindings.values()) {
       for (ExceptionHandler handler : handlers) {

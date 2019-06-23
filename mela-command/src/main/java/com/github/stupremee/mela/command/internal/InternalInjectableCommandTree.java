@@ -7,12 +7,14 @@ import com.github.stupremee.mela.command.compile.CommandTree;
 import com.github.stupremee.mela.command.compile.InjectableCommandTree;
 import com.github.stupremee.mela.command.inject.InjectionObjectHolder;
 import com.github.stupremee.mela.command.mapping.ArgumentMapper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -20,13 +22,48 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-class InternalInjectableCommandTree implements InjectableCommandTree {
+// TODO: 23.06.2019 tests
+final class InternalInjectableCommandTree implements InjectableCommandTree {
 
-  private InjectableGroup node = InjectableGroup.root();
+  private InjectableGroup node;
+
+  InternalInjectableCommandTree() {
+    this.node = new InjectableGroup(new InternalParameterBindings(),
+        new InternalInterceptorBindings(), new InternalExceptionBindings(),
+        Collections.emptySet(), null);
+  }
 
   @Override
-  public InjectableCommandTree merge(InjectableCommandTree other) {
-    return null;
+  public InjectableCommandTree merge(InjectableCommandTree o) {
+    checkArgument(o instanceof InternalInjectableCommandTree,
+        "Must be instance of InternalInjectableCommandTree to merge");
+    InternalInjectableCommandTree other = (InternalInjectableCommandTree) o;
+    this.stepToRoot();
+    other.stepToRoot();
+    InternalInjectableCommandTree mergingTree = new InternalInjectableCommandTree();
+    mergingTree.mutableMerge(this, other);
+    return mergingTree;
+  }
+
+  private void mutableMerge(InternalInjectableCommandTree one, InternalInjectableCommandTree two) {
+    mutableMerge(one);
+    one.stepToRoot();
+    this.stepToRoot();
+    mutableMerge(two);
+    two.stepToRoot();
+    this.stepToRoot();
+  }
+
+  private void mutableMerge(InternalInjectableCommandTree tree) {
+    node.interceptorBindings.putAll(tree.node.interceptorBindings);
+    node.parameterBindings.putAll(tree.node.parameterBindings);
+    node.exceptionBindings.putAll(tree.node.exceptionBindings);
+    node.commands.putAll(tree.node.commands);
+    for (InjectableGroup child : tree.node.children) {
+      tree.node = child;
+      this.stepDown(child.aliases);
+      mutableMerge(tree);
+    }
   }
 
   @Override
@@ -34,13 +71,45 @@ class InternalInjectableCommandTree implements InjectableCommandTree {
     return null;
   }
 
-  void stepToNewChild(List<String> aliases) {
-    this.node = node.child(Sets.newLinkedHashSet(aliases));
+  void stepDown(Set<String> childAliases) {
+    InjectableGroup child = createChild(childAliases);
+    checkNodeForDuplicateChildAliases(child);
+    boolean exists = node.children.add(child);
+    this.node = !exists ? child : getExistingChildReference(child);
+  }
+
+  private InjectableGroup createChild(Set<String> aliases) {
+    return new InjectableGroup(node.parameterBindings.copy(),
+        node.interceptorBindings.copy(), node.exceptionBindings.copy(), aliases, node);
+  }
+
+  private void checkNodeForDuplicateChildAliases(InjectableGroup child) {
+    checkArgument(node.children.stream()
+            .filter((c) -> !c.equals(child))
+            .map((c) -> c.aliases)
+            .noneMatch((aliases) -> aliases.stream().anyMatch(child.aliases::contains)),
+        "Different groups must not be described by same aliases");
+  }
+
+  private InjectableGroup getExistingChildReference(InjectableGroup child) {
+    return node.children.stream()
+        .filter(child::equals)
+        .findFirst()
+        .orElseThrow(AssertionError::new);
   }
 
   void stepUp() {
-    checkState(node.parent != null, "Current node is root node, can't step up");
+    checkState(!isRoot(), "Current node is root node, can't step up");
     node = node.parent;
+  }
+
+  void stepToRoot() {
+    while (!isRoot())
+      stepUp();
+  }
+
+  boolean isRoot() {
+    return node.parent == null;
   }
 
   void addCommand(Class<?> commandClass) {
@@ -68,7 +137,7 @@ class InternalInjectableCommandTree implements InjectableCommandTree {
     final InternalInterceptorBindings interceptorBindings;
     final InternalExceptionBindings exceptionBindings;
     final Set<String> aliases;
-    final Map<Class<?>, ?> commands;
+    final Map<Class<?>, Object> commands;
     final Set<InjectableGroup> children;
     final InjectableGroup parent;
 
@@ -83,26 +152,6 @@ class InternalInjectableCommandTree implements InjectableCommandTree {
       this.aliases = aliases;
       this.parent = parent;
       this.children = Sets.newHashSet();
-    }
-
-    InjectableGroup child(Set<String> aliases) {
-      InjectableGroup child = new InjectableGroup(parameterBindings.copy(),
-          interceptorBindings.copy(), exceptionBindings.copy(), aliases, this);
-      checkArgument(children.stream()
-          .filter((c) -> !c.equals(child))
-          .map((c) -> c.aliases)
-          .noneMatch((strings) -> strings.stream().anyMatch(aliases::contains)),
-          "Different groups must not be described by same aliases");
-      return children.add(child) ? child : children.stream()
-          .filter(child::equals)
-          .findFirst()
-          .orElseThrow(AssertionError::new);
-    }
-
-    static InjectableGroup root() {
-      return new InjectableGroup(new InternalParameterBindings(),
-          new InternalInterceptorBindings(), new InternalExceptionBindings(),
-          Collections.emptySet(), null);
     }
 
     @Override

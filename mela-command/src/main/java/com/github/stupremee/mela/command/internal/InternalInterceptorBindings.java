@@ -36,6 +36,10 @@ final class InternalInterceptorBindings implements InterceptorBindings {
     bindings.put(annotationType, new ValueWrapper<>(interceptorType));
   }
 
+  void putAll(InternalInterceptorBindings bindings) {
+    this.bindings.putAll(bindings.bindings);
+  }
+
   void inject(Set<? extends Interceptor<?>> interceptors) {
     for (ValueWrapper value : bindings.values()) {
       for (Interceptor interceptor : interceptors) {

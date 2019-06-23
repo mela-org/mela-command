@@ -35,6 +35,10 @@ final class InternalParameterBindings implements ParameterBindings {
     bindings.put(key, new ValueWrapper<>(mapperType));
   }
 
+  void putAll(InternalParameterBindings bindings) {
+    this.bindings.putAll(bindings.bindings);
+  }
+
   void inject(Set<ArgumentMapper<?>> mappers) {
     for (ValueWrapper value : bindings.values()) {
       for (ArgumentMapper mapper : mappers) {
