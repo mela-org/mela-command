@@ -11,11 +11,9 @@ public abstract class LazySingletonProvider<T> implements Provider<T> {
 
   @Override
   public final T get() {
-    if (instance != null)
-      return instance;
-
-    instance = createInstance();
-    return instance;
+    return instance == null
+        ? (instance = createInstance())
+        : instance;
   }
 
   protected abstract T createInstance();
