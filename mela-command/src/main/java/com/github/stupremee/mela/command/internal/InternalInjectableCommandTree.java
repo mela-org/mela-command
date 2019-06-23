@@ -39,17 +39,18 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
     checkArgument(o instanceof InternalInjectableCommandTree,
         "Must be instance of InternalInjectableCommandTree to merge");
     InternalInjectableCommandTree other = (InternalInjectableCommandTree) o;
-    this.stepToRoot();
-    other.stepToRoot();
     InternalInjectableCommandTree mergingTree = new InternalInjectableCommandTree();
     mergingTree.mutatingMerge(this, other);
     return mergingTree;
   }
 
   private void mutatingMerge(InternalInjectableCommandTree one, InternalInjectableCommandTree two) {
+    this.stepToRoot();
+    one.stepToRoot();
     mutatingMerge(one);
     one.stepToRoot();
     this.stepToRoot();
+    two.stepToRoot();
     mutatingMerge(two);
     two.stepToRoot();
     this.stepToRoot();
@@ -76,6 +77,7 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
   public CommandTree inject(InjectionObjectHolder holder) {
     this.stepToRoot();
     this.recursiveInject(node, holder);
+    return null; // TODO: 23.06.2019
   }
 
   private void recursiveInject(InjectableGroup group, InjectionObjectHolder holder) {
@@ -91,7 +93,7 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
   void stepDown(Set<String> childAliases) {
     InjectableGroup child = createChild(childAliases);
     checkNodeForDuplicateChildAliases(child);
-    boolean exists = node.children.add(child);
+    boolean exists = !node.children.add(child);
     this.node = !exists ? child : getExistingChildReference(child);
   }
 

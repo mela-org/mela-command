@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command.inject;
 
 import com.github.stupremee.mela.command.CommandCallable;
+import com.github.stupremee.mela.command.inject.annotation.Group;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
