@@ -8,6 +8,6 @@ public interface InterceptorBindingBuilder<T extends Annotation> {
 
   CommandBindingNode with(Class<? extends Interceptor<T>> clazz);
 
-  CommandBindingNode withInstance(Interceptor<T> interceptor);
+  CommandBindingNode with(Interceptor<T> interceptor);
 
 }

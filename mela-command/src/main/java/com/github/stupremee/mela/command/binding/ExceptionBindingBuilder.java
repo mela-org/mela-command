@@ -8,6 +8,6 @@ public interface ExceptionBindingBuilder<T extends Throwable> {
 
   CommandBindingNode with(Class<? extends ExceptionHandler<T>> clazz);
 
-  CommandBindingNode withInstance(ExceptionHandler<T> handler);
+  CommandBindingNode with(ExceptionHandler<T> handler);
 
 }
