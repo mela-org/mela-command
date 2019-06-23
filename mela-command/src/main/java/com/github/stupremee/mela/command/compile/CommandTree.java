@@ -14,7 +14,7 @@ public interface CommandTree {
 
   CommandTree EMPTY = null; // TODO: 22.06.2019
 
-  Group current();
+  Group getCurrent();
 
   void stepUp();
 
@@ -22,9 +22,13 @@ public interface CommandTree {
 
   void stepDown(int childIndex);
 
-  List<Group> children();
+  void stepDown(Group child);
+
+  boolean isAtRoot();
 
   interface Group {
+
+    Group getParent();
 
     List<Group> getChildren();
 

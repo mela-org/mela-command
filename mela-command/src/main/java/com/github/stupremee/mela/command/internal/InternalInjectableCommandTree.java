@@ -12,10 +12,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -76,18 +73,25 @@ final class InternalInjectableCommandTree implements InjectableCommandTree {
   @Override
   public CommandTree inject(InjectionObjectHolder holder) {
     this.stepToRoot();
-    this.recursiveInject(node, holder);
-    return null; // TODO: 23.06.2019
+    InternalCommandTree.InternalGroup root = this.injectAndConstructRoot(null, node, holder);
+    return new InternalCommandTree(root);
   }
 
-  private void recursiveInject(InjectableGroup group, InjectionObjectHolder holder) {
+  private InternalCommandTree.InternalGroup injectAndConstructRoot(
+      InternalCommandTree.InternalGroup parent, InjectableGroup injectable, InjectionObjectHolder holder) {
     for (Object command : holder.getCommandObjects())
-      group.commands.computeIfPresent(command.getClass(), (k, v) -> command);
-    group.parameterBindings.inject(holder.getMappers());
-    group.interceptorBindings.inject(holder.getInterceptors());
-    group.exceptionBindings.inject(holder.getHandlers());
-    for (InjectableGroup child : group.children)
-      recursiveInject(child, holder);
+      injectable.commands.computeIfPresent(command.getClass(), (k, v) -> command);
+    injectable.parameterBindings.inject(holder.getMappers());
+    injectable.interceptorBindings.inject(holder.getInterceptors());
+    injectable.exceptionBindings.inject(holder.getHandlers());
+    InternalCommandTree.InternalGroup group = new InternalCommandTree.InternalGroup(
+        parent, injectable.aliases, injectable.parameterBindings, injectable.interceptorBindings,
+        injectable.exceptionBindings, injectable.commands.values()
+    );
+    for (InjectableGroup child : injectable.children)
+      group.addChild(injectAndConstructRoot(group, child, holder));
+    group.makeImmutable();
+    return group;
   }
 
   void stepDown(Set<String> childAliases) {
