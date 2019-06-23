@@ -4,6 +4,7 @@ import com.github.stupremee.mela.command.CommandCallable;
 import com.google.inject.MembersInjector;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InaccessibleObjectException;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -25,13 +26,10 @@ final class CustomCallableInjector<T> implements MembersInjector<T> {
     try {
       CommandCallable value = parent.selectChild(annotation.value())
           .orElseThrow(() -> new RuntimeException("Invalid group")); // TODO: 22.06.2019 besserer exception type && catchen
-      boolean accessible = field.trySetAccessible();
-      if (accessible) {
-        field.set(instance, value);
-      } else {
-        throw new IllegalAccessException("CommandCallable field cannot be accessed");
-      }
-    } catch (IllegalAccessException e) {
+      if (!field.canAccess(instance))
+        field.setAccessible(true);
+      field.set(instance, value);
+    } catch (IllegalAccessException | InaccessibleObjectException e) {
       e.printStackTrace(); // TODO logging
     }
   }
