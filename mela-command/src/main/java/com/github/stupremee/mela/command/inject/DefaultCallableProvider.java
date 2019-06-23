@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class DefaultCallableProvider extends SingletonProvider<CommandCallable> {
+public final class DefaultCallableProvider extends LazySingletonProvider<CommandCallable> {
 
   private final CommandTree tree;
   private final CommandCompiler compiler;

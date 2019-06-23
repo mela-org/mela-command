@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class DefaultCommandTreeProvider extends SingletonProvider<CommandTree> {
+public final class DefaultCommandTreeProvider extends LazySingletonProvider<CommandTree> {
 
   private final Set<InjectableCommandTree> unboundTrees;
   private final InjectionObjectHolder holder;

@@ -5,7 +5,7 @@ import com.google.inject.Provider;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public abstract class SingletonProvider<T> implements Provider<T> {
+public abstract class LazySingletonProvider<T> implements Provider<T> {
 
   private T instance;
 
