@@ -16,13 +16,13 @@ import java.util.Set;
  */
 public final class InjectionObjectHolder {
 
-  private final Set<?> commandObjects;
+  private final Set<Object> commandObjects;
   private final Set<ArgumentMapper<?>> mappers;
   private final Set<Interceptor<?>> interceptors;
   private final Set<ExceptionHandler<?>> handlers;
 
   @Inject
-  public InjectionObjectHolder(@Commands Set<?> commandObjects,
+  public InjectionObjectHolder(@Commands Set<Object> commandObjects,
                                @Mappers Set<ArgumentMapper<?>> mappers,
                                @Interceptors Set<Interceptor<?>> interceptors,
                                @Handlers Set<ExceptionHandler<?>> handlers) {
@@ -32,7 +32,7 @@ public final class InjectionObjectHolder {
     this.handlers = handlers;
   }
 
-  public Set<?> getCommandObjects() {
+  public Set<Object> getCommandObjects() {
     return commandObjects;
   }
 
