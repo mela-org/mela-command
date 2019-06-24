@@ -29,31 +29,31 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class InjectableRecursiveCommandTree extends RecursiveCommandTree<InjectableRecursiveCommandTree.UnboundGroup> {
+final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommandTree.MutableGroup> {
 
 
-  InjectableRecursiveCommandTree() {
-    this(new UnboundGroup(new InjectableParameterBindings(),
+  InjectableCommandTree() {
+    this(new MutableGroup(new InjectableParameterBindings(),
         new InjectableInterceptorBindings(), new InjectableExceptionBindings(),
         Collections.emptySet(), null));
   }
 
-  private InjectableRecursiveCommandTree(UnboundGroup root) {
+  private InjectableCommandTree(MutableGroup root) {
     super(root);
   }
 
   @Nonnull
   @Override
   public CommandTree merge(@Nonnull CommandTree o) {
-    checkArgument(checkNotNull(o) instanceof InjectableRecursiveCommandTree,
+    checkArgument(checkNotNull(o) instanceof InjectableCommandTree,
         "Must be instance of RecursiveCommandTree to merge");
-    InjectableRecursiveCommandTree other = (InjectableRecursiveCommandTree) o;
-    InjectableRecursiveCommandTree mergingTree = new InjectableRecursiveCommandTree();
+    InjectableCommandTree other = (InjectableCommandTree) o;
+    InjectableCommandTree mergingTree = new InjectableCommandTree();
     mergingTree.mergeMutating(this, other);
     return mergingTree;
   }
 
-  private void mergeMutating(InjectableRecursiveCommandTree one, InjectableRecursiveCommandTree two) {
+  private void mergeMutating(InjectableCommandTree one, InjectableCommandTree two) {
     this.stepToRoot();
     one.stepToRoot();
     this.mergeMutating(one);
@@ -65,12 +65,12 @@ final class InjectableRecursiveCommandTree extends RecursiveCommandTree<Injectab
     this.stepToRoot();
   }
 
-  private void mergeMutating(InjectableRecursiveCommandTree tree) {
+  private void mergeMutating(InjectableCommandTree tree) {
     currentNode.interceptorBindings.putAll(tree.currentNode.interceptorBindings);
     currentNode.parameterBindings.putAll(tree.currentNode.parameterBindings);
     currentNode.exceptionBindings.putAll(tree.currentNode.exceptionBindings);
     currentNode.commands.putAll(tree.currentNode.commands);
-    for (UnboundGroup child : tree.currentNode.children) {
+    for (MutableGroup child : tree.currentNode.children) {
       tree.stepDown(child);
       try {
         this.stepDownOrCreate(child.aliases);
@@ -94,7 +94,7 @@ final class InjectableRecursiveCommandTree extends RecursiveCommandTree<Injectab
     currentNode.parameterBindings.inject(holder.getMappers());
     currentNode.interceptorBindings.inject(holder.getInterceptors());
     currentNode.exceptionBindings.inject(holder.getHandlers());
-    for (UnboundGroup child : currentNode.children) {
+    for (MutableGroup child : currentNode.children) {
       this.stepDown(child);
       recursiveInject(holder);
     }
@@ -102,19 +102,19 @@ final class InjectableRecursiveCommandTree extends RecursiveCommandTree<Injectab
   }
 
   void stepDownOrCreate(Set<String> childAliases) {
-    UnboundGroup child = createChild(childAliases);
+    MutableGroup child = createChild(childAliases);
     checkNodeForDuplicateChildAliases(child);
     boolean exists = !currentNode.children.add(child);
     this.currentNode = !exists ? child : getExistingChildReference(child);
   }
 
-  private UnboundGroup createChild(Set<String> aliases) {
-    return new UnboundGroup(currentNode.parameterBindings.copy(),
+  private MutableGroup createChild(Set<String> aliases) {
+    return new MutableGroup(currentNode.parameterBindings.copy(),
         currentNode.interceptorBindings.copy(), currentNode.exceptionBindings.copy(), aliases, currentNode);
   }
 
-  private void checkNodeForDuplicateChildAliases(UnboundGroup child) {
-    for (UnboundGroup element : currentNode.children) {
+  private void checkNodeForDuplicateChildAliases(MutableGroup child) {
+    for (MutableGroup element : currentNode.children) {
       if (!element.equals(child))
         continue;
       for (String alias : element.aliases) {
@@ -124,8 +124,8 @@ final class InjectableRecursiveCommandTree extends RecursiveCommandTree<Injectab
     }
   }
 
-  private UnboundGroup getExistingChildReference(UnboundGroup child) {
-    for (UnboundGroup element : currentNode.children) {
+  private MutableGroup getExistingChildReference(MutableGroup child) {
+    for (MutableGroup element : currentNode.children) {
       if (element.equals(child))
         return element;
     }
@@ -152,23 +152,23 @@ final class InjectableRecursiveCommandTree extends RecursiveCommandTree<Injectab
     currentNode.exceptionBindings.put(exceptionType, handlerType, ignoreInheritance);
   }
 
-  static final class UnboundGroup implements CommandTree.Group {
+  static final class MutableGroup implements CommandTree.Group {
 
-    private final UnboundGroup parent;
+    private final MutableGroup parent;
     private final InjectableParameterBindings parameterBindings;
     private final InjectableInterceptorBindings interceptorBindings;
     private final InjectableExceptionBindings exceptionBindings;
     private final Set<String> aliases;
-    private final Set<UnboundGroup> children;
+    private final Set<MutableGroup> children;
 
     private Map<Class<?>, Object> commands;
     private Set<Group> finalChildren;
 
 
-    private UnboundGroup(InjectableParameterBindings parameterBindings,
-                 InjectableInterceptorBindings interceptorBindings,
-                 InjectableExceptionBindings exceptionBindings, Set<String> aliases,
-                 UnboundGroup parent) {
+    private MutableGroup(InjectableParameterBindings parameterBindings,
+                         InjectableInterceptorBindings interceptorBindings,
+                         InjectableExceptionBindings exceptionBindings, Set<String> aliases,
+                         MutableGroup parent) {
       this.parameterBindings = parameterBindings;
       this.interceptorBindings = interceptorBindings;
       this.exceptionBindings = exceptionBindings;
@@ -184,7 +184,7 @@ final class InjectableRecursiveCommandTree extends RecursiveCommandTree<Injectab
         return true;
       if (o == null || getClass() != o.getClass())
         return false;
-      UnboundGroup that = (UnboundGroup) o;
+      MutableGroup that = (MutableGroup) o;
       return Objects.equals(parameterBindings, that.parameterBindings) &&
           Objects.equals(interceptorBindings, that.interceptorBindings) &&
           Objects.equals(exceptionBindings, that.exceptionBindings) &&

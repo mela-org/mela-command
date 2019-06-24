@@ -16,11 +16,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 final class InternalInterceptorBindingBuilder<T extends Annotation> implements InterceptorBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final InjectableRecursiveCommandTree tree;
+  private final InjectableCommandTree tree;
   private final Multibinder<Interceptor<?>> binder;
   private final Class<T> annotationType;
 
-  InternalInterceptorBindingBuilder(InternalCommandBindingNode node, InjectableRecursiveCommandTree tree,
+  InternalInterceptorBindingBuilder(InternalCommandBindingNode node, InjectableCommandTree tree,
                                     Multibinder<Interceptor<?>> binder, Class<T> annotationType) {
     this.node = node;
     this.tree = tree;

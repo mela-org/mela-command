@@ -18,13 +18,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 final class InternalParameterBindingBuilder<T> implements ParameterBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final InjectableRecursiveCommandTree tree;
+  private final InjectableCommandTree tree;
   private final Multibinder<ArgumentMapper<?>> binder;
   private final TypeLiteral<T> parameterType;
 
   private Class<? extends Annotation> annotationType;
 
-  InternalParameterBindingBuilder(InternalCommandBindingNode node, InjectableRecursiveCommandTree tree,
+  InternalParameterBindingBuilder(InternalCommandBindingNode node, InjectableCommandTree tree,
                                          Multibinder<ArgumentMapper<?>> binder, TypeLiteral<T> parameterType) {
     this.node = node;
     this.tree = tree;

@@ -15,13 +15,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 final class InternalExceptionBindingBuilder<T extends Throwable> implements ExceptionBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final InjectableRecursiveCommandTree tree;
+  private final InjectableCommandTree tree;
   private final Multibinder<ExceptionHandler<?>> binder;
   private final Class<T> exceptionType;
 
   private boolean ignoreInheritance = false;
 
-  InternalExceptionBindingBuilder(InternalCommandBindingNode node, InjectableRecursiveCommandTree tree,
+  InternalExceptionBindingBuilder(InternalCommandBindingNode node, InjectableCommandTree tree,
                                   Multibinder<ExceptionHandler<?>> binder, Class<T> exceptionType) {
     this.node = node;
     this.tree = tree;

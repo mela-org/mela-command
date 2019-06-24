@@ -23,12 +23,12 @@ final class InternalCommandBindingNode implements CommandBindingNode {
 
   private final InternalCommandBindingNode parent;
   private final CommandMultibinder multibinder;
-  private final InjectableRecursiveCommandTree tree;
+  private final InjectableCommandTree tree;
 
   InternalCommandBindingNode(CommandMultibinder multibinder) {
     this.parent = null;
     this.multibinder = multibinder;
-    this.tree = new InjectableRecursiveCommandTree();
+    this.tree = new InjectableCommandTree();
     configureTree();
   }
 
