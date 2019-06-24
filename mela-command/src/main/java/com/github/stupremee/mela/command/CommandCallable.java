@@ -11,10 +11,18 @@ public interface CommandCallable {
 
   boolean call(String arguments, CommandContext context);
 
-  Optional<CommandCallable> selectChild(String arguments);
+  Selection selectChild(String arguments);
 
   Set<CommandCallable> getChildren();
 
   Set<String> getAliases();
+
+  interface Selection {
+
+    Optional<CommandCallable> result();
+
+    boolean callWithRemainingArgs(CommandContext context);
+
+  }
 
 }
