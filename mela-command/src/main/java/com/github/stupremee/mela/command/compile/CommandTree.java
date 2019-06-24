@@ -6,6 +6,7 @@ import com.github.stupremee.mela.command.binding.ParameterBindings;
 import com.github.stupremee.mela.command.inject.DefaultCommandTreeMerger;
 import com.google.inject.ProvidedBy;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Set;
 
@@ -14,15 +15,17 @@ public interface CommandTree {
 
   CommandTree EMPTY = null; // TODO: 22.06.2019
 
-  CommandTree merge(CommandTree other);
+  @Nonnull
+  CommandTree merge(@Nonnull CommandTree other);
 
+  @Nonnull
   Group getCurrent();
 
   void stepUp();
 
   void stepToRoot();
 
-  void stepDown(Group child);
+  void stepDown(@Nonnull Group child);
 
   boolean isAtRoot();
 
@@ -32,16 +35,22 @@ public interface CommandTree {
 
     String primaryAlias();
 
+    @Nonnull
     Set<Group> getChildren();
 
+    @Nonnull
     Set<String> getAliases();
 
+    @Nonnull
     ParameterBindings getParameterBindings();
 
+    @Nonnull
     InterceptorBindings getInterceptorBindings();
 
+    @Nonnull
     ExceptionBindings getExceptionBindings();
 
+    @Nonnull
     Collection<?> getCommandObjects();
 
   }

@@ -3,9 +3,13 @@ package com.github.stupremee.mela.command.internal;
 import com.github.stupremee.mela.command.Interceptor;
 import com.github.stupremee.mela.command.binding.CommandBindingNode;
 import com.github.stupremee.mela.command.binding.InterceptorBindingBuilder;
+import com.google.common.base.Preconditions;
 import com.google.inject.multibindings.Multibinder;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -25,16 +29,20 @@ final class InternalInterceptorBindingBuilder<T extends Annotation> implements I
     this.annotationType = annotationType;
   }
 
+  @Nonnull
   @Override
-  public CommandBindingNode with(Class<? extends Interceptor<T>> clazz) {
+  public CommandBindingNode with(@Nonnull Class<? extends Interceptor<T>> clazz) {
+    checkNotNull(clazz);
     tree.addInterceptorBinding(annotationType, clazz);
     binder.addBinding().to(clazz);
     return node;
   }
 
+  @Nonnull
   @SuppressWarnings("unchecked")
   @Override
-  public CommandBindingNode with(Interceptor<T> interceptor) {
+  public CommandBindingNode with(@Nonnull Interceptor<T> interceptor) {
+    checkNotNull(interceptor);
     tree.addInterceptorBinding(annotationType, (Class<? extends Interceptor<T>>) interceptor.getClass());
     binder.addBinding().toInstance(interceptor);
     return node;

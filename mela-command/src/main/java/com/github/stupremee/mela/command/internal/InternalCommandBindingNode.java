@@ -9,9 +9,11 @@ import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -42,8 +44,10 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     this.tree = parent.tree;
   }
 
+  @Nonnull
   @Override
-  public CommandBindingNode group(String... aliases) {
+  public CommandBindingNode group(@Nonnull String... aliases) {
+    checkNotNull(aliases);
     tree.stepDownOrCreate(Set.of(aliases));
     return new InternalCommandBindingNode(this);
   }
@@ -54,37 +58,47 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     return parent;
   }
 
+  @Nonnull
   @Override
-  public CommandBindingNode add(Class<?> commandClass) {
+  public CommandBindingNode add(@Nonnull Class<?> commandClass) {
+    checkNotNull(commandClass);
     tree.addCommand(commandClass);
     multibinder.commandObjectBinder().addBinding().to(commandClass);
     return this;
   }
 
+  @Nonnull
   @Override
-  public CommandBindingNode add(Object command) {
+  public CommandBindingNode add(@Nonnull Object command) {
+    checkNotNull(command);
     tree.addCommand(command.getClass());
     multibinder.commandObjectBinder().addBinding().toInstance(command);
     return this;
   }
 
+  @Nonnull
   @Override
-  public <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(Class<T> annotationType) {
+  public <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(@Nonnull Class<T> annotationType) {
+    checkNotNull(annotationType);
     return new InternalInterceptorBindingBuilder<>(this, tree, multibinder.interceptorBinder(), annotationType);
   }
 
+  @Nonnull
   @Override
-  public <T extends Throwable> ExceptionBindingBuilder<T> handle(Class<T> exceptionType) {
+  public <T extends Throwable> ExceptionBindingBuilder<T> handle(@Nonnull Class<T> exceptionType) {
+    checkNotNull(exceptionType);
     return new InternalExceptionBindingBuilder<>(this, tree, multibinder.handlerBinder(), exceptionType);
   }
 
+  @Nonnull
   @Override
-  public <T> ParameterBindingBuilder<T> bindParameter(Class<T> parameterType) {
+  public <T> ParameterBindingBuilder<T> bindParameter(@Nonnull Class<T> parameterType) {
     return bindParameter(TypeLiteral.get(parameterType));
   }
 
   @Override
-  public <T> ParameterBindingBuilder<T> bindParameter(TypeLiteral<T> literal) {
+  public <T> ParameterBindingBuilder<T> bindParameter(@Nonnull TypeLiteral<T> literal) {
+    checkNotNull(literal);
     return new InternalParameterBindingBuilder<>(this, tree, multibinder.mapperBinder(), literal);
   }
 

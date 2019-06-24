@@ -2,24 +2,31 @@ package com.github.stupremee.mela.command.binding;
 
 import com.google.inject.TypeLiteral;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 
 public interface CommandBindingNode {
 
-  CommandBindingNode group(String... aliases);
+  @Nonnull
+  CommandBindingNode group(@Nonnull String... aliases);
 
   CommandBindingNode parent();
 
-  CommandBindingNode add(Class<?> commandClass);
+  @Nonnull
+  CommandBindingNode add(@Nonnull Class<?> commandClass);
 
-  CommandBindingNode add(Object command);
+  @Nonnull
+  CommandBindingNode add(@Nonnull Object command);
 
-  <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(Class<T> annotationType);
+  @Nonnull
+  <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(@Nonnull Class<T> annotationType);
 
-  <T extends Throwable> ExceptionBindingBuilder<T> handle(Class<T> exceptionType);
+  @Nonnull
+  <T extends Throwable> ExceptionBindingBuilder<T> handle(@Nonnull Class<T> exceptionType);
 
-  <T> ParameterBindingBuilder<T> bindParameter(Class<T> parameterType);
+  @Nonnull
+  <T> ParameterBindingBuilder<T> bindParameter(@Nonnull Class<T> parameterType);
 
-  <T> ParameterBindingBuilder<T> bindParameter(TypeLiteral<T> literal);
+  <T> ParameterBindingBuilder<T> bindParameter(@Nonnull TypeLiteral<T> literal);
 
 }

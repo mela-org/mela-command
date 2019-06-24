@@ -14,6 +14,7 @@ import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,8 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -43,10 +43,11 @@ final class RecursiveCommandTree implements CommandTree {
     this.currentNode = root;
   }
 
+  @Nonnull
   @Override
-  public CommandTree merge(CommandTree o) {
-    checkArgument(o instanceof RecursiveCommandTree,
-        "Must be instance of InternalInjectableCommandTree to merge");
+  public CommandTree merge(@Nonnull CommandTree o) {
+    checkArgument(checkNotNull(o) instanceof RecursiveCommandTree,
+        "Must be instance of RecursiveCommandTree to merge");
     RecursiveCommandTree other = (RecursiveCommandTree) o;
     RecursiveCommandTree mergingTree = new RecursiveCommandTree();
     mergingTree.mergeMutating(this, other);
@@ -132,14 +133,15 @@ final class RecursiveCommandTree implements CommandTree {
     return null;
   }
 
+  @Nonnull
   @Override
   public Group getCurrent() {
     return currentNode;
   }
 
   @Override
-  public void stepDown(Group child) {
-    checkArgument(child instanceof UnboundGroup, "Child must be instance of the same implementation as the tree");
+  public void stepDown(@Nonnull Group child) {
+    checkArgument(checkNotNull(child) instanceof UnboundGroup, "Child must be instance of the same implementation as the tree");
     checkArgument(currentNode.children.contains(child), "Provided group is not a children of the current currentNode");
     currentNode = (UnboundGroup) child;
   }
@@ -239,31 +241,37 @@ final class RecursiveCommandTree implements CommandTree {
       return aliases.isEmpty() ? null : aliases.iterator().next();
     }
 
+    @Nonnull
     @Override
     public Set<CommandTree.Group> getChildren() {
       return finalChildren;
     }
 
+    @Nonnull
     @Override
     public Set<String> getAliases() {
       return aliases;
     }
 
+    @Nonnull
     @Override
     public ParameterBindings getParameterBindings() {
       return parameterBindings;
     }
 
+    @Nonnull
     @Override
     public InterceptorBindings getInterceptorBindings() {
       return interceptorBindings;
     }
 
+    @Nonnull
     @Override
     public ExceptionBindings getExceptionBindings() {
       return exceptionBindings;
     }
 
+    @Nonnull
     @Override
     public Collection<?> getCommandObjects() {
       return commands.values();

@@ -3,7 +3,12 @@ package com.github.stupremee.mela.command.internal;
 import com.github.stupremee.mela.command.ExceptionHandler;
 import com.github.stupremee.mela.command.binding.CommandBindingNode;
 import com.github.stupremee.mela.command.binding.ExceptionBindingBuilder;
+import com.google.common.base.Preconditions;
 import com.google.inject.multibindings.Multibinder;
+
+import javax.annotation.Nonnull;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -25,22 +30,27 @@ final class InternalExceptionBindingBuilder<T extends Throwable> implements Exce
     this.exceptionType = exceptionType;
   }
 
+  @Nonnull
   @Override
   public ExceptionBindingBuilder<T> ignoringInheritance() {
     ignoreInheritance = true;
     return this;
   }
 
+  @Nonnull
   @Override
-  public CommandBindingNode with(Class<? extends ExceptionHandler<T>> clazz) {
+  public CommandBindingNode with(@Nonnull Class<? extends ExceptionHandler<T>> clazz) {
+    checkNotNull(clazz);
     tree.addExceptionBinding(exceptionType, clazz, ignoreInheritance);
     binder.addBinding().to(clazz);
     return node;
   }
 
+  @Nonnull
   @SuppressWarnings("unchecked")
   @Override
-  public CommandBindingNode with(ExceptionHandler<T> handler) {
+  public CommandBindingNode with(@Nonnull ExceptionHandler<T> handler) {
+    checkNotNull(handler);
     tree.addExceptionBinding(exceptionType,
         (Class<? extends ExceptionHandler<T>>) handler.getClass(), ignoreInheritance);
     binder.addBinding().toInstance(handler);

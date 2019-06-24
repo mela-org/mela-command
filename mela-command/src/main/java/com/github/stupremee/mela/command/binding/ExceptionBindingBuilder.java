@@ -2,12 +2,17 @@ package com.github.stupremee.mela.command.binding;
 
 import com.github.stupremee.mela.command.ExceptionHandler;
 
+import javax.annotation.Nonnull;
+
 public interface ExceptionBindingBuilder<T extends Throwable> {
 
+  @Nonnull
   ExceptionBindingBuilder<T> ignoringInheritance();
 
-  CommandBindingNode with(Class<? extends ExceptionHandler<T>> clazz);
+  @Nonnull
+  CommandBindingNode with(@Nonnull Class<? extends ExceptionHandler<T>> clazz);
 
-  CommandBindingNode with(ExceptionHandler<T> handler);
+  @Nonnull
+  CommandBindingNode with(@Nonnull ExceptionHandler<T> handler);
 
 }
