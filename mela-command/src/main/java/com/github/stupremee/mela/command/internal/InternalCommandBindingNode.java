@@ -6,7 +6,9 @@ import com.github.stupremee.mela.command.binding.CommandBindingNode;
 import com.github.stupremee.mela.command.binding.ExceptionBindingBuilder;
 import com.github.stupremee.mela.command.binding.InterceptorBindingBuilder;
 import com.github.stupremee.mela.command.binding.ParameterBindingBuilder;
+import com.github.stupremee.mela.command.compile.CommandTree;
 import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.Multibinder;
 
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -20,12 +22,14 @@ final class InternalCommandBindingNode implements CommandBindingNode {
 
   private final InternalCommandBindingNode parent;
   private final CommandMultibinder multibinder;
-  private final InternalInjectableCommandTree tree;
+  private final RecursiveCommandTree tree;
 
   InternalCommandBindingNode(CommandMultibinder multibinder) {
     this.parent = null;
     this.multibinder = multibinder;
-    this.tree = new InternalInjectableCommandTree();
+    this.tree = new RecursiveCommandTree();
+    multibinder.binder().requestInjection(tree);
+    Multibinder.newSetBinder(multibinder.binder(), CommandTree.class).addBinding().toInstance(tree);
   }
 
   private InternalCommandBindingNode(InternalCommandBindingNode parent) {
@@ -36,7 +40,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
 
   @Override
   public CommandBindingNode group(String... aliases) {
-    tree.stepDown(Set.of(aliases));
+    tree.stepDownOrCreate(Set.of(aliases));
     return new InternalCommandBindingNode(this);
   }
 
@@ -49,14 +53,14 @@ final class InternalCommandBindingNode implements CommandBindingNode {
   @Override
   public CommandBindingNode bind(Class<?> commandClass) {
     tree.addCommand(commandClass);
-    multibinder.addCommand(commandClass);
+    multibinder.commandObjectBinder().addBinding().to(commandClass);
     return this;
   }
 
   @Override
   public CommandBindingNode bind(Object command) {
     tree.addCommand(command.getClass());
-    multibinder.addCommand(command);
+    multibinder.commandObjectBinder().addBinding().toInstance(command);
     return this;
   }
 
@@ -92,7 +96,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     @Override
     public CommandBindingNode with(Class<? extends Interceptor<T>> clazz) {
       tree.addInterceptorBinding(annotationType, clazz);
-      multibinder.addInterceptor(clazz);
+      multibinder.interceptorBinder().addBinding().to(clazz);
       return InternalCommandBindingNode.this;
     }
 
@@ -100,7 +104,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     @Override
     public CommandBindingNode with(Interceptor<T> interceptor) {
       tree.addInterceptorBinding(annotationType, (Class<? extends Interceptor<T>>) interceptor.getClass());
-      multibinder.addInterceptor(interceptor);
+      multibinder.interceptorBinder().addBinding().toInstance(interceptor);
       return InternalCommandBindingNode.this;
     }
   }
@@ -124,7 +128,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     @Override
     public CommandBindingNode with(Class<? extends ExceptionHandler<T>> clazz) {
       tree.addExceptionBinding(exceptionType, clazz, ignoreInheritance);
-      multibinder.addHandler(clazz);
+      multibinder.handlerBinder().addBinding().to(clazz);
       return InternalCommandBindingNode.this;
     }
 
@@ -133,7 +137,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     public CommandBindingNode with(ExceptionHandler<T> handler) {
       tree.addExceptionBinding(exceptionType,
           (Class<? extends ExceptionHandler<T>>) handler.getClass(), ignoreInheritance);
-      multibinder.addHandler(handler);
+      multibinder.handlerBinder().addBinding().toInstance(handler);
       return InternalCommandBindingNode.this;
     }
   }

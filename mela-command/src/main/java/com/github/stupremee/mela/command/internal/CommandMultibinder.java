@@ -31,60 +31,32 @@ final class CommandMultibinder {
     this.binder = binder;
   }
 
-  void addMapper(ArgumentMapper<?> mapper) {
-    mapperBinder().addBinding().toInstance(mapper);
-  }
-
-  void addMapper(Class<? extends ArgumentMapper<?>> clazz) {
-    mapperBinder().addBinding().to(clazz);
-  }
-
-  void addHandler(ExceptionHandler<?> handler) {
-    handlerBinder().addBinding().toInstance(handler);
-  }
-
-  void addHandler(Class<? extends ExceptionHandler<?>> clazz) {
-    handlerBinder().addBinding().to(clazz);
-  }
-
-  void addInterceptor(Interceptor<?> interceptor) {
-    interceptorBinder().addBinding().toInstance(interceptor);
-  }
-
-  void addInterceptor(Class<? extends Interceptor<?>> clazz) {
-    interceptorBinder().addBinding().to(clazz);
-  }
-
-  void addCommand(Object command) {
-    commandObjectBinder().addBinding().toInstance(command);
-  }
-
-  void addCommand(Class<?> clazz) {
-    commandObjectBinder().addBinding().to(clazz);
-  }
-
-  private Multibinder<Object> commandObjectBinder() {
+  Multibinder<Object> commandObjectBinder() {
     if (commandObjectBinder == null)
       commandObjectBinder = Multibinder.newSetBinder(binder, Object.class, Commands.class);
     return commandObjectBinder;
   }
 
-  private Multibinder<ArgumentMapper<?>> mapperBinder() {
+  Multibinder<ArgumentMapper<?>> mapperBinder() {
     if (mapperBinder == null)
       mapperBinder = Multibinder.newSetBinder(binder, MAPPER_LITERAL, Mappers.class);
     return mapperBinder;
   }
 
-  private Multibinder<Interceptor<?>> interceptorBinder() {
+  Multibinder<Interceptor<?>> interceptorBinder() {
     if (interceptorBinder == null)
       interceptorBinder = Multibinder.newSetBinder(binder, INTERCEPTOR_LITERAL, Interceptors.class);
     return interceptorBinder;
   }
 
-  private Multibinder<ExceptionHandler<?>> handlerBinder() {
+  Multibinder<ExceptionHandler<?>> handlerBinder() {
     if (handlerBinder == null)
       handlerBinder = Multibinder.newSetBinder(binder, HANDLER_LITERAL, Handlers.class);
     return handlerBinder;
+  }
+
+  Binder binder() {
+    return binder;
   }
 
 }
