@@ -13,7 +13,7 @@ import java.util.SortedMap;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class InternalExceptionBindings implements ExceptionBindings {
+final class MapBasedExceptionBindings implements ExceptionBindings {
 
   private static final Comparator<Class<?>> CONCRETE_TO_ABSTRACT =
       (one, two) -> {
@@ -28,11 +28,11 @@ final class InternalExceptionBindings implements ExceptionBindings {
 
   private final SortedMap<Class<?>, ValueWrapper<?>> bindings;
 
-  InternalExceptionBindings() {
+  MapBasedExceptionBindings() {
     this.bindings = Maps.newTreeMap(CONCRETE_TO_ABSTRACT);
   }
 
-  private InternalExceptionBindings(SortedMap<Class<?>, ValueWrapper<?>> bindings) {
+  private MapBasedExceptionBindings(SortedMap<Class<?>, ValueWrapper<?>> bindings) {
     this.bindings = Maps.newTreeMap(bindings);
   }
 
@@ -62,7 +62,7 @@ final class InternalExceptionBindings implements ExceptionBindings {
     bindings.put(exceptionType, new ValueWrapper<>(ignoreInheritance, handlerType));
   }
 
-  void putAll(InternalExceptionBindings bindings) {
+  void putAll(MapBasedExceptionBindings bindings) {
     this.bindings.putAll(bindings.bindings);
   }
 
@@ -76,15 +76,15 @@ final class InternalExceptionBindings implements ExceptionBindings {
     }
   }
 
-  InternalExceptionBindings copy() {
-    return new InternalExceptionBindings(bindings);
+  MapBasedExceptionBindings copy() {
+    return new MapBasedExceptionBindings(bindings);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    InternalExceptionBindings that = (InternalExceptionBindings) o;
+    MapBasedExceptionBindings that = (MapBasedExceptionBindings) o;
     return Objects.equals(bindings, that.bindings);
   }
 

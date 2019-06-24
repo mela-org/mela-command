@@ -13,15 +13,15 @@ import java.util.Set;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class InternalInterceptorBindings implements InterceptorBindings {
+final class MapBasedInterceptorBindings implements InterceptorBindings {
 
   private final Map<Class<? extends Annotation>, ValueWrapper<?>> bindings;
 
-  InternalInterceptorBindings() {
+  MapBasedInterceptorBindings() {
     this.bindings = Maps.newHashMap();
   }
 
-  private InternalInterceptorBindings(Map<Class<? extends Annotation>, ValueWrapper<?>> bindings) {
+  private MapBasedInterceptorBindings(Map<Class<? extends Annotation>, ValueWrapper<?>> bindings) {
     this.bindings = Maps.newHashMap(bindings);
   }
 
@@ -36,7 +36,7 @@ final class InternalInterceptorBindings implements InterceptorBindings {
     bindings.put(annotationType, new ValueWrapper<>(interceptorType));
   }
 
-  void putAll(InternalInterceptorBindings bindings) {
+  void putAll(MapBasedInterceptorBindings bindings) {
     this.bindings.putAll(bindings.bindings);
   }
 
@@ -50,15 +50,15 @@ final class InternalInterceptorBindings implements InterceptorBindings {
     }
   }
 
-  InternalInterceptorBindings copy() {
-    return new InternalInterceptorBindings(bindings);
+  MapBasedInterceptorBindings copy() {
+    return new MapBasedInterceptorBindings(bindings);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    InternalInterceptorBindings that = (InternalInterceptorBindings) o;
+    MapBasedInterceptorBindings that = (MapBasedInterceptorBindings) o;
     return Objects.equals(bindings, that.bindings);
   }
 

@@ -1,6 +1,9 @@
 package com.github.stupremee.mela.command.internal;
 
-import com.github.stupremee.mela.command.binding.*;
+import com.github.stupremee.mela.command.binding.CommandBindingNode;
+import com.github.stupremee.mela.command.binding.ExceptionBindingBuilder;
+import com.github.stupremee.mela.command.binding.InterceptorBindingBuilder;
+import com.github.stupremee.mela.command.binding.ParameterBindingBuilder;
 import com.github.stupremee.mela.command.compile.CommandTree;
 import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
@@ -67,12 +70,12 @@ final class InternalCommandBindingNode implements CommandBindingNode {
 
   @Override
   public <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(Class<T> annotationType) {
-    return new InternalInterceptorBindingBuilder<>(this, annotationType);
+    return new InternalInterceptorBindingBuilder<>(this, tree, multibinder.interceptorBinder(), annotationType);
   }
 
   @Override
   public <T extends Throwable> ExceptionBindingBuilder<T> handle(Class<T> exceptionType) {
-    return new InternalExceptionBindingBuilder<>(this, exceptionType);
+    return new InternalExceptionBindingBuilder<>(this, tree, multibinder.handlerBinder(), exceptionType);
   }
 
   @Override
@@ -82,15 +85,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
 
   @Override
   public <T> ParameterBindingBuilder<T> bindParameter(TypeLiteral<T> literal) {
-    return new InternalParameterBindingBuilder<>(this, literal);
-  }
-
-  RecursiveCommandTree getTree() {
-    return tree;
-  }
-
-  CommandMultibinder getMultibinder() {
-    return multibinder;
+    return new InternalParameterBindingBuilder<>(this, tree, multibinder.mapperBinder(), literal);
   }
 
 }

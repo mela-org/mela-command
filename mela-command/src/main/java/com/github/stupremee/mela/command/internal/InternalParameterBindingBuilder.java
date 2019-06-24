@@ -15,17 +15,18 @@ import java.lang.annotation.Annotation;
 final class InternalParameterBindingBuilder<T> implements ParameterBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final Multibinder<ArgumentMapper<?>> mapperBinder;
   private final RecursiveCommandTree tree;
+  private final Multibinder<ArgumentMapper<?>> binder;
   private final TypeLiteral<T> parameterType;
 
   private Class<? extends Annotation> annotationType;
 
-  public InternalParameterBindingBuilder(InternalCommandBindingNode node, TypeLiteral<T> parameterType) {
+  InternalParameterBindingBuilder(InternalCommandBindingNode node, RecursiveCommandTree tree,
+                                         Multibinder<ArgumentMapper<?>> binder, TypeLiteral<T> parameterType) {
     this.node = node;
+    this.tree = tree;
+    this.binder = binder;
     this.parameterType = parameterType;
-    this.mapperBinder = node.getMultibinder().mapperBinder();
-    this.tree = node.getTree();
   }
 
   @Override
@@ -42,7 +43,7 @@ final class InternalParameterBindingBuilder<T> implements ParameterBindingBuilde
   @SuppressWarnings("unchecked")
   @Override
   public CommandBindingNode toMapper(ArgumentMapper<T> mapper) {
-    mapperBinder.addBinding().toInstance(mapper);
+    binder.addBinding().toInstance(mapper);
     tree.addParameterBinding(createKey(), (Class<? extends ArgumentMapper<T>>) mapper.getClass());
     return node;
   }
@@ -50,7 +51,7 @@ final class InternalParameterBindingBuilder<T> implements ParameterBindingBuilde
 
   @Override
   public CommandBindingNode toMapper(Class<? extends ArgumentMapper<T>> clazz) {
-    mapperBinder.addBinding().to(clazz);
+    binder.addBinding().to(clazz);
     tree.addParameterBinding(createKey(), clazz);
     return node;
   }

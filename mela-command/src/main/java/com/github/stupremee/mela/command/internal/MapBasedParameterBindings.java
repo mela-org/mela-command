@@ -13,15 +13,15 @@ import java.util.Set;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class InternalParameterBindings implements ParameterBindings {
+final class MapBasedParameterBindings implements ParameterBindings {
 
   private final Map<Key<?>, ValueWrapper<?>> bindings;
 
-  InternalParameterBindings() {
+  MapBasedParameterBindings() {
     this.bindings = Maps.newHashMap();
   }
 
-  private InternalParameterBindings(Map<Key<?>, ValueWrapper<?>> bindings) {
+  private MapBasedParameterBindings(Map<Key<?>, ValueWrapper<?>> bindings) {
     this.bindings = Maps.newHashMap(bindings);
   }
 
@@ -36,7 +36,7 @@ final class InternalParameterBindings implements ParameterBindings {
     bindings.put(key, new ValueWrapper<>(mapperType));
   }
 
-  void putAll(InternalParameterBindings bindings) {
+  void putAll(MapBasedParameterBindings bindings) {
     this.bindings.putAll(bindings.bindings);
   }
 
@@ -50,15 +50,15 @@ final class InternalParameterBindings implements ParameterBindings {
     }
   }
 
-  InternalParameterBindings copy() {
-    return new InternalParameterBindings(bindings);
+  MapBasedParameterBindings copy() {
+    return new MapBasedParameterBindings(bindings);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    InternalParameterBindings that = (InternalParameterBindings) o;
+    MapBasedParameterBindings that = (MapBasedParameterBindings) o;
     return Objects.equals(bindings, that.bindings);
   }
 

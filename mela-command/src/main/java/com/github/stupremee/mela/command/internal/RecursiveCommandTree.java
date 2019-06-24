@@ -27,15 +27,14 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-// TODO: 23.06.2019 tests
 final class RecursiveCommandTree implements CommandTree {
 
   private final UnboundGroup root;
   private UnboundGroup currentNode;
 
   RecursiveCommandTree() {
-    this(new UnboundGroup(new InternalParameterBindings(),
-        new InternalInterceptorBindings(), new InternalExceptionBindings(),
+    this(new UnboundGroup(new MapBasedParameterBindings(),
+        new MapBasedInterceptorBindings(), new MapBasedExceptionBindings(),
         Collections.emptySet(), null));
   }
 
@@ -185,9 +184,9 @@ final class RecursiveCommandTree implements CommandTree {
   private static final class UnboundGroup implements CommandTree.Group {
 
     final UnboundGroup parent;
-    final InternalParameterBindings parameterBindings;
-    final InternalInterceptorBindings interceptorBindings;
-    final InternalExceptionBindings exceptionBindings;
+    final MapBasedParameterBindings parameterBindings;
+    final MapBasedInterceptorBindings interceptorBindings;
+    final MapBasedExceptionBindings exceptionBindings;
     final Set<String> aliases;
     final Set<UnboundGroup> children;
 
@@ -195,9 +194,9 @@ final class RecursiveCommandTree implements CommandTree {
     Set<Group> finalChildren;
 
 
-    UnboundGroup(InternalParameterBindings parameterBindings,
-                 InternalInterceptorBindings interceptorBindings,
-                 InternalExceptionBindings exceptionBindings, Set<String> aliases,
+    UnboundGroup(MapBasedParameterBindings parameterBindings,
+                 MapBasedInterceptorBindings interceptorBindings,
+                 MapBasedExceptionBindings exceptionBindings, Set<String> aliases,
                  UnboundGroup parent) {
       this.parameterBindings = parameterBindings;
       this.interceptorBindings = interceptorBindings;
