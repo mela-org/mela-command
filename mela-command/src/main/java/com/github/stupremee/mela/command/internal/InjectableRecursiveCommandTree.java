@@ -6,6 +6,7 @@ import com.github.stupremee.mela.command.binding.ExceptionBindings;
 import com.github.stupremee.mela.command.binding.InterceptorBindings;
 import com.github.stupremee.mela.command.binding.ParameterBindings;
 import com.github.stupremee.mela.command.compile.CommandTree;
+import com.github.stupremee.mela.command.compile.RecursiveCommandTree;
 import com.github.stupremee.mela.command.exception.ConflictException;
 import com.github.stupremee.mela.command.inject.InjectionObjectHolder;
 import com.github.stupremee.mela.command.mapping.ArgumentMapper;
@@ -22,39 +23,37 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class RecursiveCommandTree implements CommandTree {
+final class InjectableRecursiveCommandTree extends RecursiveCommandTree<InjectableRecursiveCommandTree.UnboundGroup> {
 
-  private final UnboundGroup root;
-  private UnboundGroup currentNode;
 
-  RecursiveCommandTree() {
-    this(new UnboundGroup(new MapBasedParameterBindings(),
-        new MapBasedInterceptorBindings(), new MapBasedExceptionBindings(),
+  InjectableRecursiveCommandTree() {
+    this(new UnboundGroup(new InjectableParameterBindings(),
+        new InjectableInterceptorBindings(), new InjectableExceptionBindings(),
         Collections.emptySet(), null));
   }
 
-  private RecursiveCommandTree(UnboundGroup root) {
-    this.root = root;
-    this.currentNode = root;
+  private InjectableRecursiveCommandTree(UnboundGroup root) {
+    super(root);
   }
 
   @Nonnull
   @Override
   public CommandTree merge(@Nonnull CommandTree o) {
-    checkArgument(checkNotNull(o) instanceof RecursiveCommandTree,
+    checkArgument(checkNotNull(o) instanceof InjectableRecursiveCommandTree,
         "Must be instance of RecursiveCommandTree to merge");
-    RecursiveCommandTree other = (RecursiveCommandTree) o;
-    RecursiveCommandTree mergingTree = new RecursiveCommandTree();
+    InjectableRecursiveCommandTree other = (InjectableRecursiveCommandTree) o;
+    InjectableRecursiveCommandTree mergingTree = new InjectableRecursiveCommandTree();
     mergingTree.mergeMutating(this, other);
     return mergingTree;
   }
 
-  private void mergeMutating(RecursiveCommandTree one, RecursiveCommandTree two) {
+  private void mergeMutating(InjectableRecursiveCommandTree one, InjectableRecursiveCommandTree two) {
     this.stepToRoot();
     one.stepToRoot();
     this.mergeMutating(one);
@@ -66,7 +65,7 @@ final class RecursiveCommandTree implements CommandTree {
     this.stepToRoot();
   }
 
-  private void mergeMutating(RecursiveCommandTree tree) {
+  private void mergeMutating(InjectableRecursiveCommandTree tree) {
     currentNode.interceptorBindings.putAll(tree.currentNode.interceptorBindings);
     currentNode.parameterBindings.putAll(tree.currentNode.parameterBindings);
     currentNode.exceptionBindings.putAll(tree.currentNode.exceptionBindings);
@@ -133,36 +132,6 @@ final class RecursiveCommandTree implements CommandTree {
     return null;
   }
 
-  @Nonnull
-  @Override
-  public Group getCurrent() {
-    return currentNode;
-  }
-
-  @Override
-  public void stepDown(@Nonnull Group child) {
-    checkArgument(checkNotNull(child) instanceof UnboundGroup, "Child must be instance of the same implementation as the tree");
-    checkArgument(currentNode.children.contains(child), "Provided group is not a children of the current currentNode");
-    currentNode = (UnboundGroup) child;
-  }
-
-  @Override
-  public void stepUp() {
-    checkState(!isAtRoot(), "Current currentNode is root currentNode, can't step up");
-    currentNode = currentNode.parent;
-  }
-
-  @Override
-  public void stepToRoot() {
-    while (!isAtRoot())
-      stepUp();
-  }
-
-  @Override
-  public boolean isAtRoot() {
-    return currentNode == root;
-  }
-
   void addCommand(Class<?> commandClass) {
     currentNode.commands.put(commandClass, null);
   }
@@ -183,22 +152,22 @@ final class RecursiveCommandTree implements CommandTree {
     currentNode.exceptionBindings.put(exceptionType, handlerType, ignoreInheritance);
   }
 
-  private static final class UnboundGroup implements CommandTree.Group {
+  static final class UnboundGroup implements CommandTree.Group {
 
-    final UnboundGroup parent;
-    final MapBasedParameterBindings parameterBindings;
-    final MapBasedInterceptorBindings interceptorBindings;
-    final MapBasedExceptionBindings exceptionBindings;
-    final Set<String> aliases;
-    final Set<UnboundGroup> children;
+    private final UnboundGroup parent;
+    private final InjectableParameterBindings parameterBindings;
+    private final InjectableInterceptorBindings interceptorBindings;
+    private final InjectableExceptionBindings exceptionBindings;
+    private final Set<String> aliases;
+    private final Set<UnboundGroup> children;
 
-    Map<Class<?>, Object> commands;
-    Set<Group> finalChildren;
+    private Map<Class<?>, Object> commands;
+    private Set<Group> finalChildren;
 
 
-    UnboundGroup(MapBasedParameterBindings parameterBindings,
-                 MapBasedInterceptorBindings interceptorBindings,
-                 MapBasedExceptionBindings exceptionBindings, Set<String> aliases,
+    private UnboundGroup(InjectableParameterBindings parameterBindings,
+                 InjectableInterceptorBindings interceptorBindings,
+                 InjectableExceptionBindings exceptionBindings, Set<String> aliases,
                  UnboundGroup parent) {
       this.parameterBindings = parameterBindings;
       this.interceptorBindings = interceptorBindings;
@@ -277,7 +246,7 @@ final class RecursiveCommandTree implements CommandTree {
       return commands.values();
     }
 
-    void makeImmutable() {
+    private void makeImmutable() {
       finalChildren = Set.copyOf(children);
       commands = Map.copyOf(commands);
     }

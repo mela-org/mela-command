@@ -3,7 +3,6 @@ package com.github.stupremee.mela.command.internal;
 import com.github.stupremee.mela.command.Interceptor;
 import com.github.stupremee.mela.command.binding.CommandBindingNode;
 import com.github.stupremee.mela.command.binding.InterceptorBindingBuilder;
-import com.google.common.base.Preconditions;
 import com.google.inject.multibindings.Multibinder;
 
 import javax.annotation.Nonnull;
@@ -17,11 +16,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 final class InternalInterceptorBindingBuilder<T extends Annotation> implements InterceptorBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final RecursiveCommandTree tree;
+  private final InjectableRecursiveCommandTree tree;
   private final Multibinder<Interceptor<?>> binder;
   private final Class<T> annotationType;
 
-  InternalInterceptorBindingBuilder(InternalCommandBindingNode node, RecursiveCommandTree tree,
+  InternalInterceptorBindingBuilder(InternalCommandBindingNode node, InjectableRecursiveCommandTree tree,
                                     Multibinder<Interceptor<?>> binder, Class<T> annotationType) {
     this.node = node;
     this.tree = tree;

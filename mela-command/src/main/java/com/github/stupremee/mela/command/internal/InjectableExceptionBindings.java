@@ -13,7 +13,7 @@ import java.util.SortedMap;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class MapBasedExceptionBindings implements ExceptionBindings {
+final class InjectableExceptionBindings implements ExceptionBindings {
 
   private static final Comparator<Class<?>> CONCRETE_TO_ABSTRACT =
       (one, two) -> {
@@ -28,11 +28,11 @@ final class MapBasedExceptionBindings implements ExceptionBindings {
 
   private final SortedMap<Class<?>, ValueWrapper<?>> bindings;
 
-  MapBasedExceptionBindings() {
+  InjectableExceptionBindings() {
     this.bindings = Maps.newTreeMap(CONCRETE_TO_ABSTRACT);
   }
 
-  private MapBasedExceptionBindings(SortedMap<Class<?>, ValueWrapper<?>> bindings) {
+  private InjectableExceptionBindings(SortedMap<Class<?>, ValueWrapper<?>> bindings) {
     this.bindings = Maps.newTreeMap(bindings);
   }
 
@@ -62,7 +62,7 @@ final class MapBasedExceptionBindings implements ExceptionBindings {
     bindings.put(exceptionType, new ValueWrapper<>(ignoreInheritance, handlerType));
   }
 
-  void putAll(MapBasedExceptionBindings bindings) {
+  void putAll(InjectableExceptionBindings bindings) {
     this.bindings.putAll(bindings.bindings);
   }
 
@@ -76,15 +76,15 @@ final class MapBasedExceptionBindings implements ExceptionBindings {
     }
   }
 
-  MapBasedExceptionBindings copy() {
-    return new MapBasedExceptionBindings(bindings);
+  InjectableExceptionBindings copy() {
+    return new InjectableExceptionBindings(bindings);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    MapBasedExceptionBindings that = (MapBasedExceptionBindings) o;
+    InjectableExceptionBindings that = (InjectableExceptionBindings) o;
     return Objects.equals(bindings, that.bindings);
   }
 

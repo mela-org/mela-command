@@ -13,15 +13,15 @@ import java.util.Set;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class MapBasedParameterBindings implements ParameterBindings {
+final class InjectableParameterBindings implements ParameterBindings {
 
   private final Map<Key<?>, ValueWrapper<?>> bindings;
 
-  MapBasedParameterBindings() {
+  InjectableParameterBindings() {
     this.bindings = Maps.newHashMap();
   }
 
-  private MapBasedParameterBindings(Map<Key<?>, ValueWrapper<?>> bindings) {
+  private InjectableParameterBindings(Map<Key<?>, ValueWrapper<?>> bindings) {
     this.bindings = Maps.newHashMap(bindings);
   }
 
@@ -36,7 +36,7 @@ final class MapBasedParameterBindings implements ParameterBindings {
     bindings.put(key, new ValueWrapper<>(mapperType));
   }
 
-  void putAll(MapBasedParameterBindings bindings) {
+  void putAll(InjectableParameterBindings bindings) {
     this.bindings.putAll(bindings.bindings);
   }
 
@@ -50,15 +50,15 @@ final class MapBasedParameterBindings implements ParameterBindings {
     }
   }
 
-  MapBasedParameterBindings copy() {
-    return new MapBasedParameterBindings(bindings);
+  InjectableParameterBindings copy() {
+    return new InjectableParameterBindings(bindings);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    MapBasedParameterBindings that = (MapBasedParameterBindings) o;
+    InjectableParameterBindings that = (InjectableParameterBindings) o;
     return Objects.equals(bindings, that.bindings);
   }
 

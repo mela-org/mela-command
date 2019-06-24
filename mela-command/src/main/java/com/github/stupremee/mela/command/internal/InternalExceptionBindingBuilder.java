@@ -3,7 +3,6 @@ package com.github.stupremee.mela.command.internal;
 import com.github.stupremee.mela.command.ExceptionHandler;
 import com.github.stupremee.mela.command.binding.CommandBindingNode;
 import com.github.stupremee.mela.command.binding.ExceptionBindingBuilder;
-import com.google.common.base.Preconditions;
 import com.google.inject.multibindings.Multibinder;
 
 import javax.annotation.Nonnull;
@@ -16,13 +15,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 final class InternalExceptionBindingBuilder<T extends Throwable> implements ExceptionBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final RecursiveCommandTree tree;
+  private final InjectableRecursiveCommandTree tree;
   private final Multibinder<ExceptionHandler<?>> binder;
   private final Class<T> exceptionType;
 
   private boolean ignoreInheritance = false;
 
-  InternalExceptionBindingBuilder(InternalCommandBindingNode node, RecursiveCommandTree tree,
+  InternalExceptionBindingBuilder(InternalCommandBindingNode node, InjectableRecursiveCommandTree tree,
                                   Multibinder<ExceptionHandler<?>> binder, Class<T> exceptionType) {
     this.node = node;
     this.tree = tree;

@@ -8,12 +8,12 @@ import java.util.Set;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class DefaultCommandTreeMerger extends LazySingletonProvider<CommandTree> {
+public final class MergingCommandTreeProvider extends LazySingletonProvider<CommandTree> {
 
   private final Set<CommandTree> trees;
 
   @Inject
-  public DefaultCommandTreeMerger(Set<CommandTree> trees) {
+  public MergingCommandTreeProvider(Set<CommandTree> trees) {
     this.trees = trees;
   }
 

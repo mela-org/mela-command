@@ -3,17 +3,18 @@ package com.github.stupremee.mela.command.compile;
 import com.github.stupremee.mela.command.binding.ExceptionBindings;
 import com.github.stupremee.mela.command.binding.InterceptorBindings;
 import com.github.stupremee.mela.command.binding.ParameterBindings;
-import com.github.stupremee.mela.command.inject.DefaultCommandTreeMerger;
+import com.github.stupremee.mela.command.inject.MergingCommandTreeProvider;
+import com.github.stupremee.mela.command.internal.empty.EmptyCommandTree;
 import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Set;
 
-@ProvidedBy(DefaultCommandTreeMerger.class)
+@ProvidedBy(MergingCommandTreeProvider.class)
 public interface CommandTree {
 
-  CommandTree EMPTY = null; // TODO: 22.06.2019
+  CommandTree EMPTY = EmptyCommandTree.INSTANCE;
 
   @Nonnull
   CommandTree merge(@Nonnull CommandTree other);
@@ -23,7 +24,10 @@ public interface CommandTree {
 
   void stepUp();
 
-  void stepToRoot();
+  default void stepToRoot() {
+    while (!isAtRoot())
+      stepUp();
+  }
 
   void stepDown(@Nonnull Group child);
 
