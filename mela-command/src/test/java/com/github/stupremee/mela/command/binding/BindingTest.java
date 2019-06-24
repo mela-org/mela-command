@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.command.binding;
 
+import com.github.stupremee.mela.command.Interceptor;
 import com.google.inject.AbstractModule;
 
 /**
@@ -7,5 +8,7 @@ import com.google.inject.AbstractModule;
  */
 // TODO: 24.06.2019 Tests: Simple bindings (interceptor, handler, parameter, commands), multi-module bindings
 public class BindingTest {
+  private static final Interceptor<TestAnnotation> interceptor = (c) -> true;
+
 
 }

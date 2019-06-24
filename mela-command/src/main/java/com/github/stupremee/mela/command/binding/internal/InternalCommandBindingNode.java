@@ -29,13 +29,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     this.parent = null;
     this.multibinder = multibinder;
     this.tree = new InjectableCommandTree();
-    configureTree();
-  }
-
-  private void configureTree() {
-    Binder binder = multibinder.binder();
-    binder.requestInjection(tree);
-    Multibinder.newSetBinder(binder, CommandTree.class).addBinding().toInstance(tree);
+    Multibinder.newSetBinder(this.multibinder.binder(), CommandTree.class).addBinding().toInstance(tree);
   }
 
   private InternalCommandBindingNode(InternalCommandBindingNode parent) {
