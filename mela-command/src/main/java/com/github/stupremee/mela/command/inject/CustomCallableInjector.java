@@ -26,7 +26,7 @@ final class CustomCallableInjector<T> implements MembersInjector<T> {
   public void injectMembers(T instance) {
     try {
       CommandCallable value = parent.selectChild(annotation.value())
-          .orElseThrow(() -> new RuntimeException("Invalid group")); // TODO: 22.06.2019 besserer exception type && catchen
+          .result().orElseThrow(() -> new RuntimeException("Invalid group")); // TODO: 22.06.2019 besserer exception type && catchen
       if (!field.canAccess(instance))
         field.setAccessible(true);
       field.set(instance, value);
