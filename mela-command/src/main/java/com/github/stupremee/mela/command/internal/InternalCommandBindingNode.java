@@ -1,11 +1,6 @@
 package com.github.stupremee.mela.command.internal;
 
-import com.github.stupremee.mela.command.ExceptionHandler;
-import com.github.stupremee.mela.command.Interceptor;
-import com.github.stupremee.mela.command.binding.CommandBindingNode;
-import com.github.stupremee.mela.command.binding.ExceptionBindingBuilder;
-import com.github.stupremee.mela.command.binding.InterceptorBindingBuilder;
-import com.github.stupremee.mela.command.binding.ParameterBindingBuilder;
+import com.github.stupremee.mela.command.binding.*;
 import com.github.stupremee.mela.command.compile.CommandTree;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
@@ -66,12 +61,12 @@ final class InternalCommandBindingNode implements CommandBindingNode {
 
   @Override
   public <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(Class<T> annotationType) {
-    return new InternalInterceptorBindingBuilder<>(annotationType);
+    return new InternalInterceptorBindingBuilder<>(this, annotationType);
   }
 
   @Override
   public <T extends Throwable> ExceptionBindingBuilder<T> handle(Class<T> exceptionType) {
-    return new InternalExceptionBindingBuilder<>(exceptionType);
+    return new InternalExceptionBindingBuilder<>(this, exceptionType);
   }
 
   // TODO: 23.06.2019 Parameter keys
@@ -85,60 +80,12 @@ final class InternalCommandBindingNode implements CommandBindingNode {
 
   }
 
-  private final class InternalInterceptorBindingBuilder<T extends Annotation> implements InterceptorBindingBuilder<T> {
-
-    final Class<T> annotationType;
-
-    InternalInterceptorBindingBuilder(Class<T> annotationType) {
-      this.annotationType = annotationType;
-    }
-
-    @Override
-    public CommandBindingNode with(Class<? extends Interceptor<T>> clazz) {
-      tree.addInterceptorBinding(annotationType, clazz);
-      multibinder.interceptorBinder().addBinding().to(clazz);
-      return InternalCommandBindingNode.this;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public CommandBindingNode with(Interceptor<T> interceptor) {
-      tree.addInterceptorBinding(annotationType, (Class<? extends Interceptor<T>>) interceptor.getClass());
-      multibinder.interceptorBinder().addBinding().toInstance(interceptor);
-      return InternalCommandBindingNode.this;
-    }
+  RecursiveCommandTree getTree() {
+    return tree;
   }
 
-  private final class InternalExceptionBindingBuilder<T extends Throwable> implements ExceptionBindingBuilder<T> {
-
-    final Class<T> exceptionType;
-
-    boolean ignoreInheritance = false;
-
-    InternalExceptionBindingBuilder(Class<T> exceptionType) {
-      this.exceptionType = exceptionType;
-    }
-
-    @Override
-    public ExceptionBindingBuilder<T> ignoringInheritance() {
-      ignoreInheritance = true;
-      return this;
-    }
-
-    @Override
-    public CommandBindingNode with(Class<? extends ExceptionHandler<T>> clazz) {
-      tree.addExceptionBinding(exceptionType, clazz, ignoreInheritance);
-      multibinder.handlerBinder().addBinding().to(clazz);
-      return InternalCommandBindingNode.this;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public CommandBindingNode with(ExceptionHandler<T> handler) {
-      tree.addExceptionBinding(exceptionType,
-          (Class<? extends ExceptionHandler<T>>) handler.getClass(), ignoreInheritance);
-      multibinder.handlerBinder().addBinding().toInstance(handler);
-      return InternalCommandBindingNode.this;
-    }
+  public CommandMultibinder getMultibinder() {
+    return multibinder;
   }
+
 }
