@@ -1,10 +1,10 @@
-package com.github.stupremee.mela.command.internal;
+package com.github.stupremee.mela.command.binding.internal;
 
 import com.github.stupremee.mela.command.binding.CommandBindingNode;
 import com.github.stupremee.mela.command.binding.ExceptionBindingBuilder;
 import com.github.stupremee.mela.command.binding.InterceptorBindingBuilder;
 import com.github.stupremee.mela.command.binding.ParameterBindingBuilder;
-import com.github.stupremee.mela.command.compile.CommandTree;
+import com.github.stupremee.mela.command.binding.CommandTree;
 import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;

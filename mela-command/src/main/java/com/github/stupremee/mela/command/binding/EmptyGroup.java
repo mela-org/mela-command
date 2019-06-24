@@ -1,9 +1,4 @@
-package com.github.stupremee.mela.command.internal.empty;
-
-import com.github.stupremee.mela.command.binding.ExceptionBindings;
-import com.github.stupremee.mela.command.binding.InterceptorBindings;
-import com.github.stupremee.mela.command.binding.ParameterBindings;
-import com.github.stupremee.mela.command.compile.CommandTree;
+package com.github.stupremee.mela.command.binding;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -45,19 +40,19 @@ final class EmptyGroup implements CommandTree.Group {
   @Nonnull
   @Override
   public ParameterBindings getParameterBindings() {
-    return EmptyBindings::noMapper;
+    return EmptyBindings.PARAMETER_BINDINGS;
   }
 
   @Nonnull
   @Override
   public InterceptorBindings getInterceptorBindings() {
-    return EmptyBindings::noInterceptor;
+    return EmptyBindings.INTERCEPTOR_BINDINGS;
   }
 
   @Nonnull
   @Override
   public ExceptionBindings getExceptionBindings() {
-    return EmptyBindings::noHandler;
+    return EmptyBindings.EXCEPTION_BINDINGS;
   }
 
   @Nonnull

@@ -1,10 +1,6 @@
-package com.github.stupremee.mela.command.compile;
+package com.github.stupremee.mela.command.binding;
 
-import com.github.stupremee.mela.command.binding.ExceptionBindings;
-import com.github.stupremee.mela.command.binding.InterceptorBindings;
-import com.github.stupremee.mela.command.binding.ParameterBindings;
 import com.github.stupremee.mela.command.inject.MergingCommandTreeProvider;
-import com.github.stupremee.mela.command.internal.empty.EmptyCommandTree;
 import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;

@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.compile;
+package com.github.stupremee.mela.command.binding;
 
 import javax.annotation.Nonnull;
 

@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.binding;
 
-import com.github.stupremee.mela.command.internal.InternalCommandBinder;
+import com.github.stupremee.mela.command.binding.internal.InternalCommandBinder;
 import com.google.inject.Binder;
 
 import javax.annotation.Nonnull;

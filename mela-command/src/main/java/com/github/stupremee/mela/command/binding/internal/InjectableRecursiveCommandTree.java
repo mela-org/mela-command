@@ -1,12 +1,12 @@
-package com.github.stupremee.mela.command.internal;
+package com.github.stupremee.mela.command.binding.internal;
 
 import com.github.stupremee.mela.command.ExceptionHandler;
 import com.github.stupremee.mela.command.Interceptor;
 import com.github.stupremee.mela.command.binding.ExceptionBindings;
 import com.github.stupremee.mela.command.binding.InterceptorBindings;
 import com.github.stupremee.mela.command.binding.ParameterBindings;
-import com.github.stupremee.mela.command.compile.CommandTree;
-import com.github.stupremee.mela.command.compile.RecursiveCommandTree;
+import com.github.stupremee.mela.command.binding.CommandTree;
+import com.github.stupremee.mela.command.binding.RecursiveCommandTree;
 import com.github.stupremee.mela.command.exception.ConflictException;
 import com.github.stupremee.mela.command.inject.InjectionObjectHolder;
 import com.github.stupremee.mela.command.mapping.ArgumentMapper;
