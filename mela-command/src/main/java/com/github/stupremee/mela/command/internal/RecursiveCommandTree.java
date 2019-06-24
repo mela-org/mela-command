@@ -12,6 +12,7 @@ import com.github.stupremee.mela.command.mapping.ArgumentMapper;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import com.google.inject.Key;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
@@ -165,7 +166,7 @@ final class RecursiveCommandTree implements CommandTree {
     currentNode.commands.put(commandClass, null);
   }
 
-  <T> void addParameterBinding(ParameterBindings.Key<T> key,
+  <T> void addParameterBinding(Key<T> key,
                                Class<? extends ArgumentMapper<T>> mapperType) {
     currentNode.parameterBindings.put(key, mapperType);
   }

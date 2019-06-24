@@ -69,22 +69,21 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     return new InternalExceptionBindingBuilder<>(this, exceptionType);
   }
 
-  // TODO: 23.06.2019 Parameter keys
   @Override
   public <T> ParameterBindingBuilder<T> bindParameter(Class<T> parameterType) {
-
+    return bindParameter(TypeLiteral.get(parameterType));
   }
 
   @Override
   public <T> ParameterBindingBuilder<T> bindParameter(TypeLiteral<T> literal) {
-
+    return new InternalParameterBindingBuilder<>(this, literal);
   }
 
   RecursiveCommandTree getTree() {
     return tree;
   }
 
-  public CommandMultibinder getMultibinder() {
+  CommandMultibinder getMultibinder() {
     return multibinder;
   }
 
