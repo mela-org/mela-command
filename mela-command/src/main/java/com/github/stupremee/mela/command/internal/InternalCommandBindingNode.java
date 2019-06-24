@@ -2,6 +2,7 @@ package com.github.stupremee.mela.command.internal;
 
 import com.github.stupremee.mela.command.binding.*;
 import com.github.stupremee.mela.command.compile.CommandTree;
+import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
@@ -23,8 +24,13 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     this.parent = null;
     this.multibinder = multibinder;
     this.tree = new RecursiveCommandTree();
-    multibinder.binder().requestInjection(tree);
-    Multibinder.newSetBinder(multibinder.binder(), CommandTree.class).addBinding().toInstance(tree);
+    configureTree();
+  }
+
+  private void configureTree() {
+    Binder binder = multibinder.binder();
+    binder.requestInjection(tree);
+    Multibinder.newSetBinder(binder, CommandTree.class).addBinding().toInstance(tree);
   }
 
   private InternalCommandBindingNode(InternalCommandBindingNode parent) {
@@ -46,14 +52,14 @@ final class InternalCommandBindingNode implements CommandBindingNode {
   }
 
   @Override
-  public CommandBindingNode bind(Class<?> commandClass) {
+  public CommandBindingNode add(Class<?> commandClass) {
     tree.addCommand(commandClass);
     multibinder.commandObjectBinder().addBinding().to(commandClass);
     return this;
   }
 
   @Override
-  public CommandBindingNode bind(Object command) {
+  public CommandBindingNode add(Object command) {
     tree.addCommand(command.getClass());
     multibinder.commandObjectBinder().addBinding().toInstance(command);
     return this;

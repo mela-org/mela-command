@@ -10,9 +10,9 @@ public interface CommandBindingNode {
 
   CommandBindingNode parent();
 
-  CommandBindingNode bind(Class<?> commandClass);
+  CommandBindingNode add(Class<?> commandClass);
 
-  CommandBindingNode bind(Object command);
+  CommandBindingNode add(Object command);
 
   <T extends Annotation> InterceptorBindingBuilder<T> interceptAt(Class<T> annotationType);
 
