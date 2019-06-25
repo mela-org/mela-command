@@ -60,4 +60,9 @@ final class EmptyGroup implements CommandTree.Group {
   public Collection<?> getCommandObjects() {
     return Collections.emptySet();
   }
+
+  @Override
+  public String toString() {
+    return "[]";
+  }
 }
