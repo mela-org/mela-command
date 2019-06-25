@@ -213,7 +213,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     @Nonnull
     @Override
     public Set<CommandTree.Group> getChildren() {
-      return finalChildren;
+      return finalChildren == null ? Set.copyOf(children) : finalChildren;
     }
 
     @Nonnull
