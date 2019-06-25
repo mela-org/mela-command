@@ -65,6 +65,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     this.stepToRoot();
   }
 
+  // TODO: 25.06.2019 replace with iterative algorithms where possible
   private void mergeMutating(InjectableCommandTree tree) {
     currentNode.interceptorBindings.putAll(tree.currentNode.interceptorBindings);
     currentNode.parameterBindings.putAll(tree.currentNode.parameterBindings);
@@ -198,6 +199,17 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     public int hashCode() {
       return Objects.hash(parameterBindings, interceptorBindings, exceptionBindings,
           aliases, commands, children, parent);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder builder = new StringBuilder();
+      for (MutableGroup current = this; current != null; current = current.parent) {
+        builder.insert(0, current.aliases);
+        if (current.parent != null)
+          builder.insert(0, " - ");
+      }
+      return builder.toString();
     }
 
     @Override
