@@ -29,29 +29,25 @@ final class CommandMultibinder {
 
   CommandMultibinder(Binder binder) {
     this.binder = binder;
+    commandObjectBinder = Multibinder.newSetBinder(binder, Object.class, Commands.class);
+    mapperBinder = Multibinder.newSetBinder(binder, MAPPER_LITERAL, Mappers.class);
+    interceptorBinder = Multibinder.newSetBinder(binder, INTERCEPTOR_LITERAL, Interceptors.class);
+    handlerBinder = Multibinder.newSetBinder(binder, HANDLER_LITERAL, Handlers.class);
   }
 
   Multibinder<Object> commandObjectBinder() {
-    if (commandObjectBinder == null)
-      commandObjectBinder = Multibinder.newSetBinder(binder, Object.class, Commands.class);
     return commandObjectBinder;
   }
 
   Multibinder<ArgumentMapper<?>> mapperBinder() {
-    if (mapperBinder == null)
-      mapperBinder = Multibinder.newSetBinder(binder, MAPPER_LITERAL, Mappers.class);
     return mapperBinder;
   }
 
   Multibinder<Interceptor<?>> interceptorBinder() {
-    if (interceptorBinder == null)
-      interceptorBinder = Multibinder.newSetBinder(binder, INTERCEPTOR_LITERAL, Interceptors.class);
     return interceptorBinder;
   }
 
   Multibinder<ExceptionHandler<?>> handlerBinder() {
-    if (handlerBinder == null)
-      handlerBinder = Multibinder.newSetBinder(binder, HANDLER_LITERAL, Handlers.class);
     return handlerBinder;
   }
 
