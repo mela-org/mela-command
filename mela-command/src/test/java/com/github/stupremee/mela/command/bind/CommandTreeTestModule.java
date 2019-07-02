@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class SingleChildModule extends AbstractModule {
+final class CommandTreeTestModule extends AbstractModule {
 
   @Override
   protected void configure() {

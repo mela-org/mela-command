@@ -20,7 +20,7 @@ public final class CommandTreeTest {
 
   @BeforeEach
   public void setUp() {
-    Injector injector = Guice.createInjector(new SingleChildModule());
+    Injector injector = Guice.createInjector(new CommandTreeTestModule());
     injector.injectMembers(tree);
   }
 

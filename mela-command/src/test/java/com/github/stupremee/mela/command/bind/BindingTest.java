@@ -1,5 +1,7 @@
 package com.github.stupremee.mela.command.bind;
 
+import com.github.stupremee.mela.command.TestAnnotation;
+import com.github.stupremee.mela.command.TestException;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
@@ -26,7 +28,7 @@ public final class BindingTest {
 
   @BeforeEach
   public void setUp() {
-    Injector injector = Guice.createInjector(new SimpleModule(), new OverrideModule());
+    Injector injector = Guice.createInjector(new BasicBindingTestModule(), new OverrideTestModule());
     injector.injectMembers(this);
     tree.stepToRoot();
   }
@@ -34,9 +36,9 @@ public final class BindingTest {
   @Test
   public void testCommandPresence() {
     Collection<?> commandObjects = tree.getCurrent().getCommandObjects();
-    assertTrue(commandObjects.contains(SimpleModule.COMMAND),
+    assertTrue(commandObjects.contains(BasicBindingTestModule.COMMAND),
         "Root does not contain command object from SimpleModule");
-    assertTrue(commandObjects.contains(OverrideModule.ADDITIONAL_COMMAND),
+    assertTrue(commandObjects.contains(OverrideTestModule.ADDITIONAL_COMMAND),
         "Root does not contain command object from OverrideModule");
   }
 
@@ -45,7 +47,7 @@ public final class BindingTest {
     Optional<ArgumentMapper<Object>> binding = tree.getCurrent()
         .getParameterBindings().getMapper(Key.get(Object.class));
     assertTrue(binding.isPresent(), "Parameter bind from SimpleModule is not present");
-    assertEquals(SimpleModule.MAPPER, binding.get(), "Parameter bind dies not equal set bind");
+    assertEquals(BasicBindingTestModule.MAPPER, binding.get(), "Parameter bind dies not equal set bind");
   }
 
   @Test
@@ -53,7 +55,7 @@ public final class BindingTest {
     Optional<Interceptor<TestAnnotation>> binding = tree.getCurrent()
         .getInterceptorBindings().getInterceptor(TestAnnotation.class);
     assertTrue(binding.isPresent(), "Interceptor bind from SimpleModule is not present");
-    assertEquals(SimpleModule.INTERCEPTOR, binding.get(), "Interceptor bind does not equal set bind");
+    assertEquals(BasicBindingTestModule.INTERCEPTOR, binding.get(), "Interceptor bind does not equal set bind");
   }
 
   @Test
@@ -61,7 +63,7 @@ public final class BindingTest {
     Optional<ExceptionHandler<TestException>> binding = tree.getCurrent()
         .getExceptionBindings().getHandler(TestException.class);
     assertTrue(binding.isPresent(), "Exception bind from SimpleModule is not present");
-    assertEquals(SimpleModule.HANDLER, binding.get(), "Exception bind does not equal set bind");
+    assertEquals(BasicBindingTestModule.HANDLER, binding.get(), "Exception bind does not equal set bind");
   }
 
   @Test
@@ -69,7 +71,7 @@ public final class BindingTest {
     Optional<ArgumentMapper<Object>> binding = tree.getCurrent()
         .getParameterBindings().getMapper(Key.get(Object.class));
     assertTrue(binding.isPresent(), "Parameter bind from OverrideModule is not present");
-    assertEquals(OverrideModule.MAPPER_OVERRIDE, binding.get(),
+    assertEquals(OverrideTestModule.MAPPER_OVERRIDE, binding.get(),
         "Parameter bind does not equal set override bind");
   }
 
@@ -78,7 +80,7 @@ public final class BindingTest {
     Optional<Interceptor<TestAnnotation>> binding = tree.getCurrent()
         .getInterceptorBindings().getInterceptor(TestAnnotation.class);
     assertTrue(binding.isPresent(), "Interceptor bind from OverrideModule is not present");
-    assertEquals(OverrideModule.INTERCEPTOR_OVERRIDE, binding.get(),
+    assertEquals(OverrideTestModule.INTERCEPTOR_OVERRIDE, binding.get(),
         "Interceptor bind does not equal set override bind");
   }
 
@@ -87,7 +89,7 @@ public final class BindingTest {
     Optional<ExceptionHandler<TestException>> binding = tree.getCurrent()
         .getExceptionBindings().getHandler(TestException.class);
     assertTrue(binding.isPresent(), "Exception bind from OverrideModule is not present");
-    assertEquals(OverrideModule.HANDLER_OVERRIDE, binding.get(),
+    assertEquals(OverrideTestModule.HANDLER_OVERRIDE, binding.get(),
         "Exception bind does not equal set override bind");
   }
 
