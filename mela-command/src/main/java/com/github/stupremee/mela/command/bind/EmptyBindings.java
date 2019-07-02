@@ -11,21 +11,24 @@ import java.util.Optional;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class EmptyBindings {
+public final class EmptyBindings implements ParameterBindings, InterceptorBindings, ExceptionBindings {
 
-  public static final ParameterBindings PARAMETER_BINDINGS = EmptyBindings::noMapper;
-  public static final InterceptorBindings INTERCEPTOR_BINDINGS = EmptyBindings::noInterceptor;
-  public static final ExceptionBindings EXCEPTION_BINDINGS = EmptyBindings::noHandler;
+  public static final EmptyBindings INSTANCE = new EmptyBindings();
 
-  private static <T> Optional<ArgumentMapper<T>> noMapper(Key<T> key) {
+  private EmptyBindings() {}
+
+  @Override
+  public <T extends Throwable> Optional<ExceptionHandler<T>> getHandler(Class<T> exceptionType) {
     return Optional.empty();
   }
 
-  private static <T extends Annotation> Optional<Interceptor<T>> noInterceptor(Class<T> type) {
+  @Override
+  public <T extends Annotation> Optional<Interceptor<T>> getInterceptor(Class<T> annotationType) {
     return Optional.empty();
   }
 
-  private static <T extends Throwable> Optional<ExceptionHandler<T>> noHandler(Class<T> type) {
+  @Override
+  public <T> Optional<ArgumentMapper<T>> getMapper(Key<T> key) {
     return Optional.empty();
   }
 }

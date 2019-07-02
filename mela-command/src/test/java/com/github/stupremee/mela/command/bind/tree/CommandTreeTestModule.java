@@ -1,5 +1,6 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.bind.tree;
 
+import com.github.stupremee.mela.command.bind.CommandBinder;
 import com.google.inject.AbstractModule;
 
 /**

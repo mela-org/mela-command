@@ -4,7 +4,7 @@ import com.github.stupremee.mela.command.bind.CommandBindingNode;
 import com.github.stupremee.mela.command.bind.ExceptionBindingBuilder;
 import com.github.stupremee.mela.command.bind.InterceptorBindingBuilder;
 import com.github.stupremee.mela.command.bind.ParameterBindingBuilder;
-import com.github.stupremee.mela.command.bind.CommandTree;
+import com.github.stupremee.mela.command.bind.tree.CommandTree;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 

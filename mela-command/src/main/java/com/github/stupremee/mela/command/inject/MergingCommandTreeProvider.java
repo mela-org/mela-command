@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.inject;
 
-import com.github.stupremee.mela.command.bind.CommandTree;
+import com.github.stupremee.mela.command.bind.tree.CommandTree;
 import com.google.inject.Inject;
 
 import java.util.Set;

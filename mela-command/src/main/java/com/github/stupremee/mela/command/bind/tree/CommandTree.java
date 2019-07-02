@@ -1,5 +1,8 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.bind.tree;
 
+import com.github.stupremee.mela.command.bind.ExceptionBindings;
+import com.github.stupremee.mela.command.bind.InterceptorBindings;
+import com.github.stupremee.mela.command.bind.ParameterBindings;
 import com.github.stupremee.mela.command.inject.MergingCommandTreeProvider;
 import com.google.inject.ProvidedBy;
 
