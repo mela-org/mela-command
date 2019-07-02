@@ -17,7 +17,7 @@ public class MappingTestModule extends TestModule {
 
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
-    binder.parentNode()
+    binder.root()
         .add(command)
         .bindParameter(ObjectWrapping.class)
           .toMapper(((argument, context) -> new ObjectWrapping(argument))) // TODO: 02.07.2019

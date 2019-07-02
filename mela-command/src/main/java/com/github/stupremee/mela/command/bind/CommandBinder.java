@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public interface CommandBinder {
 
-  CommandBindingNode parentNode();
+  CommandBindingNode root();
 
   static CommandBinder create(@Nonnull Binder binder) {
     return new InternalCommandBinder(checkNotNull(binder));

@@ -19,7 +19,7 @@ final class BasicBindingTestModule extends TestModule {
 
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
-    binder.parentNode()
+    binder.root()
         .add(COMMAND)
         .bindParameter(Object.class).toMapper(MAPPER)
         .interceptAt(TestAnnotation.class).with(INTERCEPTOR)

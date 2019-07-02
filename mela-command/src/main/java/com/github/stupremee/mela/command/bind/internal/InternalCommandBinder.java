@@ -9,15 +9,15 @@ import com.google.inject.Binder;
  */
 public final class InternalCommandBinder implements CommandBinder {
 
-  private final Binder binder;
+  private final CommandBindingNode root;
 
   public InternalCommandBinder(Binder binder) {
-    this.binder = binder;
+    this.root = new InternalCommandBindingNode(new CommandMultibinder(binder));
   }
 
   @Override
-  public CommandBindingNode parentNode() {
-    return new InternalCommandBindingNode(new CommandMultibinder(binder));
+  public CommandBindingNode root() {
+    return root;
   }
 
 }

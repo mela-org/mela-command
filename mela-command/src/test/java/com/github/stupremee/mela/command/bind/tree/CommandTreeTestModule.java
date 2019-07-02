@@ -10,7 +10,7 @@ final class CommandTreeTestModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    CommandBinder.create(binder()).parentNode()
+    CommandBinder.create(binder()).root()
         .group("child");
   }
 }

@@ -19,7 +19,7 @@ final class OverrideTestModule extends TestModule {
 
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
-    binder.parentNode()
+    binder.root()
         .add(ADDITIONAL_COMMAND)
         .group("override")
         .bindParameter(Object.class).toMapper(MAPPER_OVERRIDE)
