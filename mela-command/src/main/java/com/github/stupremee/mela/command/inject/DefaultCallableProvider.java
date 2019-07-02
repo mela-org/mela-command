@@ -2,7 +2,7 @@ package com.github.stupremee.mela.command.inject;
 
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
-import com.github.stupremee.mela.command.binding.CommandTree;
+import com.github.stupremee.mela.command.bind.CommandTree;
 import com.google.inject.Inject;
 
 /**
