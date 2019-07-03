@@ -17,6 +17,10 @@ final class OverrideTestModule extends TestModule {
   public static final Interceptor<TestAnnotation> INTERCEPTOR_OVERRIDE = (c) -> true;
   public static final ExceptionHandler<TestException> HANDLER_OVERRIDE = (t, c) -> {};
 
+  OverrideTestModule() {
+    super(ADDITIONAL_COMMAND);
+  }
+
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
     binder.root()

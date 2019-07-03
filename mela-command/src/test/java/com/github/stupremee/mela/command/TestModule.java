@@ -9,9 +9,18 @@ import com.google.inject.Module;
  */
 public abstract class TestModule implements Module {
 
+  private final Object rootCommand;
+
+  protected TestModule(Object rootCommand) {
+    this.rootCommand = rootCommand;
+  }
+
   @Override
   public final void configure(Binder binder) {
-    configureCommandBindings(CommandBinder.create(binder));
+    CommandBinder commandBinder = CommandBinder.create(binder);
+    if (rootCommand != null)
+      commandBinder.root().add(rootCommand);
+    configureCommandBindings(commandBinder);
   }
 
   protected abstract void configureCommandBindings(CommandBinder binder);

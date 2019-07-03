@@ -9,16 +9,13 @@ import com.google.inject.TypeLiteral;
  */
 final class MappingTestModule extends TestModule {
 
-  private final MappingCommand command;
-
   public MappingTestModule(MappingCommand command) {
-    this.command = command;
+    super(command);
   }
 
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
     binder.root()
-        .add(command)
         .bindParameter(ObjectWrapping.class)
           .toMapper(((argument, context) -> new ObjectWrapping(argument))) // TODO: 02.07.2019
         .bindParameter(new TypeLiteral<GenericWrapping<String>>() {})

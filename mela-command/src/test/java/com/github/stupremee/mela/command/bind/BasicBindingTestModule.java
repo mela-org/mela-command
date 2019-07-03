@@ -17,10 +17,13 @@ final class BasicBindingTestModule extends TestModule {
   public static final Interceptor<TestAnnotation> INTERCEPTOR = (c) -> true;
   public static final ExceptionHandler<TestException> HANDLER = (t, c) -> {};
 
+  BasicBindingTestModule() {
+    super(COMMAND);
+  }
+
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
     binder.root()
-        .add(COMMAND)
         .bindParameter(Object.class).toMapper(MAPPER)
         .interceptAt(TestAnnotation.class).with(INTERCEPTOR)
         .handle(TestException.class).with(HANDLER);
