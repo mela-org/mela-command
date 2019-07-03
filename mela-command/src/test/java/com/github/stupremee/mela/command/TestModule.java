@@ -23,5 +23,11 @@ public abstract class TestModule implements Module {
     configureCommandBindings(commandBinder);
   }
 
-  protected abstract void configureCommandBindings(CommandBinder binder);
+  protected void configureNormalBindings(Binder binder) {}
+
+  protected void configureCommandBindings(CommandBinder binder) {}
+
+  protected Object getRootCommand() {
+    return rootCommand;
+  }
 }

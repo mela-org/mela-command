@@ -3,14 +3,15 @@ package com.github.stupremee.mela.command.intercept;
 import com.github.stupremee.mela.command.TestAnnotation;
 import com.github.stupremee.mela.command.TestModule;
 import com.github.stupremee.mela.command.bind.CommandBinder;
+import com.google.inject.Binder;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 final class InterceptorTestModule extends TestModule {
 
-  public InterceptorTestModule(InterceptorTestCommand command) {
-    super(command);
+  InterceptorTestModule() {
+    super(new InterceptorTestCommand());
   }
 
   @Override
@@ -18,4 +19,8 @@ final class InterceptorTestModule extends TestModule {
     binder.root().interceptAt(TestAnnotation.class).with((context) -> false);
   }
 
+  @Override
+  protected void configureNormalBindings(Binder binder) {
+    binder.bind(InterceptorTestCommand.class).toInstance((InterceptorTestCommand) getRootCommand());
+  }
 }

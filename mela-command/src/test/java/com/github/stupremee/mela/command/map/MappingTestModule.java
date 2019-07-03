@@ -2,6 +2,7 @@ package com.github.stupremee.mela.command.map;
 
 import com.github.stupremee.mela.command.TestModule;
 import com.github.stupremee.mela.command.bind.CommandBinder;
+import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
 
 /**
@@ -9,8 +10,8 @@ import com.google.inject.TypeLiteral;
  */
 final class MappingTestModule extends TestModule {
 
-  public MappingTestModule(MappingTestCommand command) {
-    super(command);
+  MappingTestModule() {
+    super(new MappingTestCommand());
   }
 
   @Override
@@ -20,5 +21,10 @@ final class MappingTestModule extends TestModule {
           .toMapper(((argument, context) -> new ObjectWrapping(argument))) // TODO: 02.07.2019
         .bindParameter(new TypeLiteral<GenericWrapping<String>>() {})
           .toMapper((argument, context) -> new GenericWrapping<>((String) argument)); // TODO: 02.07.2019
+  }
+
+  @Override
+  protected void configureNormalBindings(Binder binder) {
+    binder.bind(MappingTestCommand.class).toInstance((MappingTestCommand) getRootCommand());
   }
 }
