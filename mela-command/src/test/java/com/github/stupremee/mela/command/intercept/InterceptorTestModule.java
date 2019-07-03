@@ -7,15 +7,15 @@ import com.github.stupremee.mela.command.bind.CommandBinder;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class InterceptorTestModule extends TestModule {
+final class InterceptorTestModule extends TestModule {
 
-  public InterceptorTestModule() {
+  public InterceptorTestModule(InterceptorTestCommand command) {
     super(command);
   }
 
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
-    binder.root().interceptAt(TestAnnotation.class)
+    binder.root().interceptAt(TestAnnotation.class).with((context) -> false);
   }
 
 }

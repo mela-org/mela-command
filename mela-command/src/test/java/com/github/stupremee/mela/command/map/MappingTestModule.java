@@ -9,7 +9,7 @@ import com.google.inject.TypeLiteral;
  */
 final class MappingTestModule extends TestModule {
 
-  public MappingTestModule(MappingCommand command) {
+  public MappingTestModule(MappingTestCommand command) {
     super(command);
   }
 

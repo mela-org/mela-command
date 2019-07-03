@@ -1,12 +1,11 @@
 package com.github.stupremee.mela.command.map;
 
 import com.github.stupremee.mela.command.Command;
-import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class MappingCommand {
+final class MappingTestCommand {
 
   private ObjectWrapping simpleResult;
   private GenericWrapping<String> genericResult;
