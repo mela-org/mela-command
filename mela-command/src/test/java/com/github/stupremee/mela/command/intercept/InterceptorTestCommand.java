@@ -8,7 +8,7 @@ import com.github.stupremee.mela.command.TestAnnotation;
  */
 final class InterceptorTestCommand {
 
-  private boolean executed;
+  private boolean executed = false;
 
   @Command(aliases = "intercept")
   @TestAnnotation

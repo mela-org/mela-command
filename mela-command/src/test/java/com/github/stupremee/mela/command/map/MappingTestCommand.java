@@ -7,8 +7,8 @@ import com.github.stupremee.mela.command.Command;
  */
 final class MappingTestCommand {
 
-  private ObjectWrapping simpleResult;
-  private GenericWrapping<String> genericResult;
+  private ObjectWrapping simpleResult = null;
+  private GenericWrapping<String> genericResult = null;
 
   @Command(aliases = "simple")
   public void executeSimple(ObjectWrapping wrapping) {
