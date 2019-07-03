@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class MappingCommand {
+final class MappingCommand {
 
   private ObjectWrapping simpleResult;
   private GenericWrapping<String> genericResult;

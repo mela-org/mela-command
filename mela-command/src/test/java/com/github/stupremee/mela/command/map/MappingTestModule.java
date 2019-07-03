@@ -7,7 +7,7 @@ import com.google.inject.TypeLiteral;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class MappingTestModule extends TestModule {
+final class MappingTestModule extends TestModule {
 
   private final MappingCommand command;
 
