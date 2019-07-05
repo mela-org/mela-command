@@ -11,7 +11,10 @@ import java.util.Set;
 @ProvidedBy(DefaultCallableProvider.class)
 public interface CommandCallable {
 
-  boolean call(String arguments, CommandContext context);
+  void call(String arguments, CommandContext context);
+
+  @CheckReturnValue
+  boolean hasCommand();
 
   @Nonnull
   @CheckReturnValue
