@@ -8,13 +8,13 @@ import com.google.inject.Inject;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class RootScopeProvider extends LazySingletonProvider<CommandGroup> {
+public final class RootGroupProvider extends LazySingletonProvider<CommandGroup> {
 
   private final CommandTree tree;
   private final CommandCompiler compiler;
 
   @Inject
-  public RootScopeProvider(CommandTree tree, CommandCompiler compiler) {
+  public RootGroupProvider(CommandTree tree, CommandCompiler compiler) {
     this.tree = tree;
     this.compiler = compiler;
   }

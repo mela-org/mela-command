@@ -1,7 +1,7 @@
 package com.github.stupremee.mela.command.inject;
 
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.inject.annotation.Scope;
+import com.github.stupremee.mela.command.inject.annotation.Group;
 import com.google.inject.MembersInjector;
 
 import java.lang.reflect.Field;
@@ -10,13 +10,13 @@ import java.lang.reflect.InaccessibleObjectException;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class CustomScopeInjector<T> implements MembersInjector<T> {
+final class CustomGroupInjector<T> implements MembersInjector<T> {
 
   private final CommandGroup root;
-  private final Scope annotation;
+  private final Group annotation;
   private final Field field;
 
-  CustomScopeInjector(CommandGroup root, Scope annotation, Field field) {
+  CustomGroupInjector(CommandGroup root, Group annotation, Field field) {
     this.root = root;
     this.annotation = annotation;
     this.field = field;

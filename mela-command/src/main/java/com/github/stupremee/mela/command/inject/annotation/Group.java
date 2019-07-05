@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface Scope {
+public @interface Group {
   String value() default "";
 }

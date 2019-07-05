@@ -1,11 +1,11 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.inject.RootScopeProvider;
+import com.github.stupremee.mela.command.inject.RootGroupProvider;
 import com.google.inject.ProvidedBy;
 
 import java.util.Set;
 
-@ProvidedBy(RootScopeProvider.class)
+@ProvidedBy(RootGroupProvider.class)
 public interface CommandGroup {
 
   boolean call(String command, CommandContext context);
