@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.compile;
 
-import com.github.stupremee.mela.command.CommandCallable;
+import com.github.stupremee.mela.command.CommandGroup;
 import com.github.stupremee.mela.command.bind.tree.CommandTree;
 
 import javax.annotation.Nonnull;
@@ -9,6 +9,6 @@ import javax.annotation.Nonnull;
 public interface CommandCompiler {
 
   @Nonnull
-  CommandCallable compile(CommandTree tree);
+  CommandGroup compile(CommandTree tree);
 
 }
