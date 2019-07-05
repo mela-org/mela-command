@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.inject;
+package com.github.stupremee.mela.command.inject.custom;
 
 import com.github.stupremee.mela.command.CommandGroup;
 import com.github.stupremee.mela.command.inject.annotation.Group;
