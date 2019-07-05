@@ -15,7 +15,7 @@ import java.util.Set;
  */
 final class EmptyGroup implements CommandTree.Group {
 
-  public static final EmptyGroup INSTANCE = new EmptyGroup();
+  static final EmptyGroup INSTANCE = new EmptyGroup();
 
   private EmptyGroup() {
   }
@@ -26,7 +26,7 @@ final class EmptyGroup implements CommandTree.Group {
   }
 
   @Override
-  public String primaryAlias() {
+  public String getPrimaryAlias() {
     return null;
   }
 

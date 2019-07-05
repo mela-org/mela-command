@@ -222,7 +222,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     }
 
     @Override
-    public String primaryAlias() {
+    public String getPrimaryAlias() {
       return aliases.isEmpty() ? null : aliases.iterator().next();
     }
 

@@ -36,7 +36,7 @@ public interface CommandTree {
 
     Group getParent();
 
-    String primaryAlias();
+    String getPrimaryAlias();
 
     @Nonnull
     Set<Group> getChildren();
