@@ -1,6 +1,9 @@
 package com.github.stupremee.mela.command.intercept;
 
-import com.github.stupremee.mela.command.CommandTest;
+import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.Dispatcher;
+import com.github.stupremee.mela.command.SingleSubjectTest;
+import com.google.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,7 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class InterceptorTest extends CommandTest<InterceptorTestCommand> {
+public final class InterceptorTest extends SingleSubjectTest<InterceptorTestCommand> {
+
+  @Inject
+  private Dispatcher dispatcher;
 
   protected InterceptorTest() {
     super(InterceptorTestModule::new);
@@ -17,13 +23,13 @@ public final class InterceptorTest extends CommandTest<InterceptorTestCommand> {
 
   @Test
   public void testInterceptedCommand() {
-    callCommand("intercept");
+    dispatcher.dispatch("intercept", new CommandContext());
     assertFalse(getSubject().isExecuted(), "Command was executed although intercepted");
   }
 
   @Test
   public void testNotInterceptedCommand() {
-    callCommand("nointercept");
+    dispatcher.dispatch("nointercept", new CommandContext());
     assertTrue(getSubject().isExecuted(), "Command was not executed");
   }
 

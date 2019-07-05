@@ -1,6 +1,9 @@
 package com.github.stupremee.mela.command.map;
 
-import com.github.stupremee.mela.command.CommandTest;
+import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.Dispatcher;
+import com.github.stupremee.mela.command.SingleSubjectTest;
+import com.google.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,7 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class MappingTest extends CommandTest<MappingTestCommand> {
+public final class MappingTest extends SingleSubjectTest<MappingTestCommand> {
+
+  @Inject
+  private Dispatcher dispatcher;
 
   protected MappingTest() {
     super(MappingTestModule::new);
@@ -16,7 +22,7 @@ public final class MappingTest extends CommandTest<MappingTestCommand> {
 
   @Test
   public void testSimpleMapping() {
-    callCommand("simple object");
+    dispatcher.dispatch("simple object", new CommandContext());
     ObjectWrapping result = getSubject().getSimpleResult();
     assertNotNull(result, "Custom object argument was null");
     assertNotNull(result.getContent(), "Content of result was null");
@@ -24,7 +30,7 @@ public final class MappingTest extends CommandTest<MappingTestCommand> {
 
   @Test
   public void testGenericMapping() {
-    callCommand("generic string");
+    dispatcher.dispatch("generic string", new CommandContext());
     GenericWrapping<String> result = getSubject().getGenericResult();
     assertNotNull(result, "Custom generic argument was null");
     assertNotNull(result.getContent(), "Content of generic result was null");

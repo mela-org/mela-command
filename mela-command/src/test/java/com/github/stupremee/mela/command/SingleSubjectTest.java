@@ -12,16 +12,14 @@ import java.util.function.Supplier;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public abstract class CommandTest<T> {
+public abstract class SingleSubjectTest<T> {
 
   @Inject
   private T subject;
-  @Inject
-  private CommandCallable callable;
 
   private final Supplier<? extends Module> moduleFactory;
 
-  protected CommandTest(Supplier<? extends Module> moduleFactory) {
+  protected SingleSubjectTest(Supplier<? extends Module> moduleFactory) {
     this.moduleFactory = moduleFactory;
   }
 
@@ -33,16 +31,11 @@ public abstract class CommandTest<T> {
   }
 
   @AfterEach
-  public void tearDown() {
+  public void nullify() {
     this.subject = null;
-    this.callable = null;
   }
 
   protected final T getSubject() {
     return subject;
-  }
-
-  protected final boolean callCommand(String command) {
-    return callable.selectChild(command).callWithRemainingArgs(new CommandContext());
   }
 }
