@@ -7,7 +7,7 @@ import com.github.stupremee.mela.command.bind.InterceptorBindings;
 import com.github.stupremee.mela.command.bind.ParameterBindings;
 import com.github.stupremee.mela.command.bind.tree.CommandTree;
 import com.github.stupremee.mela.command.bind.tree.RecursiveCommandTree;
-import com.github.stupremee.mela.command.exception.ConflictException;
+import com.github.stupremee.mela.command.bind.BindingConflictException;
 import com.github.stupremee.mela.command.inject.InjectionObjectHolder;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.common.collect.Maps;
@@ -79,7 +79,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
       try {
         this.stepDownOrCreate(child.aliases);
       } catch (IllegalArgumentException e) {
-        throw new ConflictException("Two groups from two different CommandBinders that " +
+        throw new BindingConflictException("Two groups from two different CommandBinders that " +
             "are on the same layer have the same alias", e);
       }
       mergeMutating(tree);
