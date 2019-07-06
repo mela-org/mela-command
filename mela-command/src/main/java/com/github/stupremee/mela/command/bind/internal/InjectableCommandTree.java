@@ -76,7 +76,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
       System.out.println(child);
       tree.stepDown(child);
       try {
-        this.stepDown(this.createIfNotExists(child.aliases));
+        this.stepDown(this.createChildIfNotExists(child.aliases));
       } catch (IllegalArgumentException e) {
         throw new BindingConflictException("Two groups from two different CommandBinders that " +
             "are on the same layer have the same alias", e);
@@ -104,9 +104,10 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     currentNode.makeImmutable();
   }
 
-  Group createIfNotExists(Set<String> aliases) {
-    return currentNode.hasChild(aliases)
-        ? currentNode.getChild(aliases)
+  Group createChildIfNotExists(Set<String> aliases) {
+    Group existingChild = currentNode.getChild(aliases);
+    return existingChild != null
+        ? existingChild
         : currentNode.addChild(aliases);
   }
 
@@ -195,14 +196,6 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
           return element;
       }
       return null;
-    }
-
-    private boolean hasChild(Set<String> aliases) {
-      for (MutableGroup child : children) {
-        if (child.aliases.equals(aliases))
-          return true;
-      }
-      return false;
     }
 
     // FIXME: 25.06.2019 StackOverFlowError
