@@ -9,6 +9,8 @@ import java.util.Set;
 @ProvidedBy(RootGroupProvider.class)
 public interface CommandGroup {
 
+  CommandGroup getParent();
+
   Set<CommandGroup> getChildren();
 
   Set<CommandCallable> getCommands();
