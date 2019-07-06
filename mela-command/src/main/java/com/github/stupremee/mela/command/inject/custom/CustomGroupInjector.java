@@ -1,7 +1,6 @@
 package com.github.stupremee.mela.command.inject.custom;
 
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.util.GroupFinder;
 import com.google.inject.MembersInjector;
 
 import java.lang.reflect.Field;
@@ -25,7 +24,7 @@ final class CustomGroupInjector<T> implements MembersInjector<T> {
   @Override
   public void injectMembers(T instance) {
     try {
-      CommandGroup value = GroupFinder.findExact(annotation.value(), root)
+      CommandGroup value = root.findChild(annotation.value())
           .orElseThrow(() -> new RuntimeException("Invalid group")); // TODO: 22.06.2019 besserer exception type && catchen
       if (!field.canAccess(instance))
         field.setAccessible(true);
