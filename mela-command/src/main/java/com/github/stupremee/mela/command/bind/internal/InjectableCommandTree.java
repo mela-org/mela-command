@@ -104,34 +104,10 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     currentNode.makeImmutable();
   }
 
-  Group createIfNotExists(Set<String> childAliases) {
-    MutableGroup child = createChild(childAliases);
-    checkNodeForDuplicateChildAliases(child);
-    return currentNode.children.add(child) ? child : getExistingChildReference(child);
-  }
-
-  private MutableGroup createChild(Set<String> aliases) {
-    return new MutableGroup(currentNode.parameterBindings.copy(),
-        currentNode.interceptorBindings.copy(), currentNode.exceptionBindings.copy(), aliases, currentNode);
-  }
-
-  private void checkNodeForDuplicateChildAliases(MutableGroup child) {
-    for (MutableGroup element : currentNode.children) {
-      if (!element.equals(child))
-        continue;
-      for (String alias : element.aliases) {
-        checkArgument(!child.aliases.contains(alias),
-            "Duplicate alias for different groups in the same layer: " + alias);
-      }
-    }
-  }
-
-  private MutableGroup getExistingChildReference(MutableGroup child) {
-    for (MutableGroup element : currentNode.children) {
-      if (element.equals(child))
-        return element;
-    }
-    return null;
+  Group createIfNotExists(Set<String> aliases) {
+    return currentNode.hasChild(aliases)
+        ? currentNode.getChild(aliases)
+        : currentNode.addChild(aliases);
   }
 
   void addCommand(Class<?> commandClass) {
@@ -194,6 +170,39 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
           Objects.equals(commands, that.commands) &&
           Objects.equals(children, that.children) &&
           Objects.equals(parent, that.parent);
+    }
+
+    private Group addChild(Set<String> aliases) {
+      checkForDuplicateChildAlias(aliases);
+      MutableGroup child = new MutableGroup(parameterBindings.copy(), interceptorBindings.copy(),
+          exceptionBindings.copy(), aliases, this);
+      children.add(child);
+      return child;
+    }
+
+    private void checkForDuplicateChildAlias(Set<String> aliases) {
+      for (MutableGroup element : children) {
+        for (String alias : element.aliases) {
+          checkArgument(!aliases.contains(alias),
+              "Duplicate alias for different groups in the same layer: " + alias);
+        }
+      }
+    }
+
+    private Group getChild(Set<String> aliases) {
+      for (MutableGroup element : children) {
+        if (element.aliases.equals(aliases))
+          return element;
+      }
+      return null;
+    }
+
+    private boolean hasChild(Set<String> aliases) {
+      for (MutableGroup child : children) {
+        if (child.aliases.equals(aliases))
+          return true;
+      }
+      return false;
     }
 
     // FIXME: 25.06.2019 StackOverFlowError
