@@ -4,6 +4,7 @@ import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.bind.ExceptionBindings;
 import com.google.common.collect.Maps;
 
+import javax.annotation.Nonnull;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +37,7 @@ final class InjectableExceptionBindings implements ExceptionBindings {
     this.bindings = Maps.newTreeMap(bindings);
   }
 
+  @Nonnull
   @SuppressWarnings("unchecked") // type is always correct (map is encapsulated)
   @Override
   public <T extends Throwable> Optional<ExceptionHandler<T>> getHandler(Class<T> exceptionType) {

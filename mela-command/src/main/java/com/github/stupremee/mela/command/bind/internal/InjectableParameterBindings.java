@@ -5,6 +5,7 @@ import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.common.collect.Maps;
 import com.google.inject.Key;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +26,7 @@ final class InjectableParameterBindings implements ParameterBindings {
     this.bindings = Maps.newHashMap(bindings);
   }
 
+  @Nonnull
   @SuppressWarnings("unchecked") // type is always correct (map is encapsulated)
   @Override
   public <T> Optional<ArgumentMapper<T>> getMapper(Key<T> key) {

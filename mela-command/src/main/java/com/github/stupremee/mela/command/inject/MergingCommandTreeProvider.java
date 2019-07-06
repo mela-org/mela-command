@@ -3,6 +3,7 @@ package com.github.stupremee.mela.command.inject;
 import com.github.stupremee.mela.command.bind.tree.CommandTree;
 import com.google.inject.Inject;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 
 /**
@@ -17,6 +18,7 @@ public final class MergingCommandTreeProvider extends LazySingletonProvider<Comm
     this.trees = trees;
   }
 
+  @Nonnull
   @Override
   protected CommandTree createInstance() {
     return trees.stream()

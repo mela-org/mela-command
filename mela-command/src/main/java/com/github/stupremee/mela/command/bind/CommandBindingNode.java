@@ -3,6 +3,7 @@ package com.github.stupremee.mela.command.bind;
 import com.google.inject.TypeLiteral;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 
 public interface CommandBindingNode {
@@ -10,6 +11,7 @@ public interface CommandBindingNode {
   @Nonnull
   CommandBindingNode group(@Nonnull String... aliases);
 
+  @Nullable
   CommandBindingNode parent();
 
   @Nonnull
@@ -27,6 +29,7 @@ public interface CommandBindingNode {
   @Nonnull
   <T> ParameterBindingBuilder<T> bindParameter(@Nonnull Class<T> parameterType);
 
+  @Nonnull
   <T> ParameterBindingBuilder<T> bindParameter(@Nonnull TypeLiteral<T> literal);
 
 }

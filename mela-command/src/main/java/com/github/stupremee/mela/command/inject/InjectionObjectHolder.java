@@ -5,6 +5,7 @@ import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Inject;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 
 /**
@@ -28,18 +29,22 @@ public final class InjectionObjectHolder {
     this.handlers = handlers;
   }
 
+  @Nonnull
   public Set<Object> getCommandObjects() {
     return commandObjects;
   }
 
+  @Nonnull
   public Set<ArgumentMapper<?>> getMappers() {
     return mappers;
   }
 
+  @Nonnull
   public Set<Interceptor<?>> getInterceptors() {
     return interceptors;
   }
 
+  @Nonnull
   public Set<ExceptionHandler<?>> getHandlers() {
     return handlers;
   }

@@ -2,6 +2,7 @@ package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.intercept.Interceptor;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
  */
 public interface InterceptorBindings {
 
+  @Nonnull
   <T extends Annotation> Optional<Interceptor<T>> getInterceptor(Class<T> annotationType);
 
 }

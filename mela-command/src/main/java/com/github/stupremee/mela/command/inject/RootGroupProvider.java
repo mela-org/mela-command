@@ -5,6 +5,8 @@ import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.bind.tree.CommandTree;
 import com.google.inject.Inject;
 
+import javax.annotation.Nonnull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
@@ -19,6 +21,7 @@ public final class RootGroupProvider extends LazySingletonProvider<CommandGroup>
     this.compiler = compiler;
   }
 
+  @Nonnull
   @Override
   protected CommandGroup createInstance() {
     return compiler.compile(tree);

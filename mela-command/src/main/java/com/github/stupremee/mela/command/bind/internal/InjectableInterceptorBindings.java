@@ -4,6 +4,7 @@ import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.bind.InterceptorBindings;
 import com.google.common.collect.Maps;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Objects;
@@ -25,6 +26,7 @@ final class InjectableInterceptorBindings implements InterceptorBindings {
     this.bindings = Maps.newHashMap(bindings);
   }
 
+  @Nonnull
   @SuppressWarnings("unchecked") // type is always correct (map is encapsulated)
   @Override
   public <T extends Annotation> Optional<Interceptor<T>> getInterceptor(Class<T> annotationType) {

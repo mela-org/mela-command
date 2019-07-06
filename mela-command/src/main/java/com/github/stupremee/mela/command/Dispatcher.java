@@ -2,9 +2,11 @@ package com.github.stupremee.mela.command;
 
 import com.google.inject.ImplementedBy;
 
+import javax.annotation.Nonnull;
+
 @ImplementedBy(DefaultDispatcher.class)
 public interface Dispatcher {
 
-  boolean dispatch(String command, CommandContext context);
+  boolean dispatch(@Nonnull String command, @Nonnull CommandContext context);
 
 }

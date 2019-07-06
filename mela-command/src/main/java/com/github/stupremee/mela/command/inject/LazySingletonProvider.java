@@ -2,6 +2,8 @@ package com.github.stupremee.mela.command.inject;
 
 import com.google.inject.Provider;
 
+import javax.annotation.Nonnull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
@@ -16,5 +18,6 @@ public abstract class LazySingletonProvider<T> implements Provider<T> {
     return instance;
   }
 
+  @Nonnull
   protected abstract T createInstance();
 }

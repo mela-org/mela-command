@@ -7,6 +7,7 @@ import com.github.stupremee.mela.command.inject.MergingCommandTreeProvider;
 import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Set;
 
@@ -34,8 +35,10 @@ public interface CommandTree {
 
   interface Group {
 
+    @Nullable
     Group getParent();
 
+    @Nullable
     String getPrimaryAlias();
 
     @Nonnull

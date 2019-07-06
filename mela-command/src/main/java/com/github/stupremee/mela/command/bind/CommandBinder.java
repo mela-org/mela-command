@@ -9,8 +9,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public interface CommandBinder {
 
+  @Nonnull
   CommandBindingNode root();
 
+  @Nonnull
   static CommandBinder create(@Nonnull Binder binder) {
     return new InternalCommandBinder(checkNotNull(binder));
   }

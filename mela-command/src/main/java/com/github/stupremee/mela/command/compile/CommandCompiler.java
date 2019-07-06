@@ -9,6 +9,6 @@ import javax.annotation.Nonnull;
 public interface CommandCompiler {
 
   @Nonnull
-  CommandGroup compile(CommandTree tree);
+  CommandGroup compile(@Nonnull CommandTree tree);
 
 }

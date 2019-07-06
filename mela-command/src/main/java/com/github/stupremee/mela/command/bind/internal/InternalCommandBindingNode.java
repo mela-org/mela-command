@@ -89,6 +89,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
     return bindParameter(TypeLiteral.get(parameterType));
   }
 
+  @Nonnull
   @Override
   public <T> ParameterBindingBuilder<T> bindParameter(@Nonnull TypeLiteral<T> literal) {
     checkNotNull(literal);

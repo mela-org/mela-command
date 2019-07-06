@@ -5,6 +5,7 @@ import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Key;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 
@@ -17,16 +18,19 @@ public final class EmptyBindings implements ParameterBindings, InterceptorBindin
 
   private EmptyBindings() {}
 
+  @Nonnull
   @Override
   public <T extends Throwable> Optional<ExceptionHandler<T>> getHandler(Class<T> exceptionType) {
     return Optional.empty();
   }
 
+  @Nonnull
   @Override
   public <T extends Annotation> Optional<Interceptor<T>> getInterceptor(Class<T> annotationType) {
     return Optional.empty();
   }
 
+  @Nonnull
   @Override
   public <T> Optional<ArgumentMapper<T>> getMapper(Key<T> key) {
     return Optional.empty();

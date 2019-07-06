@@ -31,7 +31,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommandTree.MutableGroup> {
 
-
   InjectableCommandTree() {
     this(new MutableGroup(new InjectableParameterBindings(),
         new InjectableInterceptorBindings(), new InjectableExceptionBindings(),
