@@ -14,6 +14,6 @@ public interface CommandBinder {
 
   @Nonnull
   static CommandBinder create(@Nonnull Binder binder) {
-    return new InternalCommandBinder(checkNotNull(binder));
+    return new InternalCommandBinder(binder);
   }
 }
