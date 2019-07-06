@@ -1,7 +1,6 @@
 package com.github.stupremee.mela.command.inject.custom;
 
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.inject.annotation.Group;
 import com.github.stupremee.mela.command.util.GroupFinder;
 import com.google.inject.MembersInjector;
 

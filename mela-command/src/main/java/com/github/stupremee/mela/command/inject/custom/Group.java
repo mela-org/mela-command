@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.inject.annotation;
+package com.github.stupremee.mela.command.inject.custom;
 
 import com.google.inject.BindingAnnotation;
 
@@ -7,8 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface Handlers {
+public @interface Group {
+  String value() default "";
 }

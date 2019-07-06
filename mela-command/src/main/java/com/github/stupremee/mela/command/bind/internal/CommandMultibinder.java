@@ -2,10 +2,10 @@ package com.github.stupremee.mela.command.bind.internal;
 
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;
-import com.github.stupremee.mela.command.inject.annotation.Commands;
-import com.github.stupremee.mela.command.inject.annotation.Handlers;
-import com.github.stupremee.mela.command.inject.annotation.Interceptors;
-import com.github.stupremee.mela.command.inject.annotation.Mappers;
+import com.github.stupremee.mela.command.inject.Commands;
+import com.github.stupremee.mela.command.inject.Handlers;
+import com.github.stupremee.mela.command.inject.Interceptors;
+import com.github.stupremee.mela.command.inject.Mappers;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
