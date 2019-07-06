@@ -76,7 +76,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
       System.out.println(child);
       tree.stepDown(child);
       try {
-        this.stepDownOrCreate(child.aliases);
+        this.stepDown(this.createIfNotExists(child.aliases));
       } catch (IllegalArgumentException e) {
         throw new BindingConflictException("Two groups from two different CommandBinders that " +
             "are on the same layer have the same alias", e);
@@ -104,11 +104,10 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     currentNode.makeImmutable();
   }
 
-  void stepDownOrCreate(Set<String> childAliases) {
+  Group createIfNotExists(Set<String> childAliases) {
     MutableGroup child = createChild(childAliases);
     checkNodeForDuplicateChildAliases(child);
-    boolean exists = !currentNode.children.add(child);
-    this.currentNode = !exists ? child : getExistingChildReference(child);
+    return currentNode.children.add(child) ? child : getExistingChildReference(child);
   }
 
   private MutableGroup createChild(Set<String> aliases) {

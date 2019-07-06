@@ -41,7 +41,8 @@ final class InternalCommandBindingNode implements CommandBindingNode {
   @Override
   public CommandBindingNode group(@Nonnull String... aliases) {
     checkNotNull(aliases);
-    tree.stepDownOrCreate(Set.of(aliases));
+    CommandTree.Group group = tree.createIfNotExists(Set.of(aliases));
+    tree.stepDown(group);
     return new InternalCommandBindingNode(this);
   }
 
