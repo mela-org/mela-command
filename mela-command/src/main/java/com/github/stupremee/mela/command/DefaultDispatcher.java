@@ -18,6 +18,7 @@ public final class DefaultDispatcher implements Dispatcher {
 
   @Override
   public boolean dispatch(@Nonnull String command, @Nonnull CommandContext context) {
+    // TODO: 06.07.2019
     return false;
   }
 }

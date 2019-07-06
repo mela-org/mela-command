@@ -10,6 +10,7 @@ public interface ArgumentMapper<T> {
 
   @Nonnull
   static <T> ArgumentMapper<T> singleton(T instance) {
+    // TODO: 06.07.2019  
     return null;
   }
 }
