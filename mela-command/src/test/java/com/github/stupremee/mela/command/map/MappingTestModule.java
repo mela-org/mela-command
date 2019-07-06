@@ -18,9 +18,9 @@ final class MappingTestModule extends TestModule {
   protected void configureCommandBindings(CommandBinder binder) {
     binder.root()
         .bindParameter(ObjectWrapping.class)
-          .toMapper(((argument, context) -> new ObjectWrapping(argument))) // TODO: 02.07.2019
+          .toMapper(((argument, context) -> new ObjectWrapping(argument)))
         .bindParameter(new TypeLiteral<GenericWrapping<String>>() {})
-          .toMapper((argument, context) -> new GenericWrapping<>((String) argument)); // TODO: 02.07.2019
+          .toMapper((argument, context) -> new GenericWrapping<>((String) argument));
   }
 
   @Override
