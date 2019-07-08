@@ -38,9 +38,9 @@ public final class BindingTest {
   public void testCommandPresence() {
     Collection<?> commandObjects = tree.getCurrent().getCommandObjects();
     assertTrue(commandObjects.contains(BasicBindingTestModule.COMMAND),
-        "Root does not contain command object from SimpleModule");
+        "Root does not contain command object from BasicBindingTestModule");
     assertTrue(commandObjects.contains(OverrideTestModule.ADDITIONAL_COMMAND),
-        "Root does not contain command object from OverrideModule");
+        "Root does not contain command object from OverrideTestModule");
   }
 
   @Test

@@ -64,16 +64,12 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     this.stepToRoot();
   }
 
-  // TODO: 25.06.2019 replace with iterative algorithms where possible
   private void mergeMutating(InjectableCommandTree tree) {
-    System.out.println("Merging");
     currentNode.interceptorBindings.putAll(tree.currentNode.interceptorBindings);
     currentNode.parameterBindings.putAll(tree.currentNode.parameterBindings);
     currentNode.exceptionBindings.putAll(tree.currentNode.exceptionBindings);
     currentNode.commands.putAll(tree.currentNode.commands);
     for (MutableGroup child : tree.currentNode.children) {
-      System.out.print("Stepping to ");
-      System.out.println(child);
       tree.stepDown(child);
       try {
         this.stepDown(this.createChildIfNotExists(child.aliases));
@@ -92,6 +88,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
   }
 
   private void recursiveInject(InjectionObjectHolder holder) {
+    // FIXME: 08.07.2019 Commands are not present if set to null
     for (Object command : holder.getCommandObjects())
       currentNode.commands.computeIfPresent(command.getClass(), (k, v) -> command);
     currentNode.parameterBindings.inject(holder.getMappers());
@@ -112,7 +109,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
   }
 
   void addCommand(Class<?> commandClass) {
-    currentNode.commands.put(commandClass, null);
+    currentNode.commands.put(commandClass, new Object());
   }
 
   <T> void addParameterBinding(Key<T> key,
