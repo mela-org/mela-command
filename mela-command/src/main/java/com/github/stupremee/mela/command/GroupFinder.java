@@ -1,6 +1,5 @@
 package com.github.stupremee.mela.command;
 
-
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
@@ -9,6 +8,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+// TODO: 08.07.2019 improve this
 public final class GroupFinder {
 
   private final boolean strict;
@@ -33,10 +33,9 @@ public final class GroupFinder {
   }
 
   public void find() {
-    // TODO: 08.07.2019 index checken
     int spaceIndex = input.indexOf(' ');
-    String directChild = input.substring(0, spaceIndex);
-    input = input.substring(0, spaceIndex).trim();
+    String directChild = input.substring(0, spaceIndex == -1 ? input.length() : spaceIndex);
+    input = spaceIndex == -1 ? "" : input.substring(spaceIndex).trim();
     current.getChildren().stream()
         .filter((group) -> group.getNames().contains(directChild))
         .findFirst()
