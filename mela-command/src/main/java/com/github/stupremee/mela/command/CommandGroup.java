@@ -29,15 +29,4 @@ public interface CommandGroup {
   @Nonnull
   Set<String> getAliases();
 
-  @Nonnull
-  default Optional<CommandGroup> findChild(String input) {
-    final String childDescriptor = input.trim();
-    int spaceIndex = childDescriptor.indexOf(' ');
-    String directChildAlias = childDescriptor.substring(0, spaceIndex);
-    return getChildren().stream()
-        .filter((group) -> group.getAliases().contains(directChildAlias))
-        .findFirst()
-        .flatMap((group) -> group.findChild(childDescriptor.substring(spaceIndex)));
-  }
-
 }

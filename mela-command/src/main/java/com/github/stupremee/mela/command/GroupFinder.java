@@ -1,5 +1,9 @@
 package com.github.stupremee.mela.command;
 
+
+import javax.annotation.Nonnull;
+import java.util.Optional;
+
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -7,21 +11,29 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public final class GroupFinder {
 
+  private final boolean strict;
+
   private CommandGroup current;
   private String input;
 
   private CommandGroup result;
 
-  public static GroupFinder of(CommandGroup root, String input) {
-    return new GroupFinder(root, input);
+  public static GroupFinder strict(CommandGroup root, String input) {
+    return new GroupFinder(true, root, input);
   }
 
-  private GroupFinder(CommandGroup root, String input) {
+  public static GroupFinder flexible(CommandGroup root, String input) {
+    return new GroupFinder(false, root, input);
+  }
+
+  private GroupFinder(boolean strict, CommandGroup root, String input) {
+    this.strict = strict;
     this.current = root;
     this.input = input;
   }
 
   public void find() {
+    // TODO: 08.07.2019 index checken
     int spaceIndex = input.indexOf(' ');
     String directChild = input.substring(0, spaceIndex);
     input = input.substring(0, spaceIndex).trim();
@@ -31,12 +43,13 @@ public final class GroupFinder {
         .ifPresentOrElse((group) -> {
           current = group;
           find();
-        }, () -> result = current);
+        }, () -> result = strict && !input.isEmpty() ? null : current);
   }
 
-  public CommandGroup getResult() {
+  @Nonnull
+  public Optional<CommandGroup> getResult() {
     checkResultPresence();
-    return result;
+    return Optional.ofNullable(result);
   }
 
   public String getRemainingInput() {
