@@ -5,7 +5,6 @@ import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.Set;
 
 @ProvidedBy(RootGroupProvider.class)
@@ -21,12 +20,12 @@ public interface CommandGroup {
   Set<CommandCallable> getCommands();
 
   @Nullable
-  default String getPrimaryAlias() {
-    Set<String> aliases = getAliases();
-    return aliases.isEmpty() ? null : aliases.iterator().next();
+  default String getPrimaryName() {
+    Set<String> names = getNames();
+    return names.isEmpty() ? null : names.iterator().next();
   }
 
   @Nonnull
-  Set<String> getAliases();
+  Set<String> getNames();
 
 }

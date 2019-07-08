@@ -27,7 +27,7 @@ public final class DefaultDispatcher implements Dispatcher {
     String commandLabel = remaining.substring(0, spaceIndex);
     String arguments = remaining.substring(spaceIndex).trim();
     Optional<CommandCallable> commandCallable = group.getCommands().stream()
-        .filter((callable) -> callable.getAliases().contains(commandLabel))
+        .filter((callable) -> callable.getLabels().contains(commandLabel))
         .findFirst();
     if (commandCallable.isPresent()) {
       commandCallable.get().call(arguments, context);

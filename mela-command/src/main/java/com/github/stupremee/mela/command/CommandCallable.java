@@ -8,7 +8,9 @@ public interface CommandCallable {
   void call(String arguments, CommandContext context);
 
   @Nonnull
-  Set<String> getAliases();
+  Set<String> getLabels();
+
+  String getPrimaryLabel();
 
   String getHelp();
 

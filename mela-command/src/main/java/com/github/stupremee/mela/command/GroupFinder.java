@@ -38,7 +38,7 @@ public final class GroupFinder {
     String directChild = input.substring(0, spaceIndex);
     input = input.substring(0, spaceIndex).trim();
     current.getChildren().stream()
-        .filter((group) -> group.getAliases().contains(directChild))
+        .filter((group) -> group.getNames().contains(directChild))
         .findFirst()
         .ifPresentOrElse((group) -> {
           current = group;
