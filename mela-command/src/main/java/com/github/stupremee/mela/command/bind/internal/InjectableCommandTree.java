@@ -221,11 +221,6 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
       return parent;
     }
 
-    @Override
-    public String getPrimaryAlias() {
-      return aliases.isEmpty() ? null : aliases.iterator().next();
-    }
-
     @Nonnull
     @Override
     public Set<CommandTree.Group> getChildren() {

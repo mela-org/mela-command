@@ -20,6 +20,12 @@ public interface CommandGroup {
   @Nonnull
   Set<CommandCallable> getCommands();
 
+  @Nullable
+  default String getPrimaryAlias() {
+    Set<String> aliases = getAliases();
+    return aliases.isEmpty() ? null : aliases.iterator().next();
+  }
+
   @Nonnull
   Set<String> getAliases();
 

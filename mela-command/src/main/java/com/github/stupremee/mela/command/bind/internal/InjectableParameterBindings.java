@@ -76,6 +76,8 @@ final class InjectableParameterBindings implements ParameterBindings {
     ValueWrapper(Class<? extends ArgumentMapper<T>> mapperType) {
       this.mapperType = mapperType;
     }
+
+    // TODO: 08.07.2019 equals/hashcode implementation 
   }
 
 

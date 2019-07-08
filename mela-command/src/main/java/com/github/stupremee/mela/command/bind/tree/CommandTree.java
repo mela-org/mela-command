@@ -39,7 +39,10 @@ public interface CommandTree {
     Group getParent();
 
     @Nullable
-    String getPrimaryAlias();
+    default String getPrimaryAlias() {
+      Set<String> aliases = getAliases();
+      return aliases.isEmpty() ? null : aliases.iterator().next();
+    }
 
     @Nonnull
     Set<Group> getChildren();
