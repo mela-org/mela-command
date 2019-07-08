@@ -31,8 +31,13 @@ public interface CommandGroup {
 
   @Nonnull
   default Optional<CommandGroup> findChild(String input) {
-    // TODO: 06.07.2019  
-    return Optional.empty();
+    final String childDescriptor = input.trim();
+    int spaceIndex = childDescriptor.indexOf(' ');
+    String directChildAlias = childDescriptor.substring(0, spaceIndex);
+    return getChildren().stream()
+        .filter((group) -> group.getAliases().contains(directChildAlias))
+        .findFirst()
+        .flatMap((group) -> group.findChild(childDescriptor.substring(spaceIndex)));
   }
 
 }
