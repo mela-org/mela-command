@@ -109,7 +109,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
   }
 
   void addCommand(Class<?> commandClass) {
-    currentNode.commands.put(commandClass, new Object());
+    currentNode.commands.put(commandClass, new Object()); // TODO: 08.07.2019  
   }
 
   <T> void addParameterBinding(Key<T> key,

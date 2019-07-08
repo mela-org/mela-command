@@ -26,6 +26,7 @@ public final class GroupFinder {
   }
 
   public void find() {
+    // TODO: 08.07.2019 implement iteratively
     int spaceIndex = input.indexOf(' ');
     boolean lastWord = spaceIndex == -1;
     String directChild = input.substring(0, lastWord ? input.length() : spaceIndex);
