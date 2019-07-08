@@ -22,7 +22,7 @@ public class HandlerTest extends SingleSubjectTest<TestExceptionHandler> {
 
   @Test
   public void testHandler() {
-    dispatcher.dispatch("throw", new CommandContext());
+    dispatcher.dispatch("throw", CommandContext.create());
     assertTrue(getSubject().wasHandled(), "Exception was not handled by bound handler");
   }
 

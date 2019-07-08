@@ -22,7 +22,7 @@ public final class MappingTest extends SingleSubjectTest<MappingTestCommand> {
 
   @Test
   public void testSimpleMapping() {
-    dispatcher.dispatch("simple object", new CommandContext());
+    dispatcher.dispatch("simple object", CommandContext.create());
     ObjectWrapping result = getSubject().getSimpleResult();
     assertNotNull(result, "Custom object argument was null");
     assertNotNull(result.getContent(), "Content of result was null");
@@ -30,7 +30,7 @@ public final class MappingTest extends SingleSubjectTest<MappingTestCommand> {
 
   @Test
   public void testGenericMapping() {
-    dispatcher.dispatch("generic string", new CommandContext());
+    dispatcher.dispatch("generic string", CommandContext.create());
     GenericWrapping<String> result = getSubject().getGenericResult();
     assertNotNull(result, "Custom generic argument was null");
     assertNotNull(result.getContent(), "Content of generic result was null");

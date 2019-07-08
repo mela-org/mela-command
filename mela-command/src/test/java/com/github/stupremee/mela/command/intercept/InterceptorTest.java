@@ -23,13 +23,13 @@ public final class InterceptorTest extends SingleSubjectTest<InterceptorTestComm
 
   @Test
   public void testInterceptedCommand() {
-    dispatcher.dispatch("intercept", new CommandContext());
+    dispatcher.dispatch("intercept", CommandContext.create());
     assertFalse(getSubject().isExecuted(), "Command was executed although intercepted");
   }
 
   @Test
   public void testNotInterceptedCommand() {
-    dispatcher.dispatch("nointercept", new CommandContext());
+    dispatcher.dispatch("nointercept", CommandContext.create());
     assertTrue(getSubject().isExecuted(), "Command was not executed");
   }
 
