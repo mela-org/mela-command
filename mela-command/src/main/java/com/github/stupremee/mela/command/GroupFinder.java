@@ -11,44 +11,49 @@ import static com.google.common.base.Preconditions.checkState;
 // TODO: 08.07.2019 improve this
 public final class GroupFinder {
 
-  private final boolean strict;
-
   private CommandGroup current;
   private String input;
 
   private CommandGroup result;
 
-  public static GroupFinder strict(CommandGroup root, String input) {
-    return new GroupFinder(true, root, input);
+  public static GroupFinder of(CommandGroup root, String input) {
+    return new GroupFinder(root, input);
   }
 
-  public static GroupFinder flexible(CommandGroup root, String input) {
-    return new GroupFinder(false, root, input);
-  }
-
-  private GroupFinder(boolean strict, CommandGroup root, String input) {
-    this.strict = strict;
+  private GroupFinder(CommandGroup root, String input) {
     this.current = root;
     this.input = input;
   }
 
   public void find() {
     int spaceIndex = input.indexOf(' ');
-    String directChild = input.substring(0, spaceIndex == -1 ? input.length() : spaceIndex);
-    input = spaceIndex == -1 ? "" : input.substring(spaceIndex).trim();
+    boolean lastWord = spaceIndex == -1;
+    String directChild = input.substring(0, lastWord ? input.length() : spaceIndex);
+    input = lastWord ? "" : input.substring(spaceIndex).trim();
     current.getChildren().stream()
         .filter((group) -> group.getNames().contains(directChild))
         .findFirst()
         .ifPresentOrElse((group) -> {
           current = group;
           find();
-        }, () -> result = strict && !input.isEmpty() ? null : current);
+        }, () -> result = current);
+  }
+
+  public void findExact() {
+    find();
+    if (hasRemainingInput())
+      result = null;
   }
 
   @Nonnull
-  public Optional<CommandGroup> getResult() {
+  public CommandGroup getResult() {
     checkResultPresence();
-    return Optional.ofNullable(result);
+    return result;
+  }
+
+  public boolean hasRemainingInput() {
+    checkResultPresence();
+    return !input.isEmpty();
   }
 
   public String getRemainingInput() {
@@ -57,6 +62,6 @@ public final class GroupFinder {
   }
 
   private void checkResultPresence() {
-    checkState(result != null, "find() was not called");
+    checkState(result != null, "No group has been found");
   }
 }

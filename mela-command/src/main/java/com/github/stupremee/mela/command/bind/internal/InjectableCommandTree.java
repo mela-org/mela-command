@@ -169,8 +169,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
           Objects.equals(exceptionBindings, that.exceptionBindings) &&
           Objects.equals(aliases, that.aliases) &&
           Objects.equals(commands, that.commands) &&
-          Objects.equals(children, that.children) &&
-          Objects.equals(parent, that.parent);
+          Objects.equals(children, that.children);
     }
 
     private Group addChild(Set<String> aliases) {
@@ -202,7 +201,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     @Override
     public int hashCode() {
       return Objects.hash(parameterBindings, interceptorBindings, exceptionBindings,
-          aliases, commands, children, parent);
+          aliases, commands, children);
     }
 
     @Override

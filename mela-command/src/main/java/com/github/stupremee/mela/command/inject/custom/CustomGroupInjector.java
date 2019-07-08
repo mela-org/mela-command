@@ -25,9 +25,9 @@ final class CustomGroupInjector<T> implements MembersInjector<T> {
   @Override
   public void injectMembers(T instance) {
     try {
-      GroupFinder finder = GroupFinder.strict(root, annotation.value());
-      finder.find();
-      CommandGroup value = finder.getResult().orElseThrow(RuntimeException::new); // TODO: 08.07.2019 bessere exception
+      GroupFinder finder = GroupFinder.of(root, annotation.value());
+      finder.findExact();
+      CommandGroup value = finder.getResult(); // TODO: 08.07.2019 bessere exception
       if (!field.canAccess(instance))
         field.setAccessible(true);
       field.set(instance, value);

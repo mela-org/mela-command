@@ -19,9 +19,9 @@ public final class DefaultDispatcher implements Dispatcher {
 
   @Override
   public boolean dispatch(@Nonnull String command, @Nonnull CommandContext context) {
-    GroupFinder finder = GroupFinder.flexible(root, command);
+    GroupFinder finder = GroupFinder.of(root, command);
     finder.find();
-    CommandGroup group = finder.getResult().orElseThrow();
+    CommandGroup group = finder.getResult();
     String remaining = finder.getRemainingInput();
     int spaceIndex = remaining.indexOf(' ');
     String commandLabel = remaining.substring(0, spaceIndex);
