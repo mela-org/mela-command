@@ -27,5 +27,4 @@ public interface CommandGroup {
 
   @Nonnull
   Set<String> getNames();
-
 }
