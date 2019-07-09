@@ -1,5 +1,7 @@
 package com.github.stupremee.mela.command;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,11 +22,12 @@ public final class CommandContext {
     this.map = map;
   }
 
-  public void put(Object key, Object value) {
+  public void put(@Nullable Object key, @Nullable Object value) {
     this.map.put(key, value);
   }
 
-  public Optional<Object> get(Object key) {
+  @Nonnull
+  public Optional<Object> get(@Nullable Object key) {
     return Optional.ofNullable(map.get(key));
   }
 
@@ -43,11 +46,13 @@ public final class CommandContext {
     return Objects.hashCode(map);
   }
 
+  @Nonnull
   public static CommandContext create() {
     return new CommandContext();
   }
 
-  public static CommandContext of(Map<?, ?> map) {
+  @Nonnull
+  public static CommandContext of(@Nonnull Map<?, ?> map) {
     return new CommandContext(new HashMap<>(map));
   }
 }
