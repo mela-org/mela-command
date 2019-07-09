@@ -1,5 +1,7 @@
 package com.github.stupremee.mela.command;
 
+import com.github.stupremee.mela.command.util.CommandInput;
+import com.github.stupremee.mela.command.util.CommandInputParser;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;
@@ -19,18 +21,10 @@ public final class DefaultDispatcher implements Dispatcher {
 
   @Override
   public boolean dispatch(@Nonnull String command, @Nonnull CommandContext context) {
-    GroupFinder finder = GroupFinder.of(root, command);
-    finder.find();
-    CommandGroup group = finder.getResult();
-    String remaining = finder.getRemainingInput();
-    int spaceIndex = remaining.indexOf(' ');
-    String commandLabel = remaining.substring(0, spaceIndex);
-    String arguments = remaining.substring(spaceIndex).trim();
-    Optional<CommandCallable> commandCallable = group.getCommands().stream()
-        .filter((callable) -> callable.getLabels().contains(commandLabel))
-        .findFirst();
-    if (commandCallable.isPresent()) {
-      commandCallable.get().call(arguments, context);
+    CommandInput input = CommandInputParser.parse(root, command);
+    Optional<CommandCallable> callable = input.getCallable();
+    if (callable.isPresent()) {
+      callable.get().call(input.getArguments(), context);
       return true;
     } else {
       return false;

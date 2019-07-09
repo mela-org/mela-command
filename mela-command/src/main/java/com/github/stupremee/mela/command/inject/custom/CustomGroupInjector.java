@@ -1,6 +1,8 @@
 package com.github.stupremee.mela.command.inject.custom;
 
 import com.github.stupremee.mela.command.CommandGroup;
+import com.github.stupremee.mela.command.util.CommandInput;
+import com.github.stupremee.mela.command.util.CommandInputParser;
 import com.google.inject.MembersInjector;
 
 import java.lang.reflect.Field;
@@ -24,9 +26,12 @@ final class CustomGroupInjector<T> implements MembersInjector<T> {
   @Override
   public void injectMembers(T instance) {
     try {
-      GroupFinder finder = GroupFinder.of(root, annotation.value());
-      finder.findExact();
-      CommandGroup value = finder.getResult(); // TODO: 08.07.2019 bessere exception
+      String descriptor = annotation.value();
+      CommandInput input = CommandInputParser.parse(root, descriptor);
+      CommandGroup value = input.getGroup();
+      if (!value.matches(descriptor))
+        throw new RuntimeException("Invalid group"); // TODO: 09.07.2019 bessere exception
+
       if (!field.canAccess(instance))
         field.setAccessible(true);
       field.set(instance, value);
