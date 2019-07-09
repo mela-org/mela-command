@@ -31,6 +31,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommandTree.MutableGroup> {
 
+  private static final Object COMMAND_PLACEHOLDER = new Object();
+
   InjectableCommandTree() {
     this(new MutableGroup(new InjectableParameterBindings(),
         new InjectableInterceptorBindings(), new InjectableExceptionBindings(),
@@ -88,7 +90,6 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
   }
 
   private void recursiveInject(InjectionObjectHolder holder) {
-    // FIXME: 08.07.2019 Commands are not present if set to null
     for (Object command : holder.getCommandObjects())
       currentNode.commands.computeIfPresent(command.getClass(), (k, v) -> command);
     currentNode.parameterBindings.inject(holder.getMappers());
@@ -109,7 +110,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
   }
 
   void addCommand(Class<?> commandClass) {
-    currentNode.commands.put(commandClass, new Object()); // TODO: 08.07.2019  
+    currentNode.commands.put(commandClass, COMMAND_PLACEHOLDER);
   }
 
   <T> void addParameterBinding(Key<T> key,
@@ -194,7 +195,6 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
       return null;
     }
 
-    // FIXME: 25.06.2019 StackOverFlowError
     @Override
     public int hashCode() {
       return Objects.hash(parameterBindings, interceptorBindings, exceptionBindings,

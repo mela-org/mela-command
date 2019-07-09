@@ -12,7 +12,7 @@ import com.github.stupremee.mela.command.map.ArgumentMapper;
  */
 final class BasicBindingTestModule extends TestModule {
 
-  public static final Object COMMAND = new Object();
+  public static final Object COMMAND = new Object() {};
   public static final ArgumentMapper<Object> MAPPER = (o, c) -> null;
   public static final Interceptor<TestAnnotation> INTERCEPTOR = (c) -> true;
   public static final ExceptionHandler<TestException> HANDLER = (t, c) -> {};

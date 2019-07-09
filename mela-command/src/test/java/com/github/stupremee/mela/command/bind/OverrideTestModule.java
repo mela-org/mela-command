@@ -12,7 +12,7 @@ import com.github.stupremee.mela.command.map.ArgumentMapper;
  */
 final class OverrideTestModule extends TestModule {
 
-  public static final Object ADDITIONAL_COMMAND = new Object();
+  public static final Object ADDITIONAL_COMMAND = new Object() {};
   public static final ArgumentMapper<Object> MAPPER_OVERRIDE = (o, c) -> null;
   public static final Interceptor<TestAnnotation> INTERCEPTOR_OVERRIDE = (c) -> true;
   public static final ExceptionHandler<TestException> HANDLER_OVERRIDE = (t, c) -> {};

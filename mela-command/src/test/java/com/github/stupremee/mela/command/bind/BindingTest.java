@@ -69,6 +69,7 @@ public final class BindingTest {
 
   @Test
   public void testMapperOverridePresence() {
+    stepToChild();
     Optional<ArgumentMapper<Object>> binding = tree.getCurrent()
         .getParameterBindings().getMapper(Key.get(Object.class));
     assertTrue(binding.isPresent(), "Parameter bind from OverrideModule is not present");
@@ -78,6 +79,7 @@ public final class BindingTest {
 
   @Test
   public void testInterceptorOverridePresence() {
+    stepToChild();
     Optional<Interceptor<TestAnnotation>> binding = tree.getCurrent()
         .getInterceptorBindings().getInterceptor(TestAnnotation.class);
     assertTrue(binding.isPresent(), "Interceptor bind from OverrideModule is not present");
@@ -87,11 +89,16 @@ public final class BindingTest {
 
   @Test
   public void testHandlerOverridePresence() {
+    stepToChild();
     Optional<ExceptionHandler<TestException>> binding = tree.getCurrent()
         .getExceptionBindings().getHandler(TestException.class);
     assertTrue(binding.isPresent(), "Exception bind from OverrideModule is not present");
     assertEquals(OverrideTestModule.HANDLER_OVERRIDE, binding.get(),
         "Exception bind does not equal set override bind");
+  }
+
+  private void stepToChild() {
+    tree.stepDown(tree.getCurrent().getChildren().iterator().next());
   }
 
 }
