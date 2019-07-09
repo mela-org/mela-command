@@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public abstract class RecursiveCommandTree<T extends CommandTree.Group> implements CommandTree {
+public abstract class RecursiveCommandTree<T extends Group> implements CommandTree {
 
   protected final T root;
   protected T currentNode;

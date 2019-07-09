@@ -5,6 +5,7 @@ import com.github.stupremee.mela.command.bind.ExceptionBindingBuilder;
 import com.github.stupremee.mela.command.bind.InterceptorBindingBuilder;
 import com.github.stupremee.mela.command.bind.ParameterBindingBuilder;
 import com.github.stupremee.mela.command.bind.tree.CommandTree;
+import com.github.stupremee.mela.command.bind.tree.Group;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
@@ -41,7 +42,7 @@ final class InternalCommandBindingNode implements CommandBindingNode {
   @Override
   public CommandBindingNode group(@Nonnull String... aliases) {
     checkNotNull(aliases);
-    CommandTree.Group group = tree.createChildIfNotExists(Set.of(aliases));
+    Group group = tree.createChildIfNotExists(Set.of(aliases));
     tree.stepDown(group);
     return new InternalCommandBindingNode(this);
   }

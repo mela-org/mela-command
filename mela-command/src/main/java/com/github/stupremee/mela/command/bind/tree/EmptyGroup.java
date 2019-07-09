@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class EmptyGroup implements CommandTree.Group {
+final class EmptyGroup implements Group {
 
   static final EmptyGroup INSTANCE = new EmptyGroup();
 
@@ -21,7 +21,7 @@ final class EmptyGroup implements CommandTree.Group {
   }
 
   @Override
-  public CommandTree.Group getParent() {
+  public Group getParent() {
     return null;
   }
 
@@ -32,13 +32,13 @@ final class EmptyGroup implements CommandTree.Group {
 
   @Nonnull
   @Override
-  public Set<CommandTree.Group> getChildren() {
+  public Set<Group> getChildren() {
     return Collections.emptySet();
   }
 
   @Nonnull
   @Override
-  public Set<String> getAliases() {
+  public Set<String> getNames() {
     return Collections.emptySet();
   }
 

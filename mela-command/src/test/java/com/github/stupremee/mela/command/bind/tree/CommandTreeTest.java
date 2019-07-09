@@ -28,8 +28,8 @@ public final class CommandTreeTest {
   public void testStep() {
     tree.stepToRoot();
     assertTrue(tree.isAtRoot(), "Tree did not step to root");
-    CommandTree.Group root = tree.getCurrent();
-    CommandTree.Group child = root.getChildren().iterator().next();
+    Group root = tree.getCurrent();
+    Group child = root.getChildren().iterator().next();
     tree.stepDown(child);
     assertEquals(child, tree.getCurrent(), "Tree did not step down to specified child");
     tree.stepUp();

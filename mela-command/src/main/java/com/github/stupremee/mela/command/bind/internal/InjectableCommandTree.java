@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.command.bind.internal;
 
+import com.github.stupremee.mela.command.bind.tree.Group;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.bind.ExceptionBindings;
@@ -129,7 +130,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     currentNode.exceptionBindings.put(exceptionType, handlerType, ignoreInheritance);
   }
 
-  static final class MutableGroup implements CommandTree.Group {
+  static final class MutableGroup implements Group {
 
     private final MutableGroup parent;
     private final InjectableParameterBindings parameterBindings;
@@ -213,19 +214,19 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     }
 
     @Override
-    public CommandTree.Group getParent() {
+    public Group getParent() {
       return parent;
     }
 
     @Nonnull
     @Override
-    public Set<CommandTree.Group> getChildren() {
+    public Set<Group> getChildren() {
       return finalChildren == null ? Set.copyOf(children) : finalChildren;
     }
 
     @Nonnull
     @Override
-    public Set<String> getAliases() {
+    public Set<String> getNames() {
       return aliases;
     }
 
