@@ -33,6 +33,6 @@ public interface Group {
   ExceptionBindings getExceptionBindings();
 
   @Nonnull
-  Collection<?> getCommandObjects();
+  Set<Object> getCommandObjects();
 
 }

@@ -18,7 +18,6 @@ import com.google.inject.Key;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -100,7 +99,6 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
       this.stepDown(child);
       recursiveInject(holder);
     }
-    currentNode.makeImmutable();
   }
 
   Group createChildIfNotExists(Set<String> aliases) {
@@ -140,7 +138,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     private final Set<MutableGroup> children;
 
     private Map<Class<?>, Object> commands;
-    private Set<Group> finalChildren;
+    private Set<Group> childrenView;
 
 
     private MutableGroup(InjectableParameterBindings parameterBindings,
@@ -154,6 +152,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
       this.aliases = aliases;
       this.parent = parent;
       this.children = Sets.newHashSet();
+      this.childrenView = Collections.unmodifiableSet(children);
     }
 
     @Override
@@ -221,7 +220,7 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
     @Nonnull
     @Override
     public Set<Group> getChildren() {
-      return finalChildren == null ? Set.copyOf(children) : finalChildren;
+      return childrenView;
     }
 
     @Nonnull
@@ -250,13 +249,8 @@ final class InjectableCommandTree extends RecursiveCommandTree<InjectableCommand
 
     @Nonnull
     @Override
-    public Collection<?> getCommandObjects() {
-      return commands.values();
-    }
-
-    private void makeImmutable() {
-      finalChildren = Set.copyOf(children);
-      commands = Map.copyOf(commands);
+    public Set<Object> getCommandObjects() {
+      return Set.copyOf(commands.values());
     }
   }
 }
