@@ -1,12 +1,10 @@
 package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.inject.RootGroupProvider;
-import com.google.common.base.Preconditions;
 import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -36,7 +34,7 @@ public interface CommandGroup {
   Set<String> getNames();
 
   default boolean matches(@Nonnull String descriptor) {
-    String[] parts = SPLIT_PATTERN.split(descriptor);
+    String[] parts = SPLIT_PATTERN.split(checkNotNull(descriptor));
     CommandGroup current = this;
     for (int i = parts.length - 1; i >= 0; i--) {
       if (current == null || !current.getNames().contains(parts[i]))

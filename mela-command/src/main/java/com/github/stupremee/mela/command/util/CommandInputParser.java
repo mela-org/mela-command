@@ -6,6 +6,8 @@ import com.github.stupremee.mela.command.CommandGroup;
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
@@ -19,9 +21,9 @@ public final class CommandInputParser {
   private String arguments;
 
   public CommandInputParser(@Nonnull CommandGroup root,@Nonnull String input) {
-    this.remaining = input.trim();
+    this.remaining = checkNotNull(input.trim());
     this.currentWord = "";
-    this.group = root;
+    this.group = checkNotNull(root);
   }
 
   public CommandInput parse() {
@@ -66,7 +68,7 @@ public final class CommandInputParser {
 
   @Nonnull
   public static CommandInput parse(@Nonnull CommandGroup root, @Nonnull String input) {
-    return new CommandInputParser(root, input).parse();
+    return new CommandInputParser(checkNotNull(root), checkNotNull(input)).parse();
   }
 
 }

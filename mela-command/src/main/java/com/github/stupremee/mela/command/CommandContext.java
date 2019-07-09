@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
@@ -53,6 +55,6 @@ public final class CommandContext {
 
   @Nonnull
   public static CommandContext of(@Nonnull Map<?, ?> map) {
-    return new CommandContext(new HashMap<>(map));
+    return new CommandContext(new HashMap<>(checkNotNull(map)));
   }
 }

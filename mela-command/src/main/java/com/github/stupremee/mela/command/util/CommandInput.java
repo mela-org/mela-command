@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
@@ -17,9 +19,9 @@ public final class CommandInput {
   private final String arguments;
 
   CommandInput(@Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull String arguments) {
-    this.group = group;
+    this.group = checkNotNull(group);
     this.callable = callable;
-    this.arguments = arguments;
+    this.arguments = checkNotNull(arguments);
   }
 
   @Nonnull
