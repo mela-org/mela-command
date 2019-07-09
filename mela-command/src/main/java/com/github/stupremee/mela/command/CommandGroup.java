@@ -5,6 +5,7 @@ import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
