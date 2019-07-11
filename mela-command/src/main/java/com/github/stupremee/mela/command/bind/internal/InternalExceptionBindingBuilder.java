@@ -15,32 +15,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 final class InternalExceptionBindingBuilder<T extends Throwable> implements ExceptionBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final InjectableCommandTree tree;
+  private final CompilableGroup group;
   private final Multibinder<ExceptionHandler<?>> binder;
   private final Class<T> exceptionType;
 
-  private boolean ignoreInheritance = false;
-
-  InternalExceptionBindingBuilder(InternalCommandBindingNode node, InjectableCommandTree tree,
+  InternalExceptionBindingBuilder(InternalCommandBindingNode node, CompilableGroup group,
                                   Multibinder<ExceptionHandler<?>> binder, Class<T> exceptionType) {
     this.node = node;
-    this.tree = tree;
+    this.group = group;
     this.binder = binder;
     this.exceptionType = exceptionType;
   }
-
-  @Nonnull
-  @Override
-  public ExceptionBindingBuilder<T> ignoringInheritance() {
-    ignoreInheritance = true;
-    return this;
-  }
-
   @Nonnull
   @Override
   public CommandBindingNode with(@Nonnull Class<? extends ExceptionHandler<T>> clazz) {
     checkNotNull(clazz);
-    tree.addExceptionBinding(exceptionType, clazz, ignoreInheritance);
+    group.addExceptionBinding(exceptionType, clazz);
     binder.addBinding().to(clazz);
     return node;
   }
@@ -50,8 +40,7 @@ final class InternalExceptionBindingBuilder<T extends Throwable> implements Exce
   @Override
   public CommandBindingNode with(@Nonnull ExceptionHandler<T> handler) {
     checkNotNull(handler);
-    tree.addExceptionBinding(exceptionType,
-        (Class<? extends ExceptionHandler<T>>) handler.getClass(), ignoreInheritance);
+    group.addExceptionBinding(exceptionType, (Class<? extends ExceptionHandler<T>>) handler.getClass());
     binder.addBinding().toInstance(handler);
     return node;
   }

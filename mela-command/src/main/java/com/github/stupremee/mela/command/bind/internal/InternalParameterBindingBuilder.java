@@ -15,19 +15,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+// TODO: 11.07.2019 adjust to parameter binding changes
 final class InternalParameterBindingBuilder<T> implements ParameterBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final InjectableCommandTree tree;
+  private final CompilableGroup group;
   private final Multibinder<ArgumentMapper<?>> binder;
   private final TypeLiteral<T> parameterType;
 
   private Class<? extends Annotation> annotationType;
 
-  InternalParameterBindingBuilder(InternalCommandBindingNode node, InjectableCommandTree tree,
+  InternalParameterBindingBuilder(InternalCommandBindingNode node, CompilableGroup group,
                                          Multibinder<ArgumentMapper<?>> binder, TypeLiteral<T> parameterType) {
     this.node = node;
-    this.tree = tree;
+    this.group = group;
     this.binder = binder;
     this.parameterType = parameterType;
   }
@@ -51,7 +52,7 @@ final class InternalParameterBindingBuilder<T> implements ParameterBindingBuilde
   public CommandBindingNode toMapper(@Nonnull ArgumentMapper<T> mapper) {
     checkNotNull(mapper);
     binder.addBinding().toInstance(mapper);
-    tree.addParameterBinding(createKey(), (Class<? extends ArgumentMapper<T>>) mapper.getClass());
+    group.addParameterBinding(createKey(), (Class<? extends ArgumentMapper<T>>) mapper.getClass());
     return node;
   }
 
@@ -60,7 +61,7 @@ final class InternalParameterBindingBuilder<T> implements ParameterBindingBuilde
   @Override
   public CommandBindingNode toMapper(@Nonnull Class<? extends ArgumentMapper<T>> clazz) {
     binder.addBinding().to(clazz);
-    tree.addParameterBinding(createKey(), clazz);
+    group.addParameterBinding(createKey(), clazz);
     return node;
   }
 

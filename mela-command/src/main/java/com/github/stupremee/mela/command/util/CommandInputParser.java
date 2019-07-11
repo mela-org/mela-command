@@ -1,7 +1,7 @@
 package com.github.stupremee.mela.command.util;
 
 import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.CommandGroup;
+import com.github.stupremee.mela.command.bind.tree.CommandGroup;
 
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
@@ -20,7 +20,7 @@ public final class CommandInputParser {
   private CommandCallable callable;
   private String arguments;
 
-  public CommandInputParser(@Nonnull CommandGroup root,@Nonnull String input) {
+  public CommandInputParser(@Nonnull CommandGroup root, @Nonnull String input) {
     this.remaining = checkNotNull(input.trim());
     this.currentWord = "";
     this.group = checkNotNull(root);

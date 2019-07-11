@@ -7,9 +7,6 @@ import javax.annotation.Nonnull;
 public interface ExceptionBindingBuilder<T extends Throwable> {
 
   @Nonnull
-  ExceptionBindingBuilder<T> ignoringInheritance();
-
-  @Nonnull
   CommandBindingNode with(@Nonnull Class<? extends ExceptionHandler<T>> clazz);
 
   @Nonnull

@@ -1,38 +1,33 @@
 package com.github.stupremee.mela.command.bind.tree;
 
-import com.github.stupremee.mela.command.bind.EmptyBindings;
-import com.github.stupremee.mela.command.bind.ExceptionBindings;
-import com.github.stupremee.mela.command.bind.InterceptorBindings;
-import com.github.stupremee.mela.command.bind.ParameterBindings;
+import com.github.stupremee.mela.command.CommandCallable;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class EmptyGroup implements Group {
+public final class EmptyGroup implements CommandGroup {
 
-  static final EmptyGroup INSTANCE = new EmptyGroup();
-
-  private EmptyGroup() {
-  }
+  public static final EmptyGroup INSTANCE = new EmptyGroup();
 
   @Override
-  public Group getParent() {
-    return null;
+  public String toString() {
+    return "[]";
   }
 
+  @Nullable
   @Override
-  public String getPrimaryAlias() {
+  public CommandGroup getParent() {
     return null;
   }
 
   @Nonnull
   @Override
-  public Set<Group> getChildren() {
+  public Set<CommandGroup> getChildren() {
     return Collections.emptySet();
   }
 
@@ -44,30 +39,7 @@ final class EmptyGroup implements Group {
 
   @Nonnull
   @Override
-  public ParameterBindings getParameterBindings() {
-    return EmptyBindings.INSTANCE;
-  }
-
-  @Nonnull
-  @Override
-  public InterceptorBindings getInterceptorBindings() {
-    return EmptyBindings.INSTANCE;
-  }
-
-  @Nonnull
-  @Override
-  public ExceptionBindings getExceptionBindings() {
-    return EmptyBindings.INSTANCE;
-  }
-
-  @Nonnull
-  @Override
-  public Collection<?> getCommandObjects() {
+  public Set<CommandCallable> getCommands() {
     return Collections.emptySet();
-  }
-
-  @Override
-  public String toString() {
-    return "[]";
   }
 }

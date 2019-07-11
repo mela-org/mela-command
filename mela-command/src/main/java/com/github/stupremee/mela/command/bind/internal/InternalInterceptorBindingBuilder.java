@@ -16,14 +16,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 final class InternalInterceptorBindingBuilder<T extends Annotation> implements InterceptorBindingBuilder<T> {
 
   private final InternalCommandBindingNode node;
-  private final InjectableCommandTree tree;
+  private final CompilableGroup group;
   private final Multibinder<Interceptor<?>> binder;
   private final Class<T> annotationType;
 
-  InternalInterceptorBindingBuilder(InternalCommandBindingNode node, InjectableCommandTree tree,
+  InternalInterceptorBindingBuilder(InternalCommandBindingNode node, CompilableGroup group,
                                     Multibinder<Interceptor<?>> binder, Class<T> annotationType) {
     this.node = node;
-    this.tree = tree;
+    this.group = group;
     this.binder = binder;
     this.annotationType = annotationType;
   }
@@ -32,7 +32,7 @@ final class InternalInterceptorBindingBuilder<T extends Annotation> implements I
   @Override
   public CommandBindingNode with(@Nonnull Class<? extends Interceptor<T>> clazz) {
     checkNotNull(clazz);
-    tree.addInterceptorBinding(annotationType, clazz);
+    group.addInterceptorBinding(annotationType, clazz);
     binder.addBinding().to(clazz);
     return node;
   }
@@ -42,7 +42,7 @@ final class InternalInterceptorBindingBuilder<T extends Annotation> implements I
   @Override
   public CommandBindingNode with(@Nonnull Interceptor<T> interceptor) {
     checkNotNull(interceptor);
-    tree.addInterceptorBinding(annotationType, (Class<? extends Interceptor<T>>) interceptor.getClass());
+    group.addInterceptorBinding(annotationType, (Class<? extends Interceptor<T>>) interceptor.getClass());
     binder.addBinding().toInstance(interceptor);
     return node;
   }
