@@ -3,7 +3,7 @@ repositories {
 }
 
 dependencies {
-  compile(Deps.guice)
-  compile(Deps.guava)
-  compile(Deps.Test.JUnit.api)
+  api(Deps.guice)
+  implementation(Deps.guava)
+  testImplementation(Deps.Test.JUnit.api)
 }
