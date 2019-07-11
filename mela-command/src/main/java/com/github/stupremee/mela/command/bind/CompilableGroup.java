@@ -1,7 +1,6 @@
-package com.github.stupremee.mela.command.bind.internal;
+package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.bind.BindingConflictException;
 import com.github.stupremee.mela.command.bind.tree.CommandGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;

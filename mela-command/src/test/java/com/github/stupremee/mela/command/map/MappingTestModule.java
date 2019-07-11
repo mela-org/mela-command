@@ -1,7 +1,6 @@
 package com.github.stupremee.mela.command.map;
 
 import com.github.stupremee.mela.command.TestModule;
-import com.github.stupremee.mela.command.bind.CommandBinder;
 import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
 

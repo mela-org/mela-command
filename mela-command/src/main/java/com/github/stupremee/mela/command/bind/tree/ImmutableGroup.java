@@ -27,7 +27,7 @@ public final class ImmutableGroup implements CommandGroup {
   @Nullable
   @Override
   public CommandGroup getParent() {
-    return null;
+    return parent;
   }
 
   @Nonnull

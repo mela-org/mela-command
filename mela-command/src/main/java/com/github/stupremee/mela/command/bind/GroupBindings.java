@@ -7,7 +7,6 @@ import com.google.inject.Key;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.Optional;
 
 public interface GroupBindings {
 

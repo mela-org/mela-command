@@ -1,19 +1,31 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.bind.internal.InternalCommandBinder;
 import com.google.inject.Binder;
 
 import javax.annotation.Nonnull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public interface CommandBinder {
+/**
+ * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
+ */
+public final class CommandBinder {
 
-  @Nonnull
-  CommandBindingNode root();
+  private final CommandBindingNode root;
 
-  @Nonnull
-  static CommandBinder create(@Nonnull Binder binder) {
-    return new InternalCommandBinder(binder);
+  private CommandBinder(@Nonnull Binder binder) {
+    this.root = new CommandBindingNode(
+        new CommandMultibinder(checkNotNull(binder))
+    );
   }
+
+  public static CommandBinder create(@Nonnull Binder binder) {
+    return new CommandBinder(binder);
+  }
+
+  @Nonnull
+  public CommandBindingNode root() {
+    return root;
+  }
+
 }

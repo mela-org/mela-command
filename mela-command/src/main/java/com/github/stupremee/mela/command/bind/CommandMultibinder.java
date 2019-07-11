@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.bind.internal;
+package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;

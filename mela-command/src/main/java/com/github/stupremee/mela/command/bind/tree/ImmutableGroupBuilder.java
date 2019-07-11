@@ -6,5 +6,4 @@ package com.github.stupremee.mela.command.bind.tree;
 public final class ImmutableGroupBuilder {
 
 
-
 }

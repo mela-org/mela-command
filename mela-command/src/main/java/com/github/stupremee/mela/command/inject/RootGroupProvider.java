@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.inject;
 
-import com.github.stupremee.mela.command.bind.internal.CompilableGroup;
+import com.github.stupremee.mela.command.bind.CompilableGroup;
 import com.github.stupremee.mela.command.bind.tree.EmptyGroup;
 import com.github.stupremee.mela.command.bind.tree.CommandGroup;
 import com.github.stupremee.mela.command.bind.tree.ImmutableGroup;
@@ -15,19 +15,19 @@ import java.util.Set;
  */
 public final class RootGroupProvider extends LazySingletonProvider<CommandGroup> {
 
-  private final Set<CompilableGroup> groups;
+  private final Set<CompilableGroup> rawGroups;
   private final CommandCompiler compiler;
 
   @Inject
-  public RootGroupProvider(Set<CompilableGroup> groups, CommandCompiler compiler) {
-    this.groups = groups;
+  public RootGroupProvider(Set<CompilableGroup> rawGroups, CommandCompiler compiler) {
+    this.rawGroups = rawGroups;
     this.compiler = compiler;
   }
 
   @Nonnull
   @Override
   protected CommandGroup createInstance() {
-    return groups.stream()
+    return rawGroups.stream()
         .reduce((one, two) -> {
           one.assimilate(two);
           return one;
