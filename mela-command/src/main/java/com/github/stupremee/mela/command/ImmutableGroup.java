@@ -1,8 +1,5 @@
 package com.github.stupremee.mela.command;
 
-import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
 
 import javax.annotation.Nonnull;
@@ -10,7 +7,6 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
