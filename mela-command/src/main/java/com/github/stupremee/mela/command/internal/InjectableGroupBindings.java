@@ -1,5 +1,6 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.internal;
 
+import com.github.stupremee.mela.command.bind.GroupBindings;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;

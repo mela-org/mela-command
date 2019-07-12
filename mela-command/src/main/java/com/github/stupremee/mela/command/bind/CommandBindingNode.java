@@ -1,6 +1,8 @@
 package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.bind.tree.CompilableGroup;
+import com.github.stupremee.mela.command.internal.BindableGroup;
+import com.github.stupremee.mela.command.internal.CommandMultibinder;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 

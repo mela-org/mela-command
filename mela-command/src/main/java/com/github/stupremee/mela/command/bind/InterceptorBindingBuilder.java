@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.internal.BindableGroup;
 import com.google.inject.multibindings.Multibinder;
 
 import javax.annotation.Nonnull;

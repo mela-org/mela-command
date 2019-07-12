@@ -1,6 +1,7 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.internal;
 
 import com.github.stupremee.mela.command.CommandCallable;
+import com.github.stupremee.mela.command.bind.BindingConflictException;
 import com.github.stupremee.mela.command.bind.tree.CommandGroup;
 import com.github.stupremee.mela.command.bind.tree.CompilableGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
@@ -28,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class BindableGroup implements CompilableGroup {
+public final class BindableGroup implements CompilableGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
@@ -40,7 +41,7 @@ final class BindableGroup implements CompilableGroup {
   private final InjectableGroupBindings groupBindings;
   private final Map<Class<?>, Object> compilables;
 
-  BindableGroup() {
+  public BindableGroup() {
     this(null, Set.of());
   }
 
@@ -100,21 +101,21 @@ final class BindableGroup implements CompilableGroup {
     return Collections.unmodifiableSet(commands);
   }
 
-  void addCommand(Class<?> commandClass) {
+  public void addCommand(Class<?> commandClass) {
     compilables.put(commandClass, COMMAND_PLACEHOLDER);
   }
 
-  <T extends Annotation> void addInterceptorBinding(Class<T> annotationType,
+  public <T extends Annotation> void addInterceptorBinding(Class<T> annotationType,
                                                     Class<? extends Interceptor<T>> clazz) {
     groupBindings.putInterceptor(annotationType, clazz);
   }
 
-  <T extends Throwable> void addExceptionBinding(Class<T> exceptionType,
+  public <T extends Throwable> void addExceptionBinding(Class<T> exceptionType,
                                                  Class<? extends ExceptionHandler<T>> clazz) {
     groupBindings.putHandler(exceptionType, clazz);
   }
 
-  <T> void addParameterBinding(Object placeholder, Class<? extends ArgumentMapper<T>> clazz) {
+  public <T> void addParameterBinding(Object placeholder, Class<? extends ArgumentMapper<T>> clazz) {
     groupBindings.putMapper(placeholder, clazz);
   }
 
@@ -149,7 +150,7 @@ final class BindableGroup implements CompilableGroup {
     }
   }
 
-  BindableGroup createChildIfNotExists(@Nonnull Set<String> names) {
+  public BindableGroup createChildIfNotExists(@Nonnull Set<String> names) {
     for (BindableGroup child : children) {
       if (child.names.equals(names)) {
         return child;

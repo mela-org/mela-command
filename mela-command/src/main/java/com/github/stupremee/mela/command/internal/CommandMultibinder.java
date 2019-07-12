@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.internal;
 
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;
@@ -14,7 +14,7 @@ import com.google.inject.multibindings.Multibinder;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class CommandMultibinder {
+public final class CommandMultibinder {
 
   private static final TypeLiteral<ArgumentMapper<?>> MAPPER_LITERAL = new TypeLiteral<>() {};
   private static final TypeLiteral<Interceptor<?>> INTERCEPTOR_LITERAL = new TypeLiteral<>() {};
@@ -27,7 +27,7 @@ final class CommandMultibinder {
   private Multibinder<Interceptor<?>> interceptorBinder;
   private Multibinder<ExceptionHandler<?>> handlerBinder;
 
-  CommandMultibinder(Binder binder) {
+  public CommandMultibinder(Binder binder) {
     this.binder = binder;
     commandObjectBinder = Multibinder.newSetBinder(binder, Object.class, Commands.class);
     mapperBinder = Multibinder.newSetBinder(binder, MAPPER_LITERAL, Mappers.class);
@@ -35,23 +35,23 @@ final class CommandMultibinder {
     handlerBinder = Multibinder.newSetBinder(binder, HANDLER_LITERAL, Handlers.class);
   }
 
-  Multibinder<Object> commandObjectBinder() {
+  public Multibinder<Object> commandObjectBinder() {
     return commandObjectBinder;
   }
 
-  Multibinder<ArgumentMapper<?>> mapperBinder() {
+  public Multibinder<ArgumentMapper<?>> mapperBinder() {
     return mapperBinder;
   }
 
-  Multibinder<Interceptor<?>> interceptorBinder() {
+  public Multibinder<Interceptor<?>> interceptorBinder() {
     return interceptorBinder;
   }
 
-  Multibinder<ExceptionHandler<?>> handlerBinder() {
+  public Multibinder<ExceptionHandler<?>> handlerBinder() {
     return handlerBinder;
   }
 
-  Binder binder() {
+  public Binder binder() {
     return binder;
   }
 
