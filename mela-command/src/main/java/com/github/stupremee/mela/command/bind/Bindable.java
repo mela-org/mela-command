@@ -4,7 +4,6 @@ import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
 import com.github.stupremee.mela.command.GroupAccumulator;
 import com.github.stupremee.mela.command.compile.Compilable;
-import com.github.stupremee.mela.command.ImmutableGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.inject.Commands;
@@ -65,7 +64,7 @@ final class Bindable implements Compilable {
       Set<CommandCallable> callables = compiler.compile(command, groupBindings);
       commands.addAll(callables);
     }
-    return ImmutableGroup.of(this, ACCUMULATOR);
+    return CommandGroup.of(this, ACCUMULATOR);
   }
 
   @Override

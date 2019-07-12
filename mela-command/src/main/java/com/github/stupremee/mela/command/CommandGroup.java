@@ -46,4 +46,12 @@ public interface CommandGroup {
     return names.isEmpty() ? null : names.iterator().next();
   }
 
+  static CommandGroup copyOf(CommandGroup group) {
+    return ImmutableGroup.copyOf(group);
+  }
+
+  static <T> CommandGroup of(T root, GroupAccumulator<T> accumulator) {
+    return ImmutableGroup.of(root, accumulator);
+  }
+
 }

@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class ImmutableGroup implements CommandGroup {
+final class ImmutableGroup implements CommandGroup {
 
   private final ImmutableGroup parent;
   private final Set<String> names;
@@ -87,11 +87,11 @@ public final class ImmutableGroup implements CommandGroup {
     this.children = Set.copyOf(children);
   }
 
-  public static CommandGroup copyOf(CommandGroup group) {
-    return of(group, GroupAccumulator.of(group));
+  static CommandGroup copyOf(CommandGroup group) {
+    return group instanceof ImmutableGroup ? group : of(group, GroupAccumulator.of(group));
   }
 
-  public static <T> CommandGroup of(T root, GroupAccumulator<T> accumulator) {
+  static <T> CommandGroup of(T root, GroupAccumulator<T> accumulator) {
     ImmutableGroup group = new ImmutableGroup(null, accumulator.getNames(root),
         accumulator.getCommands(root));
     group.setChildren(deepChildrenCopy(root, accumulator, group));
