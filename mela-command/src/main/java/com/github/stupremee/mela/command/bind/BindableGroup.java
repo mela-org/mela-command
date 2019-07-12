@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -55,8 +56,8 @@ final class BindableGroup implements CompilableGroup {
   }
 
   @Override
-  public void assimilate(CompilableGroup other) {
-    checkArgument(other instanceof BindableGroup,
+  public void assimilate(@Nonnull CompilableGroup other) {
+    checkArgument(checkNotNull(other) instanceof BindableGroup,
         "Group to assimilate must be of the same type as this group");
     BindableGroup root = (BindableGroup) other;
     try {
@@ -140,14 +141,15 @@ final class BindableGroup implements CompilableGroup {
   }
 
   @Override
-  public void compile(CommandCompiler compiler) {
+  public void compile(@Nonnull CommandCompiler compiler) {
+    checkNotNull(compiler);
     for (Object command : compilables.values()) {
       Set<CommandCallable> callables = compiler.compile(command, groupBindings);
       commands.addAll(callables);
     }
   }
 
-  BindableGroup createChildIfNotExists(Set<String> names) {
+  BindableGroup createChildIfNotExists(@Nonnull Set<String> names) {
     for (BindableGroup child : children) {
       if (child.names.equals(names)) {
         return child;

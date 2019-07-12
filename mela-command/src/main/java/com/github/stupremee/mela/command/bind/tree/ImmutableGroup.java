@@ -5,8 +5,10 @@ import com.google.common.collect.Sets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Objects;
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -80,6 +82,7 @@ public final class ImmutableGroup implements CommandGroup {
   }
 
   private void setChildren(Set<ImmutableGroup> children) {
+    checkState(this.children == null);
     this.children = Set.copyOf(children);
   }
 

@@ -2,10 +2,12 @@ package com.github.stupremee.mela.command.bind.tree;
 
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 
+import javax.annotation.Nonnull;
+
 public interface CompilableGroup extends CommandGroup {
 
-  void assimilate(CompilableGroup other);
+  void assimilate(@Nonnull CompilableGroup other);
 
-  void compile(CommandCompiler compiler);
+  void compile(@Nonnull CommandCompiler compiler);
 
 }
