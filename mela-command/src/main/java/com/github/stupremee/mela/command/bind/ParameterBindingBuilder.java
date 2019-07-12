@@ -17,13 +17,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class ParameterBindingBuilder<T> {
 
   private final CommandBindingNode node;
-  private final CompilableGroup group;
+  private final BindableGroup group;
   private final Multibinder<ArgumentMapper<?>> binder;
   private final TypeLiteral<T> parameterType;
 
   private Class<? extends Annotation> annotationType;
 
-  ParameterBindingBuilder(CommandBindingNode node, CompilableGroup group,
+  ParameterBindingBuilder(CommandBindingNode node, BindableGroup group,
                           Multibinder<ArgumentMapper<?>> binder, TypeLiteral<T> parameterType) {
     this.node = node;
     this.group = group;

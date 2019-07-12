@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command.inject;
 
-import com.github.stupremee.mela.command.bind.CompilableGroup;
+import com.github.stupremee.mela.command.bind.BindableGroup;
+import com.github.stupremee.mela.command.bind.tree.CompilableGroup;
 import com.github.stupremee.mela.command.bind.tree.EmptyGroup;
 import com.github.stupremee.mela.command.bind.tree.CommandGroup;
 import com.github.stupremee.mela.command.bind.tree.ImmutableGroup;

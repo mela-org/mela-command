@@ -2,6 +2,7 @@ package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.bind.tree.CommandGroup;
+import com.github.stupremee.mela.command.bind.tree.CompilableGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.inject.Commands;
@@ -26,23 +27,23 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class CompilableGroup implements CommandGroup {
+final class BindableGroup implements CompilableGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
-  private final CompilableGroup parent;
-  private final Set<CompilableGroup> children;
+  private final BindableGroup parent;
+  private final Set<BindableGroup> children;
   private final Set<String> names;
   private final Set<CommandCallable> commands;
 
   private final InjectableGroupBindings groupBindings;
   private final Map<Class<?>, Object> compilables;
 
-  CompilableGroup() {
+  BindableGroup() {
     this(null, Set.of());
   }
 
-  private CompilableGroup(@Nullable CompilableGroup parent, @Nonnull Set<String> names) {
+  private BindableGroup(@Nullable BindableGroup parent, @Nonnull Set<String> names) {
     this.parent = parent;
     this.names = Set.copyOf(names);
     this.children = new HashSet<>();
@@ -53,19 +54,23 @@ public final class CompilableGroup implements CommandGroup {
         : InjectableGroupBindings.create();
   }
 
+  @Override
   public void assimilate(CompilableGroup other) {
+    checkArgument(other instanceof BindableGroup,
+        "Group to assimilate must be of the same type as this group");
+    BindableGroup root = (BindableGroup) other;
     try {
-      assimilate(this, other);
+      assimilate(this, root);
     } catch (IllegalArgumentException e) {
       throw new BindingConflictException("Two different groups use one or more of the same names");
     }
   }
 
-  private void assimilate(CompilableGroup own, CompilableGroup other) {
+  private void assimilate(BindableGroup own, BindableGroup other) {
     own.groupBindings.assimilate(other.groupBindings);
     own.compilables.putAll(other.compilables);
-    for (CompilableGroup child : other.children) {
-      CompilableGroup thisChild = this.createChildIfNotExists(child.names);
+    for (BindableGroup child : other.children) {
+      BindableGroup thisChild = this.createChildIfNotExists(child.names);
       assimilate(thisChild, child);
     }
   }
@@ -118,7 +123,7 @@ public final class CompilableGroup implements CommandGroup {
     recursiveInject(this, commands, interceptors, handlers, mappers);
   }
 
-  private void recursiveInject(CompilableGroup current,
+  private void recursiveInject(BindableGroup current,
                                Set<Object> commands,
                                Set<Interceptor<?>> interceptors,
                                Set<ExceptionHandler<?>> handlers,
@@ -129,11 +134,12 @@ public final class CompilableGroup implements CommandGroup {
       current.compilables.computeIfPresent(command.getClass(), (k, v) -> command);
     }
 
-    for (CompilableGroup child : current.children) {
+    for (BindableGroup child : current.children) {
       recursiveInject(child, commands, interceptors, handlers, mappers);
     }
   }
 
+  @Override
   public void compile(CommandCompiler compiler) {
     for (Object command : compilables.values()) {
       Set<CommandCallable> callables = compiler.compile(command, groupBindings);
@@ -141,8 +147,8 @@ public final class CompilableGroup implements CommandGroup {
     }
   }
 
-  CompilableGroup createChildIfNotExists(Set<String> names) {
-    for (CompilableGroup child : children) {
+  BindableGroup createChildIfNotExists(Set<String> names) {
+    for (BindableGroup child : children) {
       if (child.names.equals(names)) {
         return child;
       }
@@ -153,7 +159,7 @@ public final class CompilableGroup implements CommandGroup {
             (n) -> n.stream().anyMatch(names::contains)
         ),"Duplicate group name"
     );
-    CompilableGroup child = new CompilableGroup(this, names);
+    BindableGroup child = new BindableGroup(this, names);
     children.add(child);
     return child;
   }
