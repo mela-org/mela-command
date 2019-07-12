@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.compile.Compilable;
+import com.github.stupremee.mela.command.compile.CompilableGroup;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
@@ -19,18 +19,18 @@ public final class CommandBindingNode {
 
   private final CommandBindingNode parent;
   private final CommandMultibinder multibinder;
-  private final Bindable group;
+  private final BindableGroup group;
 
   CommandBindingNode(CommandMultibinder multibinder) {
     this.parent = null;
     this.multibinder = multibinder;
-    this.group = new Bindable();
-    Multibinder<Compilable> groupBinder =
-        Multibinder.newSetBinder(this.multibinder.binder(), Compilable.class);
+    this.group = new BindableGroup();
+    Multibinder<CompilableGroup> groupBinder =
+        Multibinder.newSetBinder(this.multibinder.binder(), CompilableGroup.class);
     groupBinder.addBinding().toInstance(group);
   }
 
-  private CommandBindingNode(CommandBindingNode parent, Bindable root) {
+  private CommandBindingNode(CommandBindingNode parent, BindableGroup root) {
     this.parent = parent;
     this.multibinder = parent.multibinder;
     this.group = root;
@@ -39,7 +39,7 @@ public final class CommandBindingNode {
   @Nonnull
   public CommandBindingNode group(@Nonnull String... aliases) {
     checkNotNull(aliases);
-    Bindable child = group.createChildIfNotExists(Set.of(aliases));
+    BindableGroup child = group.createChildIfNotExists(Set.of(aliases));
     return new CommandBindingNode(this, child);
   }
 

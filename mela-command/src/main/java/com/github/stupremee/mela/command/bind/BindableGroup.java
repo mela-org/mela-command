@@ -1,10 +1,8 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.GroupAccumulator;
-import com.github.stupremee.mela.command.compile.Compilable;
-import com.github.stupremee.mela.command.compile.CommandCompiler;
+import com.github.stupremee.mela.command.GroupBindings;
+import com.github.stupremee.mela.command.compile.CompilableGroup;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.inject.Commands;
 import com.github.stupremee.mela.command.inject.Handlers;
@@ -15,11 +13,9 @@ import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -27,52 +23,37 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class Bindable implements Compilable {
-
-  private static final GroupAccumulator<Bindable> ACCUMULATOR =
-      GroupAccumulator.of(
-          (bindable) -> bindable.children,
-          (bindable) -> bindable.names,
-          (bindable) -> bindable.commands
-      );
+final class BindableGroup implements CompilableGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
-  private final Set<Bindable> children;
+  private final BindableGroup parent;
+  private final Set<BindableGroup> children;
   private final Set<String> names;
-  private final Set<CommandCallable> commands;
-
   private final InjectableGroupBindings groupBindings;
   private final Map<Class<?>, Object> compilables;
 
-  Bindable() {
-    this(InjectableGroupBindings.create(), Set.of());
+  BindableGroup() {
+    this(null, Set.of());
   }
 
-  private Bindable(@Nonnull InjectableGroupBindings bindings, @Nonnull Set<String> names) {
+  private BindableGroup(@Nullable BindableGroup parent, @Nonnull Set<String> names) {
+    this.parent = parent;
     this.names = Set.copyOf(names);
     this.children = new HashSet<>();
-    this.commands = new HashSet<>();
     this.compilables = new HashMap<>();
-    this.groupBindings = bindings;
+    this.groupBindings = parent == null
+        ? InjectableGroupBindings.create()
+        : InjectableGroupBindings.childOf(parent.groupBindings);
   }
 
+  @Nonnull
   @Override
-  public CommandGroup compile(@Nonnull CommandCompiler compiler) {
-    checkNotNull(compiler);
-    for (Object command : compilables.values()) {
-      Set<CommandCallable> callables = compiler.compile(command, groupBindings);
-      commands.addAll(callables);
-    }
-    return CommandGroup.of(this, ACCUMULATOR);
-  }
-
-  @Override
-  public Compilable assimilate(@Nonnull Compilable other) {
-    checkArgument(checkNotNull(other) instanceof Bindable,
+  public CompilableGroup merge(@Nonnull CompilableGroup other) {
+    checkArgument(checkNotNull(other) instanceof BindableGroup,
         "Group to assimilate must be of the same type as this group");
-    Bindable root = (Bindable) other;
-    Bindable copy = this.copy();
+    BindableGroup root = (BindableGroup) other;
+    BindableGroup copy = this.copy();
     try {
       assimilate(copy, root);
     } catch (IllegalArgumentException e) {
@@ -81,19 +62,49 @@ final class Bindable implements Compilable {
     return copy;
   }
 
-  private Bindable copy() {
-    Bindable copy = new Bindable();
+  private BindableGroup copy() {
+    BindableGroup copy = new BindableGroup();
     this.assimilate(copy, this);
     return copy;
   }
 
-  private void assimilate(Bindable own, Bindable other) {
+  private void assimilate(BindableGroup own, BindableGroup other) {
     own.groupBindings.assimilate(other.groupBindings);
     own.compilables.putAll(other.compilables);
-    for (Bindable otherChild : other.children) {
-      Bindable ownChild = own.createChildIfNotExists(otherChild.names);
+    for (BindableGroup otherChild : other.children) {
+      BindableGroup ownChild = own.createChildIfNotExists(otherChild.names);
       assimilate(ownChild, otherChild);
     }
+  }
+
+  @Nullable
+  @Override
+  public CommandGroup getParent() {
+    return parent;
+  }
+
+  @Nonnull
+  @Override
+  public Set<CommandGroup> getChildren() {
+    return Collections.unmodifiableSet(children);
+  }
+
+  @Nonnull
+  @Override
+  public Set<String> getNames() {
+    return names;
+  }
+
+  @Nonnull
+  @Override
+  public GroupBindings getBindings() {
+    return groupBindings;
+  }
+
+  @Nonnull
+  @Override
+  public Collection<?> getUncompiledCommands() {
+    return Collections.unmodifiableCollection(compilables.values());
   }
 
   @Inject
@@ -102,7 +113,7 @@ final class Bindable implements Compilable {
     recursiveInject(this, commands, interceptors, handlers, mappers);
   }
 
-  private void recursiveInject(Bindable current,
+  private void recursiveInject(BindableGroup current,
                                Set<Object> commands,
                                Set<Interceptor<?>> interceptors,
                                Set<ExceptionHandler<?>> handlers,
@@ -113,7 +124,7 @@ final class Bindable implements Compilable {
       current.compilables.computeIfPresent(command.getClass(), (k, v) -> command);
     }
 
-    for (Bindable child : current.children) {
+    for (BindableGroup child : current.children) {
       recursiveInject(child, commands, interceptors, handlers, mappers);
     }
   }
@@ -136,8 +147,8 @@ final class Bindable implements Compilable {
     groupBindings.putMapper(placeholder, clazz);
   }
 
-  Bindable createChildIfNotExists(@Nonnull Set<String> names) {
-    for (Bindable child : children) {
+  BindableGroup createChildIfNotExists(@Nonnull Set<String> names) {
+    for (BindableGroup child : children) {
       if (child.names.equals(names)) {
         return child;
       }
@@ -148,8 +159,9 @@ final class Bindable implements Compilable {
             (n) -> n.stream().anyMatch(names::contains)
         ),"Duplicate group name"
     );
-    Bindable child = new Bindable(InjectableGroupBindings.childOf(this.groupBindings), names);
+    BindableGroup child = new BindableGroup(this, names);
     children.add(child);
     return child;
   }
+
 }
