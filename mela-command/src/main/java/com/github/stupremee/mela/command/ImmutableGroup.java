@@ -1,5 +1,7 @@
 package com.github.stupremee.mela.command;
 
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
 
 import javax.annotation.Nonnull;
@@ -20,7 +22,7 @@ public final class ImmutableGroup implements CommandGroup {
 
   private Set<CommandGroup> children;
 
-  private ImmutableGroup(ImmutableGroup parent, Set<String> names, Set<CommandCallable> commands) {
+  private ImmutableGroup(ImmutableGroup parent, Set<String> names, Set<? extends CommandCallable> commands) {
     this.parent = parent;
     this.names = Set.copyOf(names);
     this.commands = Set.copyOf(commands);
@@ -86,16 +88,23 @@ public final class ImmutableGroup implements CommandGroup {
   }
 
   public static CommandGroup copyOf(CommandGroup group) {
-    ImmutableGroup copy =  new ImmutableGroup(null, group.getNames(), group.getCommands());
-    copy.setChildren(deepChildrenCopy(group, copy));
-    return copy;
+    return of(group, GroupAccumulator.of(group));
   }
 
-  private static Set<ImmutableGroup> deepChildrenCopy(CommandGroup template, ImmutableGroup current) {
+  public static <T> CommandGroup of(T root, GroupAccumulator<T> accumulator) {
+    ImmutableGroup group = new ImmutableGroup(null, accumulator.getNames(root),
+        accumulator.getCommands(root));
+    group.setChildren(deepChildrenCopy(root, accumulator, group));
+    return group;
+  }
+
+  private static <T> Set<ImmutableGroup> deepChildrenCopy(T template, GroupAccumulator<T> accumulator,
+                                                          ImmutableGroup current) {
     Set<ImmutableGroup> children = Sets.newHashSet();
-    for (CommandGroup child : template.getChildren()) {
-      ImmutableGroup next = new ImmutableGroup(current, child.getNames(), child.getCommands());
-      next.setChildren(deepChildrenCopy(child, next));
+    for (T child : accumulator.getChildren(template)) {
+      ImmutableGroup next = new ImmutableGroup(current, accumulator.getNames(child),
+          accumulator.getCommands(child));
+      next.setChildren(deepChildrenCopy(child, accumulator, next));
       children.add(next);
     }
     return children;

@@ -2,7 +2,8 @@ package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.Compilable;
+import com.github.stupremee.mela.command.GroupAccumulator;
+import com.github.stupremee.mela.command.compile.Compilable;
 import com.github.stupremee.mela.command.ImmutableGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
@@ -15,7 +16,6 @@ import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +29,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 final class Bindable implements Compilable {
+
+  private static final GroupAccumulator<Bindable> ACCUMULATOR =
+      GroupAccumulator.of(
+          (bindable) -> bindable.children,
+          (bindable) -> bindable.names,
+          (bindable) -> bindable.commands
+      );
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
@@ -58,7 +65,7 @@ final class Bindable implements Compilable {
       Set<CommandCallable> callables = compiler.compile(command, groupBindings);
       commands.addAll(callables);
     }
-    return ImmutableGroup.copyOf(this);
+    return ImmutableGroup.of(this, ACCUMULATOR);
   }
 
   @Override
