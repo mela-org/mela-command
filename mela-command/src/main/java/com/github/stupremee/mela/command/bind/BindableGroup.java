@@ -1,9 +1,8 @@
-package com.github.stupremee.mela.command.internal;
+package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.bind.BindingConflictException;
-import com.github.stupremee.mela.command.bind.tree.CommandGroup;
-import com.github.stupremee.mela.command.bind.tree.CompilableGroup;
+import com.github.stupremee.mela.command.CommandGroup;
+import com.github.stupremee.mela.command.CompilableGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.inject.Commands;
@@ -29,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class BindableGroup implements CompilableGroup {
+final class BindableGroup implements CompilableGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 

@@ -1,6 +1,4 @@
-package com.github.stupremee.mela.command.bind.tree;
-
-import com.github.stupremee.mela.command.CommandCallable;
+package com.github.stupremee.mela.command;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -1,8 +1,6 @@
-package com.github.stupremee.mela.command.bind.tree;
+package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.inject.RootGroupProvider;
-import com.google.common.base.Preconditions;
 import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;

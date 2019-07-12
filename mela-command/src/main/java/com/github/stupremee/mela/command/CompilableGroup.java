@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.bind.tree;
+package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 

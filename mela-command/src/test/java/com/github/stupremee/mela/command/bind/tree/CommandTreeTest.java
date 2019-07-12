@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.command.bind.tree;
 
+import com.github.stupremee.mela.command.CommandGroup;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;

@@ -1,6 +1,5 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.internal.BindableGroup;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;

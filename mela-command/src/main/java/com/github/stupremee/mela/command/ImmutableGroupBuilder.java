@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.bind.tree;
+package com.github.stupremee.mela.command;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
