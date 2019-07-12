@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
 
@@ -9,6 +10,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -102,11 +104,23 @@ final class ImmutableGroup implements CommandGroup {
                                                           ImmutableGroup current) {
     Set<ImmutableGroup> children = Sets.newHashSet();
     for (T child : accumulator.getChildren(template)) {
-      ImmutableGroup next = new ImmutableGroup(current, accumulator.getNames(child),
-          accumulator.getCommands(child));
+      Set<String> names = accumulator.getNames(child);
+      checkForDuplicateNames(children, names);
+      ImmutableGroup next = new ImmutableGroup(current, names, accumulator.getCommands(child));
       next.setChildren(deepChildrenCopy(child, accumulator, next));
       children.add(next);
     }
     return children;
+  }
+
+  private static void checkForDuplicateNames(Set<ImmutableGroup> children, Set<String> namesToCheck) {
+    for (CommandGroup child : children) {
+      for (String name : child.getNames()) {
+        if (namesToCheck.contains(name)) {
+          throw new IllegalArgumentException("Group "
+              + namesToCheck + " has duplicate uses already bound name: " + name);
+        }
+      }
+    }
   }
 }
