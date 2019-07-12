@@ -13,11 +13,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class ExceptionBindingBuilder<T extends Throwable> {
 
   private final CommandBindingNode node;
-  private final BindableGroup group;
+  private final InjectableGroup group;
   private final Multibinder<ExceptionHandler<?>> binder;
   private final Class<T> exceptionType;
 
-  ExceptionBindingBuilder(CommandBindingNode node, BindableGroup group,
+  ExceptionBindingBuilder(CommandBindingNode node, InjectableGroup group,
                           Multibinder<ExceptionHandler<?>> binder, Class<T> exceptionType) {
     this.node = node;
     this.group = group;

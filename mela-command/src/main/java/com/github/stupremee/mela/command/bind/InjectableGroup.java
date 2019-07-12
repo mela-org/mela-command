@@ -23,21 +23,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class BindableGroup implements CompilableGroup {
+final class InjectableGroup implements CompilableGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
-  private final BindableGroup parent;
-  private final Set<BindableGroup> children;
+  private final InjectableGroup parent;
+  private final Set<InjectableGroup> children;
   private final Set<String> names;
   private final InjectableGroupBindings groupBindings;
   private final Map<Class<?>, Object> compilables;
 
-  BindableGroup() {
+  InjectableGroup() {
     this(null, Set.of());
   }
 
-  private BindableGroup(@Nullable BindableGroup parent, @Nonnull Set<String> names) {
+  private InjectableGroup(@Nullable InjectableGroup parent, @Nonnull Set<String> names) {
     this.parent = parent;
     this.names = Set.copyOf(names);
     this.children = new HashSet<>();
@@ -50,10 +50,10 @@ final class BindableGroup implements CompilableGroup {
   @Nonnull
   @Override
   public CompilableGroup merge(@Nonnull CompilableGroup other) {
-    checkArgument(checkNotNull(other) instanceof BindableGroup,
+    checkArgument(checkNotNull(other) instanceof InjectableGroup,
         "Group to assimilate must be of the same type as this group");
-    BindableGroup root = (BindableGroup) other;
-    BindableGroup copy = this.copy();
+    InjectableGroup root = (InjectableGroup) other;
+    InjectableGroup copy = this.copy();
     try {
       assimilate(copy, root);
     } catch (IllegalArgumentException e) {
@@ -62,17 +62,17 @@ final class BindableGroup implements CompilableGroup {
     return copy;
   }
 
-  private BindableGroup copy() {
-    BindableGroup copy = new BindableGroup();
+  private InjectableGroup copy() {
+    InjectableGroup copy = new InjectableGroup();
     this.assimilate(copy, this);
     return copy;
   }
 
-  private void assimilate(BindableGroup own, BindableGroup other) {
+  private void assimilate(InjectableGroup own, InjectableGroup other) {
     own.groupBindings.assimilate(other.groupBindings);
     own.compilables.putAll(other.compilables);
-    for (BindableGroup otherChild : other.children) {
-      BindableGroup ownChild = own.createChildIfNotExists(otherChild.names);
+    for (InjectableGroup otherChild : other.children) {
+      InjectableGroup ownChild = own.createChildIfNotExists(otherChild.names);
       assimilate(ownChild, otherChild);
     }
   }
@@ -113,7 +113,7 @@ final class BindableGroup implements CompilableGroup {
     recursiveInject(this, commands, interceptors, handlers, mappers);
   }
 
-  private void recursiveInject(BindableGroup current,
+  private void recursiveInject(InjectableGroup current,
                                Set<Object> commands,
                                Set<Interceptor<?>> interceptors,
                                Set<ExceptionHandler<?>> handlers,
@@ -124,7 +124,7 @@ final class BindableGroup implements CompilableGroup {
       current.compilables.computeIfPresent(command.getClass(), (k, v) -> command);
     }
 
-    for (BindableGroup child : current.children) {
+    for (InjectableGroup child : current.children) {
       recursiveInject(child, commands, interceptors, handlers, mappers);
     }
   }
@@ -147,8 +147,8 @@ final class BindableGroup implements CompilableGroup {
     groupBindings.putMapper(placeholder, clazz);
   }
 
-  BindableGroup createChildIfNotExists(@Nonnull Set<String> names) {
-    for (BindableGroup child : children) {
+  InjectableGroup createChildIfNotExists(@Nonnull Set<String> names) {
+    for (InjectableGroup child : children) {
       if (child.names.equals(names)) {
         return child;
       }
@@ -159,7 +159,7 @@ final class BindableGroup implements CompilableGroup {
             (n) -> n.stream().anyMatch(names::contains)
         ),"Duplicate group name"
     );
-    BindableGroup child = new BindableGroup(this, names);
+    InjectableGroup child = new InjectableGroup(this, names);
     children.add(child);
     return child;
   }

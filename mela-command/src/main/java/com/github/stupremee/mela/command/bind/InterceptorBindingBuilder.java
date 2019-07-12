@@ -14,11 +14,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class InterceptorBindingBuilder<T extends Annotation> {
 
   private final CommandBindingNode node;
-  private final BindableGroup group;
+  private final InjectableGroup group;
   private final Multibinder<Interceptor<?>> binder;
   private final Class<T> annotationType;
 
-  InterceptorBindingBuilder(CommandBindingNode node, BindableGroup group,
+  InterceptorBindingBuilder(CommandBindingNode node, InjectableGroup group,
                             Multibinder<Interceptor<?>> binder, Class<T> annotationType) {
     this.node = node;
     this.group = group;

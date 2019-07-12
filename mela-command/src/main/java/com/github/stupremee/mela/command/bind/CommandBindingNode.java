@@ -19,18 +19,18 @@ public final class CommandBindingNode {
 
   private final CommandBindingNode parent;
   private final CommandMultibinder multibinder;
-  private final BindableGroup group;
+  private final InjectableGroup group;
 
   CommandBindingNode(CommandMultibinder multibinder) {
     this.parent = null;
     this.multibinder = multibinder;
-    this.group = new BindableGroup();
+    this.group = new InjectableGroup();
     Multibinder<CompilableGroup> groupBinder =
         Multibinder.newSetBinder(this.multibinder.binder(), CompilableGroup.class);
     groupBinder.addBinding().toInstance(group);
   }
 
-  private CommandBindingNode(CommandBindingNode parent, BindableGroup root) {
+  private CommandBindingNode(CommandBindingNode parent, InjectableGroup root) {
     this.parent = parent;
     this.multibinder = parent.multibinder;
     this.group = root;
@@ -39,7 +39,7 @@ public final class CommandBindingNode {
   @Nonnull
   public CommandBindingNode group(@Nonnull String... aliases) {
     checkNotNull(aliases);
-    BindableGroup child = group.createChildIfNotExists(Set.of(aliases));
+    InjectableGroup child = group.createChildIfNotExists(Set.of(aliases));
     return new CommandBindingNode(this, child);
   }
 
