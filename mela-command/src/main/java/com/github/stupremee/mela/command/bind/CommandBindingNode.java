@@ -1,10 +1,11 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.CompilableGroup;
+import com.github.stupremee.mela.command.Compilable;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -18,18 +19,18 @@ public final class CommandBindingNode {
 
   private final CommandBindingNode parent;
   private final CommandMultibinder multibinder;
-  private BindableGroup group;
+  private final Bindable group;
 
   CommandBindingNode(CommandMultibinder multibinder) {
     this.parent = null;
     this.multibinder = multibinder;
-    this.group = new BindableGroup();
-    Multibinder<CompilableGroup> groupBinder =
-        Multibinder.newSetBinder(this.multibinder.binder(), CompilableGroup.class);
+    this.group = new Bindable();
+    Multibinder<Compilable> groupBinder =
+        Multibinder.newSetBinder(this.multibinder.binder(), Compilable.class);
     groupBinder.addBinding().toInstance(group);
   }
 
-  private CommandBindingNode(CommandBindingNode parent, BindableGroup root) {
+  private CommandBindingNode(CommandBindingNode parent, Bindable root) {
     this.parent = parent;
     this.multibinder = parent.multibinder;
     this.group = root;
@@ -38,11 +39,11 @@ public final class CommandBindingNode {
   @Nonnull
   public CommandBindingNode group(@Nonnull String... aliases) {
     checkNotNull(aliases);
-    BindableGroup child = group.createChildIfNotExists(Set.of(aliases));
+    Bindable child = group.createChildIfNotExists(Set.of(aliases));
     return new CommandBindingNode(this, child);
   }
 
-
+  @Nullable
   public CommandBindingNode parent() {
     checkState(parent != null, "Cannot go to parent, this is the highest node");
     return parent;
