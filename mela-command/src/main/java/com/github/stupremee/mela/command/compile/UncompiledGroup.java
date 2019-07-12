@@ -9,10 +9,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-public interface CompilableGroup extends CommandGroup {
+public interface UncompiledGroup extends CommandGroup {
 
   @Nonnull
-  CompilableGroup merge(@Nonnull CompilableGroup other);
+  UncompiledGroup merge(@Nonnull UncompiledGroup other);
 
   @Nonnull
   GroupBindings getBindings();

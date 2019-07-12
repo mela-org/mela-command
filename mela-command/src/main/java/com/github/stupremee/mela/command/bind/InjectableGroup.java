@@ -2,7 +2,7 @@ package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandGroup;
 import com.github.stupremee.mela.command.GroupBindings;
-import com.github.stupremee.mela.command.compile.CompilableGroup;
+import com.github.stupremee.mela.command.compile.UncompiledGroup;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.inject.Commands;
 import com.github.stupremee.mela.command.inject.Handlers;
@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class InjectableGroup implements CompilableGroup {
+final class InjectableGroup implements UncompiledGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
@@ -49,7 +49,7 @@ final class InjectableGroup implements CompilableGroup {
 
   @Nonnull
   @Override
-  public CompilableGroup merge(@Nonnull CompilableGroup other) {
+  public UncompiledGroup merge(@Nonnull UncompiledGroup other) {
     checkArgument(checkNotNull(other) instanceof InjectableGroup,
         "Group to assimilate must be of the same type as this group");
     InjectableGroup root = (InjectableGroup) other;
