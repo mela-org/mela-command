@@ -1,11 +1,8 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.GroupAccumulator;
-import com.github.stupremee.mela.command.ImmutableGroup;
-import com.github.stupremee.mela.command.compile.CommandCompiler;
-import com.github.stupremee.mela.command.compile.CompilableGroup;
+import com.github.stupremee.mela.command.GroupBindings;
+import com.github.stupremee.mela.command.compile.UncompiledGroup;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.inject.Commands;
 import com.github.stupremee.mela.command.inject.Handlers;
@@ -13,12 +10,12 @@ import com.github.stupremee.mela.command.inject.Interceptors;
 import com.github.stupremee.mela.command.inject.Mappers;
 import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,11 +28,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class InjectableGroup implements CompilableGroup {
+final class InjectableGroup implements UncompiledGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
-  private final InjectableGroup parent;
   private final Set<InjectableGroup> children;
   private final Set<String> names;
   private final InjectableGroupBindings groupBindings;
@@ -46,7 +42,6 @@ final class InjectableGroup implements CompilableGroup {
   }
 
   private InjectableGroup(@Nullable InjectableGroup parent, @Nonnull Set<String> names) {
-    this.parent = parent;
     this.names = Set.copyOf(names);
     this.children = new HashSet<>();
     this.compilables = new HashMap<>();
@@ -57,7 +52,7 @@ final class InjectableGroup implements CompilableGroup {
 
   @Nonnull
   @Override
-  public CompilableGroup merge(@Nonnull CompilableGroup other) {
+  public UncompiledGroup merge(@Nonnull UncompiledGroup other) {
     checkArgument(checkNotNull(other) instanceof InjectableGroup,
         "Group to assimilate must be of the same type as this group");
     InjectableGroup root = (InjectableGroup) other;
@@ -85,33 +80,19 @@ final class InjectableGroup implements CompilableGroup {
     }
   }
 
-  @Nonnull
   @Override
-  public CommandGroup compile(CommandCompiler compiler) {
-    GroupAccumulator<InjectableGroup> accumulator = GroupAccumulator.of(
-        (group) -> group.children,
-        (group) -> group.names,
-        (group) -> group.compileShallow(compiler)
-    );
-    return ImmutableGroup.of(this, accumulator);
+  public Collection<?> getUncompiledCommands() {
+    return Collections.unmodifiableCollection(compilables.values());
   }
 
-  private Set<CommandCallable> compileShallow(CommandCompiler compiler) {
-    return compilables.values().stream()
-        .filter((command) -> command != COMMAND_PLACEHOLDER)
-        .map((command) -> compiler.compile(command, groupBindings))
-        .collect(Sets::newHashSet, Set::addAll, Set::addAll);
-  }
-
-  @Nullable
   @Override
-  public CommandGroup getParent() {
-    return parent;
+  public GroupBindings getBindings() {
+    return groupBindings;
   }
 
   @Nonnull
   @Override
-  public Set<CommandGroup> getChildren() {
+  public Set<UncompiledGroup> getChildren() {
     return Collections.unmodifiableSet(children);
   }
 

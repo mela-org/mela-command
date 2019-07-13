@@ -22,7 +22,7 @@ public interface CommandGroup {
   CommandGroup getParent();
 
   @Nonnull
-  Set<CommandGroup> getChildren();
+  Set<? extends CommandGroup> getChildren();
 
   @Nonnull
   Set<String> getNames();
