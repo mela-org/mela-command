@@ -43,7 +43,7 @@ public final class CommandBindingNode {
     return new CommandBindingNode(this, child);
   }
 
-  @Nullable
+  @Nonnull
   public CommandBindingNode parent() {
     checkState(parent != null, "Cannot go to parent, this is the highest node");
     return parent;
