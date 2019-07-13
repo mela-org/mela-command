@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class NoOpCommand implements CommandCallable {
+abstract class NoOpCommand implements CommandCallable {
 
   @Override
   public void call(@Nonnull String arguments, @Nonnull CommandContext context) {

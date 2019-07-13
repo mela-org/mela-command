@@ -28,7 +28,7 @@ public final class RootGroupProvider extends LazySingletonProvider<CommandGroup>
   protected CommandGroup createInstance() {
     return rawGroups.stream()
         .reduce(CompilableGroup::merge)
-        .map(compiler::compile)
+        .map((group) -> group.compile(compiler))
         .orElse(EmptyGroup.INSTANCE);
   }
 }

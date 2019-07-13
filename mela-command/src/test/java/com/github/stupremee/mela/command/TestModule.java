@@ -20,6 +20,7 @@ public abstract class TestModule implements Module {
     CommandBinder commandBinder = CommandBinder.create(binder);
     if (rootCommand != null)
       commandBinder.root().add(rootCommand);
+    configureNormalBindings(binder);
     configureCommandBindings(commandBinder);
   }
 

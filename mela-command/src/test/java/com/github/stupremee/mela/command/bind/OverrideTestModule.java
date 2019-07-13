@@ -12,7 +12,7 @@ import com.github.stupremee.mela.command.map.ArgumentMapper;
  */
 final class OverrideTestModule extends TestModule {
 
-  static final Object ADDITIONAL_COMMAND = new NoOpCommand();
+  static final Object ADDITIONAL_COMMAND = new NoOpCommand() {};
 
   private static final ArgumentMapper<Object> MAPPER_OVERRIDE = (o, c) -> null;
   private static final Interceptor<TestAnnotation> INTERCEPTOR_OVERRIDE = (c) -> true;
@@ -25,7 +25,6 @@ final class OverrideTestModule extends TestModule {
   @Override
   protected void configureCommandBindings(CommandBinder binder) {
     binder.root()
-        .add(ADDITIONAL_COMMAND)
         .group("override")
         .bindParameter(Object.class).toMapper(MAPPER_OVERRIDE)
         .interceptAt(TestAnnotation.class).with(INTERCEPTOR_OVERRIDE)

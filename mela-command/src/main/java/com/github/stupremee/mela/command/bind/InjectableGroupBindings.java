@@ -84,7 +84,8 @@ final class InjectableGroupBindings implements GroupBindings {
 
   @Override
   public <T> ArgumentMapper<T> getMapper(Key<T> key) {
-    return findBinding((bindings) -> bindings.parameterBindings.get())
+    return null;
+    //return findBinding((bindings) -> bindings.parameterBindings.get())
   }
 
   <T extends Annotation> void putInterceptor(Class<T> annotationType, Class<? extends Interceptor<T>> clazz) {

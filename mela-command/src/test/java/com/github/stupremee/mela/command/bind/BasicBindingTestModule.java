@@ -15,7 +15,7 @@ import com.google.inject.Binder;
  */
 final class BasicBindingTestModule extends TestModule {
 
-  static final Object COMMAND = new NoOpCommand();
+  static final Object COMMAND = new NoOpCommand() {};
 
   private static final ArgumentMapper<Object> MAPPER = (o, c) -> null;
   private static final Interceptor<TestAnnotation> INTERCEPTOR = (c) -> true;
