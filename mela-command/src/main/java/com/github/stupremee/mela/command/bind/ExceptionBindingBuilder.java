@@ -24,6 +24,7 @@ public final class ExceptionBindingBuilder<T extends Throwable> {
     this.binder = binder;
     this.exceptionType = exceptionType;
   }
+
   @Nonnull
   public CommandBindingNode with(@Nonnull Class<? extends ExceptionHandler<T>> clazz) {
     checkNotNull(clazz);

@@ -14,12 +14,16 @@ public interface UncompiledGroup {
   @Nonnull
   UncompiledGroup merge(@Nonnull UncompiledGroup other);
 
+  @Nonnull
   Collection<?> getUncompiledCommands();
 
+  @Nonnull
   GroupBindings getBindings();
 
+  @Nonnull
   Set<? extends UncompiledGroup> getChildren();
 
+  @Nonnull
   Set<String> getNames();
 
 }

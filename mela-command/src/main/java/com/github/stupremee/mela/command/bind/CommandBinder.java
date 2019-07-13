@@ -19,6 +19,7 @@ public final class CommandBinder {
     );
   }
 
+  @Nonnull
   public static CommandBinder create(@Nonnull Binder binder) {
     return new CommandBinder(binder);
   }

@@ -57,11 +57,7 @@ final class InjectableGroup implements UncompiledGroup {
         "Group to assimilate must be of the same type as this group");
     InjectableGroup root = (InjectableGroup) other;
     InjectableGroup copy = this.copy();
-    try {
-      assimilate(copy, root);
-    } catch (IllegalArgumentException e) {
-      throw new BindingConflictException("Two different groups use one or more of the same names");
-    }
+    assimilate(copy, root);
     return copy;
   }
 
@@ -80,11 +76,13 @@ final class InjectableGroup implements UncompiledGroup {
     }
   }
 
+  @Nonnull
   @Override
   public Collection<?> getUncompiledCommands() {
     return Collections.unmodifiableCollection(compilables.values());
   }
 
+  @Nonnull
   @Override
   public GroupBindings getBindings() {
     return groupBindings;
@@ -149,11 +147,6 @@ final class InjectableGroup implements UncompiledGroup {
       }
     }
 
-    checkArgument(
-        children.stream().map((group) -> group.names).noneMatch(
-            (n) -> n.stream().anyMatch(names::contains)
-        ),"Duplicate group name"
-    );
     InjectableGroup child = new InjectableGroup(this, names);
     children.add(child);
     return child;

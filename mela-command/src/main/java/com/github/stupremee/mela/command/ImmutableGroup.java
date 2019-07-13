@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -85,11 +86,17 @@ public final class ImmutableGroup implements CommandGroup {
     this.children = Set.copyOf(children);
   }
 
-  public static CommandGroup copyOf(CommandGroup group) {
-    return group instanceof ImmutableGroup ? group : of(group, GroupAccumulator.of(group));
+  @Nonnull
+  public static CommandGroup copyOf(@Nonnull CommandGroup group) {
+    return checkNotNull(group) instanceof ImmutableGroup
+        ? group
+        : ImmutableGroup.of(group, GroupAccumulator.forGroup());
   }
 
-  public static <T> CommandGroup of(T root, GroupAccumulator<T> accumulator) {
+  @Nonnull
+  public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAccumulator<T> accumulator) {
+    checkNotNull(root);
+    checkNotNull(accumulator);
     ImmutableGroup group = new ImmutableGroup(null, accumulator.getNames(root),
         accumulator.getCommands(root));
     group.setChildren(deepChildrenCopy(root, accumulator, group));

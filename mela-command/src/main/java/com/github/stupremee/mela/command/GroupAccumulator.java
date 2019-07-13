@@ -2,46 +2,30 @@ package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 import java.util.function.Function;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public interface GroupAccumulator<T> {
 
-  Set<? extends T> getChildren(T parent);
+  @Nonnull
+  Set<? extends T> getChildren(@Nonnull T group);
 
-  Set<String> getNames(T group);
+  @Nonnull
+  Set<String> getNames(@Nonnull T group);
 
-  Set<? extends CommandCallable> getCommands(T group);
+  @Nonnull
+  Set<? extends CommandCallable> getCommands(@Nonnull T group);
 
-  static GroupAccumulator<CommandGroup> of(CommandGroup group) {
-    return of(CommandGroup::getChildren, CommandGroup::getNames, CommandGroup::getCommands);
-  }
-
-  static <T> GroupAccumulator<T> of(Function<T, Set<? extends T>> childrenFunction,
-                                    Function<T, Set<String>> namesFunction,
-                                    Function<T, Set<? extends CommandCallable>> commandsFunction) {
-    return new GroupAccumulator<>() {
-      @Override
-      public Set<? extends T> getChildren(T parent) {
-        return childrenFunction.apply(parent);
-      }
-
-      @Override
-      public Set<String> getNames(T group) {
-        return namesFunction.apply(group);
-      }
-
-      @Override
-      public Set<? extends CommandCallable> getCommands(T group) {
-        return commandsFunction.apply(group);
-      }
-    };
-  }
-
-  static GroupAccumulator<UncompiledGroup> compiling(CommandCompiler compiler) {
-    return of(
+  @Nonnull
+  static GroupAccumulator<UncompiledGroup> compiling(@Nonnull CommandCompiler compiler) {
+    checkNotNull(compiler);
+    return GroupAccumulator.of(
         UncompiledGroup::getChildren,
         UncompiledGroup::getNames,
         (group) -> shallowCompile(compiler, group)
@@ -52,5 +36,38 @@ public interface GroupAccumulator<T> {
     return group.getUncompiledCommands().stream()
         .map((command) -> compiler.compile(command, group.getBindings()))
         .collect(Sets::newHashSet, Set::addAll, Set::addAll);
+  }
+
+  @Nonnull
+  static GroupAccumulator<CommandGroup> forGroup() {
+    return GroupAccumulator.of(CommandGroup::getChildren, CommandGroup::getNames, CommandGroup::getCommands);
+  }
+
+  @Nonnull
+  static <T> GroupAccumulator<T> of(@Nonnull Function<T, Set<? extends T>> childrenFunction,
+                                    @Nonnull Function<T, Set<String>> namesFunction,
+                                    @Nonnull Function<T, Set<? extends CommandCallable>> commandsFunction) {
+    checkNotNull(childrenFunction);
+    checkNotNull(namesFunction);
+    checkNotNull(commandsFunction);
+    return new GroupAccumulator<>() {
+      @Nonnull
+      @Override
+      public Set<? extends T> getChildren(@Nonnull T group) {
+        return childrenFunction.apply(group);
+      }
+
+      @Nonnull
+      @Override
+      public Set<String> getNames(@Nonnull T group) {
+        return namesFunction.apply(group);
+      }
+
+      @Nonnull
+      @Override
+      public Set<? extends CommandCallable> getCommands(@Nonnull T group) {
+        return commandsFunction.apply(group);
+      }
+    };
   }
 }

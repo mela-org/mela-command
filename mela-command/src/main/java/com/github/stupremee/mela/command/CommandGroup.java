@@ -30,7 +30,7 @@ public interface CommandGroup {
   @Nonnull
   Set<CommandCallable> getCommands();
 
-  default boolean matches(String descriptor) {
+  default boolean matches(@Nonnull String descriptor) {
     String[] parts = SPLIT_PATTERN.split(checkNotNull(descriptor));
     CommandGroup current = this;
     for (int i = parts.length - 1; i >= 0; i--) {
@@ -41,6 +41,7 @@ public interface CommandGroup {
     return true;
   }
 
+  @Nullable
   default String getPrimaryName() {
     Set<String> names = getNames();
     return names.isEmpty() ? null : names.iterator().next();

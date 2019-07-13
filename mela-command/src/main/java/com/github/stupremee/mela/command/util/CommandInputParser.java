@@ -15,10 +15,8 @@ public final class CommandInputParser {
 
   private String currentWord;
   private String remaining;
-
   private CommandGroup group;
   private CommandCallable callable;
-  private String arguments;
 
   public CommandInputParser(@Nonnull CommandGroup root, @Nonnull String input) {
     this.remaining = checkNotNull(input.trim());
@@ -26,6 +24,7 @@ public final class CommandInputParser {
     this.group = checkNotNull(root);
   }
 
+  @Nonnull
   public CommandInput parse() {
     stripGroup();
     stripCallable();
@@ -68,7 +67,7 @@ public final class CommandInputParser {
 
   @Nonnull
   public static CommandInput parse(@Nonnull CommandGroup root, @Nonnull String input) {
-    return new CommandInputParser(checkNotNull(root), checkNotNull(input)).parse();
+    return new CommandInputParser(root, input).parse();
   }
 
 }

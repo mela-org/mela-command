@@ -13,12 +13,14 @@ import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Key;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -32,14 +34,17 @@ public final class GroupBuilder {
     current = new MutableGroup(null, Collections.emptySet());
   }
 
+  @Nonnull
   public static GroupBuilder create() {
     return new GroupBuilder();
   }
 
-  public GroupBuilder group(String... names) {
+  @Nonnull
+  public GroupBuilder group(@Nonnull String... names) {
     return group(Set.of(names));
   }
 
+  @Nonnull
   public GroupBuilder group(Set<String> names) {
     MutableGroup child = new MutableGroup(current, Set.copyOf(names));
     current.children.add(child);
@@ -47,32 +52,41 @@ public final class GroupBuilder {
     return this;
   }
 
+  @Nonnull
   public GroupBuilder command(Object command) {
     current.commands.add(command);
     return this;
   }
 
-  public <T extends Annotation> GroupBuilder intercept(Class<T> annotationType, Interceptor<T> interceptor) {
+  @Nonnull
+  public <T extends Annotation> GroupBuilder intercept(@Nonnull Class<T> annotationType,
+                                                       @Nullable Interceptor<T> interceptor) {
     current.bindings.addInterceptor(annotationType, interceptor);
     return this;
   }
 
-  public <T extends Throwable> GroupBuilder handle(Class<T> exceptionType, ExceptionHandler<T> handler) {
+  @Nonnull
+  public <T extends Throwable> GroupBuilder handle(@Nonnull Class<T> exceptionType,
+                                                   @Nullable ExceptionHandler<T> handler) {
     current.bindings.addHandler(exceptionType, handler);
     return this;
   }
 
-  public <T> GroupBuilder map(Key<T> key, ArgumentMapper<T> mapper) {
+  @Nonnull
+  public <T> GroupBuilder map(@Nonnull Key<T> key,
+                              @Nullable ArgumentMapper<T> mapper) {
     current.bindings.addMapper(key, mapper);
     return this;
   }
 
+  @Nonnull
   public GroupBuilder parent() {
     checkState(current.parent != null, "Builder is at root node, no parent to step to");
     current = current.parent;
     return this;
   }
 
+  @Nonnull
   public GroupBuilder root() {
     while (current.parent != null) {
       parent();
@@ -80,6 +94,7 @@ public final class GroupBuilder {
     return this;
   }
 
+  @Nonnull
   public CommandGroup compile(CommandCompiler compiler) {
     return ImmutableGroup.of(current, GroupAccumulator.compiling(compiler));
   }
@@ -108,11 +123,13 @@ public final class GroupBuilder {
       throw new UnsupportedOperationException();
     }
 
+    @Nonnull
     @Override
     public Collection<?> getUncompiledCommands() {
       return commands;
     }
 
+    @Nonnull
     @Override
     public GroupBindings getBindings() {
       return bindings;
@@ -138,15 +155,15 @@ public final class GroupBuilder {
     }
 
     <T extends Annotation> void addInterceptor(Class<T> annotationType, Interceptor<T> interceptor) {
-      interceptors.put(annotationType, () -> interceptor);
+      interceptors.put(checkNotNull(annotationType), () -> interceptor);
     }
 
     <T extends Throwable> void addHandler(Class<T> exceptionType, ExceptionHandler<T> handler) {
-      handlers.put(exceptionType, () -> handler);
+      handlers.put(checkNotNull(exceptionType), () -> handler);
     }
 
     <T> void addMapper(Key<T> key, ArgumentMapper<T> mapper) {
-      mappers.put(key, () -> mapper);
+      mappers.put(checkNotNull(key), () -> mapper);
     }
   }
 }

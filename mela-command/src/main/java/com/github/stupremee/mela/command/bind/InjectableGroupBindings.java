@@ -14,7 +14,6 @@ import java.util.function.Supplier;
  */
 final class InjectableGroupBindings extends DelegatedGroupBindings {
 
-
   private InjectableGroupBindings(InjectableGroupBindings parent) {
     super(parent);
   }

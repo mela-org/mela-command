@@ -27,7 +27,7 @@ final class CommandMultibinder {
   private Multibinder<Interceptor<?>> interceptorBinder;
   private Multibinder<ExceptionHandler<?>> handlerBinder;
 
-  public CommandMultibinder(Binder binder) {
+  CommandMultibinder(Binder binder) {
     this.binder = binder;
     commandObjectBinder = Multibinder.newSetBinder(binder, Object.class, Commands.class);
     mapperBinder = Multibinder.newSetBinder(binder, MAPPER_LITERAL, Mappers.class);
@@ -35,23 +35,23 @@ final class CommandMultibinder {
     handlerBinder = Multibinder.newSetBinder(binder, HANDLER_LITERAL, Handlers.class);
   }
 
-  public Multibinder<Object> commandObjectBinder() {
+  Multibinder<Object> commandObjectBinder() {
     return commandObjectBinder;
   }
 
-  public Multibinder<ArgumentMapper<?>> mapperBinder() {
+  Multibinder<ArgumentMapper<?>> mapperBinder() {
     return mapperBinder;
   }
 
-  public Multibinder<Interceptor<?>> interceptorBinder() {
+  Multibinder<Interceptor<?>> interceptorBinder() {
     return interceptorBinder;
   }
 
-  public Multibinder<ExceptionHandler<?>> handlerBinder() {
+  Multibinder<ExceptionHandler<?>> handlerBinder() {
     return handlerBinder;
   }
 
-  public Binder binder() {
+  Binder binder() {
     return binder;
   }
 

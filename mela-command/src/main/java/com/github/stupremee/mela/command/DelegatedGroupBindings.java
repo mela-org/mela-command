@@ -3,15 +3,19 @@ package com.github.stupremee.mela.command;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.inject.Key;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -33,7 +37,7 @@ public abstract class DelegatedGroupBindings implements GroupBindings {
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
-  public final <T extends Annotation> Interceptor<T> getInterceptor(Class<T> annotationType) {
+  public final <T extends Annotation> Interceptor<T> getInterceptor(@Nonnull Class<T> annotationType) {
     return (Interceptor<T>) getIfPresent(
         findBinding((bindings) -> bindings.interceptors.get(annotationType))
     );
@@ -42,7 +46,8 @@ public abstract class DelegatedGroupBindings implements GroupBindings {
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
-  public final <T extends Throwable> ExceptionHandler<T> getHandler(Class<T> exceptionType) {
+  public final <T extends Throwable> ExceptionHandler<T> getHandler(@Nonnull Class<T> exceptionType) {
+    checkNotNull(exceptionType);
     Supplier<ExceptionHandler<T>> binding = findBinding(
         (bindings) -> (Supplier<ExceptionHandler<T>>) bindings.handlers.get(exceptionType));
     if (binding == null) {
@@ -63,7 +68,7 @@ public abstract class DelegatedGroupBindings implements GroupBindings {
 
   @SuppressWarnings("unchecked")
   @Override
-  public final <T> ArgumentMapper<T> getMapper(Key<T> key) {
+  public final <T> ArgumentMapper<T> getMapper(@Nonnull Key<T> key) {
     return (ArgumentMapper<T>) getIfPresent(findBinding((bindings) -> bindings.mappers.get(key)));
   }
 
