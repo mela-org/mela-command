@@ -1,8 +1,11 @@
 package com.github.stupremee.mela.command.bind;
 
+import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.GroupBindings;
-import com.github.stupremee.mela.command.compile.UncompiledGroup;
+import com.github.stupremee.mela.command.GroupAccumulator;
+import com.github.stupremee.mela.command.ImmutableGroup;
+import com.github.stupremee.mela.command.compile.CommandCompiler;
+import com.github.stupremee.mela.command.compile.CompilableGroup;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.inject.Commands;
 import com.github.stupremee.mela.command.inject.Handlers;
@@ -10,12 +13,17 @@ import com.github.stupremee.mela.command.inject.Interceptors;
 import com.github.stupremee.mela.command.inject.Mappers;
 import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -23,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class InjectableGroup implements UncompiledGroup {
+final class InjectableGroup implements CompilableGroup {
 
   private static final Object COMMAND_PLACEHOLDER = new Object();
 
@@ -49,7 +57,7 @@ final class InjectableGroup implements UncompiledGroup {
 
   @Nonnull
   @Override
-  public UncompiledGroup merge(@Nonnull UncompiledGroup other) {
+  public CompilableGroup merge(@Nonnull CompilableGroup other) {
     checkArgument(checkNotNull(other) instanceof InjectableGroup,
         "Group to assimilate must be of the same type as this group");
     InjectableGroup root = (InjectableGroup) other;
@@ -77,6 +85,24 @@ final class InjectableGroup implements UncompiledGroup {
     }
   }
 
+  @Nonnull
+  @Override
+  public CommandGroup compile(CommandCompiler compiler) {
+    GroupAccumulator<InjectableGroup> accumulator = GroupAccumulator.of(
+        (group) -> group.children,
+        (group) -> group.names,
+        (group) -> group.compileShallow(compiler)
+    );
+    return ImmutableGroup.of(this, accumulator);
+  }
+
+  private Set<CommandCallable> compileShallow(CommandCompiler compiler) {
+    return compilables.values().stream()
+        .filter((command) -> command != COMMAND_PLACEHOLDER)
+        .map((command) -> compiler.compile(command, groupBindings))
+        .collect(Sets::newHashSet, Set::addAll, Set::addAll);
+  }
+
   @Nullable
   @Override
   public CommandGroup getParent() {
@@ -93,18 +119,6 @@ final class InjectableGroup implements UncompiledGroup {
   @Override
   public Set<String> getNames() {
     return names;
-  }
-
-  @Nonnull
-  @Override
-  public GroupBindings getBindings() {
-    return groupBindings;
-  }
-
-  @Nonnull
-  @Override
-  public Collection<?> getUncompiledCommands() {
-    return Collections.unmodifiableCollection(compilables.values());
   }
 
   @Inject

@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.compile.UncompiledGroup;
+import com.github.stupremee.mela.command.compile.CompilableGroup;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
@@ -25,8 +25,8 @@ public final class CommandBindingNode {
     this.parent = null;
     this.multibinder = multibinder;
     this.group = new InjectableGroup();
-    Multibinder<UncompiledGroup> groupBinder =
-        Multibinder.newSetBinder(this.multibinder.binder(), UncompiledGroup.class);
+    Multibinder<CompilableGroup> groupBinder =
+        Multibinder.newSetBinder(this.multibinder.binder(), CompilableGroup.class);
     groupBinder.addBinding().toInstance(group);
   }
 
