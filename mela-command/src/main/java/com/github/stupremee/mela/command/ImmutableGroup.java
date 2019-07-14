@@ -96,11 +96,11 @@ public final class ImmutableGroup implements CommandGroup {
   public static CommandGroup copyOf(@Nonnull CommandGroup group) {
     return checkNotNull(group) instanceof ImmutableGroup
         ? group
-        : ImmutableGroup.of(group, GroupAccumulator.forGroup());
+        : ImmutableGroup.of(group, GroupAssembler.forGroup());
   }
 
   @Nonnull
-  public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAccumulator<T> accumulator) {
+  public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> accumulator) {
     checkNotNull(root);
     checkNotNull(accumulator);
     ImmutableGroup group = new ImmutableGroup(null, accumulator.getNames(root),
@@ -109,7 +109,7 @@ public final class ImmutableGroup implements CommandGroup {
     return group;
   }
 
-  private static <T> Set<ImmutableGroup> deepChildrenCopy(T template, GroupAccumulator<T> accumulator,
+  private static <T> Set<ImmutableGroup> deepChildrenCopy(T template, GroupAssembler<T> accumulator,
                                                           ImmutableGroup current) {
     Set<ImmutableGroup> children = Sets.newHashSet();
     for (T child : accumulator.getChildren(template)) {

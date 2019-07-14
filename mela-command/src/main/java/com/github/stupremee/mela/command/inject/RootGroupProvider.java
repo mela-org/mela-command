@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.inject;
 
-import com.github.stupremee.mela.command.GroupAccumulator;
+import com.github.stupremee.mela.command.GroupAssembler;
 import com.github.stupremee.mela.command.ImmutableGroup;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
 import com.github.stupremee.mela.command.EmptyGroup;
@@ -30,7 +30,7 @@ public final class RootGroupProvider extends LazySingletonProvider<CommandGroup>
   protected CommandGroup createInstance() {
     return rawGroups.stream()
         .reduce(UncompiledGroup::merge)
-        .map((group) -> ImmutableGroup.of(group, GroupAccumulator.compiling(compiler)))
+        .map((group) -> ImmutableGroup.of(group, GroupAssembler.compiling(compiler)))
         .orElse(EmptyGroup.INSTANCE);
   }
 }

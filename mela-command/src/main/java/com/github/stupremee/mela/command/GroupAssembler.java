@@ -2,7 +2,6 @@ package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 
 import javax.annotation.Nonnull;
@@ -11,7 +10,7 @@ import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public interface GroupAccumulator<T> {
+public interface GroupAssembler<T> {
 
   @Nonnull
   Set<? extends T> getChildren(@Nonnull T group);
@@ -23,9 +22,9 @@ public interface GroupAccumulator<T> {
   Set<? extends CommandCallable> getCommands(@Nonnull T group);
 
   @Nonnull
-  static GroupAccumulator<UncompiledGroup> compiling(@Nonnull CommandCompiler compiler) {
+  static GroupAssembler<UncompiledGroup> compiling(@Nonnull CommandCompiler compiler) {
     checkNotNull(compiler);
-    return GroupAccumulator.of(
+    return GroupAssembler.of(
         UncompiledGroup::getChildren,
         UncompiledGroup::getNames,
         (group) -> shallowCompile(compiler, group)
@@ -39,18 +38,18 @@ public interface GroupAccumulator<T> {
   }
 
   @Nonnull
-  static GroupAccumulator<CommandGroup> forGroup() {
-    return GroupAccumulator.of(CommandGroup::getChildren, CommandGroup::getNames, CommandGroup::getCommands);
+  static GroupAssembler<CommandGroup> forGroup() {
+    return GroupAssembler.of(CommandGroup::getChildren, CommandGroup::getNames, CommandGroup::getCommands);
   }
 
   @Nonnull
-  static <T> GroupAccumulator<T> of(@Nonnull Function<T, Set<? extends T>> childrenFunction,
-                                    @Nonnull Function<T, Set<String>> namesFunction,
-                                    @Nonnull Function<T, Set<? extends CommandCallable>> commandsFunction) {
+  static <T> GroupAssembler<T> of(@Nonnull Function<T, Set<? extends T>> childrenFunction,
+                                  @Nonnull Function<T, Set<String>> namesFunction,
+                                  @Nonnull Function<T, Set<? extends CommandCallable>> commandsFunction) {
     checkNotNull(childrenFunction);
     checkNotNull(namesFunction);
     checkNotNull(commandsFunction);
-    return new GroupAccumulator<>() {
+    return new GroupAssembler<>() {
       @Nonnull
       @Override
       public Set<? extends T> getChildren(@Nonnull T group) {

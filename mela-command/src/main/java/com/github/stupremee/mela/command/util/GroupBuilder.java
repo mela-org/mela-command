@@ -103,7 +103,7 @@ public final class GroupBuilder {
   @Nonnull
   @CheckReturnValue
   public CommandGroup compile(CommandCompiler compiler) {
-    return ImmutableGroup.of(current, GroupAccumulator.compiling(compiler));
+    return ImmutableGroup.of(current, GroupAssembler.compiling(compiler));
   }
 
   private static final class MutableGroup implements UncompiledGroup {
