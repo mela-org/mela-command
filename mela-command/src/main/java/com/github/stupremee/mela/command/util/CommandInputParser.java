@@ -3,6 +3,7 @@ package com.github.stupremee.mela.command.util;
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
@@ -25,6 +26,7 @@ public final class CommandInputParser {
   }
 
   @Nonnull
+  @CheckReturnValue
   public CommandInput parse() {
     stripGroup();
     stripCallable();
@@ -66,6 +68,7 @@ public final class CommandInputParser {
   }
 
   @Nonnull
+  @CheckReturnValue
   public static CommandInput parse(@Nonnull CommandGroup root, @Nonnull String input) {
     return new CommandInputParser(root, input).parse();
   }

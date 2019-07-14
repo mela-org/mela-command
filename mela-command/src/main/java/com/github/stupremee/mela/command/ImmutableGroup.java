@@ -86,7 +86,7 @@ public final class ImmutableGroup implements CommandGroup {
     this.children = Set.copyOf(children);
   }
 
-  public static CommandGroup noChildRoot(Set<String> names, Set<CommandCallable> commands) {
+  public static CommandGroup childlessRoot(Set<String> names, Set<CommandCallable> commands) {
     ImmutableGroup group = new ImmutableGroup(null, names, commands);
     group.setChildren(Set.of());
     return group;

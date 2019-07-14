@@ -1,17 +1,15 @@
 package com.github.stupremee.mela.command.util;
 
-import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.DelegatedGroupBindings;
-import com.github.stupremee.mela.command.GroupAccumulator;
-import com.github.stupremee.mela.command.GroupBindings;
-import com.github.stupremee.mela.command.ImmutableGroup;
+import com.github.stupremee.mela.command.*;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
+import com.github.stupremee.mela.command.compile.IdentityCompiler;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
 import com.github.stupremee.mela.command.intercept.Interceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Key;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
@@ -27,6 +25,8 @@ import static com.google.common.base.Preconditions.checkState;
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 public final class GroupBuilder {
+
+  private  static final IdentityCompiler IDENTITY_COMPILER = new IdentityCompiler();
 
   private MutableGroup current;
 
@@ -46,7 +46,7 @@ public final class GroupBuilder {
 
   @Nonnull
   public GroupBuilder group(Set<String> names) {
-    MutableGroup child = new MutableGroup(current, Set.copyOf(names));
+    MutableGroup child = new MutableGroup(current, names);
     current.children.add(child);
     current = child;
     return this;
@@ -95,6 +95,13 @@ public final class GroupBuilder {
   }
 
   @Nonnull
+  @CheckReturnValue
+  public CommandGroup compileIdentity() {
+    return compile(IDENTITY_COMPILER);
+  }
+
+  @Nonnull
+  @CheckReturnValue
   public CommandGroup compile(CommandCompiler compiler) {
     return ImmutableGroup.of(current, GroupAccumulator.compiling(compiler));
   }
@@ -109,7 +116,7 @@ public final class GroupBuilder {
 
     private MutableGroup(MutableGroup parent, Set<String> names) {
       this.parent = parent;
-      this.names = names;
+      this.names = Set.copyOf(names);
       children = new HashSet<>();
       commands = new HashSet<>();
       this.bindings = parent == null

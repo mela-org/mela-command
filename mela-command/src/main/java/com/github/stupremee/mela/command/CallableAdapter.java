@@ -1,5 +1,6 @@
 package com.github.stupremee.mela.command;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
@@ -56,6 +57,7 @@ public final class CallableAdapter implements CommandCallable {
   }
 
   @Nonnull
+  @CheckReturnValue
   public static Builder builder() {
     return new Builder();
   }
@@ -104,6 +106,7 @@ public final class CallableAdapter implements CommandCallable {
     }
 
     @Nonnull
+    @CheckReturnValue
     public CommandCallable build() {
       return new CallableAdapter(labels, help, description, usage, action);
     }
