@@ -53,28 +53,28 @@ public final class GroupBuilder {
   }
 
   @Nonnull
-  public GroupBuilder command(Object command) {
+  public GroupBuilder withCommand(Object command) {
     current.commands.add(command);
     return this;
   }
 
   @Nonnull
-  public <T extends Annotation> GroupBuilder intercept(@Nonnull Class<T> annotationType,
-                                                       @Nullable Interceptor<T> interceptor) {
+  public <T extends Annotation> GroupBuilder withInterceptor(@Nonnull Class<T> annotationType,
+                                                             @Nullable Interceptor<T> interceptor) {
     current.bindings.addInterceptor(annotationType, interceptor);
     return this;
   }
 
   @Nonnull
-  public <T extends Throwable> GroupBuilder handle(@Nonnull Class<T> exceptionType,
-                                                   @Nullable ExceptionHandler<T> handler) {
+  public <T extends Throwable> GroupBuilder withHandler(@Nonnull Class<T> exceptionType,
+                                                        @Nullable ExceptionHandler<T> handler) {
     current.bindings.addHandler(exceptionType, handler);
     return this;
   }
 
   @Nonnull
-  public <T> GroupBuilder map(@Nonnull Key<T> key,
-                              @Nullable ArgumentMapper<T> mapper) {
+  public <T> GroupBuilder withMapper(@Nonnull Key<T> key,
+                                     @Nullable ArgumentMapper<T> mapper) {
     current.bindings.addMapper(key, mapper);
     return this;
   }

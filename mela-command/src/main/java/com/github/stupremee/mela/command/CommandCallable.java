@@ -10,7 +10,10 @@ public interface CommandCallable {
   @Nonnull
   Set<String> getLabels();
 
-  String getPrimaryLabel();
+  default String getPrimaryLabel() {
+    Set<String> labels = getLabels();
+    return labels.isEmpty() ? null : labels.iterator().next();
+  }
 
   String getHelp();
 
