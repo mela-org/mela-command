@@ -15,10 +15,4 @@ public interface CommandCompiler {
   @Nonnull
   Set<? extends CommandCallable> compile(@Nonnull Object command, @Nonnull GroupBindings bindings);
 
-  default CommandCompiler ignoringCallables() {
-    return (command, bindings) -> command instanceof CommandCallable
-        ? Collections.singleton((CommandCallable) command)
-        : compile(command, bindings);
-  }
-
 }
