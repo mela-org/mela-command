@@ -33,7 +33,6 @@ public interface GroupAssembler<T> {
 
   private static Set<CommandCallable> shallowCompile(CommandCompiler compiler, UncompiledGroup group) {
     return group.getUncompiledCommands().stream()
-        .filter((command) -> !(command instanceof CommandCallable))
         .map((command) -> compiler.compile(command, group.getBindings()))
         .collect(Sets::newHashSet, Set::addAll, Set::addAll);
   }
