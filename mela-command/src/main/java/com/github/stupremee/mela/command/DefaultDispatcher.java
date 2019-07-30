@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.inject.CommandExecutor;
+import com.github.stupremee.mela.command.bind.CommandExecutor;
 import com.github.stupremee.mela.command.util.CommandInput;
 import com.github.stupremee.mela.command.util.CommandInputParser;
 import com.google.inject.Inject;

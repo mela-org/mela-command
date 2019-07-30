@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.inject;
+package com.github.stupremee.mela.command.util;
 
 import com.google.inject.Provider;
 

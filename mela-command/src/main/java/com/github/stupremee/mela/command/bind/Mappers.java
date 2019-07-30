@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.inject;
+package com.github.stupremee.mela.command.bind;
 
 import com.google.inject.BindingAnnotation;
 
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface Handlers {
+public @interface Mappers {
 }

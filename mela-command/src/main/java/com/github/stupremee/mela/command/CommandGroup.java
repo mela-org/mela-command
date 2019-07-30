@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.inject.RootGroupProvider;
+import com.github.stupremee.mela.command.compile.CompilingRootGroupProvider;
 import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;
@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-@ProvidedBy(RootGroupProvider.class)
+@ProvidedBy(CompilingRootGroupProvider.class)
 public interface CommandGroup {
 
   Pattern SPLIT_PATTERN = Pattern.compile("\\s+");
