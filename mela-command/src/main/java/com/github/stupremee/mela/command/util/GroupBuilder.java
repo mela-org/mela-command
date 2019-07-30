@@ -26,8 +26,6 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public final class GroupBuilder {
 
-  private  static final IdentityCompiler IDENTITY_COMPILER = new IdentityCompiler();
-
   private MutableGroup current;
 
   private GroupBuilder() {
@@ -97,7 +95,7 @@ public final class GroupBuilder {
   @Nonnull
   @CheckReturnValue
   public CommandGroup compileIdentity() {
-    return compile(IDENTITY_COMPILER);
+    return compile(IdentityCompiler.INSTANCE);
   }
 
   @Nonnull

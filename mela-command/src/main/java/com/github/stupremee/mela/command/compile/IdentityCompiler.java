@@ -14,6 +14,10 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public final class IdentityCompiler implements CommandCompiler {
 
+  public static final IdentityCompiler INSTANCE = new IdentityCompiler();
+
+  private IdentityCompiler() {}
+
   @Nonnull
   @Override
   public Set<? extends CommandCallable> compile(@Nonnull Object command, @Nonnull GroupBindings bindings) {
