@@ -5,7 +5,7 @@ import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.IdentityCompiler;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.intercept.CommandInterceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Key;
 
@@ -58,7 +58,7 @@ public final class GroupBuilder {
 
   @Nonnull
   public <T extends Annotation> GroupBuilder withInterceptor(@Nonnull Class<T> annotationType,
-                                                             @Nullable Interceptor<T> interceptor) {
+                                                             @Nullable CommandInterceptor<T> interceptor) {
     current.bindings.addInterceptor(annotationType, interceptor);
     return this;
   }
@@ -159,7 +159,7 @@ public final class GroupBuilder {
       super(parent);
     }
 
-    <T extends Annotation> void addInterceptor(Class<T> annotationType, Interceptor<T> interceptor) {
+    <T extends Annotation> void addInterceptor(Class<T> annotationType, CommandInterceptor<T> interceptor) {
       interceptors.put(checkNotNull(annotationType), () -> interceptor);
     }
 

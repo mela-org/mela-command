@@ -1,7 +1,7 @@
 package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.intercept.CommandInterceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Binder;
 import com.google.inject.TypeLiteral;
@@ -13,14 +13,14 @@ import com.google.inject.multibindings.Multibinder;
 final class CommandMultibinder {
 
   private static final TypeLiteral<ArgumentMapper<?>> MAPPER_LITERAL = new TypeLiteral<>() {};
-  private static final TypeLiteral<Interceptor<?>> INTERCEPTOR_LITERAL = new TypeLiteral<>() {};
+  private static final TypeLiteral<CommandInterceptor<?>> INTERCEPTOR_LITERAL = new TypeLiteral<>() {};
   private static final TypeLiteral<ExceptionHandler<?>> HANDLER_LITERAL = new TypeLiteral<>() {};
 
   private final Binder binder;
 
   private Multibinder<ArgumentMapper<?>> mapperBinder;
   private Multibinder<Object> commandObjectBinder;
-  private Multibinder<Interceptor<?>> interceptorBinder;
+  private Multibinder<CommandInterceptor<?>> interceptorBinder;
   private Multibinder<ExceptionHandler<?>> handlerBinder;
 
   CommandMultibinder(Binder binder) {
@@ -39,7 +39,7 @@ final class CommandMultibinder {
     return mapperBinder;
   }
 
-  Multibinder<Interceptor<?>> interceptorBinder() {
+  Multibinder<CommandInterceptor<?>> interceptorBinder() {
     return interceptorBinder;
   }
 

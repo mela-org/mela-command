@@ -2,7 +2,7 @@ package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.DelegatedGroupBindings;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.intercept.CommandInterceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 
 import java.lang.annotation.Annotation;
@@ -33,7 +33,7 @@ final class InjectableGroupBindings extends DelegatedGroupBindings {
   }
 
 
-  <T extends Annotation> void putInterceptor(Class<T> annotationType, Class<? extends Interceptor<T>> clazz) {
+  <T extends Annotation> void putInterceptor(Class<T> annotationType, Class<? extends CommandInterceptor<T>> clazz) {
     interceptors.put(annotationType, new InterceptorBinding<>(clazz));
   }
 
@@ -45,7 +45,7 @@ final class InjectableGroupBindings extends DelegatedGroupBindings {
     // TODO: 11.07.2019
   }
 
-  void inject(Set<Interceptor<?>> interceptors,
+  void inject(Set<CommandInterceptor<?>> interceptors,
               Set<ExceptionHandler<?>> handlers,
               Set<ArgumentMapper<?>> mappers) {
     injectInterceptors(interceptors);
@@ -54,7 +54,7 @@ final class InjectableGroupBindings extends DelegatedGroupBindings {
   }
 
   // TODO: 11.07.2019
-  private void injectInterceptors(Set<Interceptor<?>> interceptors) {
+  private void injectInterceptors(Set<CommandInterceptor<?>> interceptors) {
 
   }
 
@@ -66,16 +66,16 @@ final class InjectableGroupBindings extends DelegatedGroupBindings {
 
   }
 
-  private static final class InterceptorBinding<T extends Annotation> implements Supplier<Interceptor<T>> {
-    final Class<? extends Interceptor<T>> clazz;
-    Interceptor<T> interceptor;
+  private static final class InterceptorBinding<T extends Annotation> implements Supplier<CommandInterceptor<T>> {
+    final Class<? extends CommandInterceptor<T>> clazz;
+    CommandInterceptor<T> interceptor;
 
-    InterceptorBinding(Class<? extends Interceptor<T>> clazz) {
+    InterceptorBinding(Class<? extends CommandInterceptor<T>> clazz) {
       this.clazz = clazz;
     }
 
     @Override
-    public Interceptor<T> get() {
+    public CommandInterceptor<T> get() {
       return interceptor;
     }
   }

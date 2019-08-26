@@ -3,7 +3,7 @@ package com.github.stupremee.mela.command.bind;
 import com.github.stupremee.mela.command.GroupBindings;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.intercept.CommandInterceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Inject;
 
@@ -96,14 +96,14 @@ final class InjectableGroup implements UncompiledGroup {
   }
 
   @Inject
-  void inject(@Commands Set<Object> commands, @Interceptors Set<Interceptor<?>> interceptors,
+  void inject(@Commands Set<Object> commands, @Interceptors Set<CommandInterceptor<?>> interceptors,
               @Handlers Set<ExceptionHandler<?>> handlers, @Mappers Set<ArgumentMapper<?>> mappers) {
     recursiveInject(this, commands, interceptors, handlers, mappers);
   }
 
   private void recursiveInject(InjectableGroup current,
                                Set<Object> commands,
-                               Set<Interceptor<?>> interceptors,
+                               Set<CommandInterceptor<?>> interceptors,
                                Set<ExceptionHandler<?>> handlers,
                                Set<ArgumentMapper<?>> mappers) {
 
@@ -122,7 +122,7 @@ final class InjectableGroup implements UncompiledGroup {
   }
 
   <T extends Annotation> void addInterceptorBinding(Class<T> annotationType,
-                                                    Class<? extends Interceptor<T>> clazz) {
+                                                    Class<? extends CommandInterceptor<T>> clazz) {
     groupBindings.putInterceptor(annotationType, clazz);
   }
 

@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class InterceptorTest extends SingleSubjectTest<InterceptorTestCommand> {
+public final class CommandInterceptorTest extends SingleSubjectTest<InterceptorTestCommand> {
 
   @Inject
   private Dispatcher dispatcher;
 
-  protected InterceptorTest() {
+  protected CommandInterceptorTest() {
     super(InterceptorTestModule::new);
   }
 

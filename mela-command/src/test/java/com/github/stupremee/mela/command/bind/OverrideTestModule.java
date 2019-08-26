@@ -4,7 +4,7 @@ import com.github.stupremee.mela.command.TestAnnotation;
 import com.github.stupremee.mela.command.TestException;
 import com.github.stupremee.mela.command.TestModule;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.intercept.CommandInterceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 
 /**
@@ -15,7 +15,7 @@ final class OverrideTestModule extends TestModule {
   static final Object ADDITIONAL_COMMAND = new NoOpCommand() {};
 
   private static final ArgumentMapper<Object> MAPPER_OVERRIDE = (o, c) -> null;
-  private static final Interceptor<TestAnnotation> INTERCEPTOR_OVERRIDE = (c) -> true;
+  private static final CommandInterceptor<TestAnnotation> INTERCEPTOR_OVERRIDE = (c) -> true;
   private static final ExceptionHandler<TestException> HANDLER_OVERRIDE = (t, c) -> {};
 
   OverrideTestModule() {

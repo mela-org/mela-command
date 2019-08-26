@@ -6,7 +6,7 @@ import com.github.stupremee.mela.command.TestModule;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.IdentityCompiler;
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.intercept.CommandInterceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Binder;
 
@@ -18,7 +18,7 @@ final class BasicBindingTestModule extends TestModule {
   static final Object COMMAND = new NoOpCommand() {};
 
   private static final ArgumentMapper<Object> MAPPER = (o, c) -> null;
-  private static final Interceptor<TestAnnotation> INTERCEPTOR = (c) -> true;
+  private static final CommandInterceptor<TestAnnotation> INTERCEPTOR = (c) -> true;
   private static final ExceptionHandler<TestException> HANDLER = (t, c) -> {};
 
   BasicBindingTestModule() {

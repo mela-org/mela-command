@@ -1,9 +1,8 @@
 package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.Interceptor;
+import com.github.stupremee.mela.command.intercept.CommandInterceptor;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.inject.Key;
 
@@ -23,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class DelegatedGroupBindings implements GroupBindings {
 
   private final DelegatedGroupBindings parent;
-  protected final Map<Class<? extends Annotation>, Supplier<? extends Interceptor<?>>> interceptors;
+  protected final Map<Class<? extends Annotation>, Supplier<? extends CommandInterceptor<?>>> interceptors;
   protected final Map<Class<? extends Throwable>, Supplier<? extends ExceptionHandler<?>>> handlers;
   protected final Map<Key<?>, Supplier<? extends ArgumentMapper<?>>> mappers;
 
@@ -37,8 +36,8 @@ public abstract class DelegatedGroupBindings implements GroupBindings {
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
-  public final <T extends Annotation> Interceptor<T> getInterceptor(@Nonnull Class<T> annotationType) {
-    return (Interceptor<T>) getIfPresent(
+  public final <T extends Annotation> CommandInterceptor<T> getInterceptor(@Nonnull Class<T> annotationType) {
+    return (CommandInterceptor<T>) getIfPresent(
         findBinding((bindings) -> bindings.interceptors.get(annotationType))
     );
   }
