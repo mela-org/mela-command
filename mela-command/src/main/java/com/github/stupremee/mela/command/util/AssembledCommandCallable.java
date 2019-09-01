@@ -1,4 +1,8 @@
-package com.github.stupremee.mela.command;
+package com.github.stupremee.mela.command.util;
+
+import com.github.stupremee.mela.command.CommandCallable;
+import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.parse.Arguments;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -11,49 +15,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class CallableAdapter implements CommandCallable {
+public final class AssembledCommandCallable extends CommandCallableAdapter {
 
-  private final Set<String> labels;
-  private final String help;
-  private final String description;
-  private final String usage;
+  private final BiConsumer<Arguments, CommandContext> action;
 
-  private final BiConsumer<String, CommandContext> action;
-
-  private CallableAdapter(@Nonnull Set<String> labels, @Nullable String help,
-                  @Nullable String description, @Nullable String usage,
-                  @Nonnull BiConsumer<String, CommandContext> action) {
-    this.labels = Set.copyOf(labels);
-    this.help = help;
-    this.description = description;
-    this.usage = usage;
+  private AssembledCommandCallable(@Nonnull Set<String> labels, @Nullable String primaryLabel, @Nullable String help,
+                                   @Nullable String description, @Nullable String usage,
+                                   @Nonnull BiConsumer<Arguments, CommandContext> action) {
+    super(labels, primaryLabel, help, description, usage);
     this.action = checkNotNull(action);
   }
 
   @Override
-  public void call(@Nonnull String arguments, @Nonnull CommandContext context) {
+  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
     action.accept(arguments, context);
-  }
-
-  @Nonnull
-  @Override
-  public Set<String> getLabels() {
-    return labels;
-  }
-
-  @Override
-  public String getHelp() {
-    return help;
-  }
-
-  @Override
-  public String getDescription() {
-    return description;
-  }
-
-  @Override
-  public String getUsage() {
-    return usage;
   }
 
   @Nonnull
@@ -65,10 +40,11 @@ public final class CallableAdapter implements CommandCallable {
   public static final class Builder {
 
     private Set<String> labels = Set.of();
+    private String primaryLabel = null;
     private String help = null;
     private String description = null;
     private String usage = null;
-    private BiConsumer<String, CommandContext> action = (s, c) -> {};
+    private BiConsumer<Arguments, CommandContext> action = (s, c) -> {};
 
     @Nonnull
     public Builder withLabels(@Nonnull String... labels) {
@@ -78,6 +54,12 @@ public final class CallableAdapter implements CommandCallable {
     @Nonnull
     public Builder withLabels(@Nonnull Set<String> labels) {
       this.labels = Set.copyOf(labels);
+      return this;
+    }
+
+    @Nonnull
+    public Builder withPrimaryLabel(@Nullable String label) {
+      this.primaryLabel = label;
       return this;
     }
 
@@ -100,7 +82,7 @@ public final class CallableAdapter implements CommandCallable {
     }
 
     @Nonnull
-    public Builder withAction(@Nonnull BiConsumer<String, CommandContext> action) {
+    public Builder withAction(@Nonnull BiConsumer<Arguments, CommandContext> action) {
       this.action = action;
       return this;
     }
@@ -108,7 +90,7 @@ public final class CallableAdapter implements CommandCallable {
     @Nonnull
     @CheckReturnValue
     public CommandCallable build() {
-      return new CallableAdapter(labels, help, description, usage, action);
+      return new AssembledCommandCallable(labels, primaryLabel, help, description, usage, action);
     }
   }
 }

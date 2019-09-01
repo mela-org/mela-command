@@ -1,11 +1,10 @@
 package com.github.stupremee.mela.command.util;
 
-import com.github.stupremee.mela.command.CallableAdapter;
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.compile.IdentityCompiler;
+import com.github.stupremee.mela.command.parse.CommandInput;
+import com.github.stupremee.mela.command.parse.CommandInputParser;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,7 @@ public final class CommandInputTest {
 
   @BeforeEach
   public void setUp() {
-    command = CallableAdapter.builder().withLabels("bar").build();
+    command = AssembledCommandCallable.builder().withLabels("bar").build();
     root = GroupBuilder.create()
         .group("foo")
           .withCommand(command)

@@ -1,8 +1,9 @@
-package com.github.stupremee.mela.command.util;
+package com.github.stupremee.mela.command.parse;
 
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -14,14 +15,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class CommandInput {
 
+  private final String raw;
   private final CommandGroup group;
   private final CommandCallable callable;
-  private final String arguments;
+  private final Arguments arguments;
 
-  CommandInput(@Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull String arguments) {
+  CommandInput(@Nonnull String raw, @Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull Arguments arguments) {
+    this.raw = checkNotNull(raw);
     this.group = checkNotNull(group);
     this.callable = callable;
     this.arguments = checkNotNull(arguments);
+  }
+
+  @Nonnull
+  public String getRaw() {
+    return raw;
   }
 
   @Nonnull
@@ -35,7 +43,14 @@ public final class CommandInput {
   }
 
   @Nonnull
-  public String getArguments() {
+  public Arguments getArguments() {
     return arguments;
   }
+
+  @Nonnull
+  @CheckReturnValue
+  public static CommandInput parse(@Nonnull CommandGroup root, @Nonnull String input) {
+    return new CommandInputParser(root, input).parse();
+  }
+
 }

@@ -1,8 +1,7 @@
 package com.github.stupremee.mela.command;
 
 import com.github.stupremee.mela.command.bind.CommandExecutor;
-import com.github.stupremee.mela.command.util.CommandInput;
-import com.github.stupremee.mela.command.util.CommandInputParser;
+import com.github.stupremee.mela.command.parse.CommandInput;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;
@@ -32,7 +31,7 @@ public final class DefaultDispatcher implements Dispatcher {
 
   @Override
   public boolean dispatch(@Nonnull String command, @Nonnull CommandContext context) {
-    CommandInput input = CommandInputParser.parse(root, command);
+    CommandInput input = CommandInput.parse(root, command);
     Optional<CommandCallable> callable = input.getCallable();
     if (callable.isPresent()) {
       executor.execute(() -> callable.get().call(input.getArguments(), context));

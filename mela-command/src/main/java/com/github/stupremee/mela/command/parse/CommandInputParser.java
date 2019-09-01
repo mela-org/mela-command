@@ -1,10 +1,8 @@
-package com.github.stupremee.mela.command.util;
+package com.github.stupremee.mela.command.parse;
 
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandGroup;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -12,25 +10,32 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class CommandInputParser {
+final class CommandInputParser {
 
   private String currentWord;
   private String remaining;
+
+  private final String initialInput;
   private CommandGroup group;
   private CommandCallable callable;
+  private Arguments arguments;
 
-  public CommandInputParser(@Nonnull CommandGroup root, @Nonnull String input) {
-    this.remaining = checkNotNull(input.trim());
+  CommandInputParser(CommandGroup root, String input) {
+    this.initialInput = checkNotNull(input);
+    this.remaining = input.trim();
     this.currentWord = "";
     this.group = checkNotNull(root);
   }
 
-  @Nonnull
-  @CheckReturnValue
   public CommandInput parse() {
     stripGroup();
     stripCallable();
-    return new CommandInput(group, callable, remaining);
+    parseRemaining();
+    return new CommandInput(initialInput, group, callable, arguments);
+  }
+
+  private void parseRemaining() {
+    arguments = Arguments.parse(remaining);
   }
 
   private void stripGroup() {
@@ -54,8 +59,21 @@ public final class CommandInputParser {
 
   private void nextWord() {
     remaining = remaining.substring(currentWord.length()).trim();
-    int spaceIndex = remaining.indexOf(' ');
-    currentWord = spaceIndex == -1 ? remaining : remaining.substring(0, spaceIndex);
+    int whitespaceIndex = nextWhitespace();
+    currentWord = whitespaceIndex == -1 ? remaining : remaining.substring(0, whitespaceIndex);
+  }
+
+  private int nextWhitespace() {
+    int space = remaining.indexOf(' ');
+    if (space != -1)
+      return space;
+    int newLine = remaining.indexOf('\n');
+    if (newLine != -1)
+      return newLine;
+    int tab = remaining.indexOf('\t');
+    if (tab != -1)
+      return tab;
+    return -1;
   }
 
   private <T> T findIn(Iterable<T> iterable, Predicate<T> predicate) {
@@ -66,11 +84,4 @@ public final class CommandInputParser {
     }
     return null;
   }
-
-  @Nonnull
-  @CheckReturnValue
-  public static CommandInput parse(@Nonnull CommandGroup root, @Nonnull String input) {
-    return new CommandInputParser(root, input).parse();
-  }
-
 }

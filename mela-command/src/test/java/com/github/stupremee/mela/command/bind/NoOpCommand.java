@@ -2,6 +2,7 @@ package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandCallable;
 import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -13,7 +14,7 @@ import java.util.Set;
 public abstract class NoOpCommand implements CommandCallable {
 
   @Override
-  public void call(@Nonnull String arguments, @Nonnull CommandContext context) {
+  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
 
   }
 

@@ -1,11 +1,13 @@
 package com.github.stupremee.mela.command;
 
+import com.github.stupremee.mela.command.parse.Arguments;
+
 import javax.annotation.Nonnull;
 import java.util.Set;
 
 public interface CommandCallable {
 
-  void call(@Nonnull String arguments, @Nonnull CommandContext context);
+  void call(@Nonnull Arguments arguments, @Nonnull CommandContext context);
 
   @Nonnull
   Set<String> getLabels();
