@@ -1,6 +1,7 @@
 package com.github.stupremee.mela.command.util;
 
 import com.github.stupremee.mela.command.*;
+import com.github.stupremee.mela.command.bind.CommandBindings;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.IdentityCompiler;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
@@ -147,7 +148,7 @@ public final class GroupBuilder {
     }
   }
 
-  private static final class MutableBindings extends DelegatedGroupBindings {
+  private static final class MutableBindings extends CommandBindings {
 
     MutableBindings(MutableBindings parent) {
       super(parent);

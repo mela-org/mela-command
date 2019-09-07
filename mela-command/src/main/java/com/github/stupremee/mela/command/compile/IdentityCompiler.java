@@ -1,7 +1,6 @@
 package com.github.stupremee.mela.command.compile;
 
 import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.GroupBindings;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;

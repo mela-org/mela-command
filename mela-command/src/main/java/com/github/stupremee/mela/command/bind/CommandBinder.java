@@ -14,9 +14,7 @@ public final class CommandBinder {
   private final CommandBindingNode root;
 
   private CommandBinder(@Nonnull Binder binder) {
-    this.root = new CommandBindingNode(
-        new CommandMultibinder(checkNotNull(binder))
-    );
+    this.root = new CommandBindingNode(checkNotNull(binder));
   }
 
   @Nonnull

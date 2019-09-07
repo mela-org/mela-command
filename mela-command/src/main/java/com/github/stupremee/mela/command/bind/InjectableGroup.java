@@ -1,15 +1,10 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.GroupBindings;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
-import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.CommandInterceptor;
-import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +24,6 @@ final class InjectableGroup implements UncompiledGroup {
 
   private final Set<InjectableGroup> children;
   private final Set<String> names;
-  private final InjectableGroupBindings groupBindings;
   private final Map<Class<?>, Object> compilables;
 
   InjectableGroup() {
@@ -40,9 +34,6 @@ final class InjectableGroup implements UncompiledGroup {
     this.names = Set.copyOf(names);
     this.children = new HashSet<>();
     this.compilables = new HashMap<>();
-    this.groupBindings = parent == null
-        ? InjectableGroupBindings.create()
-        : InjectableGroupBindings.childOf(parent.groupBindings);
   }
 
   @Nonnull
@@ -63,7 +54,6 @@ final class InjectableGroup implements UncompiledGroup {
   }
 
   private void assimilate(InjectableGroup own, InjectableGroup other) {
-    own.groupBindings.assimilate(other.groupBindings);
     own.compilables.putAll(other.compilables);
     for (InjectableGroup otherChild : other.children) {
       InjectableGroup ownChild = own.createChildIfNotExists(otherChild.names);
@@ -90,43 +80,21 @@ final class InjectableGroup implements UncompiledGroup {
   }
 
   @Inject
-  void inject(@Commands Set<Object> commands, @Interceptors Set<CommandInterceptor<?>> interceptors,
-              @Handlers Set<ExceptionHandler<?>> handlers, @Mappers Set<ArgumentMapper<?>> mappers) {
-    recursiveInject(this, commands, interceptors, handlers, mappers);
+  void inject(@Commands Set<Object> commands) {
+    recursiveInject(this, commands);
   }
 
-  private void recursiveInject(InjectableGroup current,
-                               Set<Object> commands,
-                               Set<CommandInterceptor<?>> interceptors,
-                               Set<ExceptionHandler<?>> handlers,
-                               Set<ArgumentMapper<?>> mappers) {
-
-    current.groupBindings.inject(interceptors, handlers, mappers);
+  private void recursiveInject(InjectableGroup current, Set<Object> commands) {
     for (Object command : commands) {
       current.compilables.computeIfPresent(command.getClass(), (k, v) -> command);
     }
-
     for (InjectableGroup child : current.children) {
-      recursiveInject(child, commands, interceptors, handlers, mappers);
+      recursiveInject(child, commands);
     }
   }
 
   void addCommand(Class<?> commandClass) {
     compilables.put(commandClass, COMMAND_PLACEHOLDER);
-  }
-
-  <T extends Annotation> void addInterceptorBinding(Class<T> annotationType,
-                                                    Class<? extends CommandInterceptor<T>> clazz) {
-    groupBindings.putInterceptor(annotationType, clazz);
-  }
-
-  <T extends Throwable> void addExceptionBinding(Class<T> exceptionType,
-                                                 Class<? extends ExceptionHandler<T>> clazz) {
-    groupBindings.putHandler(exceptionType, clazz);
-  }
-
-  <T> void addParameterBinding(Object placeholder, Class<? extends ArgumentMapper<T>> clazz) {
-    groupBindings.putMapper(placeholder, clazz);
   }
 
   InjectableGroup createChildIfNotExists(@Nonnull Set<String> names) {
