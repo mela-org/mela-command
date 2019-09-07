@@ -3,7 +3,7 @@ package com.github.stupremee.mela.command.bind;
 import com.github.stupremee.mela.command.map.ArgumentMapper;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
-import com.google.inject.multibindings.Multibinder;
+import com.google.inject.multibindings.MapBinder;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
@@ -17,16 +17,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class ParameterBindingBuilder<T> {
 
   private final CommandBindingNode node;
-  private final InjectableGroup group;
-  private final Multibinder<ArgumentMapper<?>> binder;
+  private final MapBinder<Key<?>, ArgumentMapper<?>> binder;
   private final TypeLiteral<T> parameterType;
-
   private Class<? extends Annotation> annotationType;
 
-  ParameterBindingBuilder(CommandBindingNode node, InjectableGroup group,
-                          Multibinder<ArgumentMapper<?>> binder, TypeLiteral<T> parameterType) {
+  ParameterBindingBuilder(CommandBindingNode node,
+                          MapBinder<Key<?>, ArgumentMapper<?>> binder, TypeLiteral<T> parameterType) {
     this.node = node;
-    this.group = group;
     this.binder = binder;
     this.parameterType = parameterType;
   }
@@ -43,19 +40,16 @@ public final class ParameterBindingBuilder<T> {
   }
 
   @Nonnull
-  @SuppressWarnings("unchecked")
   public CommandBindingNode toMapper(@Nonnull ArgumentMapper<T> mapper) {
     checkNotNull(mapper);
-    binder.addBinding().toInstance(mapper);
-    group.addParameterBinding(createKey(), (Class<? extends ArgumentMapper<T>>) mapper.getClass());
+    binder.addBinding(createKey()).toInstance(mapper);
     return node;
   }
 
 
   @Nonnull
   public CommandBindingNode toMapper(@Nonnull Class<? extends ArgumentMapper<T>> clazz) {
-    binder.addBinding().to(clazz);
-    group.addParameterBinding(createKey(), clazz);
+    binder.addBinding(createKey()).to(clazz);
     return node;
   }
 
