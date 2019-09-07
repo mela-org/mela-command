@@ -20,7 +20,7 @@ public final class IdentityCompiler implements CommandCompiler {
 
   @Nonnull
   @Override
-  public Set<? extends CommandCallable> compile(@Nonnull Object command, @Nonnull GroupBindings bindings) {
+  public Set<? extends CommandCallable> compile(@Nonnull Object command) {
     checkArgument(command instanceof CommandCallable,
         "Could not compile command using IdentityCompiler: Object "
             + command + " is not an instance of CommandCallable");

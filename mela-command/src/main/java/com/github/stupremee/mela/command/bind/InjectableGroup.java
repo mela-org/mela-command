@@ -79,12 +79,6 @@ final class InjectableGroup implements UncompiledGroup {
 
   @Nonnull
   @Override
-  public GroupBindings getBindings() {
-    return groupBindings;
-  }
-
-  @Nonnull
-  @Override
   public Set<UncompiledGroup> getChildren() {
     return Collections.unmodifiableSet(children);
   }

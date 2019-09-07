@@ -136,12 +136,6 @@ public final class GroupBuilder {
 
     @Nonnull
     @Override
-    public GroupBindings getBindings() {
-      return bindings;
-    }
-
-    @Nonnull
-    @Override
     public Set<? extends UncompiledGroup> getChildren() {
       return children;
     }

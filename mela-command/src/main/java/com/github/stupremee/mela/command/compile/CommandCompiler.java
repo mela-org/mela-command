@@ -13,6 +13,6 @@ import java.util.Set;
 public interface CommandCompiler {
 
   @Nonnull
-  Set<? extends CommandCallable> compile(@Nonnull Object command, @Nonnull GroupBindings bindings);
+  Set<? extends CommandCallable> compile(@Nonnull Object command);
 
 }
