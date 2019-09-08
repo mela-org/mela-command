@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.intercept;
+package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandContext;
 

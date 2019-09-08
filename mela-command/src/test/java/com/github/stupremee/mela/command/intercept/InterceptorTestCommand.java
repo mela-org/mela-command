@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.intercept;
 
-import com.github.stupremee.mela.command.Command;
+import com.github.stupremee.mela.command.bind.Command;
 import com.github.stupremee.mela.command.TestAnnotation;
 
 /**

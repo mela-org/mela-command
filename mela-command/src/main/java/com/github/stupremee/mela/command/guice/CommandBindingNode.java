@@ -1,6 +1,7 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.guice;
 
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
+import com.github.stupremee.mela.command.guice.annotation.Commands;
 import com.google.inject.Binder;
 import com.google.inject.multibindings.Multibinder;
 

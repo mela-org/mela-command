@@ -2,6 +2,7 @@ package com.github.stupremee.mela.command.handle;
 
 import com.github.stupremee.mela.command.CommandContext;
 import com.github.stupremee.mela.command.TestException;
+import com.github.stupremee.mela.command.bind.ExceptionHandler;
 
 import javax.annotation.Nonnull;
 

@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.bind.CommandBinder;
+import com.github.stupremee.mela.command.guice.CommandBinder;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 

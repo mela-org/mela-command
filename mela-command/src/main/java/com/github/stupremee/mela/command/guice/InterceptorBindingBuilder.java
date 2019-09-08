@@ -1,6 +1,6 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.guice;
 
-import com.github.stupremee.mela.command.intercept.CommandInterceptor;
+import com.github.stupremee.mela.command.bind.CommandInterceptor;
 import com.google.inject.multibindings.MapBinder;
 
 import javax.annotation.Nonnull;

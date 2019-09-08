@@ -2,7 +2,7 @@ package com.github.stupremee.mela.command.handle;
 
 import com.github.stupremee.mela.command.TestException;
 import com.github.stupremee.mela.command.TestModule;
-import com.github.stupremee.mela.command.bind.CommandBinder;
+import com.github.stupremee.mela.command.guice.CommandBinder;
 import com.google.inject.Binder;
 
 /**

@@ -5,9 +5,7 @@ import com.github.stupremee.mela.command.TestException;
 import com.github.stupremee.mela.command.TestModule;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.IdentityCompiler;
-import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.CommandInterceptor;
-import com.github.stupremee.mela.command.map.ArgumentMapper;
+import com.github.stupremee.mela.command.guice.CommandBinder;
 import com.google.inject.Binder;
 
 /**

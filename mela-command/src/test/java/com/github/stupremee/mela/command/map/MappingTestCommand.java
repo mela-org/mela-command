@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.map;
 
-import com.github.stupremee.mela.command.Command;
+import com.github.stupremee.mela.command.bind.Command;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

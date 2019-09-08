@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command;
+package com.github.stupremee.mela.command.bind;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

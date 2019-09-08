@@ -3,9 +3,7 @@ package com.github.stupremee.mela.command.bind;
 import com.github.stupremee.mela.command.TestAnnotation;
 import com.github.stupremee.mela.command.TestException;
 import com.github.stupremee.mela.command.TestModule;
-import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.CommandInterceptor;
-import com.github.stupremee.mela.command.map.ArgumentMapper;
+import com.github.stupremee.mela.command.guice.CommandBinder;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

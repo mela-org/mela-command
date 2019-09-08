@@ -1,9 +1,8 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.handle.ExceptionHandler;
-import com.github.stupremee.mela.command.intercept.CommandInterceptor;
-import com.github.stupremee.mela.command.map.ArgumentMapper;
-import com.google.common.collect.Maps;
+import com.github.stupremee.mela.command.guice.annotation.Handlers;
+import com.github.stupremee.mela.command.guice.annotation.Interceptors;
+import com.github.stupremee.mela.command.guice.annotation.Mappers;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 

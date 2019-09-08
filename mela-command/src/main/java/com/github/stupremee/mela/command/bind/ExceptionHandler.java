@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.handle;
+package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandContext;
 

@@ -1,6 +1,6 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.guice;
 
-import com.github.stupremee.mela.command.map.ArgumentMapper;
+import com.github.stupremee.mela.command.bind.ArgumentMapper;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
