@@ -27,6 +27,7 @@ public final class CommandInput {
     this.arguments = checkNotNull(arguments);
   }
 
+
   @Nonnull
   public String getRaw() {
     return raw;

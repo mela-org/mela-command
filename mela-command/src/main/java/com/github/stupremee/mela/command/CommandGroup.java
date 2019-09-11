@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command;
 
-import com.github.stupremee.mela.command.compile.CompilingRootGroupProvider;
+import com.github.stupremee.mela.command.guice.CompilingRootGroupProvider;
 import com.google.inject.ProvidedBy;
 
 import javax.annotation.Nonnull;

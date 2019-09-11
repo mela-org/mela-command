@@ -1,8 +1,9 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.guice.annotation.Handlers;
-import com.github.stupremee.mela.command.guice.annotation.Interceptors;
-import com.github.stupremee.mela.command.guice.annotation.Mappers;
+import com.github.stupremee.mela.command.guice.annotation.ArgumentInterceptors;
+import com.github.stupremee.mela.command.guice.annotation.ExceptionHandlers;
+import com.github.stupremee.mela.command.guice.annotation.CommandInterceptors;
+import com.github.stupremee.mela.command.guice.annotation.ArgumentMappers;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 
@@ -19,31 +20,41 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class CommandBindings {
 
-  public static final CommandBindings EMPTY = new CommandBindings(Map.of(), Map.of(), Map.of());
+  public static final CommandBindings EMPTY = new CommandBindings(Map.of(), Map.of(), Map.of(), Map.of());
 
-  private final Map<Class<? extends Annotation>,  CommandInterceptor<?>> interceptors;
+  private final Map<Class<? extends Annotation>,  CommandInterceptor<?>> commandInterceptors;
   private final Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers;
   private final Map<Key<?>, ArgumentMapper<?>> mappers;
+  private final Map<Class<? extends Annotation>, ArgumentInterceptor<?>> argumentInterceptors;
 
   @Inject
-  public CommandBindings(@Interceptors Map<Class<? extends Annotation>, CommandInterceptor<?>> interceptors,
-                         @Handlers Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
-                         @Mappers Map<Key<?>, ArgumentMapper<?>> mappers) {
-    this.interceptors = Map.copyOf(interceptors);
+  public CommandBindings(@CommandInterceptors Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors,
+                         @ExceptionHandlers Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
+                         @ArgumentMappers Map<Key<?>, ArgumentMapper<?>> mappers,
+                         @ArgumentInterceptors Map<Class<? extends Annotation>, ArgumentInterceptor<?>> argumentInterceptors) {
+    this.commandInterceptors = Map.copyOf(commandInterceptors);
     this.handlers = Map.copyOf(handlers);
     this.mappers = Map.copyOf(mappers);
+    this.argumentInterceptors = Map.copyOf(argumentInterceptors);
   }
 
   @SuppressWarnings("unchecked")
   @Nullable
-  public final <T extends Annotation> CommandInterceptor<T> getInterceptor(@Nonnull Class<T> annotationType) {
+  public <T extends Annotation> ArgumentInterceptor<T> getArgumentInterceptor(@Nonnull Class<T> annotationType) {
     checkNotNull(annotationType);
-    return (CommandInterceptor<T>) interceptors.get(annotationType);
+    return (ArgumentInterceptor<T>) argumentInterceptors.get(annotationType);
   }
 
   @SuppressWarnings("unchecked")
   @Nullable
-  public final <T extends Throwable> ExceptionHandler<T> getHandler(@Nonnull Class<T> exceptionType) {
+  public <T extends Annotation> CommandInterceptor<T> getCommandInterceptor(@Nonnull Class<T> annotationType) {
+    checkNotNull(annotationType);
+    return (CommandInterceptor<T>) commandInterceptors.get(annotationType);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nullable
+  public <T extends Throwable> ExceptionHandler<T> getHandler(@Nonnull Class<T> exceptionType) {
     checkNotNull(exceptionType);
     Class<? super T> current = exceptionType;
     do {
@@ -56,7 +67,7 @@ public final class CommandBindings {
   }
 
   @SuppressWarnings("unchecked")
-  public final <T> ArgumentMapper<T> getMapper(@Nonnull Key<T> key) {
+  public <T> ArgumentMapper<T> getMapper(@Nonnull Key<T> key) {
     return (ArgumentMapper<T>) mappers.get(key);
   }
 
@@ -68,14 +79,14 @@ public final class CommandBindings {
     if (o == null || getClass() != o.getClass())
       return false;
     CommandBindings that = (CommandBindings) o;
-    return Objects.equals(interceptors, that.interceptors) &&
+    return Objects.equals(commandInterceptors, that.commandInterceptors) &&
         Objects.equals(handlers, that.handlers) &&
         Objects.equals(mappers, that.mappers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(interceptors, handlers, mappers);
+    return Objects.hash(commandInterceptors, handlers, mappers);
   }
 }
 

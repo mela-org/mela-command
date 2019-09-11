@@ -13,16 +13,20 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 final class ArgumentsParser {
 
-  private final String raw;
+  private final String input;
+  private final StringBuilder rawBuilder;
   private final List<String> arguments;
   private final Map<String, String> flags;
 
+  private boolean noMoreFlags;
   private int position;
 
-  ArgumentsParser(String rawArgs) {
-    checkArgument(!rawArgs.isEmpty(), "Arguments string must not be empty");
-    this.raw = rawArgs;
+  ArgumentsParser(String input) {
+    checkArgument(!input.isEmpty(), "Arguments string must not be empty");
+    this.input = input;
+    this.rawBuilder = new StringBuilder();
     this.position = -1;
+    this.noMoreFlags = false;
     this.arguments = new ArrayList<>();
     this.flags = new HashMap<>();
   }
@@ -30,15 +34,24 @@ final class ArgumentsParser {
   Arguments parse() {
     while (!endOfString()) {
       if (Character.isWhitespace(peek())) {
-        advance();
+        if (noMoreFlags) {
+          rawBuilder.append(advance());
+        } else {
+          advance();
+        }
       } else if (validFlagBegin()) {
-        advance();
-        flag();
+        if (noMoreFlags) {
+          rawBuilder.append(argument());
+        } else {
+          advance();
+          flag();
+        }
       } else {
-        argument();
+        noMoreFlags = true;
+        rawBuilder.append(argument());
       }
     }
-    return new Arguments(raw, arguments, flags);
+    return new Arguments(rawBuilder.toString().trim(), arguments, flags);
   }
 
   private boolean validFlagBegin() {
@@ -54,8 +67,10 @@ final class ArgumentsParser {
     flags.put(flag, value);
   }
 
-  private void argument() {
-    arguments.add(nextString());
+  private String argument() {
+    String argument = nextString();
+    arguments.add(argument);
+    return argument;
   }
 
   private String nextString() {
@@ -73,7 +88,7 @@ final class ArgumentsParser {
   }
 
   private char advance() {
-    return raw.charAt(++position);
+    return input.charAt(++position);
   }
 
   private char peek() {
@@ -81,7 +96,7 @@ final class ArgumentsParser {
   }
 
   private char peek(int offset) {
-    return raw.charAt(position + offset);
+    return input.charAt(position + offset);
   }
 
   private boolean endOfString() {
@@ -89,7 +104,7 @@ final class ArgumentsParser {
   }
 
   private boolean endOfString(int offset) {
-    return position + offset >= raw.length();
+    return position + offset >= input.length();
   }
 
 }
