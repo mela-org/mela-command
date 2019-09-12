@@ -28,7 +28,7 @@ public final class FlagParameter extends CommandParameter {
     if (value == null && getType() == boolean.class)
       value = "false";
     MappingProcess result = processSingle(value, context);
-    result.skip();
+    result.setConsuming(false);
     return result;
   }
 

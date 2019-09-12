@@ -42,7 +42,7 @@ public final class Parameters {
       CommandParameter parameter = parameters.get(parameterIndex);
       MappingProcess result = parameter.process(argumentIndex, arguments, context);
       if (result.isSuccessful()) {
-        if (result.shouldBeSkipped()) {
+        if (!result.isConsuming()) {
           argumentIndex--;
         }
         mappedArgs.add(result.getValue());

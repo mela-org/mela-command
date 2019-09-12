@@ -16,7 +16,7 @@ public final class MappingProcess {
 
   private Throwable error = null;
   private Object value = null;
-  private boolean skipArgument = false;
+  private boolean consuming = false;
 
   public MappingProcess(CommandParameter parameter) {
     this.parameter = parameter;
@@ -49,12 +49,12 @@ public final class MappingProcess {
     return error;
   }
 
-  public void skip() {
-    this.skipArgument = true;
+  public void setConsuming(boolean consuming) {
+    this.consuming = consuming;
   }
 
-  public boolean shouldBeSkipped() {
-    return skipArgument;
+  public boolean isConsuming() {
+    return consuming;
   }
 
   public CommandParameter getParameter() {
