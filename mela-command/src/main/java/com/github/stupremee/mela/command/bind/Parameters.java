@@ -4,14 +4,12 @@ import com.github.stupremee.mela.command.CommandContext;
 import com.github.stupremee.mela.command.bind.parameter.*;
 import com.github.stupremee.mela.command.bind.process.MappingProcess;
 import com.github.stupremee.mela.command.parse.Arguments;
+import com.google.common.base.Preconditions;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Key;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -74,25 +72,17 @@ public final class Parameters {
       ArgumentMapper<?> mapper = bindings.getMapper(getKey(type, annotations));
       if (mapper == null) {
         if (isArray(type)) {
-          if (parameters.hasNext()) {
-            throw new RuntimeException("Unbound arrays must be the last parameter of a method (Method: "
-                + method + "; Parameter: " + parameter + ")");
-          } else {
-            Class<?> componentType = ((Class) type).getComponentType();
-            mapper = bindings.getMapper(getKey(componentType, annotations));
-            commandParameters.add(new ArrayParameter(type, interceptors, mapper));
-          }
+          Type componentType = getComponentType(type);
+          mapper = bindings.getMapper(getKey(componentType, annotations));
+          commandParameters.add(new ArrayParameter(type, interceptors, mapper));
         } else if (isCollection(type)) {
-          if (parameters.hasNext()) {
-            throw new RuntimeException("Unbound collections must be the last parameter of a method (Method: "
-                + method + "; Parameter: " + parameter + ")");
-          } else {
-            Type actualType = getFirstActualTypeParameter(type).orElse(String.class);
-            mapper = bindings.getMapper(getKey(actualType, annotations));
-            commandParameters.add(new CollectionParameter(type, interceptors, mapper));
-          }
-        } else {
-          throw new RuntimeException("Unbound parameter: " + parameter + " in method " + method);
+          Type actualType = getFirstActualTypeParameter(type).orElse(String.class);
+          mapper = bindings.getMapper(getKey(actualType, annotations));
+          commandParameters.add(new CollectionParameter(type, interceptors, mapper));
+        }
+
+        if (mapper == null) {
+          throw new RuntimeException("Missing parameter binding: " + parameter + " in method " + method);
         }
       } else if (parameter.isAnnotationPresent(Flag.class)) {
         Flag flagAnnotation = parameter.getAnnotation(Flag.class);
@@ -111,6 +101,16 @@ public final class Parameters {
     return new Parameters(commandParameters);
   }
 
+  private static Type getComponentType(Type array) {
+    if (array instanceof GenericArrayType) {
+      return ((GenericArrayType) array).getGenericComponentType();
+    } else if (array instanceof Class<?>) {
+      return ((Class<?>) array).getComponentType();
+    } else {
+      throw new IllegalArgumentException("Argument must be an array type");
+    }
+  }
+
   private static Optional<Type> getFirstActualTypeParameter(Type type) {
     return type instanceof ParameterizedType
         ? Optional.of(((ParameterizedType) type).getActualTypeArguments()[0])
@@ -118,15 +118,18 @@ public final class Parameters {
   }
 
   private static boolean isCollection(Type type) {
-    return (type instanceof ParameterizedType
-            ? (Class<?>) ((ParameterizedType) type).getRawType()
-            : (Class<?>) type)
-        .isAssignableFrom(List.class);
-
+    if (type instanceof ParameterizedType) {
+      return ((Class<?>) ((ParameterizedType) type).getRawType()).isAssignableFrom(List.class);
+    } else if (type instanceof Class<?>) {
+      return ((Class<?>) type).isAssignableFrom(List.class);
+    } else {
+      return false;
+    }
   }
 
   private static boolean isArray(Type type) {
-    return type instanceof Class && ((Class) type).isArray();
+    return (type instanceof Class && ((Class) type).isArray())
+        || type instanceof GenericArrayType;
   }
 
   private static Key<?> getKey(Type type, Annotation[] annotations) {
