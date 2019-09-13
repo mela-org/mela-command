@@ -145,7 +145,9 @@ public final class Parameters {
     Map<Annotation, ArgumentInterceptor<?>> interceptors = new LinkedHashMap<>();
     for (Annotation annotation : annotations) {
       ArgumentInterceptor<?> interceptor = bindings.getArgumentInterceptor(annotation.annotationType());
-      interceptors.put(annotation, interceptor);
+      if (interceptor != null) {
+        interceptors.put(annotation, interceptor);
+      }
     }
     return Map.copyOf(interceptors);
   }
