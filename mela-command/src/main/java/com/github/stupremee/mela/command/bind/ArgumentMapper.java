@@ -6,11 +6,10 @@ import javax.annotation.Nonnull;
 
 public interface ArgumentMapper<T> {
 
-  T map(String argument, @Nonnull CommandContext context); // TODO: 24.06.2019 replace with actual logic
+  T map(@Nonnull String argument, @Nonnull CommandContext context); // TODO: 24.06.2019 replace with actual logic
 
   @Nonnull
   static <T> ArgumentMapper<T> singleton(T instance) {
-    // TODO: 06.07.2019  
-    return null;
+    return ((argument, context) -> instance);
   }
 }

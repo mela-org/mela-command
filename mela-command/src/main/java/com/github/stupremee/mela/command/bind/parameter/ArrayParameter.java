@@ -1,49 +1,40 @@
 package com.github.stupremee.mela.command.bind.parameter;
 
 import com.github.stupremee.mela.command.CommandContext;
-import com.github.stupremee.mela.command.bind.ArgumentInterceptor;
 import com.github.stupremee.mela.command.bind.ArgumentMapper;
-import com.github.stupremee.mela.command.bind.process.MappingProcess;
-import com.github.stupremee.mela.command.parse.Arguments;
+import com.github.stupremee.mela.command.bind.MappingInterceptor;
+import com.github.stupremee.mela.command.bind.process.ArgumentChain;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
-import java.lang.reflect.Type;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class ArrayParameter extends CommandParameter {
+public class ArrayParameter extends CommandParameter {
 
   private final Class<?> componentType;
 
-  public ArrayParameter(Type type, Map<Annotation, ArgumentInterceptor> interceptors, ArgumentMapper<?> mapper) {
-    super(type, interceptors, mapper);
-    this.componentType = ((Class<?>) type).getComponentType();
+  public ArrayParameter(Parameter parameter, Map<Annotation, MappingInterceptor> interceptors, ArgumentMapper<?> mapper, Class<?> componentType) {
+    super(parameter, interceptors, mapper);
+    this.componentType = componentType;
   }
 
   @Override
-  public MappingProcess process(int argumentIndex, Arguments arguments, CommandContext context) {
-    MappingProcess result = new MappingProcess(this);
-    if (argumentIndex < arguments.size()) {
-      int length = arguments.size() - argumentIndex;
-      Object[] array = (Object[]) Array.newInstance(componentType, length);
-      for (int arrayIndex = 0; argumentIndex < length; argumentIndex++, arrayIndex++) {
-        MappingProcess singleResult = processSingle(arguments.get(argumentIndex), context);
-        array[arrayIndex] = singleResult.getValue();
-        if (!singleResult.isSuccessful()) {
-          result.fail(singleResult.getError());
-        }
-      }
-      result.setValue(array);
-    } else {
-      result.setValue(Array.newInstance(componentType, 0));
+  public Object advance(@Nonnull ArgumentChain chain, @Nonnull CommandContext context) throws Throwable {
+    List<Object> objects = new ArrayList<>();
+    while (chain.hasNext()) {
+      objects.add(super.advance(chain, context));
     }
-    return result;
+    return objects.toArray(emptyArray());
   }
 
-  public Class<?> getComponentType() {
-    return componentType;
+  private Object[] emptyArray() {
+    return (Object[]) Array.newInstance(componentType, 0);
   }
 }

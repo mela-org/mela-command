@@ -25,13 +25,13 @@ public final class CommandBindings {
   private final Map<Class<? extends Annotation>,  CommandInterceptor<?>> commandInterceptors;
   private final Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers;
   private final Map<Key<?>, ArgumentMapper<?>> mappers;
-  private final Map<Class<? extends Annotation>, ArgumentInterceptor<?>> argumentInterceptors;
+  private final Map<Class<? extends Annotation>, MappingInterceptor<?>> argumentInterceptors;
 
   @Inject
   public CommandBindings(@CommandInterceptors Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors,
                          @ExceptionHandlers Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
                          @ArgumentMappers Map<Key<?>, ArgumentMapper<?>> mappers,
-                         @ArgumentInterceptors Map<Class<? extends Annotation>, ArgumentInterceptor<?>> argumentInterceptors) {
+                         @ArgumentInterceptors Map<Class<? extends Annotation>, MappingInterceptor<?>> argumentInterceptors) {
     this.commandInterceptors = Map.copyOf(commandInterceptors);
     this.handlers = Map.copyOf(handlers);
     this.mappers = Map.copyOf(mappers);
@@ -40,9 +40,9 @@ public final class CommandBindings {
 
   @SuppressWarnings("unchecked")
   @Nullable
-  public <T extends Annotation> ArgumentInterceptor<T> getArgumentInterceptor(@Nonnull Class<T> annotationType) {
+  public <T extends Annotation> MappingInterceptor<T> getArgumentInterceptor(@Nonnull Class<T> annotationType) {
     checkNotNull(annotationType);
-    return (ArgumentInterceptor<T>) argumentInterceptors.get(annotationType);
+    return (MappingInterceptor<T>) argumentInterceptors.get(annotationType);
   }
 
   @SuppressWarnings("unchecked")

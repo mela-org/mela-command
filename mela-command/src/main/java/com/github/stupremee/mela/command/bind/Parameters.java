@@ -1,22 +1,24 @@
 package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.CommandContext;
-import com.github.stupremee.mela.command.bind.parameter.*;
-import com.github.stupremee.mela.command.bind.process.MappingProcess;
+import com.github.stupremee.mela.command.bind.parameter.ArrayParameter;
+import com.github.stupremee.mela.command.bind.parameter.CollectionParameter;
+import com.github.stupremee.mela.command.bind.parameter.CommandParameter;
+import com.github.stupremee.mela.command.bind.process.ArgumentChain;
 import com.github.stupremee.mela.command.parse.Arguments;
 import com.google.common.base.Preconditions;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Key;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -27,26 +29,15 @@ public final class Parameters {
   private final List<CommandParameter> parameters;
 
   private Parameters(List<CommandParameter> parameters) {
-    this.parameters = parameters;
+    this.parameters = List.copyOf(parameters);
   }
 
-  public Object[] map(Arguments arguments, CommandContext context) throws Throwable {
+  @Nonnull
+  public Object[] map(@Nonnull Arguments arguments, @Nonnull CommandContext context) throws Throwable {
     List<Object> mappedArgs = new ArrayList<>();
-    for (
-        int parameterIndex = 0, argumentIndex = 0;
-        parameterIndex < parameters.size() && argumentIndex < arguments.size();
-        parameterIndex++, argumentIndex++
-    ) {
-      CommandParameter parameter = parameters.get(parameterIndex);
-      MappingProcess result = parameter.process(argumentIndex, arguments, context);
-      if (result.isSuccessful()) {
-        if (!result.isConsuming()) {
-          argumentIndex--;
-        }
-        mappedArgs.add(result.getValue());
-      } else {
-        throw result.getError();
-      }
+    ArgumentChain chain = new ArgumentChain(arguments);
+    for (CommandParameter parameter : parameters) {
+      mappedArgs.add(parameter.advance(chain, context));
     }
 
     if (parameters.size() != mappedArgs.size()) {
@@ -56,80 +47,45 @@ public final class Parameters {
     return mappedArgs.toArray();
   }
 
-  public static Parameters from(Method method, CommandBindings bindings) {
+  @Nonnull
+  public static Parameters from(@Nonnull Method method, @Nonnull CommandBindings bindings) {
+    checkNotNull(method);
+    checkNotNull(bindings);
     if (method.getTypeParameters().length > 0) {
       throw new RuntimeException("Illegal method declaration: command methods must not have generic type parameters " +
           "(method: " + method + ")");
     }
 
     List<CommandParameter> commandParameters = new ArrayList<>();
-    Iterator<Parameter> parameters = Arrays.asList(method.getParameters()).iterator();
-    while (parameters.hasNext()) {
-      Parameter parameter = parameters.next();
+    for (Parameter parameter : method.getParameters()) {
       Type type = parameter.getParameterizedType();
       Annotation[] annotations = parameter.getAnnotations();
-      Map<Annotation, ArgumentInterceptor> interceptors = getInterceptors(annotations, bindings);
+      Map<Annotation, MappingInterceptor> interceptors = getInterceptors(annotations, bindings);
       ArgumentMapper<?> mapper = bindings.getMapper(getKey(type, annotations));
       if (mapper == null) {
-        if (isArray(type)) {
-          Type componentType = getComponentType(type);
+        if (GenericReflection.isArray(type)) {
+          Type componentType = GenericReflection.getComponentType(type);
           mapper = bindings.getMapper(getKey(componentType, annotations));
-          commandParameters.add(new ArrayParameter(type, interceptors, mapper));
-        } else if (isCollection(type)) {
-          Type actualType = getFirstActualTypeParameter(type).orElse(String.class);
+          Class<?> rawComponentType = GenericReflection.getRaw(componentType)
+              .orElseThrow(() -> new RuntimeException("Invalid array component type at parameter "
+                  + parameter + " in method " + method));
+          commandParameters.add(new ArrayParameter(parameter, interceptors, mapper, rawComponentType));
+        } else if (GenericReflection.isAssignableFromList(type)) {
+          Type actualType = type instanceof ParameterizedType
+              ? GenericReflection.getFirstActualTypeParameter((ParameterizedType) type)
+              : String.class;
           mapper = bindings.getMapper(getKey(actualType, annotations));
-          commandParameters.add(new CollectionParameter(type, interceptors, mapper));
+          commandParameters.add(new CollectionParameter(parameter, interceptors, mapper));
         }
 
         if (mapper == null) {
           throw new RuntimeException("Missing parameter binding: " + parameter + " in method " + method);
         }
-      } else if (parameter.isAnnotationPresent(Flag.class)) {
-        Flag flagAnnotation = parameter.getAnnotation(Flag.class);
-        commandParameters.add(new FlagParameter(type, interceptors, mapper, flagAnnotation.value()));
-      } else if (parameter.isAnnotationPresent(Rest.class)) {
-        if (parameters.hasNext()) {
-          throw new RuntimeException("Parameters annotated with @JoinedRest must be the last parameter " +
-              "of their method (Method: " + method + "; Parameter: " + parameter + ")");
-        } else {
-          commandParameters.add(new RestParameter(type, interceptors, mapper));
-        }
       } else {
-        commandParameters.add(new CommandParameter(type, interceptors, mapper));
+        commandParameters.add(new CommandParameter(parameter, interceptors, mapper));
       }
     }
     return new Parameters(commandParameters);
-  }
-
-  private static Type getComponentType(Type array) {
-    if (array instanceof GenericArrayType) {
-      return ((GenericArrayType) array).getGenericComponentType();
-    } else if (array instanceof Class<?>) {
-      return ((Class<?>) array).getComponentType();
-    } else {
-      throw new IllegalArgumentException("Argument must be an array type");
-    }
-  }
-
-  private static Optional<Type> getFirstActualTypeParameter(Type type) {
-    return type instanceof ParameterizedType
-        ? Optional.of(((ParameterizedType) type).getActualTypeArguments()[0])
-        : Optional.empty();
-  }
-
-  private static boolean isCollection(Type type) {
-    if (type instanceof ParameterizedType) {
-      return ((Class<?>) ((ParameterizedType) type).getRawType()).isAssignableFrom(List.class);
-    } else if (type instanceof Class<?>) {
-      return ((Class<?>) type).isAssignableFrom(List.class);
-    } else {
-      return false;
-    }
-  }
-
-  private static boolean isArray(Type type) {
-    return (type instanceof Class && ((Class) type).isArray())
-        || type instanceof GenericArrayType;
   }
 
   private static Key<?> getKey(Type type, Annotation[] annotations) {
@@ -141,10 +97,10 @@ public final class Parameters {
         .orElseGet(() -> Key.get(type));
   }
 
-  private static Map<Annotation, ArgumentInterceptor> getInterceptors(Annotation[] annotations, CommandBindings bindings) {
-    Map<Annotation, ArgumentInterceptor<?>> interceptors = new LinkedHashMap<>();
+  private static Map<Annotation, MappingInterceptor> getInterceptors(Annotation[] annotations, CommandBindings bindings) {
+    Map<Annotation, MappingInterceptor<?>> interceptors = new LinkedHashMap<>();
     for (Annotation annotation : annotations) {
-      ArgumentInterceptor<?> interceptor = bindings.getArgumentInterceptor(annotation.annotationType());
+      MappingInterceptor<?> interceptor = bindings.getArgumentInterceptor(annotation.annotationType());
       if (interceptor != null) {
         interceptors.put(annotation, interceptor);
       }
