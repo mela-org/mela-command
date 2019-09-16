@@ -8,6 +8,7 @@ import com.github.stupremee.mela.command.bind.process.ArgumentChain;
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,8 @@ import java.util.Map;
  */
 public class CollectionParameter extends CommandParameter {
 
-  public CollectionParameter(Parameter parameter, Map<Annotation, MappingInterceptor> interceptors, ArgumentMapper<?> mapper) {
-    super(parameter, interceptors, mapper);
+  public CollectionParameter(Type type, String name, String description, Map<Annotation, MappingInterceptor> interceptors, ArgumentMapper<?> mapper) {
+    super(type, name, description, interceptors, mapper);
   }
 
   @Override

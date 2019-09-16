@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,9 @@ public class ArrayParameter extends CommandParameter {
 
   private final Class<?> componentType;
 
-  public ArrayParameter(Parameter parameter, Map<Annotation, MappingInterceptor> interceptors, ArgumentMapper<?> mapper, Class<?> componentType) {
-    super(parameter, interceptors, mapper);
+  public ArrayParameter(Type type, String name, String description, Map<Annotation, MappingInterceptor> interceptors,
+                        ArgumentMapper<?> mapper, Class<?> componentType) {
+    super(type, name, description, interceptors, mapper);
     this.componentType = componentType;
   }
 
