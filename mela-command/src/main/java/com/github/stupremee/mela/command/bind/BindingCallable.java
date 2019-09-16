@@ -6,20 +6,33 @@ import com.github.stupremee.mela.command.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 public abstract class BindingCallable implements CommandCallable {
 
+  private final Set<String> labels;
+  private final String description;
+  private final String usage;
+
   private final CommandBindings bindings;
   private final Map<Annotation, CommandInterceptor> interceptors;
   private final Parameters parameters;
 
   protected BindingCallable(Method method, CommandBindings bindings) {
+    if (!method.isAnnotationPresent(Command.class)) {
+      throw new IllegalArgumentException("Method " + method + " is not annotated with @Command");
+    }
+    Command annotation = method.getAnnotation(Command.class);
+    this.labels = Set.of(annotation.aliases());
+    this.description = annotation.desc();
+    this.usage = annotation.usage();
     this.bindings = bindings;
     this.interceptors = extractInterceptors(method, bindings);
     this.parameters = Parameters.from(method, bindings);
@@ -34,12 +47,6 @@ public abstract class BindingCallable implements CommandCallable {
       }
     }
     return Map.copyOf(interceptors);
-  }
-
-  protected BindingCallable(CommandBindings bindings, Map<Annotation, CommandInterceptor> interceptors, Parameters parameters) {
-    this.bindings = bindings;
-    this.interceptors = interceptors;
-    this.parameters = parameters;
   }
 
   @Override
@@ -70,6 +77,21 @@ public abstract class BindingCallable implements CommandCallable {
     return true;
   }
 
-  protected abstract void call(Object[] arguments);
+  protected abstract void call(Object[] arguments) throws Throwable;
 
+  @Nonnull
+  @Override
+  public Set<String> getLabels() {
+    return labels;
+  }
+
+  @Override
+  public String getDescription() {
+    return description;
+  }
+
+  @Override
+  public String getUsage() {
+    return usage;
+  }
 }

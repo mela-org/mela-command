@@ -17,8 +17,6 @@ public interface CommandCallable {
     return labels.isEmpty() ? null : labels.iterator().next();
   }
 
-  String getHelp();
-
   String getDescription();
 
   String getUsage();

@@ -30,11 +30,6 @@ public abstract class NoOpCommand implements CommandCallable {
   }
 
   @Override
-  public String getHelp() {
-    return null;
-  }
-
-  @Override
   public String getDescription() {
     return null;
   }
