@@ -24,4 +24,8 @@ public final class ReflectiveCallable extends BindingCallable {
     method.invoke(delegate, arguments);
   }
 
+  public static ReflectiveCallable from(Object object, Method method, CommandBindings bindings) {
+    return new ReflectiveCallable(object, method, bindings);
+  }
+
 }
