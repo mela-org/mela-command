@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.parse;
+package com.github.stupremee.mela.command.core.parse;
 
 import com.github.stupremee.mela.command.core.CommandCallable;
 import com.github.stupremee.mela.command.core.CommandGroup;

@@ -5,8 +5,8 @@ import com.github.stupremee.mela.command.bind.CommandBindings;
 import com.github.stupremee.mela.command.bind.GenericReflection;
 import com.github.stupremee.mela.command.bind.MappingInterceptor;
 import com.github.stupremee.mela.command.bind.ArgumentMapper;
-import com.github.stupremee.mela.command.bind.process.ArgumentChain;
-import com.github.stupremee.mela.command.bind.process.MappingProcess;
+import com.github.stupremee.mela.command.bind.ArgumentChain;
+import com.github.stupremee.mela.command.bind.MappingProcess;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Key;
 

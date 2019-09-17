@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.core;
 
-import com.github.stupremee.mela.command.parse.Arguments;
+import com.github.stupremee.mela.command.core.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.parse;
+package com.github.stupremee.mela.command.core.parse;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,8 +1,9 @@
 package com.github.stupremee.mela.command.bind;
 
+import com.github.stupremee.mela.command.bind.parameter.Parameters;
 import com.github.stupremee.mela.command.core.CommandCallable;
 import com.github.stupremee.mela.command.core.CommandContext;
-import com.github.stupremee.mela.command.parse.Arguments;
+import com.github.stupremee.mela.command.core.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;

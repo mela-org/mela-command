@@ -1,7 +1,7 @@
 package com.github.stupremee.mela.command.core;
 
 import com.github.stupremee.mela.command.guice.annotation.CommandExecutor;
-import com.github.stupremee.mela.command.parse.CommandInput;
+import com.github.stupremee.mela.command.core.parse.CommandInput;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;

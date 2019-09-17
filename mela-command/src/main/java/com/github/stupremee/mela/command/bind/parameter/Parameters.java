@@ -1,9 +1,9 @@
-package com.github.stupremee.mela.command.bind;
+package com.github.stupremee.mela.command.bind.parameter;
 
+import com.github.stupremee.mela.command.bind.ArgumentChain;
+import com.github.stupremee.mela.command.bind.CommandBindings;
 import com.github.stupremee.mela.command.core.CommandContext;
-import com.github.stupremee.mela.command.bind.parameter.CommandParameter;
-import com.github.stupremee.mela.command.bind.process.ArgumentChain;
-import com.github.stupremee.mela.command.parse.Arguments;
+import com.github.stupremee.mela.command.core.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;

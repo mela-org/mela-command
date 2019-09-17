@@ -3,7 +3,7 @@ package com.github.stupremee.mela.command.bind.parameter;
 import com.github.stupremee.mela.command.core.CommandContext;
 import com.github.stupremee.mela.command.bind.ArgumentMapper;
 import com.github.stupremee.mela.command.bind.MappingInterceptor;
-import com.github.stupremee.mela.command.bind.process.ArgumentChain;
+import com.github.stupremee.mela.command.bind.ArgumentChain;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;

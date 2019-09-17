@@ -1,7 +1,6 @@
 package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.core.CommandContext;
-import com.github.stupremee.mela.command.bind.process.MappingProcess;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;

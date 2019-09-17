@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command.parse;
+package com.github.stupremee.mela.command.core.parse;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
