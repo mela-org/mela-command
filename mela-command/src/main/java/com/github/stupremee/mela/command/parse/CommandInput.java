@@ -1,7 +1,7 @@
 package com.github.stupremee.mela.command.parse;
 
-import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.CommandGroup;
+import com.github.stupremee.mela.command.core.CommandCallable;
+import com.github.stupremee.mela.command.core.CommandGroup;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;

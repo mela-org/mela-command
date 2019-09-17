@@ -1,4 +1,4 @@
-package com.github.stupremee.mela.command;
+package com.github.stupremee.mela.command.core;
 
 import com.github.stupremee.mela.command.parse.Arguments;
 

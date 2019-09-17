@@ -1,6 +1,6 @@
-package com.github.stupremee.mela.command.util;
+package com.github.stupremee.mela.command.core;
 
-import com.github.stupremee.mela.command.CommandCallable;
+import com.github.stupremee.mela.command.core.CommandCallable;
 
 import javax.annotation.Nonnull;
 import java.util.Set;

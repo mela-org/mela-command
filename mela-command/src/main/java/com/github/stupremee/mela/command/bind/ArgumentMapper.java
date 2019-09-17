@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 

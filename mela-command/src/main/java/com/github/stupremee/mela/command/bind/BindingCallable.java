@@ -1,12 +1,11 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.core.CommandCallable;
+import com.github.stupremee.mela.command.core.CommandContext;
 import com.github.stupremee.mela.command.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;

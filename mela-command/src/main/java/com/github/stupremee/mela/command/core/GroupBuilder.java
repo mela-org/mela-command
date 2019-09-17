@@ -1,8 +1,5 @@
-package com.github.stupremee.mela.command.util;
+package com.github.stupremee.mela.command.core;
 
-import com.github.stupremee.mela.command.CommandGroup;
-import com.github.stupremee.mela.command.GroupAssembler;
-import com.github.stupremee.mela.command.ImmutableGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.IdentityCompiler;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;

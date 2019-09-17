@@ -1,7 +1,5 @@
-package com.github.stupremee.mela.command.util;
+package com.github.stupremee.mela.command.core;
 
-import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.CommandContext;
 import com.github.stupremee.mela.command.parse.Arguments;
 
 import javax.annotation.CheckReturnValue;

@@ -1,13 +1,12 @@
 package com.github.stupremee.mela.command.bind.parameter;
 
-import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.core.CommandContext;
 import com.github.stupremee.mela.command.bind.ArgumentMapper;
 import com.github.stupremee.mela.command.bind.MappingInterceptor;
 import com.github.stupremee.mela.command.bind.process.ArgumentChain;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;

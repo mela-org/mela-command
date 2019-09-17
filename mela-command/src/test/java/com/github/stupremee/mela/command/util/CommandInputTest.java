@@ -1,7 +1,9 @@
 package com.github.stupremee.mela.command.util;
 
-import com.github.stupremee.mela.command.CommandCallable;
-import com.github.stupremee.mela.command.CommandGroup;
+import com.github.stupremee.mela.command.core.AssembledCommandCallable;
+import com.github.stupremee.mela.command.core.CommandCallable;
+import com.github.stupremee.mela.command.core.CommandGroup;
+import com.github.stupremee.mela.command.core.GroupBuilder;
 import com.github.stupremee.mela.command.parse.CommandInput;
 import com.github.stupremee.mela.command.parse.CommandInputParser;
 import org.junit.jupiter.api.AfterEach;

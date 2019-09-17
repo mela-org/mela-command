@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.bind.process;
 
-import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.core.CommandContext;
 import com.github.stupremee.mela.command.bind.ArgumentMapper;
 import com.github.stupremee.mela.command.bind.parameter.CommandParameter;
 import com.github.stupremee.mela.command.parse.Arguments;

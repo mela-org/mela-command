@@ -1,7 +1,7 @@
 package com.github.stupremee.mela.command.handle;
 
-import com.github.stupremee.mela.command.CommandContext;
-import com.github.stupremee.mela.command.Dispatcher;
+import com.github.stupremee.mela.command.core.CommandContext;
+import com.github.stupremee.mela.command.core.Dispatcher;
 import com.github.stupremee.mela.command.SingleSubjectTest;
 import com.google.inject.Inject;
 import org.junit.jupiter.api.Test;

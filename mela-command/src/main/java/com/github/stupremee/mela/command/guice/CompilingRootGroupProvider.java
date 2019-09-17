@@ -1,12 +1,11 @@
 package com.github.stupremee.mela.command.guice;
 
-import com.github.stupremee.mela.command.GroupAssembler;
-import com.github.stupremee.mela.command.ImmutableGroup;
-import com.github.stupremee.mela.command.EmptyGroup;
-import com.github.stupremee.mela.command.CommandGroup;
+import com.github.stupremee.mela.command.core.GroupAssembler;
+import com.github.stupremee.mela.command.core.ImmutableGroup;
+import com.github.stupremee.mela.command.core.EmptyGroup;
+import com.github.stupremee.mela.command.core.CommandGroup;
 import com.github.stupremee.mela.command.compile.CommandCompiler;
 import com.github.stupremee.mela.command.compile.UncompiledGroup;
-import com.github.stupremee.mela.command.guice.LazySingletonProvider;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;

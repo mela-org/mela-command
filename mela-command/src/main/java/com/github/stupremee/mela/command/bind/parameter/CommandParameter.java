@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.bind.parameter;
 
-import com.github.stupremee.mela.command.CommandContext;
+import com.github.stupremee.mela.command.core.CommandContext;
 import com.github.stupremee.mela.command.bind.CommandBindings;
 import com.github.stupremee.mela.command.bind.GenericReflection;
 import com.github.stupremee.mela.command.bind.MappingInterceptor;

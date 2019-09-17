@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.compile;
 
-import com.github.stupremee.mela.command.CommandCallable;
+import com.github.stupremee.mela.command.core.CommandCallable;
 import com.github.stupremee.mela.command.bind.ReflectiveCompiler;
 import com.google.inject.ImplementedBy;
 
