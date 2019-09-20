@@ -1,8 +1,9 @@
 repositories {
-  maven("http://maven.sk89q.com/repo/")
+  jcenter()
 }
 
 dependencies {
-  compile("com.sk89q.intake:intake:4.0-SNAPSHOT")
-  compile(project(":mela-event"))
+  api(Deps.guice)
+  implementation(Deps.guava)
+  testImplementation(Deps.Test.JUnit.api)
 }

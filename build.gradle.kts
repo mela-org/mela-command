@@ -3,6 +3,7 @@ plugins {
   pmd
   checkstyle
   id("com.github.spotbugs") version "1.7.1"
+  id("io.spring.dependency-management") version "1.0.7.RELEASE"
 }
 
 group = "com.github.stupremee"
@@ -13,25 +14,24 @@ subprojects {
   apply(plugin = "pmd")
   apply(plugin = "checkstyle")
   apply(plugin = "com.github.spotbugs")
+  apply(plugin = "io.spring.dependency-management")
 
   group = "com.github.stupremee"
   version = "1.0.0"
 
   repositories {
+    maven("https://repo.spring.io/milestone")
     jcenter()
     mavenCentral()
   }
 
+  dependencyManagement {
+    imports {
+      mavenBom("io.projectreactor:reactor-bom:${Versions.reactor_bom}")
+    }
+  }
+
   dependencies {
-    compile("com.discord4j:discord4j-core:3.0.6")
-    
-    compile("com.google.inject:guice:4.2.2")
-    compile("com.google.guava:guava:27.1-jre")
-
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-    testCompile("org.assertj:assertj-core:3.11.1")
-
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
   }
 
@@ -50,18 +50,6 @@ subprojects {
       from(javadoc)
     }
 
-    val fatJar by registering(Jar::class) {
-      dependsOn(jar)
-      archiveClassifier.set("shaded")
-      duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-      from(configurations.runtimeClasspath.get()
-          .onEach { println("Add from dependencies: ${it.name}") }
-          .map { if (it.isDirectory) it else zipTree(it) })
-      val sourcesMain = sourceSets.main.get()
-      sourcesMain.allSource.forEach { println("Add from sources: ${it.name}") }
-      from(sourcesMain.output)
-    }
-
     artifacts {
       add("archives", javadocJar)
       add("archives", sourcesJar)
@@ -77,7 +65,6 @@ subprojects {
     }
 
     test {
-
       useJUnitPlatform()
     }
 
@@ -114,5 +101,6 @@ subprojects {
 
   configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 }
