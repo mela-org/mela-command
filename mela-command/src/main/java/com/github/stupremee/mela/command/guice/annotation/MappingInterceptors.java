@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface ArgumentInterceptors {
+public @interface MappingInterceptors {
 }

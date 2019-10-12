@@ -13,7 +13,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-// TODO: 11.07.2019 adjust to parameter binding changes
 public final class ParameterBindingBuilder<T> {
 
   private final CommandBindingNode node;

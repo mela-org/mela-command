@@ -1,6 +1,6 @@
 package com.github.stupremee.mela.command.bind;
 
-import com.github.stupremee.mela.command.guice.annotation.ArgumentInterceptors;
+import com.github.stupremee.mela.command.guice.annotation.MappingInterceptors;
 import com.github.stupremee.mela.command.guice.annotation.ExceptionHandlers;
 import com.github.stupremee.mela.command.guice.annotation.CommandInterceptors;
 import com.github.stupremee.mela.command.guice.annotation.ArgumentMappers;
@@ -22,16 +22,16 @@ public final class CommandBindings {
 
   public static final CommandBindings EMPTY = new CommandBindings(Map.of(), Map.of(), Map.of(), Map.of());
 
-  private final Map<Class<? extends Annotation>,  CommandInterceptor<?>> commandInterceptors;
-  private final Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers;
-  private final Map<Key<?>, ArgumentMapper<?>> mappers;
-  private final Map<Class<? extends Annotation>, MappingInterceptor<?>> argumentInterceptors;
+  private final Map<Class,  CommandInterceptor> commandInterceptors;
+  private final Map<Class, ExceptionHandler> handlers;
+  private final Map<Key, ArgumentMapper> mappers;
+  private final Map<Class, MappingInterceptor> argumentInterceptors;
 
   @Inject
-  public CommandBindings(@CommandInterceptors Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors,
-                         @ExceptionHandlers Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
-                         @ArgumentMappers Map<Key<?>, ArgumentMapper<?>> mappers,
-                         @ArgumentInterceptors Map<Class<? extends Annotation>, MappingInterceptor<?>> argumentInterceptors) {
+  public CommandBindings(@CommandInterceptors Map<Class, CommandInterceptor> commandInterceptors,
+                         @ExceptionHandlers Map<Class, ExceptionHandler> handlers,
+                         @ArgumentMappers Map<Key, ArgumentMapper> mappers,
+                         @MappingInterceptors Map<Class, MappingInterceptor> argumentInterceptors) {
     this.commandInterceptors = Map.copyOf(commandInterceptors);
     this.handlers = Map.copyOf(handlers);
     this.mappers = Map.copyOf(mappers);

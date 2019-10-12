@@ -2,6 +2,9 @@ package com.github.stupremee.mela.command.bind;
 
 import com.github.stupremee.mela.command.bind.BindingCallable;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -10,21 +13,26 @@ import java.lang.reflect.Method;
  */
 public final class ReflectiveCallable extends BindingCallable {
 
-  private final Method method;
-  private final Object delegate;
+  private final MethodHandle handle;
 
-  private ReflectiveCallable(Object delegate, Method method, CommandBindings bindings) {
+  private ReflectiveCallable(Object delegate, Method method, CommandBindings bindings) throws NoSuchMethodException, IllegalAccessException {
     super(method, bindings);
-    this.method = method;
-    this.delegate = delegate;
+    this.handle = constructHandle(delegate, method);
+  }
+
+  private MethodHandle constructHandle(Object delegate, Method method) throws NoSuchMethodException, IllegalAccessException {
+    MethodType type = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
+    return MethodHandles.publicLookup()
+        .findVirtual(method.getDeclaringClass(), method.getName(), type)
+        .bindTo(delegate);
   }
 
   @Override
-  protected void call(Object[] arguments) throws InvocationTargetException, IllegalAccessException {
-    method.invoke(delegate, arguments);
+  protected void call(Object[] arguments) throws Throwable {
+    handle.invoke(arguments);
   }
 
-  public static ReflectiveCallable from(Object object, Method method, CommandBindings bindings) {
+  public static ReflectiveCallable from(Object object, Method method, CommandBindings bindings) throws NoSuchMethodException, IllegalAccessException {
     return new ReflectiveCallable(object, method, bindings);
   }
 
