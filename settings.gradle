@@ -1,5 +1,2 @@
-rootProject.name = 'mela'
-include 'mela-config'
-include 'mela-event'
+rootProject.name = 'mela-command'
 include 'mela-command'
-include 'mela-database'
