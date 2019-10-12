@@ -116,7 +116,7 @@ public class CommandParameter {
         return new ArrayParameter(type, name, description, interceptors, mapper, rawComponentType);
       } else if (GenericReflection.isAssignableFromList(type)) {
         Type actualType = type instanceof ParameterizedType
-            ? GenericReflection.getFirstActualTypeParameter((ParameterizedType) type)
+            ? ((ParameterizedType) type).getActualTypeArguments()[0]
             : String.class;
         mapper = bindings.getMapper(getKey(actualType, annotations));
         return new CollectionParameter(type, name, description, interceptors, mapper);

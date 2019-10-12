@@ -33,10 +33,6 @@ public final class GenericReflection {
     }
   }
 
-  public static Type getFirstActualTypeParameter(ParameterizedType type) {
-    return type.getActualTypeArguments()[0];
-  }
-
   public static boolean isAssignableFromList(Type type) {
     if (type instanceof ParameterizedType) {
       return ((Class<?>) ((ParameterizedType) type).getRawType()).isAssignableFrom(List.class);
