@@ -44,11 +44,6 @@ public final class Parameters {
   public static Parameters from(@Nonnull Method method, @Nonnull CommandBindings bindings) {
     checkNotNull(method);
     checkNotNull(bindings);
-    if (method.getTypeParameters().length > 0) {
-      throw new RuntimeException("Illegal method declaration: command methods must not have generic type parameters " +
-          "(method: " + method + ")");
-    }
-
     List<CommandParameter> parameters = Arrays.stream(method.getParameters())
         .map((parameter) -> CommandParameter.from(parameter, bindings))
         .collect(Collectors.toList());

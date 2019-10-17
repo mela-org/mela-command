@@ -8,6 +8,7 @@ import io.github.mela.command.core.parse.Arguments;
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,9 +27,7 @@ public abstract class BindingCallable implements CommandCallable {
   private final Parameters parameters;
 
   protected BindingCallable(Method method, CommandBindings bindings) {
-    if (!method.isAnnotationPresent(Command.class)) {
-      throw new IllegalArgumentException("Method " + method + " is not annotated with @Command");
-    }
+    checkDeclaration(method);
     Command annotation = method.getAnnotation(Command.class);
     this.labels = Set.of(annotation.aliases());
     this.description = annotation.desc();
@@ -36,6 +35,19 @@ public abstract class BindingCallable implements CommandCallable {
     this.bindings = bindings;
     this.interceptors = extractInterceptors(method, bindings);
     this.parameters = Parameters.from(method, bindings);
+  }
+
+  private void checkDeclaration(Method method) {
+    boolean valid = method.isAnnotationPresent(Command.class)
+        && method.getReturnType().equals(void.class)
+        && Modifier.isPublic(method.getModifiers())
+        && !Modifier.isStatic(method.getModifiers())
+        && method.getTypeParameters().length == 0;
+    if (!valid) {
+      throw new RuntimeException("Invalid command method declaration (" + method + "). " +
+          "Command methods must be annotated with @Command, they must be public, non-static, " +
+          "return void and not have any type parameters.");
+    }
   }
 
   private Map<Annotation, CommandInterceptor> extractInterceptors(Method method, CommandBindings bindings) {
