@@ -107,5 +107,4 @@ public abstract class BindingCallable implements CommandCallable {
     return usage;
   }
 
-
 }

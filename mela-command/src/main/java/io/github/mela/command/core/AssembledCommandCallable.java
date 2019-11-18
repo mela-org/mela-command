@@ -1,7 +1,5 @@
 package io.github.mela.command.core;
 
-import io.github.mela.command.core.parse.Arguments;
-
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,17 +13,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class AssembledCommandCallable extends CommandCallableAdapter {
 
-  private final BiConsumer<Arguments, CommandContext> action;
+  private final BiConsumer<String, CommandContext> action;
 
   private AssembledCommandCallable(@Nonnull Set<String> labels, @Nullable String primaryLabel, @Nullable String help,
                                    @Nullable String description, @Nullable String usage,
-                                   @Nonnull BiConsumer<Arguments, CommandContext> action) {
+                                   @Nonnull BiConsumer<String, CommandContext> action) {
     super(labels, primaryLabel, help, description, usage);
     this.action = checkNotNull(action);
   }
 
   @Override
-  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
+  public void call(@Nonnull String arguments, @Nonnull CommandContext context) {
     action.accept(arguments, context);
   }
 
@@ -42,7 +40,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
     private String help = null;
     private String description = null;
     private String usage = null;
-    private BiConsumer<Arguments, CommandContext> action = (s, c) -> {};
+    private BiConsumer<String, CommandContext> action = (s, c) -> {};
 
     @Nonnull
     public Builder withLabels(@Nonnull String... labels) {
@@ -80,7 +78,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
     }
 
     @Nonnull
-    public Builder withAction(@Nonnull BiConsumer<Arguments, CommandContext> action) {
+    public Builder withAction(@Nonnull BiConsumer<String, CommandContext> action) {
       this.action = action;
       return this;
     }

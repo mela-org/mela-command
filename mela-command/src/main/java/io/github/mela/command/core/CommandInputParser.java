@@ -1,7 +1,4 @@
-package io.github.mela.command.core.parse;
-
-import io.github.mela.command.core.CommandCallable;
-import io.github.mela.command.core.CommandGroup;
+package io.github.mela.command.core;
 
 import java.util.function.Predicate;
 
@@ -18,7 +15,6 @@ final class CommandInputParser {
   private final String initialInput;
   private CommandGroup group;
   private CommandCallable callable;
-  private Arguments arguments;
 
   CommandInputParser(CommandGroup root, String input) {
     this.initialInput = checkNotNull(input);
@@ -30,12 +26,7 @@ final class CommandInputParser {
   public CommandInput parse() {
     stripGroup();
     stripCallable();
-    parseRemaining();
-    return new CommandInput(initialInput, group, callable, arguments);
-  }
-
-  private void parseRemaining() {
-    arguments = Arguments.parse(remaining);
+    return new CommandInput(initialInput, group, callable, remaining);
   }
 
   private void stripGroup() {

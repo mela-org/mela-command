@@ -1,4 +1,4 @@
-package io.github.mela.command.bind;
+package io.github.mela.command.bind.map;
 
 import io.github.mela.command.core.CommandContext;
 

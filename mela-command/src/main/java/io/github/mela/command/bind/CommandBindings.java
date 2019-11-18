@@ -2,6 +2,8 @@ package io.github.mela.command.bind;
 
 import com.google.inject.Inject;
 import com.google.inject.Key;
+import io.github.mela.command.bind.map.ArgumentMapper;
+import io.github.mela.command.bind.map.MappingInterceptor;
 import io.github.mela.command.guice.annotation.ArgumentMappers;
 import io.github.mela.command.guice.annotation.CommandInterceptors;
 import io.github.mela.command.guice.annotation.ExceptionHandlers;

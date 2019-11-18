@@ -1,8 +1,7 @@
-package io.github.mela.command.bind;
+package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.parameter.CommandParameter;
 import io.github.mela.command.core.CommandContext;
-import io.github.mela.command.core.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,18 +19,19 @@ public final class MappingProcess {
   private final ArgumentChain chain;
   private final CommandContext context;
 
-  private int argumentsConsumed;
   private boolean isSet;
 
   private Throwable error;
   private Object value;
 
-  public MappingProcess(@Nonnull CommandParameter parameter, @Nonnull ArgumentMapper mapper, @Nonnull ArgumentChain chain, @Nonnull CommandContext context) {
+  public MappingProcess(@Nonnull CommandParameter parameter,
+                        @Nonnull ArgumentMapper mapper,
+                        @Nonnull ArgumentChain chain,
+                        @Nonnull CommandContext context) {
     this.mapper = mapper;
     this.chain = checkNotNull(chain);
     this.parameter = checkNotNull(parameter);
     this.context = checkNotNull(context);
-    this.argumentsConsumed = 0;
     this.isSet = false;
     this.value = null;
     this.error = null;
@@ -46,11 +46,6 @@ public final class MappingProcess {
 
   public void fixError() {
     this.error = null;
-  }
-
-  @Nullable
-  public Object map(@Nonnull String input, @Nonnull CommandContext context) {
-    return mapper.map(input, context);
   }
 
   public void setValue(@Nullable Object value) {
@@ -83,25 +78,13 @@ public final class MappingProcess {
   }
 
   @Nonnull
-  public String consume() {
-    String next = chain.consume();
-    ++argumentsConsumed;
-    return next;
-  }
-
-  public void resetConsumption() {
-    for (int i = 0; i < argumentsConsumed; i++) {
-      chain.back();
-    }
-  }
-
-  public int argumentsConsumed() {
-    return argumentsConsumed;
+  public ArgumentMapper getMapper() {
+    return mapper;
   }
 
   @Nonnull
-  public Arguments getCompleteArguments() {
-    return chain.getArguments();
+  public ArgumentChain getArguments() {
+    return chain;
   }
 
   @Nonnull
@@ -109,6 +92,7 @@ public final class MappingProcess {
     return context;
   }
 
+  @Nonnull
   public CommandParameter getParameter() {
     return parameter;
   }

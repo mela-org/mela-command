@@ -1,9 +1,8 @@
 package io.github.mela.command.bind.parameter;
 
-import io.github.mela.command.bind.ArgumentChain;
+import io.github.mela.command.bind.map.ArgumentChain;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.core.CommandContext;
-import io.github.mela.command.core.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
@@ -26,11 +25,11 @@ public final class Parameters {
   }
 
   @Nonnull
-  public Object[] map(@Nonnull Arguments arguments, @Nonnull CommandContext context) throws Throwable {
+  public Object[] map(@Nonnull String arguments, @Nonnull CommandContext context) throws Throwable {
     List<Object> mappedArgs = new ArrayList<>();
     ArgumentChain chain = new ArgumentChain(arguments);
     for (CommandParameter parameter : parameters) {
-      mappedArgs.add(parameter.advance(chain, context));
+      mappedArgs.add(parameter.advance(chain.subChain(), context));
     }
 
     if (parameters.size() != mappedArgs.size()) {

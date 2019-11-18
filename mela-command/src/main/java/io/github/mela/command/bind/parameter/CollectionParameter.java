@@ -1,8 +1,8 @@
 package io.github.mela.command.bind.parameter;
 
-import io.github.mela.command.bind.ArgumentChain;
-import io.github.mela.command.bind.ArgumentMapper;
-import io.github.mela.command.bind.MappingInterceptor;
+import io.github.mela.command.bind.map.ArgumentChain;
+import io.github.mela.command.bind.map.ArgumentMapper;
+import io.github.mela.command.bind.map.MappingInterceptor;
 import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;

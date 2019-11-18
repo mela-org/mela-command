@@ -1,13 +1,11 @@
 package io.github.mela.command.core;
 
-import io.github.mela.command.core.parse.Arguments;
-
 import javax.annotation.Nonnull;
 import java.util.Set;
 
 public interface CommandCallable {
 
-  void call(@Nonnull Arguments arguments, @Nonnull CommandContext context);
+  void call(@Nonnull String arguments, @Nonnull CommandContext context);
 
   @Nonnull
   Set<String> getLabels();

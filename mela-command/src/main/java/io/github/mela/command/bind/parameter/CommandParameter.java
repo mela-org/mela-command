@@ -3,6 +3,10 @@ package io.github.mela.command.bind.parameter;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Key;
 import io.github.mela.command.bind.*;
+import io.github.mela.command.bind.map.ArgumentChain;
+import io.github.mela.command.bind.map.ArgumentMapper;
+import io.github.mela.command.bind.map.MappingInterceptor;
+import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
@@ -59,7 +63,7 @@ public class CommandParameter {
 
   private void mapNextArgument(MappingProcess process, CommandContext context) {
     try {
-      process.setValue(mapper.map(process.consume(), context));
+      process.setValue(mapper.map(mapper.prepare(process.getArguments()), context));
     } catch (Throwable throwable) {
       process.fail(throwable);
     }

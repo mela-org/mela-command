@@ -1,7 +1,6 @@
 package io.github.mela.command.core;
 
 import com.google.inject.Inject;
-import io.github.mela.command.core.parse.CommandInput;
 import io.github.mela.command.guice.annotation.CommandExecutor;
 
 import javax.annotation.Nonnull;

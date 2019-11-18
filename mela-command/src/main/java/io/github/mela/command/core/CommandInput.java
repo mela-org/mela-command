@@ -1,7 +1,4 @@
-package io.github.mela.command.core.parse;
-
-import io.github.mela.command.core.CommandCallable;
-import io.github.mela.command.core.CommandGroup;
+package io.github.mela.command.core;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -18,9 +15,9 @@ public final class CommandInput {
   private final String raw;
   private final CommandGroup group;
   private final CommandCallable callable;
-  private final Arguments arguments;
+  private final String arguments;
 
-  CommandInput(@Nonnull String raw, @Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull Arguments arguments) {
+  CommandInput(@Nonnull String raw, @Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull String arguments) {
     this.raw = checkNotNull(raw);
     this.group = checkNotNull(group);
     this.callable = callable;
@@ -44,7 +41,7 @@ public final class CommandInput {
   }
 
   @Nonnull
-  public Arguments getArguments() {
+  public String getArguments() {
     return arguments;
   }
 

@@ -3,6 +3,7 @@ package io.github.mela.command.bind;
 import io.github.mela.command.TestAnnotation;
 import io.github.mela.command.TestException;
 import io.github.mela.command.TestModule;
+import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.IdentityCompiler;
 import io.github.mela.command.guice.CommandBinder;
