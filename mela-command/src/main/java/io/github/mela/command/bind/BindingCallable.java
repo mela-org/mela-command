@@ -44,7 +44,7 @@ public abstract class BindingCallable implements CommandCallable {
         && !Modifier.isStatic(method.getModifiers())
         && method.getTypeParameters().length == 0;
     if (!valid) {
-      throw new RuntimeException("Invalid command method declaration (" + method + "). " +
+      throw new InvalidCommandMethodException("Invalid command method declaration (" + method + "). " +
           "Command methods must be annotated with @Command, they must be public, non-static, " +
           "return void and not have any type parameters.");
     }

@@ -9,11 +9,11 @@ import java.util.Optional;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-final class GenericReflection {
+public final class GenericReflection {
 
   private GenericReflection() {}
 
-  static Optional<Class<?>> getRaw(Type type) {
+  public static Optional<Class<?>> getRaw(Type type) {
     if (type instanceof Class<?>) {
       return Optional.of((Class<?>) type);
     } else if (type instanceof ParameterizedType) {
@@ -23,7 +23,7 @@ final class GenericReflection {
     }
   }
 
-  static Type getComponentType(Type array) {
+  public static Type getComponentType(Type array) {
     if (array instanceof GenericArrayType) {
       return ((GenericArrayType) array).getGenericComponentType();
     } else if (array instanceof Class<?> && ((Class<?>) array).isArray()) {
@@ -33,7 +33,7 @@ final class GenericReflection {
     }
   }
 
-  static boolean isAssignable(Type type, Class from) {
+  public static boolean isAssignable(Type type, Class from) {
     if (type instanceof ParameterizedType) {
       return ((Class<?>) ((ParameterizedType) type).getRawType()).isAssignableFrom(List.class);
     } else if (type instanceof Class<?>) {
@@ -43,7 +43,7 @@ final class GenericReflection {
     }
   }
 
-  static boolean isArray(Type type) {
+  public static boolean isArray(Type type) {
     return (type instanceof Class && ((Class) type).isArray())
         || type instanceof GenericArrayType;
   }

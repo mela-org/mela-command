@@ -2,6 +2,7 @@ package io.github.mela.command.bind.parameter;
 
 import io.github.mela.command.bind.map.ArgumentChain;
 import io.github.mela.command.bind.CommandBindings;
+import io.github.mela.command.bind.map.InvalidArgumentAmountException;
 import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
@@ -32,8 +33,8 @@ public final class Parameters {
     }
 
     if (parameters.size() != mappedArgs.size()) {
-      throw new RuntimeException("Invalid amount of arguments; expected: "
-          + parameters.size() + ", got: " + mappedArgs.size()); // TODO: 11.09.2019
+      throw new InvalidArgumentAmountException("Invalid amount of arguments; expected: "
+          + parameters.size() + ", got: " + mappedArgs.size());
     }
     return mappedArgs.toArray();
   }

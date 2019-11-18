@@ -7,6 +7,6 @@ import java.lang.annotation.Annotation;
 
 public interface CommandInterceptor<T extends Annotation> {
 
-  boolean intercept(@Nonnull T annotation, @Nonnull CommandContext context) throws Throwable;
+  boolean intercept(@Nonnull T annotation, @Nonnull CommandContext context);
 
 }

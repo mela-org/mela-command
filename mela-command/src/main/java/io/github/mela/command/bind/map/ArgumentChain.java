@@ -103,6 +103,11 @@ public final class ArgumentChain implements Iterator<String> {
     int value = 0;
   }
 
+  @Override
+  public String toString() {
+    return "[" + String.join(", ", arguments) + "]";
+  }
+
   public ArgumentChain subChain() {
     checkState(subChainPermission, "You can't create sub chains of this argument chain");
     checkValidity();

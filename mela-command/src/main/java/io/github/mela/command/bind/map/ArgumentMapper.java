@@ -3,16 +3,17 @@ package io.github.mela.command.bind.map;
 import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
+import java.util.NoSuchElementException;
 
 public interface ArgumentMapper<T> {
 
-  T map(@Nonnull String argument, @Nonnull CommandContext context); // TODO: 24.06.2019 replace with actual logic
+  T map(@Nonnull String argument, @Nonnull CommandContext context);
 
   default String prepare(ArgumentChain argumentChain) {
-    if (argumentChain.hasNext()) {
+    try {
       return argumentChain.next();
-    } else {
-      throw new RuntimeException("Missing argument");
+    } catch (NoSuchElementException e) {
+      throw new MissingArgumentException("Missing argument; reached end of argument chain " + argumentChain, e);
     }
   }
 

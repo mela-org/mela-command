@@ -56,7 +56,7 @@ public class CommandParameter {
     if (process.isErroneous()) {
       throw process.getError();
     } else if (!process.isSet()) {
-      throw new RuntimeException("Unsatisfied parameter value");
+      throw new UnsatisfiedParameterException(this, "Unsatisfied parameter value; " + this + " was not set");
     } else {
       return process.getValue();
     }
@@ -118,7 +118,7 @@ public class CommandParameter {
         Type componentType = GenericReflection.getComponentType(type);
         mapper = bindings.getMapper(getKey(componentType, annotations));
         Class<?> rawComponentType = GenericReflection.getRaw(componentType)
-            .orElseThrow(() -> new RuntimeException("Invalid array component type at parameter "
+            .orElseThrow(() -> new InvalidParameterException("Invalid array component type at parameter "
                 + parameter));
         return new ArrayParameter(type, name, description, interceptors, mapper, rawComponentType);
       } else if (GenericReflection.isAssignable(type, List.class)) {
@@ -128,7 +128,7 @@ public class CommandParameter {
         mapper = bindings.getMapper(getKey(actualType, annotations));
         return new CollectionParameter(type, name, description, interceptors, mapper);
       }
-      throw new RuntimeException("Missing parameter binding: " + parameter);
+      throw new InvalidParameterException("Missing parameter binding for " + parameter);
     } else {
       return new CommandParameter(type, name, description, interceptors, mapper);
     }
@@ -152,5 +152,10 @@ public class CommandParameter {
       }
     }
     return Map.copyOf(interceptors);
+  }
+
+  @Override
+  public String toString() {
+    return type + " " + name;
   }
 }
