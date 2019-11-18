@@ -25,9 +25,8 @@ public final class Parameters {
   }
 
   @Nonnull
-  public Object[] map(@Nonnull String arguments, @Nonnull CommandContext context) throws Throwable {
+  public Object[] map(@Nonnull ArgumentChain chain, @Nonnull CommandContext context) throws Throwable {
     List<Object> mappedArgs = new ArrayList<>();
-    ArgumentChain chain = new ArgumentChain(arguments);
     for (CommandParameter parameter : parameters) {
       mappedArgs.add(parameter.advance(chain.subChain(), context));
     }

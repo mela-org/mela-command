@@ -1,9 +1,9 @@
 package io.github.mela.command.bind;
 
+import io.github.mela.command.bind.map.ArgumentChain;
 import io.github.mela.command.bind.parameter.Parameters;
 import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.CommandContext;
-import io.github.mela.command.core.parse.Arguments;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
@@ -62,12 +62,12 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   @Override
-  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
+  public void call(@Nonnull String arguments, @Nonnull CommandContext context) {
     try {
       if (!intercept(context))
         return;
 
-      Object[] methodArguments = parameters.map(arguments, context);
+      Object[] methodArguments = parameters.map(new ArgumentChain(arguments), context);
       call(methodArguments);
     } catch (Throwable error) {
       ExceptionHandler handler = bindings.getHandler(error.getClass());
