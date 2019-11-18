@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+// TODO: 18.11.2019 decouple from Guice Key<T>, write convenient builder
 public final class CommandBindings {
 
   public static final CommandBindings EMPTY = new CommandBindings(Map.of(), Map.of(), Map.of(), Map.of());
