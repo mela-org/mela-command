@@ -1,7 +1,10 @@
 package io.github.mela.command.core;
 
+import com.google.inject.TypeLiteral;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -33,6 +36,24 @@ public final class CommandContext {
     return Optional.ofNullable(map.get(key));
   }
 
+  public <T> void put(Class<T> type, String id, T value) {
+    map.put(new ContextKey(type, id), value);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> Optional<T> get(Class<T> type, String id) {
+    return (Optional<T>) Optional.ofNullable(map.get(new ContextKey(type, id)));
+  }
+
+  public <T> void put(TypeLiteral<T> type, String id, T value) {
+    map.put(new ContextKey(type.getType(), id), value);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> Optional<T> get(TypeLiteral<T> type, String id) {
+    return (Optional<T>) Optional.ofNullable(map.get(new ContextKey(type.getType(), id)));
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o)
@@ -51,6 +72,30 @@ public final class CommandContext {
   @Nonnull
   public static CommandContext create() {
     return new CommandContext();
+  }
+
+  private static final class ContextKey {
+    final Type type;
+    final String id;
+
+    ContextKey(Type type, String id) {
+      this.type = type;
+      this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      ContextKey that = (ContextKey) o;
+      return Objects.equals(type, that.type) &&
+          Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(type, id);
+    }
   }
 
   @Nonnull
