@@ -16,6 +16,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -118,7 +119,7 @@ public class CommandParameter {
             .orElseThrow(() -> new RuntimeException("Invalid array component type at parameter "
                 + parameter));
         return new ArrayParameter(type, name, description, interceptors, mapper, rawComponentType);
-      } else if (GenericReflection.isAssignableFromList(type)) {
+      } else if (GenericReflection.isAssignable(type, List.class)) {
         Type actualType = type instanceof ParameterizedType
             ? ((ParameterizedType) type).getActualTypeArguments()[0]
             : String.class;
