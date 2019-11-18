@@ -23,7 +23,7 @@ final class CommandInputParser {
     this.group = checkNotNull(root);
   }
 
-  public CommandInput parse() {
+  CommandInput parse() {
     stripGroup();
     stripCallable();
     return new CommandInput(initialInput, group, callable, remaining);

@@ -21,8 +21,8 @@ public class ArrayParameter extends CommandParameter {
 
   private final Class<?> componentType;
 
-  public ArrayParameter(Type type, String name, String description, Map<Annotation, MappingInterceptor> interceptors,
-                        ArgumentMapper<?> mapper, Class<?> componentType) {
+  ArrayParameter(Type type, String name, String description, Map<Annotation, MappingInterceptor> interceptors,
+                 ArgumentMapper<?> mapper, Class<?> componentType) {
     super(type, name, description, interceptors, mapper);
     this.componentType = componentType;
   }

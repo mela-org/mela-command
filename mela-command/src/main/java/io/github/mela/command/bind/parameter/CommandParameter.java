@@ -32,8 +32,8 @@ public class CommandParameter {
   private final String name;
   private final String description;
 
-  protected CommandParameter(Type type, String name, String description,
-                           Map<Annotation, MappingInterceptor> interceptors, ArgumentMapper<?> mapper) {
+  CommandParameter(Type type, String name, String description,
+                   Map<Annotation, MappingInterceptor> interceptors, ArgumentMapper<?> mapper) {
     this.interceptors = Map.copyOf(interceptors);
     this.mapper = checkNotNull(mapper);
     this.type = type;
@@ -70,6 +70,7 @@ public class CommandParameter {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void interceptBefore(MappingProcess process, CommandContext context) {
     interceptors.forEach((annotation, interceptor) -> {
       try {
@@ -80,6 +81,7 @@ public class CommandParameter {
     });
   }
 
+  @SuppressWarnings("unchecked")
   private void interceptAfter(MappingProcess process, CommandContext context) {
     interceptors.forEach((annotation, interceptor) -> {
       try {
@@ -102,7 +104,7 @@ public class CommandParameter {
     return description;
   }
 
-  public static CommandParameter from(Parameter parameter, CommandBindings bindings) {
+  static CommandParameter from(Parameter parameter, CommandBindings bindings) {
     Type type = parameter.getParameterizedType();
     String name = parameter.getName();
     String description = parameter.isAnnotationPresent(Description.class)

@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -19,8 +21,8 @@ public class ReflectiveCompiler implements CommandCompiler {
   private final CommandBindings bindings;
 
   @Inject
-  public ReflectiveCompiler(CommandBindings bindings) {
-    this.bindings = bindings;
+  public ReflectiveCompiler(@Nonnull CommandBindings bindings) {
+    this.bindings = checkNotNull(bindings);
   }
 
   @Nonnull

@@ -61,6 +61,7 @@ public abstract class BindingCallable implements CommandCallable {
     return Map.copyOf(interceptors);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void call(@Nonnull String arguments, @Nonnull CommandContext context) {
     try {

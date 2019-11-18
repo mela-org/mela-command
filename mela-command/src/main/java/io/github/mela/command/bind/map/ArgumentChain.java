@@ -1,8 +1,9 @@
 package io.github.mela.command.bind.map;
 
+import io.github.mela.command.core.CommandGroup;
+
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -11,8 +12,6 @@ import static com.google.common.base.Preconditions.checkState;
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 public final class ArgumentChain implements Iterator<String> {
-
-  private static final Pattern SPLIT_PATTERN = Pattern.compile("\\s+");
 
   private ArgumentChain lastSubChain;
 
@@ -24,7 +23,7 @@ public final class ArgumentChain implements Iterator<String> {
   private final IndexPointer index;
 
   public ArgumentChain(@Nonnull String arguments) {
-    this(new ArrayList<>(Arrays.asList(SPLIT_PATTERN.split(checkNotNull(arguments)))),
+    this(new ArrayList<>(Arrays.asList(CommandGroup.SPLIT_PATTERN.split(checkNotNull(arguments)))),
         new IndexPointer(), true);
   }
 
