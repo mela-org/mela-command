@@ -3,7 +3,6 @@ package io.github.mela.command.bind.parameter;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,7 +34,7 @@ public final class GenericReflection {
 
   public static boolean isAssignable(Type type, Class from) {
     if (type instanceof ParameterizedType) {
-      return ((Class<?>) ((ParameterizedType) type).getRawType()).isAssignableFrom(List.class);
+      return ((Class<?>) ((ParameterizedType) type).getRawType()).isAssignableFrom(from);
     } else if (type instanceof Class<?>) {
       return ((Class<?>) type).isAssignableFrom(from);
     } else {
