@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class ArrayParameter extends CommandParameter {
+public final class ArrayParameter extends CommandParameter {
 
   private final Class<?> componentType;
 

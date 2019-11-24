@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class ReflectiveCompiler implements CommandCompiler {
+public final class ReflectiveCompiler implements CommandCompiler {
 
   private final CommandBindings bindings;
 

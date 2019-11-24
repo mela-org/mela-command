@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class CollectionParameter extends CommandParameter {
+public final class CollectionParameter extends CommandParameter {
 
   CollectionParameter(Type type, String name, String description, Map<Annotation, MappingInterceptor> interceptors, ArgumentMapper<?> mapper) {
     super(type, name, description, interceptors, mapper);
