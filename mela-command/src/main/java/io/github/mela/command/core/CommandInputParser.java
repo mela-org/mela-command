@@ -40,12 +40,12 @@ final class CommandInputParser {
   }
 
   private void stripCallable() {
-    nextWord();
     CommandCallable labelledCallable =
         findIn(group.getCommands(), (command) -> command.getLabels().contains(currentWord));
     callable = labelledCallable == null
         ? findIn(group.getCommands(), (command) -> command.getLabels().isEmpty())
         : labelledCallable;
+    nextWord();
   }
 
   private void nextWord() {

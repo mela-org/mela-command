@@ -22,6 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class CommandBinder {
 
   private final CommandBindingNode root;
+  // TODO: 24.11.2019 api for these
   private final MapBinder<Key, ArgumentMapper> mapperBinder;
   private final MapBinder<Class, MappingInterceptor> mappingInterceptorBinder;
   private final MapBinder<Class, CommandInterceptor> commandInterceptorBinder;
