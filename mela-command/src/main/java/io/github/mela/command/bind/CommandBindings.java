@@ -1,7 +1,6 @@
 package io.github.mela.command.bind;
 
 import com.google.inject.Inject;
-import com.google.inject.Key;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingInterceptor;
 import io.github.mela.command.guice.annotation.ArgumentMappers;
@@ -20,20 +19,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-// TODO: 18.11.2019 decouple from Guice Key<T>, write convenient builder
+// TODO: 18.11.2019 write convenient builder
 public final class CommandBindings {
 
   public static final CommandBindings EMPTY = new CommandBindings(Map.of(), Map.of(), Map.of(), Map.of());
 
   private final Map<Class,  CommandInterceptor> commandInterceptors;
   private final Map<Class, ExceptionHandler> handlers;
-  private final Map<Key, ArgumentMapper> mappers;
+  private final Map<ParameterKey, ArgumentMapper> mappers;
   private final Map<Class, MappingInterceptor> argumentInterceptors;
 
   @Inject
   public CommandBindings(@CommandInterceptors Map<Class, CommandInterceptor> commandInterceptors,
                          @ExceptionHandlers Map<Class, ExceptionHandler> handlers,
-                         @ArgumentMappers Map<Key, ArgumentMapper> mappers,
+                         @ArgumentMappers Map<ParameterKey, ArgumentMapper> mappers,
                          @MappingInterceptors Map<Class, MappingInterceptor> argumentInterceptors) {
     this.commandInterceptors = Map.copyOf(commandInterceptors);
     this.handlers = Map.copyOf(handlers);
@@ -69,9 +68,8 @@ public final class CommandBindings {
     return null;
   }
 
-  @SuppressWarnings("unchecked")
-  public <T> ArgumentMapper<T> getMapper(@Nonnull Key<T> key) {
-    return (ArgumentMapper<T>) mappers.get(key);
+  public ArgumentMapper<?> getMapper(@Nonnull ParameterKey key) {
+    return mappers.get(key);
   }
 
   @Override

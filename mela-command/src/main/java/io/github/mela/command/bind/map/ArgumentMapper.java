@@ -5,6 +5,7 @@ import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 import java.util.NoSuchElementException;
 
+@FunctionalInterface
 public interface ArgumentMapper<T> {
 
   T map(@Nonnull String argument, @Nonnull CommandContext context);

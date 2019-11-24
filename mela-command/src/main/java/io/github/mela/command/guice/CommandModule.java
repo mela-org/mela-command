@@ -1,0 +1,101 @@
+package io.github.mela.command.guice;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.binder.LinkedBindingBuilder;
+import com.google.inject.multibindings.MapBinder;
+import io.github.mela.command.bind.CommandInterceptor;
+import io.github.mela.command.bind.ExceptionHandler;
+import io.github.mela.command.bind.ParameterKey;
+import io.github.mela.command.bind.map.ArgumentMapper;
+import io.github.mela.command.bind.map.MappingInterceptor;
+import io.github.mela.command.bind.parameter.ParameterMarker;
+import io.github.mela.command.guice.annotation.ArgumentMappers;
+import io.github.mela.command.guice.annotation.CommandInterceptors;
+import io.github.mela.command.guice.annotation.ExceptionHandlers;
+import io.github.mela.command.guice.annotation.MappingInterceptors;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import static com.google.common.base.Preconditions.checkArgument;
+
+/**
+ * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
+ */
+public abstract class CommandModule extends AbstractModule {
+
+  private MapBinder mapperBinder;
+  private MapBinder mappingInterceptorBinder;
+  private MapBinder commandInterceptorBinder;
+  private MapBinder handlerBinder;
+  private CommandBinder commandBinder;
+
+  @Override
+  protected void configure() {
+    this.mapperBinder = MapBinder.newMapBinder(binder(), ParameterKey.class, ArgumentMapper.class, ArgumentMappers.class);
+    this.mappingInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, MappingInterceptor.class, MappingInterceptors.class);
+    this.commandInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, CommandInterceptor.class, CommandInterceptors.class);
+    this.handlerBinder = MapBinder.newMapBinder(binder(), Class.class, ExceptionHandler.class, ExceptionHandlers.class);
+    this.commandBinder = CommandBinder.create(binder());
+  }
+
+  @Nonnull
+  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type) {
+    return bindMapper(type, null);
+  }
+
+  @Nonnull
+  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
+    return bindMapper((Type) type, annotationType);
+  }
+
+  @Nonnull
+  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type) {
+    return bindMapper(type.getType(), null);
+  }
+
+  @Nonnull
+  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type, @Nullable Class<? extends Annotation> annotationType) {
+    return bindMapper(type.getType(), annotationType);
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
+      @Nonnull Type type, Class<? extends Annotation> annotationType) {
+    if (annotationType != null) {
+      checkArgument(annotationType.isAnnotationPresent(ParameterMarker.class),
+          "Annotation " + annotationType + " does not have the @ParameterMarker annotation");
+    }
+    return ((MapBinder<ParameterKey, ArgumentMapper<? extends T>>) mapperBinder)
+        .addBinding(ParameterKey.get(type, annotationType));
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nonnull
+  protected <T extends Throwable> LinkedBindingBuilder<ExceptionHandler<? extends T>> bindHandler(@Nonnull Class<T> exceptionType) {
+    return ((MapBinder<Class, ExceptionHandler<? extends T>>) handlerBinder)
+        .addBinding(exceptionType);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nonnull
+  protected <T extends Annotation> LinkedBindingBuilder<CommandInterceptor<? extends T>> bindCommandInterceptor(@Nonnull Class<T> annotationType) {
+    return ((MapBinder<Class, CommandInterceptor<? extends T>>) commandInterceptorBinder)
+        .addBinding(annotationType);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nonnull
+  protected <T extends Annotation> LinkedBindingBuilder<MappingInterceptor<? extends T>> bindMappingInterceptor(@Nonnull Class<T> annotationType) {
+    return ((MapBinder<Class, MappingInterceptor<? extends T>>) mappingInterceptorBinder)
+        .addBinding(annotationType);
+  }
+
+  @Nonnull
+  protected CommandBindingNode rootNode() {
+    return commandBinder.root();
+  }
+}

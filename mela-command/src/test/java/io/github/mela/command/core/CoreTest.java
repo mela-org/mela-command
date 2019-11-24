@@ -6,13 +6,19 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class CommandTest {
+public final class CoreTest {
+
+  @Test
+  public void testDuplicateNameRecognition() {
+    assertThrows(IllegalArgumentException.class,
+        () -> GroupBuilder.create().group("foo").parent().group("foo").root().compileIdentity(),
+        "duplicate group name was not prevented");
+  }
 
   @Test
   public void testSimpleCommand() {
@@ -26,8 +32,8 @@ public final class CommandTest {
     CommandContext context = CommandContext.of(Map.of("env", "test"));
     dispatcher.dispatch("foo\n   bar   \nbaz", context);
     assertTrue(command.executed, "Command was not executed");
-    assertEquals("baz", command.arguments);
-    assertEquals(context, command.context);
+    assertEquals("baz", command.arguments, "command arguments were changed");
+    assertEquals(context, command.context, "command context was changed");
   }
 
   private static final class SimpleCommand extends CommandCallableAdapter {

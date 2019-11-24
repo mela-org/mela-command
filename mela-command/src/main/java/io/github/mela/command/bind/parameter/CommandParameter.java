@@ -1,8 +1,7 @@
 package io.github.mela.command.bind.parameter;
 
-import com.google.inject.BindingAnnotation;
-import com.google.inject.Key;
-import io.github.mela.command.bind.*;
+import io.github.mela.command.bind.CommandBindings;
+import io.github.mela.command.bind.ParameterKey;
 import io.github.mela.command.bind.map.ArgumentChain;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingInterceptor;
@@ -134,13 +133,12 @@ public class CommandParameter {
     }
   }
 
-  private static Key<?> getKey(Type type, Annotation[] annotations) {
-    return Arrays.stream(annotations)
+  private static ParameterKey getKey(Type type, Annotation[] annotations) {
+    return ParameterKey.get(type, Arrays.stream(annotations)
         .map(Annotation::annotationType)
-        .filter((annotation) -> annotation.isAnnotationPresent(BindingAnnotation.class))
+        .filter((annotation) -> annotation.isAnnotationPresent(ParameterMarker.class))
         .findFirst()
-        .map((annotation) -> (Key) Key.get(type, annotation))
-        .orElseGet(() -> Key.get(type));
+        .orElse(null));
   }
 
   private static Map<Annotation, MappingInterceptor> getInterceptors(Annotation[] annotations, CommandBindings bindings) {
