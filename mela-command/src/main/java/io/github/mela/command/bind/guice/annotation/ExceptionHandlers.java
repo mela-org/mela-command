@@ -1,4 +1,4 @@
-package io.github.mela.command.guice.annotation;
+package io.github.mela.command.bind.guice.annotation;
 
 import com.google.inject.BindingAnnotation;
 
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface ArgumentMappers {
+public @interface ExceptionHandlers {
 }

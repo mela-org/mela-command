@@ -1,4 +1,4 @@
-package io.github.mela.command.guice.annotation;
+package io.github.mela.command.bind.guice.annotation;
 
 import com.google.inject.BindingAnnotation;
 

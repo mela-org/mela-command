@@ -1,4 +1,4 @@
-package io.github.mela.command.guice;
+package io.github.mela.command.bind.guice;
 
 import com.google.inject.Binder;
 

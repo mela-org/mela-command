@@ -18,16 +18,18 @@ public final class ArgumentChain implements Iterator<String> {
   private boolean invalid;
   private Runnable resetAction;
 
+  private final String raw;
   private final boolean subChainPermission;
   private final List<String> arguments;
   private final IndexPointer index;
 
   public ArgumentChain(@Nonnull String arguments) {
-    this(new ArrayList<>(Arrays.asList(CommandGroup.SPLIT_PATTERN.split(checkNotNull(arguments)))),
+    this(arguments, new ArrayList<>(Arrays.asList(CommandGroup.SPLIT_PATTERN.split(checkNotNull(arguments)))),
         new IndexPointer(), true);
   }
 
-  private ArgumentChain(@Nonnull List<String> arguments, IndexPointer index, boolean subChainPermission) {
+  private ArgumentChain(@Nonnull String raw, @Nonnull List<String> arguments, IndexPointer index, boolean subChainPermission) {
+    this.raw = raw;
     this.subChainPermission = subChainPermission;
     this.arguments = arguments;
     this.index = index;
@@ -63,6 +65,11 @@ public final class ArgumentChain implements Iterator<String> {
     checkValidity();
     checkIndex();
     return arguments.get(index.value);
+  }
+
+  @Nonnull
+  public String getRaw() {
+    return raw;
   }
 
   public void reset() {
@@ -114,7 +121,7 @@ public final class ArgumentChain implements Iterator<String> {
     if (lastSubChain != null) {
       lastSubChain.invalidate();
     }
-    lastSubChain = new ArgumentChain(arguments, index, false);
+    lastSubChain = new ArgumentChain(raw, arguments, index, false);
     return lastSubChain;
   }
 

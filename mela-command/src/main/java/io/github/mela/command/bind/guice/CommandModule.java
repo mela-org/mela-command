@@ -1,4 +1,4 @@
-package io.github.mela.command.guice;
+package io.github.mela.command.bind.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
@@ -10,10 +10,10 @@ import io.github.mela.command.bind.ParameterKey;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingInterceptor;
 import io.github.mela.command.bind.parameter.ParameterMarker;
-import io.github.mela.command.guice.annotation.ArgumentMappers;
-import io.github.mela.command.guice.annotation.CommandInterceptors;
-import io.github.mela.command.guice.annotation.ExceptionHandlers;
-import io.github.mela.command.guice.annotation.MappingInterceptors;
+import io.github.mela.command.bind.guice.annotation.ArgumentMappers;
+import io.github.mela.command.bind.guice.annotation.CommandInterceptors;
+import io.github.mela.command.bind.guice.annotation.ExceptionHandlers;
+import io.github.mela.command.bind.guice.annotation.MappingInterceptors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

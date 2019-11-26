@@ -1,7 +1,7 @@
-package io.github.mela.command.guice;
+package io.github.mela.command.bind.guice;
 
 import io.github.mela.command.compile.UncompiledGroup;
-import io.github.mela.command.guice.annotation.Commands;
+import io.github.mela.command.bind.guice.annotation.Commands;
 import com.google.inject.Inject;
 
 import javax.annotation.Nonnull;

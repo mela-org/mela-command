@@ -1,7 +1,7 @@
 package io.github.mela.command.core;
 
 import com.google.inject.ProvidedBy;
-import io.github.mela.command.guice.CompilingRootGroupProvider;
+import io.github.mela.command.bind.guice.CompilingRootGroupProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

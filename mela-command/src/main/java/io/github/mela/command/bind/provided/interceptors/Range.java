@@ -1,15 +1,15 @@
-package io.github.mela.command.guice.annotation;
-
-import com.google.inject.BindingAnnotation;
+package io.github.mela.command.bind.provided.interceptors;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@BindingAnnotation
-public @interface CommandExecutor {
+public @interface Range {
 
+  int from() default 0;
+
+  int to();
 }

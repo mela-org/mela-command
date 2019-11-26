@@ -5,6 +5,7 @@ import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -23,6 +24,7 @@ public final class MappingProcess {
 
   private Throwable error;
   private Object value;
+  private Supplier<String> argumentToMap;
 
   public MappingProcess(@Nonnull CommandParameter parameter,
                         @Nonnull ArgumentMapper mapper,
@@ -35,6 +37,7 @@ public final class MappingProcess {
     this.isSet = false;
     this.value = null;
     this.error = null;
+    this.argumentToMap = () -> mapper.prepare(chain);
   }
 
   public void fail(@Nonnull Throwable error) {
@@ -44,11 +47,13 @@ public final class MappingProcess {
     }
   }
 
+  // TODO: 26.11.2019 maybe reset argument chain as side effect
   public void fixError() {
     this.error = null;
   }
 
   public void setValue(@Nullable Object value) {
+    checkState(!isErroneous(), "You may not set a value before resolving existing errors");
     this.value = value;
     this.isSet = true;
   }
@@ -63,7 +68,7 @@ public final class MappingProcess {
 
   @Nullable
   public Object getValue() {
-    checkState(isSet, "No value has been set yet");
+    checkState(isSet, "No value set!");
     return value;
   }
 
@@ -75,6 +80,15 @@ public final class MappingProcess {
   public Throwable getError() {
     checkState(isErroneous(), "This process is not erroneous");
     return error;
+  }
+
+  @Nonnull
+  public String getArgumentToMap() {
+    return argumentToMap.get();
+  }
+
+  public void setArgumentToMap(@Nonnull Supplier<String> argumentToMap) {
+    this.argumentToMap = checkNotNull(argumentToMap);
   }
 
   @Nonnull

@@ -63,7 +63,7 @@ public class CommandParameter {
 
   private void mapNextArgument(MappingProcess process, CommandContext context) {
     try {
-      process.setValue(mapper.map(mapper.prepare(process.getArguments()), context));
+      process.setValue(mapper.map(process.getArgumentToMap(), context));
     } catch (Throwable throwable) {
       process.fail(throwable);
     }
@@ -116,9 +116,10 @@ public class CommandParameter {
       if (GenericReflection.isArray(type)) {
         Type componentType = GenericReflection.getComponentType(type);
         mapper = bindings.getMapper(getKey(componentType, annotations));
-        Class<?> rawComponentType = GenericReflection.getRaw(componentType)
-            .orElseThrow(() -> new InvalidParameterException("Invalid array component type at parameter "
-                + parameter));
+        Class<?> rawComponentType = GenericReflection.getRaw(componentType);
+        if (rawComponentType == null) {
+          throw new InvalidParameterException("Invalid array component type at parameter " + parameter);
+        }
         return new ArrayParameter(type, name, description, interceptors, mapper, rawComponentType);
       } else if (GenericReflection.isAssignable(type, List.class)) {
         Type actualType = type instanceof ParameterizedType

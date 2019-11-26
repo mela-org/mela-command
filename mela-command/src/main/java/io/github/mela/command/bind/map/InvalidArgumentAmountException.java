@@ -1,9 +1,11 @@
 package io.github.mela.command.bind.map;
 
+import io.github.mela.command.bind.ArgumentException;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class InvalidArgumentAmountException extends RuntimeException {
+public class InvalidArgumentAmountException extends ArgumentException {
 
   public InvalidArgumentAmountException() {
     super();
