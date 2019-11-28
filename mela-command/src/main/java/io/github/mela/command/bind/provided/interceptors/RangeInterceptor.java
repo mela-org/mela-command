@@ -1,5 +1,6 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import io.github.mela.command.bind.map.ArgumentValidationException;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.CommandContext;
@@ -21,8 +22,8 @@ public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
       int from = annotation.from();
       int to = annotation.to();
       if (value < from || value >= to) {
-        process.fail(new OutOfRangeException("Value " + value + " is out of range "
-            + from + "-" + to + " for parameter " + process.getParameter()));
+        process.fail(new ArgumentValidationException("Value " + value + " is out of range "
+            + from + "-" + to, process.getParameter()));
       }
     }
   }
