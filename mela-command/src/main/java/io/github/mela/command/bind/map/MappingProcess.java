@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkState;
 public final class MappingProcess {
 
   private final CommandParameter parameter;
-  private final ArgumentMapper mapper;
+  private final ArgumentMapper<?> mapper;
   private final ArgumentChain chain;
   private final CommandContext context;
 
@@ -27,7 +27,7 @@ public final class MappingProcess {
   private Supplier<String> argumentToMap;
 
   public MappingProcess(@Nonnull CommandParameter parameter,
-                        @Nonnull ArgumentMapper mapper,
+                        @Nonnull ArgumentMapper<?> mapper,
                         @Nonnull ArgumentChain chain,
                         @Nonnull CommandContext context) {
     this.mapper = mapper;
@@ -92,7 +92,7 @@ public final class MappingProcess {
   }
 
   @Nonnull
-  public ArgumentMapper getMapper() {
+  public ArgumentMapper<?> getMapper() {
     return mapper;
   }
 

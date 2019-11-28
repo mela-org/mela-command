@@ -1,9 +1,10 @@
 package io.github.mela.command.bind.provided;
 
 import io.github.mela.command.bind.guice.CommandModule;
-import io.github.mela.command.bind.provided.mappers.CharacterMapper;
-import io.github.mela.command.bind.provided.mappers.NumberMapper;
-import io.github.mela.command.bind.provided.mappers.StringMapper;
+import io.github.mela.command.bind.provided.mappers.*;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -14,14 +15,20 @@ public class PrimitivesModule extends CommandModule {
   protected void configure() {
     super.configure();
     bindMapper(String.class).toInstance(new StringMapper());
-    bindMapper(byte.class).toInstance(new NumberMapper<>(byte.class, Byte::parseByte));
-    bindMapper(Byte.class).toInstance(new NumberMapper<>(Byte.class, Byte::valueOf));
-    bindMapper(short.class).toInstance(new NumberMapper<>(short.class, Short::parseShort));
-    bindMapper(Short.class).toInstance(new NumberMapper<>(Short.class, Short::valueOf));
-    bindMapper(int.class).toInstance(new NumberMapper<>(int.class, Integer::parseInt));
-    bindMapper(Integer.class).toInstance(new NumberMapper<>(Integer.class, Integer::valueOf));
-    bindMapper(long.class).toInstance(new NumberMapper<>(long.class, Long::parseLong));
-    bindMapper(Long.class).toInstance(new NumberMapper<>(Long.class, Long::valueOf));
+    bindMapper(byte.class).toInstance(new IntegerMapper<>(byte.class, Byte::parseByte));
+    bindMapper(Byte.class).toInstance(new IntegerMapper<>(Byte.class, Byte::valueOf));
+    bindMapper(short.class).toInstance(new IntegerMapper<>(short.class, Short::parseShort));
+    bindMapper(Short.class).toInstance(new IntegerMapper<>(Short.class, Short::valueOf));
+    bindMapper(int.class).toInstance(new IntegerMapper<>(int.class, Integer::parseInt));
+    bindMapper(Integer.class).toInstance(new IntegerMapper<>(Integer.class, Integer::valueOf));
+    bindMapper(long.class).toInstance(new IntegerMapper<>(long.class, Long::parseLong));
+    bindMapper(Long.class).toInstance(new IntegerMapper<>(Long.class, Long::valueOf));
+    bindMapper(float.class).toInstance(new FloatingPointMapper<>(float.class, Float::parseFloat));
+    bindMapper(Float.class).toInstance(new FloatingPointMapper<>(Float.class, Float::valueOf));
+    bindMapper(double.class).toInstance(new FloatingPointMapper<>(double.class, Double::parseDouble));
+    bindMapper(Double.class).toInstance(new FloatingPointMapper<>(Double.class, Double::valueOf));
+    bindMapper(BigInteger.class).toInstance(new IntegerMapper<>(BigInteger.class, BigInteger::new));
+    bindMapper(BigDecimal.class).toInstance(new FloatingPointMapper<>(BigDecimal.class, BigDecimal::new));
     bindMapper(char.class).toInstance(new CharacterMapper());
     bindMapper(Character.class).toInstance(new CharacterMapper());
   }

@@ -36,22 +36,26 @@ public final class CommandContext {
     return Optional.ofNullable(map.get(key));
   }
 
-  public <T> void put(Class<T> type, String id, T value) {
-    map.put(new ContextKey(type, id), value);
+  public <T> void put(Class<T> type, Object key, T value) {
+    map.put(new CompositeKey(type, key), value);
   }
 
   @SuppressWarnings("unchecked")
-  public <T> Optional<T> get(Class<T> type, String id) {
-    return (Optional<T>) Optional.ofNullable(map.get(new ContextKey(type, id)));
+  public <T> Optional<T> get(Class<T> type, Object key) {
+    return (Optional<T>) get((Type) type, key);
   }
 
-  public <T> void put(TypeLiteral<T> type, String id, T value) {
-    map.put(new ContextKey(type.getType(), id), value);
+  public <T> void put(TypeLiteral<T> type, Object key, T value) {
+    map.put(new CompositeKey(type.getType(), key), value);
   }
 
   @SuppressWarnings("unchecked")
-  public <T> Optional<T> get(TypeLiteral<T> type, String id) {
-    return (Optional<T>) Optional.ofNullable(map.get(new ContextKey(type.getType(), id)));
+  public <T> Optional<T> get(TypeLiteral<T> type, Object key) {
+    return (Optional<T>) get(type.getType(), key);
+  }
+
+  public Optional<?> get(Type type, Object key) {
+    return Optional.ofNullable(map.get(new CompositeKey(type, key)));
   }
 
   @Override
@@ -74,27 +78,27 @@ public final class CommandContext {
     return new CommandContext();
   }
 
-  private static final class ContextKey {
+  private static final class CompositeKey {
     final Type type;
-    final String id;
+    final Object key;
 
-    ContextKey(Type type, String id) {
+    CompositeKey(Type type, Object key) {
       this.type = type;
-      this.id = id;
+      this.key = key;
     }
 
     @Override
     public boolean equals(Object o) {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
-      ContextKey that = (ContextKey) o;
+      CompositeKey that = (CompositeKey) o;
       return Objects.equals(type, that.type) &&
-          Objects.equals(id, that.id);
+          Objects.equals(key, that.key);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(type, id);
+      return Objects.hash(type, key);
     }
   }
 

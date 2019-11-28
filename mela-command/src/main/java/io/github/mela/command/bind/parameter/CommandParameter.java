@@ -13,16 +13,15 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@SuppressWarnings("rawtypes")
 public class CommandParameter {
 
   private final Map<Annotation, MappingInterceptor> interceptors;
@@ -120,13 +119,13 @@ public class CommandParameter {
         if (rawComponentType == null) {
           throw new InvalidParameterException("Invalid array component type at parameter " + parameter);
         }
-        return new ArrayParameter(type, name, description, interceptors, mapper, rawComponentType);
+        return new ArrayParameter(componentType, name, description, interceptors, mapper, rawComponentType);
       } else if (GenericReflection.isAssignable(type, List.class)) {
         Type actualType = type instanceof ParameterizedType
             ? ((ParameterizedType) type).getActualTypeArguments()[0]
             : String.class;
         mapper = bindings.getMapper(getKey(actualType, annotations));
-        return new CollectionParameter(type, name, description, interceptors, mapper);
+        return new CollectionParameter(actualType, name, description, interceptors, mapper);
       }
       throw new InvalidParameterException("Missing parameter binding for " + parameter);
     } else {
@@ -155,6 +154,7 @@ public class CommandParameter {
 
   @Override
   public String toString() {
-    return type + " " + name;
+    return interceptors.keySet().stream().map(Objects::toString).collect(Collectors.joining(" "))
+        + " " + type + " " + name;
   }
 }
