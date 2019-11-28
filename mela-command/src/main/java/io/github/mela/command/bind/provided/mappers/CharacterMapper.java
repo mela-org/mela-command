@@ -1,6 +1,6 @@
 package io.github.mela.command.bind.provided.mappers;
 
-import io.github.mela.command.bind.ArgumentException;
+import io.github.mela.command.bind.map.MappingException;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.core.CommandContext;
 
@@ -16,7 +16,7 @@ public class CharacterMapper implements ArgumentMapper<Character> {
     if (argument.length() == 1) {
       return argument.charAt(0);
     } else {
-      throw new ArgumentException("Invalid argument: \"" + argument + "\" is not a single character");
+      throw new MappingException("Invalid argument: \"" + argument + "\" is not a single character");
     }
   }
 }

@@ -1,6 +1,6 @@
 package io.github.mela.command.bind.provided.mappers;
 
-import io.github.mela.command.bind.ArgumentException;
+import io.github.mela.command.bind.map.MappingException;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.core.CommandContext;
 
@@ -24,7 +24,7 @@ public abstract class NumberMapper<T extends Number> implements ArgumentMapper<T
     try {
       return convert(argument, context);
     } catch (NumberFormatException e) {
-      throw new ArgumentException("Invalid argument: could not convert \""
+      throw new MappingException("Invalid argument: could not convert \""
           + argument + "\" to a number (" + type.getSimpleName() + ")", e);
     }
   }
