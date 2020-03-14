@@ -30,7 +30,7 @@ public final class CoreTest {
         .compileIdentity();
     Dispatcher dispatcher = new DefaultDispatcher(group);
     ContextMap context = ContextMap.of(Map.of("env", "test"));
-    dispatcher.dispatch("foo\n   bar   \nbaz", context);
+    dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
     assertTrue(command.executed, "Command was not executed");
     assertEquals("baz", command.arguments, "command arguments were changed");
     assertEquals(context, command.context, "command context was changed");

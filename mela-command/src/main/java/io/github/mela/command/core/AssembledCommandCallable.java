@@ -18,7 +18,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
   private AssembledCommandCallable(@Nonnull Set<String> labels, @Nullable String primaryLabel, @Nullable String help,
                                    @Nullable String description, @Nullable String usage,
                                    @Nonnull BiConsumer<String, ContextMap> action) {
-    super(labels, primaryLabel, description, usage);
+    super(labels, primaryLabel, description, help, usage);
     this.action = checkNotNull(action);
   }
 

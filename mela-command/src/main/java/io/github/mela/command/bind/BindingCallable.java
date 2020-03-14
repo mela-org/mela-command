@@ -5,6 +5,7 @@ import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -18,6 +19,7 @@ public abstract class BindingCallable implements CommandCallable {
 
   private final Set<String> labels;
   private final String description;
+  private final String help;
   private final String usage;
 
   private final CommandBindings bindings;
@@ -29,6 +31,7 @@ public abstract class BindingCallable implements CommandCallable {
     Command annotation = method.getAnnotation(Command.class);
     this.labels = Set.of(annotation.aliases());
     this.description = annotation.desc();
+    this.help = annotation.help();
     this.usage = annotation.usage();
     this.bindings = bindings;
     this.interceptors = extractInterceptors(method, bindings);
@@ -100,6 +103,12 @@ public abstract class BindingCallable implements CommandCallable {
   @Override
   public String getDescription() {
     return description;
+  }
+
+  @Nullable
+  @Override
+  public String getHelp() {
+    return help;
   }
 
   @Override

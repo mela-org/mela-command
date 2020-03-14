@@ -21,6 +21,9 @@ public interface CommandCallable {
   String getDescription();
 
   @Nullable
+  String getHelp();
+
+  @Nullable
   String getUsage();
 
 }
