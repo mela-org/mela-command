@@ -1,14 +1,12 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.bind.map.ArgumentChain;
 import io.github.mela.command.bind.parameter.Parameters;
 import io.github.mela.command.core.CommandCallable;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -38,15 +36,15 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   private void checkDeclaration(Method method) {
-    boolean valid = method.isAnnotationPresent(Command.class)
-        && method.getReturnType().equals(void.class)
-        && Modifier.isPublic(method.getModifiers())
-        && !Modifier.isStatic(method.getModifiers())
-        && method.getTypeParameters().length == 0;
-    if (!valid) {
-      throw new InvalidCommandMethodException("Invalid command method declaration (" + method + "). " +
-          "Command methods must be annotated with @Command, they must be public, non-static, " +
-          "return void and not have any type parameters.");
+    String error = null;
+    if (!method.isAnnotationPresent(Command.class)) {
+      error = "Missing @Command annotation";
+    } else if (method.getTypeParameters().length > 0) {
+      error = "Method must not have type parameters";
+    }
+
+    if (error != null) {
+      throw new InvalidCommandMethodException("Invalid command method declaration (" + method + "); " + error);
     }
   }
 
@@ -63,9 +61,9 @@ public abstract class BindingCallable implements CommandCallable {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void call(@Nonnull String arguments, @Nonnull CommandContext context) {
+  public void call(@Nonnull String arguments, @Nonnull ContextMap context) {
     try {
-      ArgumentChain chain = new ArgumentChain(arguments);
+      Arguments chain = new Arguments(arguments);
       if (!intercept(chain.subChain(), context))
         return;
 
@@ -82,7 +80,7 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   @SuppressWarnings("unchecked")
-  private boolean intercept(ArgumentChain chain, CommandContext context) throws Throwable {
+  private boolean intercept(Arguments chain, ContextMap context) {
     for (Map.Entry<Annotation, CommandInterceptor> entry : interceptors.entrySet()) {
       boolean result = entry.getValue().intercept(entry.getKey(), chain, context);
       if (!result)

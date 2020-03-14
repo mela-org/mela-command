@@ -3,7 +3,7 @@ package io.github.mela.command.bind.map;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class MissingArgumentException extends InvalidArgumentAmountException {
+public class MissingArgumentException extends MappingProcessException {
 
   public MissingArgumentException() {
     super();

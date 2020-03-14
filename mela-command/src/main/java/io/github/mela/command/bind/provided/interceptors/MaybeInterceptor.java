@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.interceptors;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.bind.parameter.GenericReflection;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 
@@ -13,11 +13,11 @@ import javax.annotation.Nonnull;
 public class MaybeInterceptor extends MappingInterceptorAdapter<Maybe> {
 
   @Override
-  public void postprocess(@Nonnull Maybe annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
+  public void postprocess(@Nonnull Maybe annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
     if (process.isErroneous()) {
       process.fixError();
       process.getArguments().reset();
-      Class<?> type = GenericReflection.getRaw(process.getParameter().getType());
+      Class<?> type = GenericReflection.getRaw(process.getTargetType().getKey().getType());
       if (type != null && type.isPrimitive()) {
         process.setValue(0);
       } else {

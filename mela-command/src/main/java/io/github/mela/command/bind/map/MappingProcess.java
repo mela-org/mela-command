@@ -1,7 +1,8 @@
 package io.github.mela.command.bind.map;
 
-import io.github.mela.command.bind.parameter.CommandParameter;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.bind.Arguments;
+import io.github.mela.command.bind.TargetType;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,29 +16,23 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public final class MappingProcess {
 
-  private final CommandParameter parameter;
-  private final ArgumentMapper<?> mapper;
-  private final ArgumentChain chain;
-  private final CommandContext context;
+  private final ContextMap context;
+  private final TargetType targetType;
+  private final Arguments arguments;
 
   private boolean isSet;
-
   private Throwable error;
   private Object value;
   private Supplier<String> argumentToMap;
 
-  public MappingProcess(@Nonnull CommandParameter parameter,
-                        @Nonnull ArgumentMapper<?> mapper,
-                        @Nonnull ArgumentChain chain,
-                        @Nonnull CommandContext context) {
-    this.mapper = mapper;
-    this.chain = checkNotNull(chain);
-    this.parameter = checkNotNull(parameter);
-    this.context = checkNotNull(context);
+  public MappingProcess(TargetType targetType, Arguments arguments) {
+    this.targetType = targetType;
+    this.arguments = arguments;
     this.isSet = false;
     this.value = null;
     this.error = null;
-    this.argumentToMap = () -> mapper.prepare(chain);
+    this.argumentToMap = null;
+    this.context = ContextMap.create();
   }
 
   public void fail(@Nonnull Throwable error) {
@@ -47,7 +42,6 @@ public final class MappingProcess {
     }
   }
 
-  // TODO: 26.11.2019 maybe reset argument chain as side effect
   public void fixError() {
     this.error = null;
   }
@@ -83,8 +77,15 @@ public final class MappingProcess {
   }
 
   @Nonnull
-  public String getArgumentToMap() {
-    return argumentToMap.get();
+  public String consumeArgumentToMap() {
+    checkState(argumentToMap != null, "There is no argument to map");
+    String argument = argumentToMap.get();
+    argumentToMap = null;
+    return argument;
+  }
+
+  public boolean hasArgumentToMap() {
+    return argumentToMap != null;
   }
 
   public void setArgumentToMap(@Nonnull Supplier<String> argumentToMap) {
@@ -92,22 +93,17 @@ public final class MappingProcess {
   }
 
   @Nonnull
-  public ArgumentMapper<?> getMapper() {
-    return mapper;
-  }
-
-  @Nonnull
-  public ArgumentChain getArguments() {
-    return chain;
-  }
-
-  @Nonnull
-  public CommandContext getContext() {
+  public ContextMap getContext() {
     return context;
   }
 
   @Nonnull
-  public CommandParameter getParameter() {
-    return parameter;
+  public TargetType getTargetType() {
+    return targetType;
+  }
+
+  @Nonnull
+  public Arguments getArguments() {
+    return arguments;
   }
 }

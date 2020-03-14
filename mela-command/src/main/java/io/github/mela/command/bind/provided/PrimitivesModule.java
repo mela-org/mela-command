@@ -29,7 +29,8 @@ public class PrimitivesModule extends CommandModule {
     bindMapper(Double.class).toInstance(new FloatingPointMapper<>(Double.class, Double::valueOf));
     bindMapper(BigInteger.class).toInstance(new IntegerMapper<>(BigInteger.class, BigInteger::new));
     bindMapper(BigDecimal.class).toInstance(new FloatingPointMapper<>(BigDecimal.class, BigDecimal::new));
-    bindMapper(char.class).toInstance(new CharacterMapper());
-    bindMapper(Character.class).toInstance(new CharacterMapper());
+    CharacterMapper characterMapper = new CharacterMapper();
+    bindMapper(char.class).toInstance(characterMapper);
+    bindMapper(Character.class).toInstance(characterMapper);
   }
 }

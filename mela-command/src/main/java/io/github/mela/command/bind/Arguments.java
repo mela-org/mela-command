@@ -1,4 +1,4 @@
-package io.github.mela.command.bind.map;
+package io.github.mela.command.bind;
 
 import io.github.mela.command.core.CommandGroup;
 
@@ -11,29 +11,30 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class ArgumentChain implements Iterator<String> {
+public final class Arguments implements Iterator<String> {
 
-  private ArgumentChain lastSubChain;
+  private Arguments lastSubChain;
 
   private boolean invalid;
-  private Runnable resetAction;
 
   private final String raw;
-  private final boolean subChainPermission;
+  private final boolean rootChain;
   private final List<String> arguments;
-  private final IndexPointer index;
 
-  public ArgumentChain(@Nonnull String arguments) {
+  private final IndexPointer index;
+  private final Deque<Runnable> undoActions;
+
+  public Arguments(@Nonnull String arguments) {
     this(arguments, new ArrayList<>(Arrays.asList(CommandGroup.SPLIT_PATTERN.split(checkNotNull(arguments)))),
         new IndexPointer(), true);
   }
 
-  private ArgumentChain(@Nonnull String raw, @Nonnull List<String> arguments, IndexPointer index, boolean subChainPermission) {
+  private Arguments(@Nonnull String raw, @Nonnull List<String> arguments, IndexPointer index, boolean rootChain) {
     this.raw = raw;
-    this.subChainPermission = subChainPermission;
+    this.rootChain = rootChain;
     this.arguments = arguments;
     this.index = index;
-    this.resetAction = () -> {};
+    this.undoActions = new ArrayDeque<>();
     this.invalid = false;
   }
 
@@ -48,7 +49,7 @@ public final class ArgumentChain implements Iterator<String> {
   public String next() {
     checkValidity();
     checkIndex();
-    addResetAction(() -> --index.value);
+    undoActions.addFirst(() -> --index.value);
     return arguments.get(index.value++);
   }
 
@@ -57,7 +58,7 @@ public final class ArgumentChain implements Iterator<String> {
     checkValidity();
     back();
     String removedValue = arguments.remove(index.value);
-    addResetAction(() -> arguments.set(index.value, removedValue));
+    undoActions.addFirst(() -> arguments.set(index.value, removedValue));
   }
 
   @Nonnull
@@ -74,8 +75,7 @@ public final class ArgumentChain implements Iterator<String> {
 
   public void reset() {
     checkValidity();
-    resetAction.run();
-    resetAction = () -> {};
+    undoActions.forEach(Runnable::run);
   }
 
   private void checkIndex() {
@@ -87,7 +87,7 @@ public final class ArgumentChain implements Iterator<String> {
   private void back() {
     checkValidity();
     checkState(index.value > 0, "iterator was not advanced");
-    addResetAction(() -> ++index.value);
+    undoActions.addFirst(() -> ++index.value);
     --index.value;
   }
 
@@ -99,29 +99,22 @@ public final class ArgumentChain implements Iterator<String> {
     invalid = true;
   }
 
-  private void addResetAction(Runnable action) {
-    resetAction = () -> {
-      action.run();
-      resetAction.run();
-    };
-  }
-
   private static final class IndexPointer {
     int value = 0;
   }
 
   @Override
   public String toString() {
-    return "[" + String.join(", ", arguments) + "]";
+    return raw;
   }
 
-  public ArgumentChain subChain() {
-    checkState(subChainPermission, "You can't create sub chains of this argument chain");
+  public Arguments subChain() {
+    checkState(rootChain, "You can't create sub chains of this argument chain");
     checkValidity();
     if (lastSubChain != null) {
       lastSubChain.invalidate();
     }
-    lastSubChain = new ArgumentChain(raw, arguments, index, false);
+    lastSubChain = new Arguments(raw, arguments, index, false);
     return lastSubChain;
   }
 

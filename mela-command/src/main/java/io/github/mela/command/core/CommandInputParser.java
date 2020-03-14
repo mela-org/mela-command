@@ -9,6 +9,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 final class CommandInputParser {
 
+  private static final char[] WHITESPACE = {' ', '\n', '\t'};
+
   private String currentWord;
   private String remaining;
 
@@ -55,16 +57,14 @@ final class CommandInputParser {
   }
 
   private int nextWhitespace() {
-    int space = remaining.indexOf(' ');
-    if (space != -1)
-      return space;
-    int newLine = remaining.indexOf('\n');
-    if (newLine != -1)
-      return newLine;
-    int tab = remaining.indexOf('\t');
-    if (tab != -1)
-      return tab;
-    return -1;
+    int nextWhiteSpace = -1;
+    for (char whitespaceChar : WHITESPACE) {
+      int index = remaining.indexOf(whitespaceChar);
+      if (nextWhiteSpace == -1 || (index != -1 && index < nextWhiteSpace)) {
+        nextWhiteSpace = index;
+      }
+    }
+    return nextWhiteSpace;
   }
 
   private <T> T findIn(Iterable<T> iterable, Predicate<T> predicate) {

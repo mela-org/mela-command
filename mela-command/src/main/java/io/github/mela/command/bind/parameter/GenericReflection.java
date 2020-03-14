@@ -2,9 +2,7 @@ package io.github.mela.command.bind.parameter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -35,7 +33,7 @@ public final class GenericReflection {
     }
   }
 
-  public static boolean isAssignable(Type type, Class from) {
+  public static boolean isAssignable(Type type, Class<?> from) {
     if (type instanceof ParameterizedType) {
       return ((Class<?>) ((ParameterizedType) type).getRawType()).isAssignableFrom(from);
     } else if (type instanceof Class<?>) {
@@ -46,7 +44,7 @@ public final class GenericReflection {
   }
 
   public static boolean isArray(Type type) {
-    return (type instanceof Class && ((Class) type).isArray())
+    return (type instanceof Class && ((Class<?>) type).isArray())
         || type instanceof GenericArrayType;
   }
 

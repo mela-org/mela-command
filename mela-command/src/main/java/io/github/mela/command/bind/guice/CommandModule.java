@@ -4,10 +4,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.binder.LinkedBindingBuilder;
 import com.google.inject.multibindings.MapBinder;
+import com.google.inject.multibindings.Multibinder;
 import io.github.mela.command.bind.CommandInterceptor;
 import io.github.mela.command.bind.ExceptionHandler;
-import io.github.mela.command.bind.ParameterKey;
+import io.github.mela.command.bind.TypeKey;
 import io.github.mela.command.bind.map.ArgumentMapper;
+import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
 import io.github.mela.command.bind.parameter.ParameterMarker;
 import io.github.mela.command.bind.guice.annotation.ArgumentMappers;
@@ -31,14 +33,16 @@ public abstract class CommandModule extends AbstractModule {
   private MapBinder mappingInterceptorBinder;
   private MapBinder commandInterceptorBinder;
   private MapBinder handlerBinder;
+  private Multibinder<ArgumentMapperProvider> mapperProviderBinder;
   private CommandBinder commandBinder;
 
   @Override
   protected void configure() {
-    this.mapperBinder = MapBinder.newMapBinder(binder(), ParameterKey.class, ArgumentMapper.class, ArgumentMappers.class);
+    this.mapperBinder = MapBinder.newMapBinder(binder(), TypeKey.class, ArgumentMapper.class, ArgumentMappers.class);
     this.mappingInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, MappingInterceptor.class, MappingInterceptors.class);
     this.commandInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, CommandInterceptor.class, CommandInterceptors.class);
     this.handlerBinder = MapBinder.newMapBinder(binder(), Class.class, ExceptionHandler.class, ExceptionHandlers.class);
+    this.mapperProviderBinder = Multibinder.newSetBinder(binder(), ArgumentMapperProvider.class);
     this.commandBinder = CommandBinder.create(binder());
   }
 
@@ -69,8 +73,13 @@ public abstract class CommandModule extends AbstractModule {
       checkArgument(annotationType.isAnnotationPresent(ParameterMarker.class),
           "Annotation " + annotationType + " does not have the @ParameterMarker annotation");
     }
-    return ((MapBinder<ParameterKey, ArgumentMapper<? extends T>>) mapperBinder)
-        .addBinding(ParameterKey.get(type, annotationType));
+    return ((MapBinder<TypeKey, ArgumentMapper<? extends T>>) mapperBinder)
+        .addBinding(TypeKey.get(type, annotationType));
+  }
+
+  @Nonnull
+  protected LinkedBindingBuilder<ArgumentMapperProvider> bindMapperProvider() {
+    return mapperProviderBinder.addBinding();
   }
 
   @SuppressWarnings("unchecked")

@@ -1,16 +1,19 @@
 package io.github.mela.command.bind.parameter;
 
-import io.github.mela.command.bind.map.ArgumentChain;
 import io.github.mela.command.bind.CommandBindings;
-import io.github.mela.command.bind.map.InvalidArgumentAmountException;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.bind.Arguments;
+import io.github.mela.command.bind.map.MappingProcessException;
+import io.github.mela.command.bind.map.MappingProcessor;
+import io.github.mela.command.bind.map.ParameterMappingException;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,22 +22,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class Parameters {
 
-  private final List<CommandParameter> parameters;
+  private final Map<CommandParameter, MappingProcessor> parameters;
 
-  private Parameters(List<CommandParameter> parameters) {
-    this.parameters = List.copyOf(parameters);
+  private Parameters(Map<CommandParameter, MappingProcessor> parameters) {
+    this.parameters = Map.copyOf(parameters);
   }
 
   @Nonnull
-  public Object[] map(@Nonnull ArgumentChain chain, @Nonnull CommandContext context) throws Throwable {
+  public Object[] map(@Nonnull Arguments arguments, @Nonnull ContextMap context) {
     List<Object> mappedArgs = new ArrayList<>();
-    for (CommandParameter parameter : parameters) {
-      mappedArgs.add(parameter.advance(chain.subChain(), context));
-    }
+
+    parameters.forEach((parameter, processor) -> {
+      try {
+        mappedArgs.add(processor.process(arguments.subChain(), context));
+      } catch (Throwable throwable) {
+        throw new ParameterMappingException("Failed to map argument for " + parameter
+            + "(arguments: \"" + arguments + "\")", parameter);
+      }
+    });
 
     if (parameters.size() != mappedArgs.size()) {
-      throw new InvalidArgumentAmountException("Invalid amount of arguments; expected: "
-          + parameters.size() + ", got: " + mappedArgs.size());
+      throw new MappingProcessException("Invalid amount of arguments; expected: "
+          + parameters.size() + ", got: " + mappedArgs.size() + "(arguments: \"" + arguments + "\")");
     }
     return mappedArgs.toArray();
   }
@@ -43,9 +52,12 @@ public final class Parameters {
   public static Parameters from(@Nonnull Method method, @Nonnull CommandBindings bindings) {
     checkNotNull(method);
     checkNotNull(bindings);
-    List<CommandParameter> parameters = Arrays.stream(method.getParameters())
-        .map((parameter) -> CommandParameter.from(parameter, bindings))
-        .collect(Collectors.toList());
+    Map<CommandParameter, MappingProcessor> parameters = new LinkedHashMap<>();
+    for (Parameter parameter : method.getParameters()) {
+      CommandParameter commandParameter = new CommandParameter(parameter);
+      MappingProcessor processor = MappingProcessor.fromParameter(bindings, parameter);
+      parameters.put(commandParameter, processor);
+    }
     return new Parameters(parameters);
   }
 }

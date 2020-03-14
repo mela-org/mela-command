@@ -2,7 +2,7 @@ package io.github.mela.command.bind.provided.interceptors;
 
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 
@@ -12,11 +12,11 @@ import javax.annotation.Nonnull;
 public class DefaultInterceptor extends MappingInterceptorAdapter<Default> {
 
   @Override
-  public void postprocess(@Nonnull Default annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
+  public void postprocess(@Nonnull Default annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
     if (process.isErroneous() || (process.isSet() && process.getValue() == null)) {
       process.fixError();
       process.getArguments().reset();
-      process.setValue(process.getMapper().map(annotation.value(), context));
+      process.setArgumentToMap(annotation::value);
     }
   }
 }

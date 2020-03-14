@@ -1,8 +1,8 @@
 package io.github.mela.command.bind.provided.mappers;
 
-import io.github.mela.command.bind.map.MappingException;
 import io.github.mela.command.bind.map.ArgumentMapper;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.bind.map.MappingProcessException;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 
@@ -20,15 +20,15 @@ public abstract class NumberMapper<T extends Number> implements ArgumentMapper<T
   }
 
   @Override
-  public T map(@Nonnull String argument, @Nonnull CommandContext context) {
+  public T map(@Nonnull String argument, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext) {
     try {
-      return convert(argument, context);
+      return convert(argument, mappingContext);
     } catch (NumberFormatException e) {
-      throw new MappingException("Invalid argument: could not convert \""
+      throw new MappingProcessException("Invalid argument: could not convert \""
           + argument + "\" to a number (" + type.getSimpleName() + ")", e);
     }
   }
 
-  protected abstract T convert(String argument, CommandContext context);
+  protected abstract T convert(String argument, ContextMap mappingContext);
 
 }

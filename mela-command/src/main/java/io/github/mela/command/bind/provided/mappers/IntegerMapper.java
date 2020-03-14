@@ -1,7 +1,6 @@
 package io.github.mela.command.bind.provided.mappers;
 
-import io.github.mela.command.bind.map.MappingContextKey;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import java.util.function.BiFunction;
@@ -21,7 +20,7 @@ public class IntegerMapper<T extends Number> extends NumberMapper<T> {
   }
 
   @Override
-  protected T convert(String argument, CommandContext context) {
-    return converter.apply(argument, context.get(int.class, MappingContextKey.of("base", this)).orElse(10));
+  protected T convert(String argument, ContextMap mappingContext) {
+    return converter.apply(argument, mappingContext.get(int.class, "base").orElse(10));
   }
 }

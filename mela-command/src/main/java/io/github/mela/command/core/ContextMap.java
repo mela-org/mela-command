@@ -15,15 +15,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class CommandContext {
+public final class ContextMap {
 
   private final Map<Object, Object> map;
 
-  private CommandContext() {
+  private ContextMap() {
     this(new HashMap<>());
   }
 
-  private CommandContext(Map<Object, Object> map) {
+  private ContextMap(Map<Object, Object> map) {
     this.map = map;
   }
 
@@ -64,7 +64,7 @@ public final class CommandContext {
       return true;
     if (o == null || getClass() != o.getClass())
       return false;
-    CommandContext that = (CommandContext) o;
+    ContextMap that = (ContextMap) o;
     return Objects.equals(map, that.map);
   }
 
@@ -74,8 +74,8 @@ public final class CommandContext {
   }
 
   @Nonnull
-  public static CommandContext create() {
-    return new CommandContext();
+  public static ContextMap create() {
+    return new ContextMap();
   }
 
   private static final class CompositeKey {
@@ -103,7 +103,7 @@ public final class CommandContext {
   }
 
   @Nonnull
-  public static CommandContext of(@Nonnull Map<?, ?> map) {
-    return new CommandContext(new HashMap<>(checkNotNull(map)));
+  public static ContextMap of(@Nonnull Map<?, ?> map) {
+    return new ContextMap(new HashMap<>(checkNotNull(map)));
   }
 }

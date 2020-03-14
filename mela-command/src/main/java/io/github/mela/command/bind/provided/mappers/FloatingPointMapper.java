@@ -1,6 +1,6 @@
 package io.github.mela.command.bind.provided.mappers;
 
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;
@@ -20,7 +20,7 @@ public class FloatingPointMapper<T extends Number> extends NumberMapper<T> {
   }
 
   @Override
-  protected T convert(String argument, CommandContext context) {
+  protected T convert(String argument, ContextMap mappingContext) {
     return converter.apply(argument);
   }
 }

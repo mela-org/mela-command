@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface CommandCallable {
 
-  void call(@Nonnull String arguments, @Nonnull CommandContext context);
+  void call(@Nonnull String arguments, @Nonnull ContextMap context);
 
   @Nonnull
   Set<String> getLabels();

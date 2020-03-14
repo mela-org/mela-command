@@ -1,9 +1,8 @@
 package io.github.mela.command.bind.provided.interceptors;
 
-import io.github.mela.command.bind.map.MappingContextKey;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
-import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
@@ -22,10 +21,10 @@ public class BaseInterceptor extends MappingInterceptorAdapter<Base> {
       );
 
   @Override
-  public void preprocess(@Nonnull Base annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
-    Type type = process.getParameter().getType();
+  public void preprocess(@Nonnull Base annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
+    Type type = process.getTargetType().getKey().getType();
     if (TYPES.contains(type)) {
-      context.put(int.class, MappingContextKey.of("base", process.getMapper()));
+      process.getContext().put(int.class, "base", annotation.value());
     }
   }
 }
