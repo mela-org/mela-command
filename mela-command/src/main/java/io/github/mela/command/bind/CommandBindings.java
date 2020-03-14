@@ -18,22 +18,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-// TODO: 18.11.2019 write convenient builder
 public final class CommandBindings {
 
   public static final CommandBindings EMPTY = new CommandBindings(Map.of(), Map.of(), Map.of(), Map.of(), Set.of());
 
-  private final Map<Class, CommandInterceptor> commandInterceptors;
-  private final Map<Class, ExceptionHandler> handlers;
-  private final Map<TypeKey, ArgumentMapper> mappers;
-  private final Map<Class, MappingInterceptor> mappingInterceptors;
+  private final Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors;
+  private final Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers;
+  private final Map<TypeKey, ArgumentMapper<?>> mappers;
+  private final Map<Class<? extends Annotation>, MappingInterceptor<?>> mappingInterceptors;
   private final Set<ArgumentMapperProvider> argumentMapperProviders;
 
   @Inject
-  public CommandBindings(@CommandInterceptors Map<Class, CommandInterceptor> commandInterceptors,
-                         @ExceptionHandlers Map<Class, ExceptionHandler> handlers,
-                         @ArgumentMappers Map<TypeKey, ArgumentMapper> mappers,
-                         @MappingInterceptors Map<Class, MappingInterceptor> mappingInterceptors,
+  public CommandBindings(@CommandInterceptors Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors,
+                         @ExceptionHandlers Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
+                         @ArgumentMappers Map<TypeKey, ArgumentMapper<?>> mappers,
+                         @MappingInterceptors Map<Class<? extends Annotation>, MappingInterceptor<?>> mappingInterceptors,
                          @ArgumentMapperProviders Set<ArgumentMapperProvider> argumentMapperProviders) {
     this.commandInterceptors = Map.copyOf(commandInterceptors);
     this.handlers = Map.copyOf(handlers);

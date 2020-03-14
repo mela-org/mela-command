@@ -27,6 +27,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@SuppressWarnings("rawtypes")
 public abstract class CommandModule extends AbstractModule {
 
   private MapBinder mapperBinder;
@@ -85,21 +86,21 @@ public abstract class CommandModule extends AbstractModule {
   @SuppressWarnings("unchecked")
   @Nonnull
   protected <T extends Throwable> LinkedBindingBuilder<ExceptionHandler<? extends T>> bindHandler(@Nonnull Class<T> exceptionType) {
-    return ((MapBinder<Class, ExceptionHandler<? extends T>>) handlerBinder)
+    return ((MapBinder<Class<?>, ExceptionHandler<? extends T>>) handlerBinder)
         .addBinding(exceptionType);
   }
 
   @SuppressWarnings("unchecked")
   @Nonnull
   protected <T extends Annotation> LinkedBindingBuilder<CommandInterceptor<? extends T>> bindCommandInterceptor(@Nonnull Class<T> annotationType) {
-    return ((MapBinder<Class, CommandInterceptor<? extends T>>) commandInterceptorBinder)
+    return ((MapBinder<Class<?>, CommandInterceptor<? extends T>>) commandInterceptorBinder)
         .addBinding(annotationType);
   }
 
   @SuppressWarnings("unchecked")
   @Nonnull
   protected <T extends Annotation> LinkedBindingBuilder<MappingInterceptor<? extends T>> bindMappingInterceptor(@Nonnull Class<T> annotationType) {
-    return ((MapBinder<Class, MappingInterceptor<? extends T>>) mappingInterceptorBinder)
+    return ((MapBinder<Class<?>, MappingInterceptor<? extends T>>) mappingInterceptorBinder)
         .addBinding(annotationType);
   }
 

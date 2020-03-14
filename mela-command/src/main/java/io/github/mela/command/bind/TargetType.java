@@ -1,7 +1,9 @@
 package io.github.mela.command.bind;
 
 import io.github.mela.command.bind.parameter.GenericReflection;
+import io.github.mela.command.bind.parameter.ParameterMarker;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
@@ -22,7 +24,15 @@ public final class TargetType {
   }
 
   public static TargetType create(AnnotatedType type) {
-    return new TargetType(type, TypeKey.get(type));
+    return new TargetType(type, getKey(type));
+  }
+
+  private static TypeKey getKey(AnnotatedType type) {
+    return TypeKey.get(type.getType(), Arrays.stream(type.getAnnotations())
+        .map(Annotation::annotationType)
+        .filter((annotation) -> annotation.isAnnotationPresent(ParameterMarker.class))
+        .findFirst()
+        .orElse(null));
   }
 
   public AnnotatedType getAnnotatedType() {

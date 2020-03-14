@@ -1,13 +1,9 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.bind.parameter.ParameterMarker;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,23 +29,6 @@ public final class TypeKey {
   @Nonnull
   public static TypeKey get(@Nonnull Type type, @Nullable Class<? extends Annotation> annotationType) {
     return new TypeKey(type, annotationType);
-  }
-
-  @Nonnull
-  public static TypeKey get(@Nonnull AnnotatedType type) {
-    return get(type.getType(), Arrays.stream(type.getAnnotations())
-        .map(Annotation::annotationType)
-        .filter((annotation) -> annotation.isAnnotationPresent(ParameterMarker.class))
-        .findFirst()
-        .orElse(null));
-  }
-
-  private static Class<? extends Annotation> findMarkerAnnotation(Annotation[] annotations) {
-    return Arrays.stream(annotations)
-        .map(Annotation::annotationType)
-        .filter((annotation) -> annotation.isAnnotationPresent(ParameterMarker.class))
-        .findFirst()
-        .orElse(null);
   }
 
   @Nonnull
