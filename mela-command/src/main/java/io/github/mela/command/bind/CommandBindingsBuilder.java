@@ -1,5 +1,6 @@
 package io.github.mela.command.bind;
 
+import com.google.common.reflect.TypeToken;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
@@ -43,16 +44,28 @@ public final class CommandBindingsBuilder {
     return bindMapper(type, null, mapper);
   }
 
+  @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   public <T> CommandBindingsBuilder bindMapper(
       @Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType, @Nonnull ArgumentMapper<T> mapper) {
+    return bindMapper(TypeToken.of(type), annotationType, mapper);
+  }
+
+  @SuppressWarnings("UnstableApiUsage")
+  @Nonnull
+  public final <T> CommandBindingsBuilder bindMapper(@Nonnull TypeToken<T> type, @Nonnull ArgumentMapper<T> mapper) {
+    return bindMapper(type, null, mapper);
+  }
+
+  @SuppressWarnings("UnstableApiUsage")
+  @Nonnull
+  public final <T> CommandBindingsBuilder bindMapper(
+      @Nonnull TypeToken<T> type, @Nullable Class<? extends Annotation> annotationType, @Nonnull ArgumentMapper<T> mapper) {
     checkNotNull(type);
     checkNotNull(mapper);
     mappers.put(TypeKey.get(type, annotationType), mapper);
     return this;
   }
-
-  // TODO find way to bind generic types (without guice's TypeLiteral if possible)
 
   @Nonnull
   protected CommandBindingsBuilder bindMapperProvider(@Nonnull ArgumentMapperProvider provider) {

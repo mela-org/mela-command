@@ -1,5 +1,6 @@
 package io.github.mela.command.bind;
 
+import com.google.common.reflect.TypeToken;
 import io.github.mela.command.bind.parameter.GenericReflection;
 import io.github.mela.command.bind.parameter.ParameterMarker;
 
@@ -16,9 +17,9 @@ import java.util.stream.Collectors;
 public final class TargetType {
 
   private final AnnotatedType annotatedType;
-  private final TypeKey key;
+  private final TypeKey<?> key;
 
-  private TargetType(AnnotatedType annotatedType, TypeKey key) {
+  private TargetType(AnnotatedType annotatedType, TypeKey<?> key) {
     this.annotatedType = annotatedType;
     this.key = key;
   }
@@ -27,8 +28,9 @@ public final class TargetType {
     return new TargetType(type, getKey(type));
   }
 
-  private static TypeKey getKey(AnnotatedType type) {
-    return TypeKey.get(type.getType(), Arrays.stream(type.getAnnotations())
+  @SuppressWarnings("UnstableApiUsage")
+  private static TypeKey<?> getKey(AnnotatedType type) {
+    return TypeKey.get(TypeToken.of(type.getType()), Arrays.stream(type.getAnnotations())
         .map(Annotation::annotationType)
         .filter((annotation) -> annotation.isAnnotationPresent(ParameterMarker.class))
         .findFirst()
@@ -39,7 +41,7 @@ public final class TargetType {
     return annotatedType;
   }
 
-  public TypeKey getKey() {
+  public TypeKey<?> getKey() {
     return key;
   }
 
