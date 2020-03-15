@@ -1,6 +1,7 @@
 package io.github.mela.command.bind;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
@@ -17,21 +18,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@SuppressWarnings("rawtypes")
+@Singleton
 public final class CommandBindings {
 
   public static final CommandBindings EMPTY = new CommandBindings(Map.of(), Map.of(), Map.of(), Map.of(), Set.of());
 
-  private final Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors;
-  private final Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers;
-  private final Map<TypeKey, ArgumentMapper<?>> mappers;
-  private final Map<Class<? extends Annotation>, MappingInterceptor<?>> mappingInterceptors;
+  private final Map<Class, CommandInterceptor> commandInterceptors;
+  private final Map<Class, ExceptionHandler> handlers;
+  private final Map<TypeKey, ArgumentMapper> mappers;
+  private final Map<Class, MappingInterceptor> mappingInterceptors;
   private final Set<ArgumentMapperProvider> argumentMapperProviders;
 
   @Inject
-  public CommandBindings(Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors,
-                         Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
-                         Map<TypeKey, ArgumentMapper<?>> mappers,
-                         Map<Class<? extends Annotation>, MappingInterceptor<?>> mappingInterceptors,
+  public CommandBindings(Map<Class, CommandInterceptor> commandInterceptors,
+                         Map<Class, ExceptionHandler> handlers,
+                         Map<TypeKey, ArgumentMapper> mappers,
+                         Map<Class, MappingInterceptor> mappingInterceptors,
                          Set<ArgumentMapperProvider> argumentMapperProviders) {
     this.commandInterceptors = Map.copyOf(commandInterceptors);
     this.handlers = Map.copyOf(handlers);
@@ -97,6 +100,17 @@ public final class CommandBindings {
   @Override
   public int hashCode() {
     return Objects.hash(commandInterceptors, handlers, mappers);
+  }
+
+  @Override
+  public String toString() {
+    return "CommandBindings{" +
+        "commandInterceptors=" + commandInterceptors +
+        ", handlers=" + handlers +
+        ", mappers=" + mappers +
+        ", mappingInterceptors=" + mappingInterceptors +
+        ", argumentMapperProviders=" + argumentMapperProviders +
+        '}';
   }
 }
 

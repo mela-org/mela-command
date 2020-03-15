@@ -34,32 +34,35 @@ public abstract class CommandModule extends AbstractModule {
   private CommandBinder commandBinder;
 
   @Override
-  protected void configure() {
+  protected final void configure() {
     this.mapperBinder = MapBinder.newMapBinder(binder(), TypeKey.class, ArgumentMapper.class);
     this.mappingInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, MappingInterceptor.class);
     this.commandInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, CommandInterceptor.class);
     this.handlerBinder = MapBinder.newMapBinder(binder(), Class.class, ExceptionHandler.class);
     this.mapperProviderBinder = Multibinder.newSetBinder(binder(), ArgumentMapperProvider.class);
     this.commandBinder = CommandBinder.create(binder());
+    configureModule();
   }
 
+  protected abstract void configureModule();
+
   @Nonnull
-  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type) {
     return bindMapper(type, null);
   }
 
   @Nonnull
-  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
     return bindMapper((Type) type, annotationType);
   }
 
   @Nonnull
-  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type) {
     return bindMapper(type.getType(), null);
   }
 
   @Nonnull
-  protected <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type, @Nullable Class<? extends Annotation> annotationType) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type, @Nullable Class<? extends Annotation> annotationType) {
     return bindMapper(type.getType(), annotationType);
   }
 
@@ -75,33 +78,33 @@ public abstract class CommandModule extends AbstractModule {
   }
 
   @Nonnull
-  protected LinkedBindingBuilder<ArgumentMapperProvider> bindMapperProvider() {
+  protected final LinkedBindingBuilder<ArgumentMapperProvider> bindMapperProvider() {
     return mapperProviderBinder.addBinding();
   }
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  protected <T extends Throwable> LinkedBindingBuilder<ExceptionHandler<? extends T>> bindHandler(@Nonnull Class<T> exceptionType) {
+  protected final <T extends Throwable> LinkedBindingBuilder<ExceptionHandler<? extends T>> bindHandler(@Nonnull Class<T> exceptionType) {
     return ((MapBinder<Class<?>, ExceptionHandler<? extends T>>) handlerBinder)
         .addBinding(exceptionType);
   }
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  protected <T extends Annotation> LinkedBindingBuilder<CommandInterceptor<? extends T>> bindCommandInterceptor(@Nonnull Class<T> annotationType) {
+  protected final <T extends Annotation> LinkedBindingBuilder<CommandInterceptor<? extends T>> bindCommandInterceptor(@Nonnull Class<T> annotationType) {
     return ((MapBinder<Class<?>, CommandInterceptor<? extends T>>) commandInterceptorBinder)
         .addBinding(annotationType);
   }
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  protected <T extends Annotation> LinkedBindingBuilder<MappingInterceptor<? extends T>> bindMappingInterceptor(@Nonnull Class<T> annotationType) {
+  protected final <T extends Annotation> LinkedBindingBuilder<MappingInterceptor<? extends T>> bindMappingInterceptor(@Nonnull Class<T> annotationType) {
     return ((MapBinder<Class<?>, MappingInterceptor<? extends T>>) mappingInterceptorBinder)
         .addBinding(annotationType);
   }
 
   @Nonnull
-  protected CommandBindingNode rootNode() {
+  protected final CommandBindingNode rootNode() {
     return commandBinder.root();
   }
 }

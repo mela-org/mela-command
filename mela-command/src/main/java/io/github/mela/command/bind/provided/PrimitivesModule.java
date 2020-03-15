@@ -12,8 +12,7 @@ import java.math.BigInteger;
 public class PrimitivesModule extends CommandModule {
 
   @Override
-  protected void configure() {
-    super.configure();
+  protected void configureModule() {
     bindMapper(String.class).toInstance(new StringMapper());
     bindMapper(byte.class).toInstance(new IntegerMapper<>(byte.class, Byte::parseByte));
     bindMapper(Byte.class).toInstance(new IntegerMapper<>(Byte.class, Byte::valueOf));

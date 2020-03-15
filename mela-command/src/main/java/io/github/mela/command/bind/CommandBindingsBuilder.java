@@ -19,10 +19,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class CommandBindingsBuilder {
 
-  private final Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors;
-  private final Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers;
-  private final Map<TypeKey, ArgumentMapper<?>> mappers;
-  private final Map<Class<? extends Annotation>, MappingInterceptor<?>> mappingInterceptors;
+  private final Map<Class, CommandInterceptor> commandInterceptors;
+  private final Map<Class, ExceptionHandler> handlers;
+  private final Map<TypeKey, ArgumentMapper> mappers;
+  private final Map<Class, MappingInterceptor> mappingInterceptors;
   private final Set<ArgumentMapperProvider> argumentMapperProviders;
 
   private CommandBindingsBuilder() {
