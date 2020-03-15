@@ -1,12 +1,13 @@
 package io.github.mela.command.bind;
 
 import com.google.common.reflect.TypeToken;
-import io.github.mela.command.bind.parameter.GenericReflection;
 import io.github.mela.command.bind.parameter.ParameterMarker;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -74,8 +75,18 @@ public final class TargetType {
   }
 
   private String toString(AnnotatedParameterizedType type) {
-    return GenericReflection.getRaw(type.getType()) + "<"
+    return getRaw(type.getType()) + "<"
         + Arrays.stream(type.getAnnotatedActualTypeArguments()).map(this::toString)
         .collect(Collectors.joining(", ")) + ">";
+  }
+
+  private Class<?> getRaw(Type type) {
+    if (type instanceof Class<?>) {
+      return (Class<?>) type;
+    } else if (type instanceof ParameterizedType) {
+      return getRaw(((ParameterizedType) type).getRawType());
+    } else {
+      return null;
+    }
   }
 }
