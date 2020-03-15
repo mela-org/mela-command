@@ -1,7 +1,6 @@
 package io.github.mela.command.bind;
 
 import com.google.inject.Inject;
-import io.github.mela.command.bind.guice.annotation.*;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
@@ -29,11 +28,11 @@ public final class CommandBindings {
   private final Set<ArgumentMapperProvider> argumentMapperProviders;
 
   @Inject
-  public CommandBindings(@CommandInterceptors Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors,
-                         @ExceptionHandlers Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
-                         @ArgumentMappers Map<TypeKey, ArgumentMapper<?>> mappers,
-                         @MappingInterceptors Map<Class<? extends Annotation>, MappingInterceptor<?>> mappingInterceptors,
-                         @ArgumentMapperProviders Set<ArgumentMapperProvider> argumentMapperProviders) {
+  public CommandBindings(Map<Class<? extends Annotation>, CommandInterceptor<?>> commandInterceptors,
+                         Map<Class<? extends Throwable>, ExceptionHandler<?>> handlers,
+                         Map<TypeKey, ArgumentMapper<?>> mappers,
+                         Map<Class<? extends Annotation>, MappingInterceptor<?>> mappingInterceptors,
+                         Set<ArgumentMapperProvider> argumentMapperProviders) {
     this.commandInterceptors = Map.copyOf(commandInterceptors);
     this.handlers = Map.copyOf(handlers);
     this.mappers = Map.copyOf(mappers);

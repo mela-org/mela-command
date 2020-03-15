@@ -1,7 +1,7 @@
 package io.github.mela.command.core;
 
 import com.google.inject.Inject;
-import io.github.mela.command.bind.guice.annotation.CommandExecutor;
+import io.github.mela.command.bind.guice.CommandExecutor;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;

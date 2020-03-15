@@ -12,10 +12,6 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
 import io.github.mela.command.bind.parameter.ParameterMarker;
-import io.github.mela.command.bind.guice.annotation.ArgumentMappers;
-import io.github.mela.command.bind.guice.annotation.CommandInterceptors;
-import io.github.mela.command.bind.guice.annotation.ExceptionHandlers;
-import io.github.mela.command.bind.guice.annotation.MappingInterceptors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,10 +35,10 @@ public abstract class CommandModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    this.mapperBinder = MapBinder.newMapBinder(binder(), TypeKey.class, ArgumentMapper.class, ArgumentMappers.class);
-    this.mappingInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, MappingInterceptor.class, MappingInterceptors.class);
-    this.commandInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, CommandInterceptor.class, CommandInterceptors.class);
-    this.handlerBinder = MapBinder.newMapBinder(binder(), Class.class, ExceptionHandler.class, ExceptionHandlers.class);
+    this.mapperBinder = MapBinder.newMapBinder(binder(), TypeKey.class, ArgumentMapper.class);
+    this.mappingInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, MappingInterceptor.class);
+    this.commandInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, CommandInterceptor.class);
+    this.handlerBinder = MapBinder.newMapBinder(binder(), Class.class, ExceptionHandler.class);
     this.mapperProviderBinder = Multibinder.newSetBinder(binder(), ArgumentMapperProvider.class);
     this.commandBinder = CommandBinder.create(binder());
   }

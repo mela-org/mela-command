@@ -1,4 +1,4 @@
-package io.github.mela.command.bind.guice.annotation;
+package io.github.mela.command.bind.guice;
 
 import com.google.inject.BindingAnnotation;
 
@@ -7,8 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface MappingInterceptors {
+public @interface CommandExecutor {
+
 }
