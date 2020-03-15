@@ -1,5 +1,6 @@
 package io.github.mela.command.bind.guice;
 
+import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.binder.LinkedBindingBuilder;
@@ -19,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -52,7 +54,8 @@ public abstract class CommandModule extends AbstractModule {
   }
 
   @Nonnull
-  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
+      @Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
     return bindMapper((Type) type, annotationType);
   }
 
@@ -62,19 +65,21 @@ public abstract class CommandModule extends AbstractModule {
   }
 
   @Nonnull
-  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type, @Nullable Class<? extends Annotation> annotationType) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
+      @Nonnull TypeLiteral<T> type, @Nullable Class<? extends Annotation> annotationType) {
     return bindMapper(type.getType(), annotationType);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "UnstableApiUsage"})
   private <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
-      @Nonnull Type type, Class<? extends Annotation> annotationType) {
+      Type type, Class<? extends Annotation> annotationType) {
+    checkNotNull(type);
     if (annotationType != null) {
       checkArgument(annotationType.isAnnotationPresent(ParameterMarker.class),
           "Annotation " + annotationType + " does not have the @ParameterMarker annotation");
     }
     return ((MapBinder<TypeKey, ArgumentMapper<? extends T>>) mapperBinder)
-        .addBinding(TypeKey.get(type, annotationType));
+        .addBinding(TypeKey.get(TypeToken.of(type), annotationType));
   }
 
   @Nonnull

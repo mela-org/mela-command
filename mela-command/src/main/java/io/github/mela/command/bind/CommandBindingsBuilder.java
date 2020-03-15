@@ -53,13 +53,13 @@ public final class CommandBindingsBuilder {
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  public final <T> CommandBindingsBuilder bindMapper(@Nonnull TypeToken<T> type, @Nonnull ArgumentMapper<T> mapper) {
+  public <T> CommandBindingsBuilder bindMapper(@Nonnull TypeToken<T> type, @Nonnull ArgumentMapper<T> mapper) {
     return bindMapper(type, null, mapper);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  public final <T> CommandBindingsBuilder bindMapper(
+  public <T> CommandBindingsBuilder bindMapper(
       @Nonnull TypeToken<T> type, @Nullable Class<? extends Annotation> annotationType, @Nonnull ArgumentMapper<T> mapper) {
     checkNotNull(type);
     checkNotNull(mapper);
@@ -68,14 +68,14 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  protected CommandBindingsBuilder bindMapperProvider(@Nonnull ArgumentMapperProvider provider) {
+  public CommandBindingsBuilder bindMapperProvider(@Nonnull ArgumentMapperProvider provider) {
     checkNotNull(provider);
     argumentMapperProviders.add(provider);
     return this;
   }
 
   @Nonnull
-  protected <T extends Throwable> CommandBindingsBuilder bindHandler(
+  public <T extends Throwable> CommandBindingsBuilder bindHandler(
       @Nonnull Class<T> exceptionType, @Nonnull ExceptionHandler<T> handler) {
     checkNotNull(exceptionType);
     checkNotNull(handler);
@@ -84,7 +84,7 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  protected <T extends Annotation> CommandBindingsBuilder bindCommandInterceptor(
+  public <T extends Annotation> CommandBindingsBuilder bindCommandInterceptor(
       @Nonnull Class<T> annotationType, @Nonnull CommandInterceptor<T> interceptor) {
     checkNotNull(annotationType);
     checkNotNull(interceptor);
@@ -93,7 +93,7 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  protected <T extends Annotation> CommandBindingsBuilder bindMappingInterceptor(
+  public <T extends Annotation> CommandBindingsBuilder bindMappingInterceptor(
       @Nonnull Class<T> annotationType, @Nonnull MappingInterceptor<T> interceptor) {
     checkNotNull(annotationType);
     checkNotNull(interceptor);
