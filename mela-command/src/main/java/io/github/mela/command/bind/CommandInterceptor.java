@@ -8,6 +8,6 @@ import java.lang.annotation.Annotation;
 @FunctionalInterface
 public interface CommandInterceptor<T extends Annotation> {
 
-  boolean intercept(@Nonnull T annotation, @Nonnull Arguments arguments, @Nonnull ContextMap context);
+  boolean intercept(@Nonnull T annotation, @Nonnull ContextMap context);
 
 }

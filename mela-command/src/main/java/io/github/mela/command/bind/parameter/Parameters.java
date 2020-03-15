@@ -1,7 +1,7 @@
 package io.github.mela.command.bind.parameter;
 
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.bind.CommandBindings;
-import io.github.mela.command.bind.Arguments;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.bind.map.ParameterMappingException;
@@ -30,20 +30,20 @@ public final class Parameters {
 
   @Nonnull
   public Object[] map(@Nonnull Arguments arguments, @Nonnull ContextMap context) {
+    String original = arguments.toString();
     List<Object> mappedArgs = new ArrayList<>();
-
     parameters.forEach((parameter, processor) -> {
       try {
-        mappedArgs.add(processor.process(arguments.subChain(), context));
+        mappedArgs.add(processor.process(arguments, context));
       } catch (Throwable throwable) {
         throw new ParameterMappingException("Failed to map argument for " + parameter
-            + "(arguments: \"" + arguments + "\")", parameter);
+            + "(arguments: \"" + original + "\")", parameter);
       }
     });
 
     if (parameters.size() != mappedArgs.size()) {
       throw new MappingProcessException("Invalid amount of arguments; expected: "
-          + parameters.size() + ", got: " + mappedArgs.size() + "(arguments: \"" + arguments + "\")");
+          + parameters.size() + ", got: " + mappedArgs.size() + "(arguments: \"" + original + "\")");
     }
     return mappedArgs.toArray();
   }

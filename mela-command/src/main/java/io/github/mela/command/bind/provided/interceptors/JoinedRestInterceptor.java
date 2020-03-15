@@ -1,6 +1,5 @@
 package io.github.mela.command.bind.provided.interceptors;
 
-import io.github.mela.command.bind.Arguments;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.ContextMap;

@@ -1,6 +1,6 @@
 package io.github.mela.command.bind.map;
 
-import io.github.mela.command.bind.Arguments;
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.parameter.InvalidTypeException;
@@ -65,27 +65,23 @@ public class MappingProcessor {
 
   @Nullable
   public Object process(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
-    MappingProcess process = MappingProcess.create(type, arguments);
+    MappingProcess process = MappingProcess.create(type);
     checkNotNull(commandContext);
-    process.setArgumentToMap(() -> mapper.prepare(arguments));
     interceptBefore(arguments, process, commandContext);
-    if (process.isErroneous()) {
-      throw process.getError();
-    }
-    if (!process.isSet()) {
-      map(process, commandContext);
+    if (!process.isErroneous() && !process.isSet()) {
+      map(arguments, commandContext, process);
     }
     interceptAfter(arguments, process, commandContext);
-    return finishProcess(process, commandContext);
+    return finishProcess(arguments, commandContext, process);
   }
 
-  private Object finishProcess(MappingProcess process, ContextMap commandContext) throws Throwable {
+  private Object finishProcess(Arguments arguments, ContextMap commandContext, MappingProcess process) throws Throwable {
     if (process.isErroneous()) {
       throw process.getError();
     } else if (!process.isSet()) {
       if (process.hasArgumentToMap()) {
-        map(process, commandContext);
-        return finishProcess(process, commandContext);
+        map(arguments, commandContext, process);
+        return finishProcess(arguments, commandContext, process);
       } else {
         throw new UnsatisfiedValueException("Unsatisfied value; no value set for " + type
             + " during the mapping process");
@@ -95,9 +91,9 @@ public class MappingProcessor {
     }
   }
 
-  private void map(MappingProcess process, ContextMap context) {
+  private void map(Arguments arguments, ContextMap commandContext, MappingProcess process) {
     try {
-      Object value = mapper.map(process.consumeArgumentToMap(), context, process.getContext());
+      Object value = mapper.map(arguments, commandContext, process.getContext());
       process.setValue(value);
     } catch (Throwable throwable) {
       process.fail(throwable);

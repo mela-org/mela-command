@@ -14,9 +14,9 @@ public final class CommandInput {
   private final String raw;
   private final CommandGroup group;
   private final CommandCallable callable;
-  private final String arguments;
+  private final Arguments arguments;
 
-  CommandInput(@Nonnull String raw, @Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull String arguments) {
+  CommandInput(@Nonnull String raw, @Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull Arguments arguments) {
     this.raw = checkNotNull(raw);
     this.group = checkNotNull(group);
     this.callable = callable;
@@ -40,7 +40,7 @@ public final class CommandInput {
   }
 
   @Nonnull
-  public String getArguments() {
+  public Arguments getArguments() {
     return arguments;
   }
 

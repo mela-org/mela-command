@@ -29,7 +29,7 @@ public final class CoreTest {
         .group("foo")
           .withCommand(command)
         .root()
-        .compile(IdentityCompiler.INSTANCE);
+        .build();
     Dispatcher dispatcher = new DefaultDispatcher(group);
     ContextMap context = ContextMap.of(Map.of("env", "test"));
     dispatcher.dispatch("foo\n \t  bar   \nbaz", context);

@@ -28,7 +28,7 @@ final class CommandInputParser {
   CommandInput parse() {
     stripGroup();
     stripCallable();
-    return new CommandInput(initialInput, group, callable, remaining);
+    return new CommandInput(initialInput, group, callable, Arguments.of(remaining));
   }
 
   private void stripGroup() {

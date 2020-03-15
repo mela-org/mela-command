@@ -13,8 +13,8 @@ public class DefaultInterceptor extends MappingInterceptorAdapter<Default> {
 
   @Override
   public void postprocess(@Nonnull Default annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
-    if (process.isErroneous() || (process.isSet() && process.getValue() == null)) {
-      process.fixError();
+    if (process.isErroneous() || !process.isSet() || process.getValue() == null) {
+      process.reset();
       process.getArguments().reset();
       process.setArgumentToMap(annotation::value);
     }

@@ -1,6 +1,7 @@
 package io.github.mela.command.core;
 
 import io.github.mela.command.compile.CommandCompiler;
+import io.github.mela.command.compile.IdentityCompiler;
 import io.github.mela.command.compile.UncompiledGroup;
 
 import javax.annotation.CheckReturnValue;
@@ -61,6 +62,12 @@ public final class GroupBuilder {
       parent();
     }
     return this;
+  }
+
+  @CheckReturnValue
+  @Nonnull
+  public CommandGroup build() {
+    return compile(IdentityCompiler.INSTANCE);
   }
 
   @Nonnull

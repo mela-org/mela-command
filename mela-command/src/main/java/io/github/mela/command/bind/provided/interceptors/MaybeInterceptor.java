@@ -16,10 +16,12 @@ public class MaybeInterceptor extends MappingInterceptorAdapter<Maybe> {
   @Override
   public void postprocess(@Nonnull Maybe annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
     if (process.isErroneous()) {
-      process.fixError();
+      process.reset();
       process.getArguments().reset();
       TypeToken<?> type = process.getTargetType().getTypeToken();
-      if (type.isPrimitive()) {
+      if (type.getType() == boolean.class) {
+        process.setValue(false);
+      } else if (type.isPrimitive()) {
         process.setValue(0);
       } else {
         process.setValue(null);

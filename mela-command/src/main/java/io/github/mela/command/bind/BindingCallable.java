@@ -1,6 +1,7 @@
 package io.github.mela.command.bind;
 
 import io.github.mela.command.bind.parameter.Parameters;
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.ContextMap;
 
@@ -66,13 +67,12 @@ public abstract class BindingCallable implements CommandCallable {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void call(@Nonnull String arguments, @Nonnull ContextMap context) {
+  public void call(@Nonnull Arguments arguments, @Nonnull ContextMap context) {
     try {
-      Arguments chain = Arguments.of(arguments);
-      if (!intercept(chain.subChain(), context))
+      if (!intercept(context))
         return;
 
-      Object[] methodArguments = parameters.map(chain, context);
+      Object[] methodArguments = parameters.map(arguments, context);
       call(methodArguments);
     } catch (Throwable error) {
       ExceptionHandler handler = bindings.getHandler(error.getClass());
@@ -85,9 +85,9 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   @SuppressWarnings("unchecked")
-  private boolean intercept(Arguments chain, ContextMap context) {
+  private boolean intercept(ContextMap context) {
     for (Map.Entry<Annotation, CommandInterceptor> entry : interceptors.entrySet()) {
-      boolean result = entry.getValue().intercept(entry.getKey(), chain, context);
+      boolean result = entry.getValue().intercept(entry.getKey(), context);
       if (!result)
         return false;
     }

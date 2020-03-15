@@ -1,12 +1,10 @@
 package io.github.mela.command.bind.map;
 
-import io.github.mela.command.bind.Arguments;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -18,16 +16,14 @@ public final class MappingProcess {
 
   private final ContextMap context;
   private final TargetType targetType;
-  private final Arguments arguments;
 
   private boolean isSet;
   private Throwable error;
   private Object value;
-  private Supplier<String> argumentToMap;
+  private String argumentToMap;
 
-  private MappingProcess(TargetType targetType, Arguments arguments) {
+  private MappingProcess(TargetType targetType) {
     this.targetType = targetType;
-    this.arguments = arguments;
     this.isSet = false;
     this.value = null;
     this.error = null;
@@ -35,10 +31,9 @@ public final class MappingProcess {
     this.context = ContextMap.create();
   }
 
-  public static MappingProcess create(@Nonnull TargetType targetType, @Nonnull Arguments arguments) {
+  public static MappingProcess create(@Nonnull TargetType targetType) {
     checkNotNull(targetType);
-    checkNotNull(arguments);
-    return new MappingProcess(targetType, arguments);
+    return new MappingProcess(targetType);
   }
 
   public void fail(@Nonnull Throwable error) {
@@ -48,18 +43,17 @@ public final class MappingProcess {
     }
   }
 
-  public void fixError() {
+  public void reset() {
+    this.value = null;
+    this.isSet = false;
     this.error = null;
+    this.argumentToMap = null;
   }
 
   public void setValue(@Nullable Object value) {
     checkState(!isErroneous(), "You may not set a value before resolving existing errors");
     this.value = value;
     this.isSet = true;
-  }
-
-  public void unset() {
-    this.isSet = false;
   }
 
   public boolean isSet() {
@@ -83,18 +77,16 @@ public final class MappingProcess {
   }
 
   @Nonnull
-  public String consumeArgumentToMap() {
+  public String getArgumentToMap() {
     checkState(argumentToMap != null, "There is no argument to map");
-    String argument = argumentToMap.get();
-    argumentToMap = null;
-    return argument;
+    return argumentToMap;
   }
 
   public boolean hasArgumentToMap() {
     return argumentToMap != null;
   }
 
-  public void setArgumentToMap(@Nonnull Supplier<String> argumentToMap) {
+  public void setArgumentToMap(@Nonnull String argumentToMap) {
     this.argumentToMap = checkNotNull(argumentToMap);
   }
 
@@ -106,10 +98,5 @@ public final class MappingProcess {
   @Nonnull
   public TargetType getTargetType() {
     return targetType;
-  }
-
-  @Nonnull
-  public Arguments getArguments() {
-    return arguments;
   }
 }
