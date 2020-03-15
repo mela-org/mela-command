@@ -44,7 +44,7 @@ public abstract class CommandModule extends AbstractModule {
     configureModule();
   }
 
-  protected abstract void configureModule();
+  protected void configureModule() {};
 
   @Nonnull
   protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type) {
