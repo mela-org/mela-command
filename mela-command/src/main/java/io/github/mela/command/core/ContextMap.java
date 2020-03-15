@@ -1,6 +1,6 @@
 package io.github.mela.command.core;
 
-import com.google.inject.TypeLiteral;
+import com.google.common.reflect.TypeToken;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,12 +45,13 @@ public final class ContextMap {
     return (Optional<T>) get((Type) type, key);
   }
 
-  public <T> void put(TypeLiteral<T> type, Object key, T value) {
+  @SuppressWarnings("UnstableApiUsage")
+  public <T> void put(TypeToken<T> type, Object key, T value) {
     map.put(new CompositeKey(type.getType(), key), value);
   }
 
-  @SuppressWarnings("unchecked")
-  public <T> Optional<T> get(TypeLiteral<T> type, Object key) {
+  @SuppressWarnings({"unchecked", "UnstableApiUsage"})
+  public <T> Optional<T> get(TypeToken<T> type, Object key) {
     return (Optional<T>) get(type.getType(), key);
   }
 

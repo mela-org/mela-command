@@ -22,7 +22,7 @@ public class BaseInterceptor extends MappingInterceptorAdapter<Base> {
 
   @Override
   public void preprocess(@Nonnull Base annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
-    Type type = process.getTargetType().getKey().getType();
+    Type type = process.getTargetType().getType();
     if (TYPES.contains(type)) {
       process.getContext().put(int.class, "base", annotation.value());
     }

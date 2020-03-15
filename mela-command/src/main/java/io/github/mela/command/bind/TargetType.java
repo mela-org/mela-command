@@ -37,12 +37,21 @@ public final class TargetType {
         .orElse(null));
   }
 
-  public AnnotatedType getAnnotatedType() {
-    return annotatedType;
+  @SuppressWarnings("UnstableApiUsage")
+  public TypeToken<?> getTypeToken() {
+    return key.getTypeToken();
   }
 
-  public TypeKey<?> getKey() {
+  public TypeKey<?> getTypeKey() {
     return key;
+  }
+
+  public Type getType() {
+    return annotatedType.getType();
+  }
+
+  public AnnotatedType getAnnotatedType() {
+    return annotatedType;
   }
 
   @Override

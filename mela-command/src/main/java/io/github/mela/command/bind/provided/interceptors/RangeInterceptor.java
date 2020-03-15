@@ -15,9 +15,9 @@ public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
 
   @Override
   public void postprocess(@Nonnull Range annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
-    Type type = process.getTargetType().getKey().getType();
-    if ((type == int.class || type == Integer.class)
-        && process.isSet() && !process.isErroneous()) {
+    Type type = process.getTargetType().getType();
+    if (!process.isErroneous() && (type == int.class || type == Integer.class)
+        && process.isSet() && process.getValue() != null) {
       int value = (int) process.getValue();
       int from = annotation.from();
       int to = annotation.to();

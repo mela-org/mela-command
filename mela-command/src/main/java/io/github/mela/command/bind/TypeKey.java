@@ -15,11 +15,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @SuppressWarnings("UnstableApiUsage")
 public final class TypeKey<T> {
 
-  private final TypeToken<T> type;
+  private final TypeToken<T> typeToken;
   private final Class<? extends Annotation> annotationType;
 
-  private TypeKey(TypeToken<T> type, Class<? extends Annotation> annotationType) {
-    this.type = checkNotNull(type);
+  private TypeKey(TypeToken<T> typeToken, Class<? extends Annotation> annotationType) {
+    this.typeToken = checkNotNull(typeToken);
     this.annotationType = annotationType;
   }
 
@@ -35,8 +35,8 @@ public final class TypeKey<T> {
   }
 
   @Nonnull
-  public TypeToken<T> getType() {
-    return type;
+  public TypeToken<T> getTypeToken() {
+    return typeToken;
   }
 
   @Nullable
@@ -51,17 +51,17 @@ public final class TypeKey<T> {
     if (o == null || getClass() != o.getClass())
       return false;
     TypeKey<?> that = (TypeKey<?>) o;
-    return Objects.equals(type, that.type) &&
+    return Objects.equals(typeToken, that.typeToken) &&
         Objects.equals(annotationType, that.annotationType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, annotationType);
+    return Objects.hash(typeToken, annotationType);
   }
 
   @Override
   public String toString() {
-    return (annotationType != null ? "@" + annotationType : "") + " " + type;
+    return (annotationType != null ? "@" + annotationType : "") + " " + typeToken;
   }
 }

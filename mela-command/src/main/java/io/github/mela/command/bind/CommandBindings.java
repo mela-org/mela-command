@@ -73,7 +73,7 @@ public final class CommandBindings {
 
   @Nullable
   public ArgumentMapper<?> getMapper(@Nonnull TargetType type) {
-    ArgumentMapper<?> mapper = mappers.get(type.getKey());
+    ArgumentMapper<?> mapper = mappers.get(type.getTypeKey());
     return mapper != null
         ? mapper
         : argumentMapperProviders

@@ -40,7 +40,7 @@ public class MappingProcessor {
     annotations.addAll(Arrays.asList(type.getAnnotations()));
     ArgumentMapper mapper = bindings.getMapper(targetType);
     if (mapper == null) {
-      throw new InvalidTypeException("Invalid type: missing argument mapper for type " + targetType.getKey());
+      throw new InvalidTypeException("Invalid type: missing argument mapper for type " + targetType.getTypeKey());
     }
     Map<Annotation, MappingInterceptor> interceptors = getInterceptors(bindings, annotations);
     return new MappingProcessor(targetType, mapper, interceptors);

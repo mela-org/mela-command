@@ -14,7 +14,7 @@ public class ContextInterceptor extends MappingInterceptorAdapter<Context> {
 
   @Override
   public void preprocess(@Nonnull Context annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
-    Type type = process.getTargetType().getKey().getType();
+    Type type = process.getTargetType().getType();
     String key = annotation.value();
     context.get(type, key)
         .ifPresentOrElse(

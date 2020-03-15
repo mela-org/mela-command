@@ -1,5 +1,6 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import com.google.common.reflect.TypeToken;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.ContextMap;
@@ -17,8 +18,8 @@ public class MaybeInterceptor extends MappingInterceptorAdapter<Maybe> {
     if (process.isErroneous()) {
       process.fixError();
       process.getArguments().reset();
-      Class<?> type = process.getTargetType().getKey().getType().getRawType();
-      if (type != null && type.isPrimitive()) {
+      TypeToken<?> type = process.getTargetType().getTypeToken();
+      if (type.isPrimitive()) {
         process.setValue(0);
       } else {
         process.setValue(null);

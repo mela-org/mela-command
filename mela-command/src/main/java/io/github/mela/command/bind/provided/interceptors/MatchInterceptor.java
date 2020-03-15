@@ -16,7 +16,7 @@ public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
 
   @Override
   public void postprocess(@Nonnull Match annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
-    if (process.getTargetType().getKey().getType() == String.class && !process.isErroneous()
+    if (process.getTargetType().getType() == String.class && !process.isErroneous()
         && process.isSet() && process.getValue() != null) {
       if (((String) process.getValue()).matches(annotation.value())) {
         process.fail(new ArgumentValidationException("Value " + process.getValue()
