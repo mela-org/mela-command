@@ -25,7 +25,7 @@ public final class MappingProcess {
   private Object value;
   private Supplier<String> argumentToMap;
 
-  public MappingProcess(TargetType targetType, Arguments arguments) {
+  private MappingProcess(TargetType targetType, Arguments arguments) {
     this.targetType = targetType;
     this.arguments = arguments;
     this.isSet = false;
@@ -33,6 +33,12 @@ public final class MappingProcess {
     this.error = null;
     this.argumentToMap = null;
     this.context = ContextMap.create();
+  }
+
+  public static MappingProcess create(@Nonnull TargetType targetType, @Nonnull Arguments arguments) {
+    checkNotNull(targetType);
+    checkNotNull(arguments);
+    return new MappingProcess(targetType, arguments);
   }
 
   public void fail(@Nonnull Throwable error) {

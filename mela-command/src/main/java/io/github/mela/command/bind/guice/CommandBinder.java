@@ -13,7 +13,7 @@ public final class CommandBinder {
 
   private final CommandBindingNode root;
 
-  private CommandBinder(@Nonnull Binder binder) {
+  private CommandBinder(Binder binder) {
     this.root = new CommandBindingNode(checkNotNull(binder));
   }
 

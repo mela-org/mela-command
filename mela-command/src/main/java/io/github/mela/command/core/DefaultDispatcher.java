@@ -31,9 +31,9 @@ public final class DefaultDispatcher implements Dispatcher {
   @Override
   public boolean dispatch(@Nonnull String command, @Nonnull ContextMap context) {
     CommandInput input = CommandInput.parse(root, command);
-    Optional<CommandCallable> callable = input.getCallable();
-    if (callable.isPresent()) {
-      executor.execute(() -> callable.get().call(input.getArguments(), context));
+    CommandCallable callable = input.getCallable();
+    if (callable != null) {
+      executor.execute(() -> callable.call(input.getArguments(), context));
       return true;
     } else {
       return false;

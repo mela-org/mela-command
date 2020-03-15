@@ -4,6 +4,7 @@ import io.github.mela.command.bind.Arguments;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.NoSuchElementException;
 
 @FunctionalInterface
@@ -11,7 +12,7 @@ public interface ArgumentMapper<T> {
 
   T map(@Nonnull String argument, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext);
 
-  default String prepare(Arguments arguments) {
+  default String prepare(@Nonnull Arguments arguments) {
     try {
       return arguments.next();
     } catch (NoSuchElementException e) {
@@ -21,7 +22,7 @@ public interface ArgumentMapper<T> {
   }
 
   @Nonnull
-  static <T> ArgumentMapper<T> singleton(T instance) {
+  static <T> ArgumentMapper<T> singleton(@Nullable T instance) {
     return ((argument, commandContext, mappingContext) -> instance);
   }
 }

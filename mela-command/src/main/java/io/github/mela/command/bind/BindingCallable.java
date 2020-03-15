@@ -5,16 +5,18 @@ import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@SuppressWarnings("rawtypes")
 public abstract class BindingCallable implements CommandCallable {
 
   private final Set<String> labels;
@@ -33,7 +35,7 @@ public abstract class BindingCallable implements CommandCallable {
     this.description = annotation.desc();
     this.help = annotation.help();
     this.usage = annotation.usage();
-    this.bindings = bindings;
+    this.bindings = checkNotNull(bindings);
     this.interceptors = extractInterceptors(method, bindings);
     this.parameters = Parameters.from(method, bindings);
   }
@@ -66,7 +68,7 @@ public abstract class BindingCallable implements CommandCallable {
   @Override
   public void call(@Nonnull String arguments, @Nonnull ContextMap context) {
     try {
-      Arguments chain = new Arguments(arguments);
+      Arguments chain = Arguments.of(arguments);
       if (!intercept(chain.subChain(), context))
         return;
 
@@ -105,7 +107,6 @@ public abstract class BindingCallable implements CommandCallable {
     return description;
   }
 
-  @Nullable
   @Override
   public String getHelp() {
     return help;

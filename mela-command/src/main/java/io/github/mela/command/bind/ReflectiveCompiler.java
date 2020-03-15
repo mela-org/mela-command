@@ -1,6 +1,7 @@
 package io.github.mela.command.bind;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.mela.command.compile.CommandCompiler;
 
 import javax.annotation.Nonnull;
@@ -15,6 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public final class ReflectiveCompiler implements CommandCompiler {
 
   private final CommandBindings bindings;

@@ -1,7 +1,6 @@
 package io.github.mela.command.core;
 
 import io.github.mela.command.compile.CommandCompiler;
-import io.github.mela.command.compile.IdentityCompiler;
 import io.github.mela.command.compile.UncompiledGroup;
 
 import javax.annotation.CheckReturnValue;
@@ -11,6 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -43,8 +43,8 @@ public final class GroupBuilder {
   }
 
   @Nonnull
-  public GroupBuilder withCommand(Object command) {
-    current.commands.add(command);
+  public GroupBuilder withCommand(@Nonnull Object command) {
+    current.commands.add(checkNotNull(command));
     return this;
   }
 
@@ -61,12 +61,6 @@ public final class GroupBuilder {
       parent();
     }
     return this;
-  }
-
-  @Nonnull
-  @CheckReturnValue
-  public CommandGroup compileIdentity() {
-    return compile(IdentityCompiler.INSTANCE);
   }
 
   @Nonnull

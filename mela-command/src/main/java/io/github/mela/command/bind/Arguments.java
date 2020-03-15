@@ -2,6 +2,7 @@ package io.github.mela.command.bind;
 
 import io.github.mela.command.core.CommandGroup;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.util.*;
 
@@ -24,18 +25,23 @@ public final class Arguments implements Iterator<String> {
   private final IndexPointer index;
   private final Deque<Runnable> undoActions;
 
-  public Arguments(@Nonnull String arguments) {
-    this(arguments, new ArrayList<>(Arrays.asList(CommandGroup.SPLIT_PATTERN.split(checkNotNull(arguments)))),
+  private Arguments(String arguments) {
+    this(arguments, new ArrayList<>(Arrays.asList(CommandGroup.SPLIT_PATTERN.split(arguments))),
         new IndexPointer(), true);
   }
 
-  private Arguments(@Nonnull String raw, @Nonnull List<String> arguments, IndexPointer index, boolean rootChain) {
+  private Arguments(String raw, List<String> arguments, IndexPointer index, boolean rootChain) {
     this.raw = raw;
     this.rootChain = rootChain;
     this.arguments = arguments;
     this.index = index;
     this.undoActions = new ArrayDeque<>();
     this.invalid = false;
+  }
+
+  public static Arguments of(@Nonnull String arguments) {
+    checkNotNull(arguments);
+    return new Arguments(arguments);
   }
 
   @Override
@@ -108,6 +114,8 @@ public final class Arguments implements Iterator<String> {
     return raw;
   }
 
+  @CheckReturnValue
+  @Nonnull
   public Arguments subChain() {
     checkState(rootChain, "You can't create sub chains of this argument chain");
     checkValidity();

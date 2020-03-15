@@ -1,7 +1,6 @@
 package io.github.mela.command.core;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
@@ -17,7 +16,6 @@ public final class EmptyGroup implements CommandGroup {
     return "[]";
   }
 
-  @Nullable
   @Override
   public CommandGroup getParent() {
     return null;

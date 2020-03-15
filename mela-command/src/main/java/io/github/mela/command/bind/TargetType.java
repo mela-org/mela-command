@@ -3,6 +3,7 @@ package io.github.mela.command.bind;
 import com.google.common.reflect.TypeToken;
 import io.github.mela.command.bind.parameter.ParameterMarker;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
@@ -10,6 +11,8 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -19,17 +22,13 @@ public final class TargetType {
   private final AnnotatedType annotatedType;
   private final TypeKey<?> key;
 
-  private TargetType(AnnotatedType annotatedType, TypeKey<?> key) {
-    this.annotatedType = annotatedType;
-    this.key = key;
-  }
-
-  public static TargetType create(AnnotatedType type) {
-    return new TargetType(type, getKey(type));
+  private TargetType(AnnotatedType annotatedType) {
+    this.annotatedType = checkNotNull(annotatedType);
+    this.key = getKey(annotatedType);
   }
 
   @SuppressWarnings("UnstableApiUsage")
-  private static TypeKey<?> getKey(AnnotatedType type) {
+  private TypeKey<?> getKey(AnnotatedType type) {
     return TypeKey.get(TypeToken.of(type.getType()), Arrays.stream(type.getAnnotations())
         .map(Annotation::annotationType)
         .filter((annotation) -> annotation.isAnnotationPresent(ParameterMarker.class))
@@ -37,19 +36,28 @@ public final class TargetType {
         .orElse(null));
   }
 
+  @Nonnull
+  public static TargetType create(@Nonnull AnnotatedType type) {
+    return new TargetType(type);
+  }
+
   @SuppressWarnings("UnstableApiUsage")
+  @Nonnull
   public TypeToken<?> getTypeToken() {
     return key.getTypeToken();
   }
 
+  @Nonnull
   public TypeKey<?> getTypeKey() {
     return key;
   }
 
+  @Nonnull
   public Type getType() {
     return annotatedType.getType();
   }
 
+  @Nonnull
   public AnnotatedType getAnnotatedType() {
     return annotatedType;
   }

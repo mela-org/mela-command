@@ -52,7 +52,6 @@ public abstract class CommandCallableAdapter implements CommandCallable {
     return description;
   }
 
-  @Nullable
   @Override
   public String getHelp() {
     return help;

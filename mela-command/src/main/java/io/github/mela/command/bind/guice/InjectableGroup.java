@@ -1,16 +1,10 @@
 package io.github.mela.command.bind.guice;
 
-import io.github.mela.command.compile.UncompiledGroup;
 import com.google.inject.Inject;
+import io.github.mela.command.compile.UncompiledGroup;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -30,7 +24,7 @@ final class InjectableGroup implements UncompiledGroup {
     this(null, Set.of());
   }
 
-  private InjectableGroup(@Nullable InjectableGroup parent, @Nonnull Set<String> names) {
+  private InjectableGroup(InjectableGroup parent, Set<String> names) {
     this.names = Set.copyOf(names);
     this.children = new HashSet<>();
     this.compilables = new HashMap<>();

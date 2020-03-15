@@ -1,5 +1,6 @@
 package io.github.mela.command.core;
 
+import io.github.mela.command.compile.IdentityCompiler;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nonnull;
@@ -13,10 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public final class CoreTest {
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   @Test
   public void testDuplicateNameRecognition() {
     assertThrows(IllegalArgumentException.class,
-        () -> GroupBuilder.create().group("foo").parent().group("foo").root().compileIdentity(),
+        () -> GroupBuilder.create().group("foo").parent().group("foo").root().compile(IdentityCompiler.INSTANCE),
         "duplicate group name was not prevented");
   }
 
@@ -27,7 +29,7 @@ public final class CoreTest {
         .group("foo")
           .withCommand(command)
         .root()
-        .compileIdentity();
+        .compile(IdentityCompiler.INSTANCE);
     Dispatcher dispatcher = new DefaultDispatcher(group);
     ContextMap context = ContextMap.of(Map.of("env", "test"));
     dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
@@ -43,7 +45,7 @@ public final class CoreTest {
     ContextMap context = null;
 
     SimpleCommand() {
-      super(Set.of("bar"), "executes a simple command", "bar");
+      super(Set.of("bar"), "executes a simple command", "baz", "bar");
     }
 
     @Override

@@ -97,7 +97,7 @@ public final class ImmutableGroup implements CommandGroup {
   public static CommandGroup copyOf(@Nonnull CommandGroup group) {
     return checkNotNull(group) instanceof ImmutableGroup
         ? group
-        : ImmutableGroup.of(group, GroupAssembler.forGroup());
+        : of(group, GroupAssembler.forGroup());
   }
 
   @Nonnull

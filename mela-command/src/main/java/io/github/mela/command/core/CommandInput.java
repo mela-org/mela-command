@@ -3,7 +3,6 @@ package io.github.mela.command.core;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,9 +34,9 @@ public final class CommandInput {
     return group;
   }
 
-  @Nonnull
-  public Optional<CommandCallable> getCallable() {
-    return Optional.ofNullable(callable);
+  @Nullable
+  public CommandCallable getCallable() {
+    return callable;
   }
 
   @Nonnull

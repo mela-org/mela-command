@@ -5,6 +5,7 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
@@ -18,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@SuppressWarnings("rawtypes")
 public final class CommandBindingsBuilder {
 
   private final Map<Class, CommandInterceptor> commandInterceptors;
@@ -101,6 +103,7 @@ public final class CommandBindingsBuilder {
     return this;
   }
 
+  @CheckReturnValue
   @Nonnull
   public CommandBindings build() {
     return new CommandBindings(commandInterceptors, handlers, mappers, mappingInterceptors, argumentMapperProviders);

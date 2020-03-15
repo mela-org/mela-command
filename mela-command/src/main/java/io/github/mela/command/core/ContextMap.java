@@ -36,26 +36,29 @@ public final class ContextMap {
     return Optional.ofNullable(map.get(key));
   }
 
-  public <T> void put(Class<T> type, Object key, T value) {
-    map.put(new CompositeKey(type, key), value);
+  public <T> void put(@Nonnull Class<T> type, @Nullable Object key, @Nullable T value) {
+    put(new CompositeKey(type, key), value);
   }
 
   @SuppressWarnings("unchecked")
-  public <T> Optional<T> get(Class<T> type, Object key) {
+  @Nonnull
+  public <T> Optional<T> get(@Nonnull Class<T> type, @Nullable Object key) {
     return (Optional<T>) get((Type) type, key);
   }
 
   @SuppressWarnings("UnstableApiUsage")
-  public <T> void put(TypeToken<T> type, Object key, T value) {
-    map.put(new CompositeKey(type.getType(), key), value);
+  public <T> void put(@Nonnull TypeToken<T> type, @Nullable Object key, @Nullable T value) {
+    put(new CompositeKey(type.getType(), key), value);
   }
 
   @SuppressWarnings({"unchecked", "UnstableApiUsage"})
-  public <T> Optional<T> get(TypeToken<T> type, Object key) {
+  @Nonnull
+  public <T> Optional<T> get(@Nonnull TypeToken<T> type, @Nullable Object key) {
     return (Optional<T>) get(type.getType(), key);
   }
 
-  public Optional<?> get(Type type, Object key) {
+  @Nonnull
+  public Optional<?> get(@Nonnull Type type, @Nullable Object key) {
     return Optional.ofNullable(map.get(new CompositeKey(type, key)));
   }
 
@@ -84,7 +87,7 @@ public final class ContextMap {
     final Object key;
 
     CompositeKey(Type type, Object key) {
-      this.type = type;
+      this.type = checkNotNull(type);
       this.key = key;
     }
 
@@ -105,6 +108,6 @@ public final class ContextMap {
 
   @Nonnull
   public static ContextMap of(@Nonnull Map<?, ?> map) {
-    return new ContextMap(new HashMap<>(checkNotNull(map)));
+    return new ContextMap(new HashMap<>(map));
   }
 }

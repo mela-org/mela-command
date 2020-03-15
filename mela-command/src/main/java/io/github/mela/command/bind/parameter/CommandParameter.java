@@ -2,6 +2,7 @@ package io.github.mela.command.bind.parameter;
 
 import io.github.mela.command.bind.TargetType;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Parameter;
 import java.util.Objects;
 
@@ -25,14 +26,17 @@ public class CommandParameter {
         : "N/A";
   }
 
+  @Nonnull
   public String getName() {
     return name;
   }
 
+  @Nonnull
   public TargetType getType() {
     return type;
   }
 
+  @Nonnull
   public String getDescription() {
     return description;
   }

@@ -28,7 +28,6 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
   }
 
   @Nonnull
-  @CheckReturnValue
   public static Builder builder() {
     return new Builder();
   }

@@ -2,19 +2,23 @@ package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.Arguments;
 import io.github.mela.command.bind.CommandBindings;
-import io.github.mela.command.bind.parameter.InvalidTypeException;
 import io.github.mela.command.bind.TargetType;
+import io.github.mela.command.bind.parameter.InvalidTypeException;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@SuppressWarnings("rawtypes")
 public class MappingProcessor {
 
   private final TargetType type;
@@ -27,11 +31,13 @@ public class MappingProcessor {
     this.interceptors = interceptors;
   }
 
-  public static MappingProcessor fromParameter(CommandBindings bindings, Parameter parameter) {
+  @Nonnull
+  public static MappingProcessor fromParameter(@Nonnull CommandBindings bindings, @Nonnull Parameter parameter) {
     return create(bindings, parameter.getAnnotatedType(), new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
   }
 
-  public static MappingProcessor fromAnnotatedType(CommandBindings bindings, AnnotatedType type) {
+  @Nonnull
+  public static MappingProcessor fromAnnotatedType(@Nonnull CommandBindings bindings, @Nonnull AnnotatedType type) {
     return create(bindings, type, new LinkedHashSet<>());
   }
 
@@ -57,8 +63,10 @@ public class MappingProcessor {
     return Map.copyOf(interceptors);
   }
 
+  @Nullable
   public Object process(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
-    MappingProcess process = new MappingProcess(type, arguments);
+    MappingProcess process = MappingProcess.create(type, arguments);
+    checkNotNull(commandContext);
     process.setArgumentToMap(() -> mapper.prepare(arguments));
     interceptBefore(arguments, process, commandContext);
     if (process.isErroneous()) {
