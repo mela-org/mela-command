@@ -6,7 +6,6 @@ import io.github.mela.command.bind.parameter.ParameterMarker;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Objects;
@@ -80,13 +79,8 @@ public final class TargetType {
         .collect(Collectors.joining(", ")) + ">";
   }
 
+  @SuppressWarnings("UnstableApiUsage")
   private Class<?> getRaw(Type type) {
-    if (type instanceof Class<?>) {
-      return (Class<?>) type;
-    } else if (type instanceof ParameterizedType) {
-      return getRaw(((ParameterizedType) type).getRawType());
-    } else {
-      return null;
-    }
+    return TypeToken.of(type).getRawType();
   }
 }
