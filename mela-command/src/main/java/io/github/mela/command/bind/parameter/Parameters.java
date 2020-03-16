@@ -41,9 +41,9 @@ public final class Parameters {
       }
     });
 
-    if (parameters.size() != mappedArgs.size()) {
-      throw new MappingProcessException("Invalid amount of arguments; expected: "
-          + parameters.size() + ", got: " + mappedArgs.size() + "(arguments: \"" + original + "\")");
+    if (arguments.hasNext()) {
+      throw new MappingProcessException("Invalid amount of arguments; some arguments were not processed.\n" +
+          "(original arguments: \"" + original + "\"\narguments left: \"" + arguments + "\")");
     }
     return mappedArgs.toArray();
   }

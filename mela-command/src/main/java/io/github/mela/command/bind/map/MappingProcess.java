@@ -1,6 +1,7 @@
 package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.TargetType;
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
@@ -21,6 +22,7 @@ public final class MappingProcess {
   private Throwable error;
   private Object value;
   private String argumentToMap;
+  private Arguments arguments;
 
   private MappingProcess(TargetType targetType) {
     this.targetType = targetType;
@@ -77,20 +79,6 @@ public final class MappingProcess {
   }
 
   @Nonnull
-  public String getArgumentToMap() {
-    checkState(argumentToMap != null, "There is no argument to map");
-    return argumentToMap;
-  }
-
-  public boolean hasArgumentToMap() {
-    return argumentToMap != null;
-  }
-
-  public void setArgumentToMap(@Nonnull String argumentToMap) {
-    this.argumentToMap = checkNotNull(argumentToMap);
-  }
-
-  @Nonnull
   public ContextMap getContext() {
     return context;
   }
@@ -98,5 +86,13 @@ public final class MappingProcess {
   @Nonnull
   public TargetType getTargetType() {
     return targetType;
+  }
+
+  public Arguments getArguments() {
+    return arguments;
+  }
+
+  public void setArguments(Arguments arguments) {
+    this.arguments = arguments;
   }
 }

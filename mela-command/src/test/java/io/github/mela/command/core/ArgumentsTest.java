@@ -11,7 +11,7 @@ class ArgumentsTest {
 
   @BeforeEach
   public void setUp() {
-    arguments = Arguments.of("\"\\\"Lorem ipsum dolor sit amet\\\", consetetur sadipscing elitr.\" sed diam");
+    arguments = Arguments.of("\"\"Lorem ipsum dolor sit amet\" consetetur \\\"sadipscing\\\" elitr.\" ( sed (d))iam");
   }
 
   @Test
@@ -26,7 +26,7 @@ class ArgumentsTest {
   @Test
   public void testNextString() {
     String word = arguments.nextString();
-    assertEquals("\\\"Lorem ipsum dolor sit amet\\\", consetetur sadipscing elitr.", word,
+    assertEquals("\"Lorem ipsum dolor sit amet\" consetetur \\\"sadipscing\\\" elitr.", word,
         "nextWord() did not return the following word");
   }
 
@@ -43,6 +43,15 @@ class ArgumentsTest {
     arguments.jumpTo(index);
     String sed = arguments.nextString();
     assertEquals("sed", sed, "indexOf() did not return the correct index of the given substring");
+  }
+
+  @Test
+  public void testNextScope() {
+    while (arguments.hasNext() && arguments.peek() != '(') {
+      arguments.next();
+    }
+    String scope = arguments.nextScope('(', ')');
+    assertEquals("sed (d)", scope, "nextScope() did not return the next scope correctly");
   }
 
 }

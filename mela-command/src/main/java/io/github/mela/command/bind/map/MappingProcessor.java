@@ -66,22 +66,25 @@ public class MappingProcessor {
   @Nullable
   public Object process(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
     MappingProcess process = MappingProcess.create(type);
+    process.setArguments(arguments);
     checkNotNull(commandContext);
-    interceptBefore(arguments, process, commandContext);
+    interceptBefore(process, commandContext);
+    Arguments lastMappingArgs = arguments;
     if (!process.isErroneous() && !process.isSet()) {
-      map(arguments, commandContext, process);
+      lastMappingArgs = process.getArguments();
+      map(commandContext, process);
     }
-    interceptAfter(arguments, process, commandContext);
-    return finishProcess(arguments, commandContext, process);
+    interceptAfter(process, commandContext);
+    return finishProcess(lastMappingArgs, commandContext, process);
   }
 
-  private Object finishProcess(Arguments arguments, ContextMap commandContext, MappingProcess process) throws Throwable {
+  private Object finishProcess(Arguments lastMappingArgs, ContextMap commandContext, MappingProcess process) throws Throwable {
     if (process.isErroneous()) {
       throw process.getError();
     } else if (!process.isSet()) {
-      if (process.hasArgumentToMap()) {
-        map(arguments, commandContext, process);
-        return finishProcess(arguments, commandContext, process);
+      if (process.getArguments() != lastMappingArgs) {
+        map(commandContext, process);
+        return finishProcess(process.getArguments(), commandContext, process);
       } else {
         throw new UnsatisfiedValueException("Unsatisfied value; no value set for " + type
             + " during the mapping process");
@@ -91,9 +94,9 @@ public class MappingProcessor {
     }
   }
 
-  private void map(Arguments arguments, ContextMap commandContext, MappingProcess process) {
+  private void map(ContextMap commandContext, MappingProcess process) {
     try {
-      Object value = mapper.map(arguments, commandContext, process.getContext());
+      Object value = mapper.map(process.getArguments(), commandContext, process.getContext());
       process.setValue(value);
     } catch (Throwable throwable) {
       process.fail(throwable);
@@ -101,7 +104,7 @@ public class MappingProcessor {
   }
 
   @SuppressWarnings("unchecked")
-  private void interceptBefore(Arguments arguments, MappingProcess process, ContextMap context) {
+  private void interceptBefore(MappingProcess process, ContextMap context) {
     interceptors.forEach((annotation, interceptor) -> {
       try {
         interceptor.preprocess(annotation, process, context);
@@ -112,7 +115,7 @@ public class MappingProcessor {
   }
 
   @SuppressWarnings("unchecked")
-  private void interceptAfter(Arguments arguments, MappingProcess process, ContextMap context) {
+  private void interceptAfter(MappingProcess process, ContextMap context) {
     interceptors.forEach((annotation, interceptor) -> {
       try {
         interceptor.postprocess(annotation, process, context);

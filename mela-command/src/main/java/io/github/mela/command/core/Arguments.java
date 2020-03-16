@@ -2,6 +2,7 @@ package io.github.mela.command.core;
 
 import javax.annotation.Nonnull;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -32,31 +33,60 @@ public final class Arguments {
     return arguments.charAt(position);
   }
 
-  public String nextString() {
-    skipLeadingWhitespace();
-    boolean withQuotationMarks = false;
-    if (isNextQuotationMark()) {
-      next();
-      withQuotationMarks = true;
-    }
+  public String nextScope(char scopeBegin, char scopeEnd) {
+    checkArgument(isNextUnescaped(scopeBegin),
+        "The next character must indicate a scope begin to parse the next scope");
+    next();
     StringBuilder builder = new StringBuilder();
+    int openScopes = 1;
     while (hasNext()) {
-      if (isNextQuotationMark() || (!withQuotationMarks && isNextWhiteSpace())) {
+      if (isNextUnescaped(scopeBegin)) {
+        ++openScopes;
+      } else if (isNextUnescaped(scopeEnd) && --openScopes == 0) {
         break;
       }
+      builder.append(next());
+    }
+    skipLeadingWhitespace();
+    return builder.toString().trim();
+  }
+
+  public String nextString() {
+    String string = isNextUnescaped('"') ? nextStringWithQuotationMarks() : nextWord();
+    skipLeadingWhitespace();
+    return string.trim();
+  }
+
+  private String nextWord() {
+    StringBuilder builder = new StringBuilder();
+    while (hasNext() && !isNextWhiteSpace() && !isNextUnescaped('"')) {
       builder.append(next());
     }
     return builder.toString();
   }
 
-  private void skipLeadingWhitespace() {
+  private String nextStringWithQuotationMarks() {
+    next();
+    StringBuilder builder = new StringBuilder();
+    while (hasNext()) {
+      if (isNextUnescaped('"')) {
+        next();
+        break;
+      } else {
+        builder.append(next());
+      }
+    }
+    return builder.toString();
+  }
+
+  public void skipLeadingWhitespace() {
     while (hasNext() && isNextWhiteSpace()) {
       next();
     }
   }
 
-  private boolean isNextQuotationMark() {
-    return peek() == '"' && previous != '\\';
+  private boolean isNextUnescaped(char c) {
+    return peek() == c && previous != '\\';
   }
 
   private boolean isNextWhiteSpace() {
