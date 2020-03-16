@@ -34,32 +34,15 @@ public final class Arguments {
 
   public String nextString() {
     skipLeadingWhitespace();
-    return isNextQuotationMark() ? nextStringQuotationMarks() : nextStringNormal();
-  }
-
-  private String nextStringNormal() {
-    StringBuilder builder = new StringBuilder();
-    while (hasNext()) {
-      if (isNextWhiteSpace()) {
-        break;
-      }
-      builder.append(next());
+    boolean withQuotationMarks = false;
+    if (isNextQuotationMark()) {
+      next();
+      withQuotationMarks = true;
     }
-    return builder.toString();
-  }
-
-  private String nextStringQuotationMarks() {
     StringBuilder builder = new StringBuilder();
-    next();
     while (hasNext()) {
-      if (isNextQuotationMark()) {
-        next();
-        if (isNextWhiteSpace()) {
-          break;
-        } else {
-          builder.append('"');
-          continue;
-        }
+      if (isNextQuotationMark() || (!withQuotationMarks && isNextWhiteSpace())) {
+        break;
       }
       builder.append(next());
     }
@@ -92,7 +75,11 @@ public final class Arguments {
   }
 
   public char peek() {
-    return charAt(position);
+    return peek(0);
+  }
+
+  public char peek(int delta) {
+    return charAt(position + delta);
   }
 
   public char previous() {
