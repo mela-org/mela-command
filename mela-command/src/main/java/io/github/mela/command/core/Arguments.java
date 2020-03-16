@@ -1,9 +1,8 @@
 package io.github.mela.command.core;
 
 import javax.annotation.Nonnull;
-import java.util.function.IntPredicate;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -16,7 +15,7 @@ public final class Arguments {
   private char previous;
 
   private Arguments(String arguments) {
-    this.arguments = new StringBuilder(arguments);
+    this.arguments = new StringBuilder(arguments.trim());
     this.position = 0;
     this.previous = 0;
   }
@@ -33,43 +32,52 @@ public final class Arguments {
     return arguments.charAt(position);
   }
 
-  public String nextWord() {
-    return nextUntil(Character::isWhitespace);
+  public String nextString() {
+    skipLeadingWhitespace();
+    return isNextQuotationMark() ? nextStringQuotationMarks() : nextStringNormal();
   }
 
-  public String nextUntil(char character) {
-    return nextUntil((c) -> c == character && previous != '\\');
-  }
-
-  public String nextScope(char scopeBegin, char scopeEnd) {
-    return nextUntil(new IntPredicate() {
-      int openScopes = 0;
-
-      @Override
-      public boolean test(int value) {
-        if (previous != '\\') {
-          if (value == scopeBegin) {
-            ++openScopes;
-          } else if (value == scopeEnd) {
-            return --openScopes == 0;
-          }
-        }
-        return false;
-      }
-    });
-  }
-
-  public String nextUntil(IntPredicate predicate) {
+  private String nextStringNormal() {
     StringBuilder builder = new StringBuilder();
     while (hasNext()) {
-      char next = next();
-      if (predicate.test(next)) {
+      if (isNextWhiteSpace()) {
         break;
-      } else {
-        builder.append(next);
       }
+      builder.append(next());
     }
     return builder.toString();
+  }
+
+  private String nextStringQuotationMarks() {
+    StringBuilder builder = new StringBuilder();
+    next();
+    while (hasNext()) {
+      if (isNextQuotationMark()) {
+        next();
+        if (isNextWhiteSpace()) {
+          break;
+        } else {
+          builder.append('"');
+          continue;
+        }
+      }
+      builder.append(next());
+    }
+    return builder.toString();
+  }
+
+  private void skipLeadingWhitespace() {
+    while (hasNext() && isNextWhiteSpace()) {
+      next();
+    }
+  }
+
+  private boolean isNextQuotationMark() {
+    return peek() == '"' && previous != '\\';
+  }
+
+  private boolean isNextWhiteSpace() {
+    return Character.isWhitespace(peek());
   }
 
   public boolean hasNext() {
@@ -83,7 +91,7 @@ public final class Arguments {
     return next;
   }
 
-  public char peekNext() {
+  public char peek() {
     return charAt(position);
   }
 

@@ -21,6 +21,6 @@ public class FlagMapperProvider implements ArgumentMapperProvider {
   @SuppressWarnings("UnstableApiUsage")
   @Override
   public boolean canProvideFor(@Nonnull TargetType type) {
-    return type.getTypeToken().getRawType() == Flag.class;
+    return type.getTypeToken().getRawType() == FlagValue.class;
   }
 }

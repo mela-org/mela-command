@@ -34,14 +34,14 @@ public final class CoreTest {
     ContextMap context = ContextMap.of(Map.of("env", "test"));
     dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
     assertTrue(command.executed, "Command was not executed");
-    assertEquals("baz", command.arguments, "command arguments were changed");
+    assertEquals("baz", command.arguments.toString(), "command arguments were changed");
     assertEquals(context, command.context, "command context was changed");
   }
 
   private static final class SimpleCommand extends CommandCallableAdapter {
 
     boolean executed = false;
-    String arguments = null;
+    Arguments arguments = null;
     ContextMap context = null;
 
     SimpleCommand() {
@@ -49,7 +49,7 @@ public final class CoreTest {
     }
 
     @Override
-    public void call(@Nonnull String arguments, @Nonnull ContextMap context) {
+    public void call(@Nonnull Arguments arguments, @Nonnull ContextMap context) {
       this.executed = true;
       this.arguments = arguments;
       this.context = context;
