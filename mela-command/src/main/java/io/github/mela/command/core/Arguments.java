@@ -10,16 +10,27 @@ import static com.google.common.base.Preconditions.*;
  */
 public final class Arguments {
 
+  private final StringBuilder arguments;
+
   private int position;
-  private String arguments;
+  private char previous;
 
   private Arguments(String arguments) {
-    this.arguments = arguments;
+    this.arguments = new StringBuilder(arguments);
     this.position = 0;
+    this.previous = 0;
   }
 
   public static Arguments of(@Nonnull String arguments) {
     return new Arguments(checkNotNull(arguments));
+  }
+
+  public int indexOf(String substring) {
+    return arguments.indexOf(substring);
+  }
+
+  public char charAt(int position) {
+    return arguments.charAt(position);
   }
 
   public String nextWord() {
@@ -27,18 +38,21 @@ public final class Arguments {
   }
 
   public String nextUntil(char character) {
-    return nextUntil((c) -> c == character && peekPrevious() != '\\');
+    return nextUntil((c) -> c == character && previous != '\\');
   }
 
   public String nextScope(char scopeBegin, char scopeEnd) {
     return nextUntil(new IntPredicate() {
       int openScopes = 0;
+
       @Override
       public boolean test(int value) {
-        if (value == scopeBegin) {
-          ++openScopes;
-        } else if (value == scopeEnd) {
-          return --openScopes == 0;
+        if (previous != '\\') {
+          if (value == scopeBegin) {
+            ++openScopes;
+          } else if (value == scopeEnd) {
+            return --openScopes == 0;
+          }
         }
         return false;
       }
@@ -46,16 +60,16 @@ public final class Arguments {
   }
 
   public String nextUntil(IntPredicate predicate) {
-    int start = position;
+    StringBuilder builder = new StringBuilder();
     while (hasNext()) {
-      char next = peekNext();
+      char next = next();
       if (predicate.test(next)) {
         break;
+      } else {
+        builder.append(next);
       }
-      next();
     }
-    int end = position;
-    return arguments.substring(start, end);
+    return builder.toString();
   }
 
   public boolean hasNext() {
@@ -63,46 +77,34 @@ public final class Arguments {
   }
 
   public char next() {
-    return arguments.charAt(position++);
-  }
-
-  public char previous() {
-    return arguments.charAt(--position);
+    char next = charAt(position);
+    previous = next;
+    arguments.deleteCharAt(position);
+    return next;
   }
 
   public char peekNext() {
-    return peek(0);
+    return charAt(position);
   }
 
-  public char peekPrevious() {
-    return peek(- 1);
+  public char previous() {
+    return previous;
   }
 
-  public char peek(int delta) {
-    return arguments.charAt(position + delta);
+  public void resetPosition() {
+    position = 0;
   }
 
-  public void remove(int from, int to) {
-    checkArgument(from <= to,
-        "The starting index of the section to remove must not be greater than the ending index ");
-    arguments = arguments.substring(0, from) + arguments.substring(to);
-    if (position >= to) {
-      position -= to - from;
-    } else if (position >= from) {
-      position = from - 1;
-    }
-  }
-
-  public int getPosition() {
+  public int position() {
     return position;
   }
 
-  public void setPosition(int position) {
+  public void jumpTo(int position) {
     this.position = position;
   }
 
   @Override
   public String toString() {
-    return arguments;
+    return arguments.toString();
   }
 }
