@@ -1,6 +1,7 @@
 package io.github.mela.command.bind.provided;
 
 import io.github.mela.command.bind.guice.CommandModule;
+import io.github.mela.command.bind.provided.interceptors.*;
 import io.github.mela.command.bind.provided.mappers.BooleanMapper;
 import io.github.mela.command.bind.provided.mappers.CharacterMapper;
 import io.github.mela.command.bind.provided.mappers.NumberMapper;
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class PrimitivesModule extends CommandModule {
+public class BasicModule extends CommandModule {
 
   @Override
   protected void configureModule() {
@@ -29,5 +30,11 @@ public class PrimitivesModule extends CommandModule {
     BooleanMapper booleanMapper = new BooleanMapper();
     bindMapper(boolean.class).toInstance(booleanMapper);
     bindMapper(Boolean.class).toInstance(booleanMapper);
+
+    bindMappingInterceptor(Context.class).toInstance(new ContextInterceptor());
+    bindMappingInterceptor(Default.class).toInstance(new DefaultInterceptor());
+    bindMappingInterceptor(Flag.class).toInstance(new FlagInterceptor());
+    bindMappingInterceptor(Range.class).toInstance(new RangeInterceptor());
+    bindMappingInterceptor(Rest.class).toInstance(new RestInterceptor());
   }
 }
