@@ -1,5 +1,6 @@
 package io.github.mela.command.bind.provided.mappers;
 
+import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.core.Arguments;
@@ -10,6 +11,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public class CharacterMapper implements ArgumentMapper<Character> {
 
   @Override

@@ -1,5 +1,6 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.bind.provided.ArgumentValidationException;
@@ -12,6 +13,7 @@ import java.lang.reflect.Type;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
 
   @Override

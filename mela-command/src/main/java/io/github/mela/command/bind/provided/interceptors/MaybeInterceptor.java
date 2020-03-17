@@ -1,6 +1,7 @@
 package io.github.mela.command.bind.provided.interceptors;
 
 import com.google.common.reflect.TypeToken;
+import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.ContextMap;
@@ -10,6 +11,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public class MaybeInterceptor extends MappingInterceptorAdapter<Maybe> {
 
   @SuppressWarnings("UnstableApiUsage")

@@ -1,5 +1,6 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.bind.map.MissingArgumentException;
@@ -14,6 +15,7 @@ import java.util.OptionalInt;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
 
   @Override
