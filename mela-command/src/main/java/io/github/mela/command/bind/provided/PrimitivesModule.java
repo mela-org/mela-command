@@ -31,5 +31,8 @@ public class PrimitivesModule extends CommandModule {
     CharacterMapper characterMapper = new CharacterMapper();
     bindMapper(char.class).toInstance(characterMapper);
     bindMapper(Character.class).toInstance(characterMapper);
+    BooleanMapper booleanMapper = new BooleanMapper();
+    bindMapper(boolean.class).toInstance(booleanMapper);
+    bindMapper(Boolean.class).toInstance(booleanMapper);
   }
 }
