@@ -27,7 +27,7 @@ public abstract class NumberMapper<T extends Number> implements ArgumentMapper<T
       return convert(next, mappingContext);
     } catch (NumberFormatException e) {
       throw new MappingProcessException("Invalid argument: could not convert \""
-          + next + "\" to a number (" + type.getSimpleName() + ")", e);
+          + next + "\" to a number (" + type + ")", e);
     }
   }
 

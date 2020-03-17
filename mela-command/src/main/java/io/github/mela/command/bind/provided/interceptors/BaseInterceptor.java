@@ -2,6 +2,8 @@ package io.github.mela.command.bind.provided.interceptors;
 
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
+import io.github.mela.command.bind.provided.IllegalTargetTypeError;
+import io.github.mela.command.bind.provided.PreconditionError;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
@@ -26,11 +28,12 @@ public class BaseInterceptor extends MappingInterceptorAdapter<Base> {
     if (TYPES.contains(type)) {
       int base = annotation.value();
       if (base < Character.MIN_RADIX || base > Character.MAX_RADIX) {
-        throw new Error("Illegal @Base interceptor annotation value: " + base
-            + " (base must not be greater than Character.MAX_RADIX or smaller than Character.MIN_RADIX)." +
-            "\nPlease resolve this error in your command method declaration.");
+        throw new PreconditionError("Illegal @Base interceptor annotation value: " + base
+            + " (base must not be greater than Character.MAX_RADIX or smaller than Character.MIN_RADIX).");
       }
       process.getContext().put(int.class, "base", base);
+    } else {
+      throw new IllegalTargetTypeError(type, Base.class);
     }
   }
 }
