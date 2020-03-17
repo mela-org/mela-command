@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 public class StringMapper implements ArgumentMapper<String> {
 
   @Override
-  public String map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext) {
+  public String map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) {
     return arguments.nextString();
   }
 

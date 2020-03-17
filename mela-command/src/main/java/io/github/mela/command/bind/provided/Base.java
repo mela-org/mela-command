@@ -1,4 +1,4 @@
-package io.github.mela.command.bind.provided.interceptors;
+package io.github.mela.command.bind.provided;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

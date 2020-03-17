@@ -18,7 +18,6 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
 
   @Override
   public void preprocess(@Nonnull Flag annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
-    process.getContext().put(String[].class, "flag-names", annotation.value());
     Arguments arguments = process.getArguments();
     OptionalInt flagPosition = Arrays.stream(annotation.value())
         .map("-"::concat)

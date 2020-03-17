@@ -2,7 +2,6 @@ package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.core.Arguments;
-import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,7 +14,6 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public final class MappingProcess {
 
-  private final ContextMap context;
   private final TargetType targetType;
   private final Arguments arguments;
 
@@ -31,7 +29,6 @@ public final class MappingProcess {
     this.value = null;
     this.error = null;
     this.requestedArguments = null;
-    this.context = ContextMap.create();
     this.arguments = arguments;
   }
 
@@ -75,11 +72,6 @@ public final class MappingProcess {
   public Throwable getError() {
     checkState(isErroneous(), "This process is not erroneous");
     return error;
-  }
-
-  @Nonnull
-  public ContextMap getContext() {
-    return context;
   }
 
   @Nonnull

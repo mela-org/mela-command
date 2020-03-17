@@ -1,9 +1,9 @@
 package io.github.mela.command.bind.map;
 
-import io.github.mela.command.core.Arguments;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.parameter.InvalidTypeException;
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
@@ -65,9 +65,8 @@ public class MappingProcessor {
 
   @Nullable
   public Object process(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
-    MappingProcess process = MappingProcess.create(type, arguments);
-    process.requestMapping(arguments);
     checkNotNull(commandContext);
+    MappingProcess process = MappingProcess.create(type, arguments);
     intercept(process, commandContext, true);
     Arguments lastMappingArgs = process.getArgumentsToMap();
     if (!process.isErroneous() && !process.isSet()) {
@@ -95,7 +94,7 @@ public class MappingProcessor {
 
   private void map(ContextMap commandContext, MappingProcess process) {
     try {
-      Object value = mapper.map(process.getArgumentsToMap(), commandContext, process.getContext());
+      Object value = mapper.map(process.getArgumentsToMap(), commandContext);
       process.setValue(value);
     } catch (Throwable throwable) {
       process.fail(throwable);

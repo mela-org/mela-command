@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 public class CharacterMapper implements ArgumentMapper<Character> {
 
   @Override
-  public Character map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext) {
+  public Character map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) {
     String next = arguments.nextString();
     if (next.length() == 1) {
       return next.charAt(0);

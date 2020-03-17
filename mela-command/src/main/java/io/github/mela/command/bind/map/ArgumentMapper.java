@@ -9,10 +9,10 @@ import javax.annotation.Nullable;
 @FunctionalInterface
 public interface ArgumentMapper<T> {
 
-  T map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext);
+  T map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext);
 
   @Nonnull
   static <T> ArgumentMapper<T> singleton(@Nullable T instance) {
-    return ((argument, commandContext, mappingContext) -> instance);
+    return ((argument, commandContext) -> instance);
   }
 }

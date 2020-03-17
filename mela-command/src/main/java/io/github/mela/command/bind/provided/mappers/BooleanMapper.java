@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 public class BooleanMapper implements ArgumentMapper<Boolean> {
 
   @Override
-  public Boolean map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext) {
+  public Boolean map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) {
     return Boolean.valueOf(arguments.nextString());
   }
 
