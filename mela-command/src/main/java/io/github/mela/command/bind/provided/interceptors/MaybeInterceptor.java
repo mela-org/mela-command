@@ -16,8 +16,7 @@ public class MaybeInterceptor extends MappingInterceptorAdapter<Maybe> {
   @Override
   public void postprocess(@Nonnull Maybe annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
     if (process.isErroneous()) {
-      process.reset();
-      process.getArguments().reset();
+      process.fixError();
       TypeToken<?> type = process.getTargetType().getTypeToken();
       if (type.getType() == boolean.class) {
         process.setValue(false);

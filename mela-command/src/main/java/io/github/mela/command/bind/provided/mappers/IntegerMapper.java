@@ -20,7 +20,7 @@ public class IntegerMapper<T extends Number> extends NumberMapper<T> {
   }
 
   @Override
-  protected T convert(String argument, ContextMap mappingContext) {
-    return converter.apply(argument, mappingContext.get(int.class, "base").orElse(10));
+  protected T convert(String string, ContextMap mappingContext) {
+    return converter.apply(string, mappingContext.get(int.class, "base").orElse(10));
   }
 }

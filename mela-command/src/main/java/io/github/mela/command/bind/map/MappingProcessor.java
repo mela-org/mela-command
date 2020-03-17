@@ -65,16 +65,15 @@ public class MappingProcessor {
 
   @Nullable
   public Object process(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
-    MappingProcess process = MappingProcess.create(type);
-    process.setArguments(arguments);
+    MappingProcess process = MappingProcess.create(type, arguments);
+    process.requestMapping(arguments);
     checkNotNull(commandContext);
-    interceptBefore(process, commandContext);
-    Arguments lastMappingArgs = arguments;
+    intercept(process, commandContext, true);
+    Arguments lastMappingArgs = process.getArgumentsToMap();
     if (!process.isErroneous() && !process.isSet()) {
-      lastMappingArgs = process.getArguments();
       map(commandContext, process);
     }
-    interceptAfter(process, commandContext);
+    intercept(process, commandContext, false);
     return finishProcess(lastMappingArgs, commandContext, process);
   }
 
@@ -82,7 +81,7 @@ public class MappingProcessor {
     if (process.isErroneous()) {
       throw process.getError();
     } else if (!process.isSet()) {
-      if (process.getArguments() != lastMappingArgs) {
+      if (process.getArgumentsToMap() != lastMappingArgs) {
         map(commandContext, process);
         return finishProcess(process.getArguments(), commandContext, process);
       } else {
@@ -96,7 +95,7 @@ public class MappingProcessor {
 
   private void map(ContextMap commandContext, MappingProcess process) {
     try {
-      Object value = mapper.map(process.getArguments(), commandContext, process.getContext());
+      Object value = mapper.map(process.getArgumentsToMap(), commandContext, process.getContext());
       process.setValue(value);
     } catch (Throwable throwable) {
       process.fail(throwable);
@@ -104,24 +103,15 @@ public class MappingProcessor {
   }
 
   @SuppressWarnings("unchecked")
-  private void interceptBefore(MappingProcess process, ContextMap context) {
-    interceptors.forEach((annotation, interceptor) -> {
-      try {
+  private void intercept(MappingProcess process, ContextMap context, boolean before) {
+    for (Map.Entry<Annotation, MappingInterceptor> entry : interceptors.entrySet()) {
+      Annotation annotation = entry.getKey();
+      MappingInterceptor interceptor = entry.getValue();
+      if (before) {
         interceptor.preprocess(annotation, process, context);
-      } catch (Throwable t) {
-        process.fail(t);
-      }
-    });
-  }
-
-  @SuppressWarnings("unchecked")
-  private void interceptAfter(MappingProcess process, ContextMap context) {
-    interceptors.forEach((annotation, interceptor) -> {
-      try {
+      } else {
         interceptor.postprocess(annotation, process, context);
-      } catch (Throwable t) {
-        process.fail(t);
       }
-    });
+    }
   }
 }

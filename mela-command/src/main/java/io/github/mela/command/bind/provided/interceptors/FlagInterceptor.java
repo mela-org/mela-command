@@ -2,11 +2,14 @@ package io.github.mela.command.bind.provided.interceptors;
 
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
+import io.github.mela.command.bind.map.MissingArgumentException;
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.OptionalInt;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -17,31 +20,26 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
   public void preprocess(@Nonnull Flag annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
     process.getContext().put(String[].class, "flag-names", annotation.value());
     Arguments arguments = process.getArguments();
-    int flagPosition = findFlag(arguments, Set.of(annotation.value()));
+    OptionalInt flagPosition = Arrays.stream(annotation.value())
+        .map("-"::concat)
+        .mapToInt(arguments::indexOf)
+        .filter((i) -> i != -1)
+        .findFirst();
+    flagPosition.ifPresent((pos) -> {
+      arguments.jumpTo(pos);
+      arguments.nextString();
+    });
+
     Type type = process.getTargetType().getType();
-
     if (type == boolean.class || type == Boolean.class) {
-      process.setValue(flagPosition != -1);
-    } else {
-      process.setArgumentToMap(() -> {
-
-
-      });
+      process.setValue(flagPosition.isPresent());
+    } else if (flagPosition.isEmpty()) {
+      process.fail(new MissingArgumentException("Missing flag; could not find flag matching annotation " + annotation));
     }
   }
 
-  private int findFlag(Arguments arguments, Set<String> names) {
-    int initialPosition = arguments.currentPosition();
-    arguments.jumpTo(0);
-    while (arguments.hasNext()) {
-      String argument = arguments.next();
-      if (names.contains(argument)) {
-        int flagPosition = arguments.currentPosition();
-        arguments.jumpTo(initialPosition);
-        return flagPosition;
-      }
-    }
-    return -1;
+  @Override
+  public void postprocess(@Nonnull Flag annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
+    process.getArguments().resetPosition();
   }
-
 }

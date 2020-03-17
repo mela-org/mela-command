@@ -24,7 +24,13 @@ public class BaseInterceptor extends MappingInterceptorAdapter<Base> {
   public void preprocess(@Nonnull Base annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
     Type type = process.getTargetType().getType();
     if (TYPES.contains(type)) {
-      process.getContext().put(int.class, "base", annotation.value());
+      int base = annotation.value();
+      if (base < Character.MIN_RADIX || base > Character.MAX_RADIX) {
+        throw new Error("Illegal @Base interceptor annotation value: " + base
+            + " (base must not be greater than Character.MAX_RADIX or smaller than Character.MIN_RADIX)." +
+            "\nPlease resolve this error in your command method declaration.");
+      }
+      process.getContext().put(int.class, "base", base);
     }
   }
 }

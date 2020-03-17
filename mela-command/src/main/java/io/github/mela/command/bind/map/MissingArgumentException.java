@@ -1,11 +1,9 @@
 package io.github.mela.command.bind.map;
 
-import java.util.NoSuchElementException;
-
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class MissingArgumentException extends NoSuchElementException {
+public class MissingArgumentException extends MappingProcessException {
 
   public MissingArgumentException() {
     super();
@@ -13,5 +11,17 @@ public class MissingArgumentException extends NoSuchElementException {
 
   public MissingArgumentException(String message) {
     super(message);
+  }
+
+  public MissingArgumentException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public MissingArgumentException(Throwable cause) {
+    super(cause);
+  }
+
+  protected MissingArgumentException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
   }
 }

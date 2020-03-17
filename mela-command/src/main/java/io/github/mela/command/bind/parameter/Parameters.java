@@ -1,10 +1,9 @@
 package io.github.mela.command.bind.parameter;
 
-import io.github.mela.command.core.Arguments;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
-import io.github.mela.command.bind.map.ParameterMappingException;
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
@@ -29,17 +28,22 @@ public final class Parameters {
   }
 
   @Nonnull
-  public Object[] map(@Nonnull Arguments arguments, @Nonnull ContextMap context) {
+  public Object[] map(@Nonnull Arguments arguments, @Nonnull ContextMap context) throws Throwable {
     String original = arguments.toString();
     List<Object> mappedArgs = new ArrayList<>();
-    parameters.forEach((parameter, processor) -> {
+    for (Map.Entry<CommandParameter, MappingProcessor> entry : parameters.entrySet()) {
+      CommandParameter parameter = entry.getKey();
+      MappingProcessor processor = entry.getValue();
       try {
-        mappedArgs.add(processor.process(arguments, context));
+        Object argument = processor.process(arguments, context);
+        mappedArgs.add(argument);
       } catch (Throwable throwable) {
-        throw new ParameterMappingException("Failed to map argument for " + parameter
-            + "(arguments: \"" + original + "\")", parameter);
+        if (throwable instanceof MappingProcessException) {
+          ((MappingProcessException) throwable).setParameter(parameter);
+        }
+        throw throwable;
       }
-    });
+    }
 
     if (arguments.hasNext()) {
       throw new MappingProcessException("Invalid amount of arguments; some arguments were not processed.\n" +

@@ -1,9 +1,11 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import io.github.mela.command.bind.map.MappingProcessException;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class MissingContextException extends RuntimeException {
+public class MissingContextException extends MappingProcessException {
 
   public MissingContextException() {
     super();

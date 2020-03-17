@@ -11,7 +11,7 @@ class ArgumentsTest {
 
   @BeforeEach
   public void setUp() {
-    arguments = Arguments.of("\"\"Lorem ipsum dolor sit amet\" consetetur \\\"sadipscing\\\" elitr.\" ( sed (d))iam");
+    arguments = Arguments.of("\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" ( sed (d))iam");
   }
 
   @Test
@@ -26,7 +26,7 @@ class ArgumentsTest {
   @Test
   public void testNextString() {
     String word = arguments.nextString();
-    assertEquals("\"Lorem ipsum dolor sit amet\" consetetur \\\"sadipscing\\\" elitr.", word,
+    assertEquals("\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.", word,
         "nextWord() did not return the following word");
   }
 

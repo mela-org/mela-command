@@ -17,25 +17,27 @@ public final class MappingProcess {
 
   private final ContextMap context;
   private final TargetType targetType;
+  private final Arguments arguments;
 
   private boolean isSet;
   private Throwable error;
   private Object value;
-  private String argumentToMap;
-  private Arguments arguments;
+  private Arguments requestedArguments;
 
-  private MappingProcess(TargetType targetType) {
+
+  private MappingProcess(TargetType targetType, Arguments arguments) {
     this.targetType = targetType;
     this.isSet = false;
     this.value = null;
     this.error = null;
-    this.argumentToMap = null;
+    this.requestedArguments = null;
     this.context = ContextMap.create();
+    this.arguments = arguments;
   }
 
-  public static MappingProcess create(@Nonnull TargetType targetType) {
+  public static MappingProcess create(@Nonnull TargetType targetType, Arguments arguments) {
     checkNotNull(targetType);
-    return new MappingProcess(targetType);
+    return new MappingProcess(targetType, arguments);
   }
 
   public void fail(@Nonnull Throwable error) {
@@ -45,11 +47,8 @@ public final class MappingProcess {
     }
   }
 
-  public void reset() {
-    this.value = null;
-    this.isSet = false;
+  public void fixError() {
     this.error = null;
-    this.argumentToMap = null;
   }
 
   public void setValue(@Nullable Object value) {
@@ -92,7 +91,12 @@ public final class MappingProcess {
     return arguments;
   }
 
-  public void setArguments(Arguments arguments) {
-    this.arguments = arguments;
+  // TODO make more easy to understand
+  public Arguments getArgumentsToMap() {
+    return requestedArguments != null ? requestedArguments : arguments;
+  }
+
+  public void requestMapping(Arguments arguments) {
+    this.requestedArguments = arguments;
   }
 }

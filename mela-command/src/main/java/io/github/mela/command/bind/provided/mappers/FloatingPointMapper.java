@@ -20,7 +20,7 @@ public class FloatingPointMapper<T extends Number> extends NumberMapper<T> {
   }
 
   @Override
-  protected T convert(String argument, ContextMap mappingContext) {
-    return converter.apply(argument);
+  protected T convert(String string, ContextMap mappingContext) {
+    return converter.apply(string);
   }
 }

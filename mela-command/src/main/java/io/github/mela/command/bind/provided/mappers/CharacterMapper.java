@@ -2,6 +2,7 @@ package io.github.mela.command.bind.provided.mappers;
 
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessException;
+import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
@@ -12,11 +13,12 @@ import javax.annotation.Nonnull;
 public class CharacterMapper implements ArgumentMapper<Character> {
 
   @Override
-  public Character map(@Nonnull String argument, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext) {
-    if (argument.length() == 1) {
-      return argument.charAt(0);
+  public Character map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext, @Nonnull ContextMap mappingContext) {
+    String next = arguments.nextString();
+    if (next.length() == 1) {
+      return next.charAt(0);
     } else {
-      throw new MappingProcessException("Invalid argument: \"" + argument + "\" is not a single character");
+      throw new MappingProcessException("Invalid argument: \"" + next + "\" is not a single character");
     }
   }
 }

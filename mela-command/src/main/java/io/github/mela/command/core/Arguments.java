@@ -8,6 +8,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+// TODO better exceptions for indexoutofbounds
 public final class Arguments {
 
   private final StringBuilder arguments;

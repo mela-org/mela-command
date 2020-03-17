@@ -1,9 +1,11 @@
 package io.github.mela.command.bind.provided;
 
+import io.github.mela.command.bind.map.MappingProcessException;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class ArgumentValidationException extends RuntimeException {
+public class ArgumentValidationException extends MappingProcessException {
 
   public ArgumentValidationException() {
     super();
