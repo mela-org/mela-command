@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class CollectionMapperProvider<T extends Collection<?>> implements ArgumentMapperProvider {
+public class CollectionMapperProvider<T extends Collection<? super Object>> implements ArgumentMapperProvider {
 
   private final Class<T> type;
   private final Supplier<T> factory;
@@ -38,8 +38,8 @@ public class CollectionMapperProvider<T extends Collection<?>> implements Argume
     TargetType contentType = listType instanceof AnnotatedParameterizedType
         ? TargetType.create(((AnnotatedParameterizedType) listType).getAnnotatedActualTypeArguments()[0])
         : TargetType.create(AnnotatedTypes.fromType(String.class));
-    return new CollectingMapper<>(MappingProcessor.fromTargetType(bindings, contentType),
-        Collectors.toCollection((Supplier<Collection>) factory));
+    return new CollectingMapper(MappingProcessor.fromTargetType(bindings, contentType),
+        Collectors.toCollection((Supplier) factory));
   }
 
   @SuppressWarnings("UnstableApiUsage")

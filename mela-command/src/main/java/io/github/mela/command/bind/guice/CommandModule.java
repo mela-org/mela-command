@@ -73,7 +73,7 @@ public abstract class CommandModule extends AbstractModule {
       Type type, Class<? extends Annotation> annotationType) {
     checkNotNull(type);
     return (LinkedBindingBuilder<ArgumentMapper<? extends T>>)
-        bindMapper(TypeKey.get(TypeToken.of(type), annotationType));
+        bindMapper((TypeKey) TypeKey.get(TypeToken.of(type), annotationType));
   }
 
   @SuppressWarnings("unchecked")

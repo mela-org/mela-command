@@ -31,12 +31,12 @@ public class BasicModule extends CommandModule {
 
     bindMapper(String.class, Raw.class).to(RawStringMapper.class);
 
-    bindMappingInterceptor(Context.class).toInstance(new ContextInterceptor());
-    bindMappingInterceptor(Default.class).toInstance(new DefaultInterceptor());
-    bindMappingInterceptor(Flag.class).toInstance(new FlagInterceptor());
-    bindMappingInterceptor(Match.class).toInstance(new MatchInterceptor());
-    bindMappingInterceptor(Maybe.class).toInstance(new MaybeInterceptor());
-    bindMappingInterceptor(Range.class).toInstance(new RangeInterceptor());
-    bindMappingInterceptor(Rest.class).toInstance(new RestInterceptor());
+    bindMappingInterceptor(Context.class).to(ContextInterceptor.class);
+    bindMappingInterceptor(Default.class).to(DefaultInterceptor.class);
+    bindMappingInterceptor(Flag.class).to(FlagInterceptor.class);
+    bindMappingInterceptor(Match.class).to(MatchInterceptor.class);
+    bindMappingInterceptor(Maybe.class).to(MaybeInterceptor.class);
+    bindMappingInterceptor(Range.class).to(RangeInterceptor.class);
+    bindMappingInterceptor(Rest.class).to(RestInterceptor.class);
   }
 }
