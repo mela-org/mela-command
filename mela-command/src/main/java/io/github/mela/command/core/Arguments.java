@@ -2,13 +2,11 @@ package io.github.mela.command.core;
 
 import javax.annotation.Nonnull;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-// TODO better exceptions for indexoutofbounds
 public final class Arguments {
 
   private final StringBuilder arguments;
@@ -99,14 +97,23 @@ public final class Arguments {
   }
 
   public char next() {
-    char next = charAt(position);
+    char next;
+    try {
+      next = charAt(position);
+    } catch (IndexOutOfBoundsException e) {
+      throw new ArgumentException("Reached end of arguments while trying to consume the next character", e);
+    }
     previous = next;
     arguments.deleteCharAt(position);
     return next;
   }
 
   public char peek() {
-    return peek(0);
+    try {
+      return peek(0);
+    } catch (IndexOutOfBoundsException e) {
+      throw new ArgumentException("Reached end of arguments while trying to peek the next character", e);
+    }
   }
 
   public char peek(int delta) {
@@ -126,7 +133,7 @@ public final class Arguments {
   }
 
   public void jumpTo(int position) {
-    this.position = position;
+    this.position = checkPositionIndex(position, arguments.length());
   }
 
   @Override

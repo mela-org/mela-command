@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.interceptors;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
-import io.github.mela.command.bind.map.MissingArgumentException;
+import io.github.mela.command.core.ArgumentException;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
@@ -35,7 +35,7 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
     if (type == boolean.class || type == Boolean.class) {
       process.setValue(flagPosition.isPresent());
     } else if (flagPosition.isEmpty()) {
-      process.fail(new MissingArgumentException("Missing flag; could not find flag matching annotation " + annotation));
+      process.fail(new ArgumentException("Missing flag; could not find flag matching annotation " + annotation));
     }
   }
 

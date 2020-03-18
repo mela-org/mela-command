@@ -3,6 +3,7 @@ package io.github.mela.command.bind.parameter;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
+import io.github.mela.command.core.ArgumentException;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
@@ -46,7 +47,7 @@ public final class Parameters {
     }
 
     if (arguments.hasNext()) {
-      throw new MappingProcessException("Invalid amount of arguments; some arguments were not processed.\n" +
+      throw new ArgumentException("Invalid amount of arguments; some arguments were not processed.\n" +
           "(original arguments: \"" + original + "\"\narguments left: \"" + arguments + "\")");
     }
     return mappedArgs.toArray();
