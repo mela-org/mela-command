@@ -16,6 +16,8 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -38,12 +40,12 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
           Double.class, (s, $) -> Double.valueOf(s),
           BigDecimal.class, (s, $) -> new BigDecimal(s));
 
-  private static final Map<Type, Function<Number, ?>> FROM_NUMBER =
+  private static final Map<Type, Function<BigDecimal, ?>> FROM_NUMBER =
       Map.of(Byte.class, Number::byteValue,
           Short.class, Number::shortValue,
           Integer.class, Number::intValue,
           Long.class, Number::longValue,
-          BigInteger.class, Function.identity(),
+          BigInteger.class, BigDecimal::toBigIntegerExact,
           Float.class, Number::floatValue,
           Double.class, Number::doubleValue,
           BigDecimal.class, Function.identity());
@@ -69,8 +71,15 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
             + "; localized integer types must be in base 10.");
       }
       Locale locale = Locale.forLanguageTag(localized.value());
-      Function<Number, ?> fromNumberFunction = FROM_NUMBER.get(numberType);
-      return new NumberFormatMapper(numberType, locale, fromNumberFunction);
+      NumberFormat format = NumberFormat.getInstance(locale);
+      if (!FLOATING_POINT.contains(numberType)) {
+        format.setParseIntegerOnly(true);
+      }
+      if (format instanceof DecimalFormat) {
+        ((DecimalFormat) format).setParseBigDecimal(true);
+      }
+      Function fromNumberFunction = FROM_NUMBER.get(numberType);
+      return new NumberFormatMapper(numberType, format, fromNumberFunction);
     } else {
       BiFunction converter = CONVERTERS.get(numberType);
       return new SimpleNumberMapper(numberType, (s) -> converter.apply(s, radix));
