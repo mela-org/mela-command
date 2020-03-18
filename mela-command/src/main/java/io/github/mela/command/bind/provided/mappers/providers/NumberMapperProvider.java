@@ -9,14 +9,13 @@ import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.provided.Base;
 import io.github.mela.command.bind.provided.Localized;
 import io.github.mela.command.bind.provided.PreconditionError;
-import io.github.mela.command.bind.provided.mappers.NumberMapper;
+import io.github.mela.command.bind.provided.mappers.NumberFormatMapper;
+import io.github.mela.command.bind.provided.mappers.SimpleNumberMapper;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -70,21 +69,11 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
             + "; localized integer types must be in base 10.");
       }
       Locale locale = Locale.forLanguageTag(localized.value());
-      NumberFormat format = NumberFormat.getIntegerInstance(locale);
-      Function<Number, ?> fromNumber = FROM_NUMBER.get(numberType);
-      return new NumberMapper(numberType, (s) -> {
-        String input = (String) s;
-        ParsePosition pos = new ParsePosition(0);
-        Number number = format.parse(input, pos);
-        Object value = fromNumber.apply(number);
-        if (pos.getIndex() != input.length() || !number.equals(value)) {
-          throw new NumberFormatException("For input string: \"" + input + "\"");
-        }
-        return value;
-      });
+      Function<Number, ?> fromNumberFunction = FROM_NUMBER.get(numberType);
+      return new NumberFormatMapper(numberType, locale, fromNumberFunction);
     } else {
       BiFunction converter = CONVERTERS.get(numberType);
-      return new NumberMapper(numberType, (s) -> converter.apply(s, radix));
+      return new SimpleNumberMapper(numberType, (s) -> converter.apply(s, radix));
     }
   }
 
