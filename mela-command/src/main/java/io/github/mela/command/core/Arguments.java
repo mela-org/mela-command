@@ -9,12 +9,14 @@ import static com.google.common.base.Preconditions.*;
  */
 public final class Arguments {
 
+  private final String raw;
   private final StringBuilder arguments;
 
   private int position;
   private char previous;
 
   private Arguments(String arguments) {
+    this.raw = arguments;
     this.arguments = new StringBuilder(arguments.trim());
     this.position = 0;
     this.previous = 0;
@@ -139,5 +141,10 @@ public final class Arguments {
   @Override
   public String toString() {
     return arguments.toString();
+  }
+
+  @Nonnull
+  public String getRaw() {
+    return raw;
   }
 }

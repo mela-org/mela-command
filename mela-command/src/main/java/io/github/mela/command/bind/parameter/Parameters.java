@@ -30,7 +30,6 @@ public final class Parameters {
 
   @Nonnull
   public Object[] map(@Nonnull Arguments arguments, @Nonnull ContextMap context) throws Throwable {
-    String original = arguments.toString();
     List<Object> mappedArgs = new ArrayList<>();
     for (Map.Entry<CommandParameter, MappingProcessor> entry : parameters.entrySet()) {
       CommandParameter parameter = entry.getKey();
@@ -48,7 +47,7 @@ public final class Parameters {
 
     if (arguments.hasNext()) {
       throw new ArgumentException("Invalid amount of arguments; some arguments were not processed.\n" +
-          "(original arguments: \"" + original + "\"\narguments left: \"" + arguments + "\")");
+          "(original arguments: \"" + arguments.getRaw() + "\"\narguments left: \"" + arguments + "\")");
     }
     return mappedArgs.toArray();
   }

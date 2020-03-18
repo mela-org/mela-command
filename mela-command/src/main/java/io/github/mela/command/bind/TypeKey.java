@@ -1,12 +1,14 @@
 package io.github.mela.command.bind;
 
 import com.google.common.reflect.TypeToken;
+import io.github.mela.command.bind.parameter.TypeClassifier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -24,6 +26,16 @@ public final class TypeKey<T> {
   }
 
   @Nonnull
+  public static <T> TypeKey<T> get(@Nonnull Class<T> type) {
+    return get(type);
+  }
+
+  @Nonnull
+  public static <T> TypeKey<T> get(@Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
+    return get(TypeToken.of(type), annotationType);
+  }
+
+  @Nonnull
   public static <T> TypeKey<T> get(@Nonnull TypeToken<T> typeToken) {
     return get(typeToken, null);
   }
@@ -31,6 +43,10 @@ public final class TypeKey<T> {
   @Nonnull
   public static <T> TypeKey<T> get(
       @Nonnull TypeToken<T> typeToken, @Nullable Class<? extends Annotation> annotationType) {
+    if (annotationType != null) {
+      checkArgument(annotationType.isAnnotationPresent(TypeClassifier.class),
+          "Annotation " + annotationType + " does not have the @TypeClassifier annotation");
+    }
     return new TypeKey<>(typeToken, annotationType);
   }
 

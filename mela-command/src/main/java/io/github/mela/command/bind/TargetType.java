@@ -1,7 +1,7 @@
 package io.github.mela.command.bind;
 
 import com.google.common.reflect.TypeToken;
-import io.github.mela.command.bind.parameter.ParameterMarker;
+import io.github.mela.command.bind.parameter.TypeClassifier;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
@@ -31,7 +31,7 @@ public final class TargetType {
   private TypeKey<?> getKey(AnnotatedType type) {
     return TypeKey.get(TypeToken.of(type.getType()), Arrays.stream(type.getAnnotations())
         .map(Annotation::annotationType)
-        .filter((annotation) -> annotation.isAnnotationPresent(ParameterMarker.class))
+        .filter((annotation) -> annotation.isAnnotationPresent(TypeClassifier.class))
         .findFirst()
         .orElse(null));
   }

@@ -12,14 +12,12 @@ import io.github.mela.command.bind.TypeKey;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
-import io.github.mela.command.bind.parameter.ParameterMarker;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -74,12 +72,16 @@ public abstract class CommandModule extends AbstractModule {
   private <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
       Type type, Class<? extends Annotation> annotationType) {
     checkNotNull(type);
-    if (annotationType != null) {
-      checkArgument(annotationType.isAnnotationPresent(ParameterMarker.class),
-          "Annotation " + annotationType + " does not have the @ParameterMarker annotation");
-    }
+    return (LinkedBindingBuilder<ArgumentMapper<? extends T>>)
+        bindMapper(TypeKey.get(TypeToken.of(type), annotationType));
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nonnull
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeKey<T> key) {
+    checkNotNull(key);
     return ((MapBinder<TypeKey, ArgumentMapper<? extends T>>) mapperBinder)
-        .addBinding(TypeKey.get(TypeToken.of(type), annotationType));
+        .addBinding(key);
   }
 
   @Nonnull
