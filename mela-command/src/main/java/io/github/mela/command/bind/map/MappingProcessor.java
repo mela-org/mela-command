@@ -2,14 +2,13 @@ package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
-import io.github.mela.command.bind.parameter.InvalidTypeException;
+import io.github.mela.command.bind.parameter.InvalidTypeError;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
@@ -33,23 +32,23 @@ public class MappingProcessor {
 
   @Nonnull
   public static MappingProcessor fromParameter(@Nonnull CommandBindings bindings, @Nonnull Parameter parameter) {
-    return create(bindings, parameter.getAnnotatedType(), new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
+    return create(bindings, TargetType.create(parameter.getAnnotatedType()),
+        new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
   }
 
   @Nonnull
-  public static MappingProcessor fromAnnotatedType(@Nonnull CommandBindings bindings, @Nonnull AnnotatedType type) {
+  public static MappingProcessor fromTargetType(@Nonnull CommandBindings bindings, @Nonnull TargetType type) {
     return create(bindings, type, new LinkedHashSet<>());
   }
 
-  private static MappingProcessor create(CommandBindings bindings, AnnotatedType type, Set<Annotation> annotations) {
-    TargetType targetType = TargetType.create(type);
-    annotations.addAll(Arrays.asList(type.getAnnotations()));
-    ArgumentMapper mapper = bindings.getMapper(targetType);
+  private static MappingProcessor create(CommandBindings bindings, TargetType type, Set<Annotation> annotations) {
+    annotations.addAll(Arrays.asList(type.getAnnotatedType().getAnnotations()));
+    ArgumentMapper mapper = bindings.getMapper(type);
     if (mapper == null) {
-      throw new InvalidTypeException("Invalid type: missing argument mapper for type " + targetType.getTypeKey());
+      throw new InvalidTypeError("Invalid type: missing argument mapper for type " + type.getTypeKey());
     }
     Map<Annotation, MappingInterceptor> interceptors = getInterceptors(bindings, annotations);
-    return new MappingProcessor(targetType, mapper, interceptors);
+    return new MappingProcessor(type, mapper, interceptors);
   }
 
   private static Map<Annotation, MappingInterceptor> getInterceptors(CommandBindings bindings, Set<Annotation> annotations) {
