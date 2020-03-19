@@ -3,6 +3,7 @@ package io.github.mela.command.bind;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.mela.command.compile.CommandCompiler;
+import io.github.mela.command.compile.CommandCompilerException;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
@@ -41,7 +42,7 @@ public final class ReflectiveCompiler implements CommandCompiler {
     } catch (NoSuchMethodException e) {
       throw new AssertionError("A method directly taken from a Class cannot be found anymore. Huh?", e);
     } catch (IllegalAccessException e) {
-      throw new InvalidCommandMethodException("Command method " + method
+      throw new CommandCompilerException("Command method " + method
           + " cannot be accessed. Check whether it is public", e);
     }
   }
