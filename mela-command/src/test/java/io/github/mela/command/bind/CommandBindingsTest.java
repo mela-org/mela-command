@@ -8,11 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nonnull;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CommandBindingsTest {
@@ -74,8 +69,6 @@ class CommandBindingsTest {
         "Subclass Exception type was not bound to the correct ExceptionHandler");
   }
 
-  @Retention(RetentionPolicy.RUNTIME)
-  @Target({ElementType.TYPE_USE, ElementType.METHOD})
   private @interface TestAnnotation {}
 
   private static class TestMappingInterceptor extends MappingInterceptorAdapter<TestAnnotation> {}
