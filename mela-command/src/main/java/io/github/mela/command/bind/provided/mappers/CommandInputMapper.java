@@ -9,6 +9,8 @@ import io.github.mela.command.core.CommandInput;
 
 import javax.annotation.Nonnull;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
@@ -17,8 +19,8 @@ public class CommandInputMapper implements ArgumentMapper<CommandInput> {
   private final CommandGroup root;
 
   @Inject
-  public CommandInputMapper(CommandGroup root) {
-    this.root = root;
+  public CommandInputMapper(@Nonnull CommandGroup root) {
+    this.root = checkNotNull(root);
   }
 
   @Override
