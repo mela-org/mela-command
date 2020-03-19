@@ -3,13 +3,18 @@ package io.github.mela.command.bind.parameter;
 import io.github.mela.command.bind.TargetType;
 
 import javax.annotation.Nonnull;
+import javax.inject.Named;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Parameter;
 import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class CommandParameter {
+public final class CommandParameter implements AnnotatedElement {
 
   private final Parameter parameter;
 
@@ -17,13 +22,20 @@ public class CommandParameter {
   private final String name;
   private final String description;
 
-  CommandParameter(Parameter parameter) {
+  private CommandParameter(Parameter parameter) {
     this.parameter = parameter;
     this.type = TargetType.create(parameter.getAnnotatedType());
-    this.name = parameter.getName();
+    this.name = parameter.isAnnotationPresent(Named.class)
+        ? parameter.getAnnotation(Named.class).value()
+        : parameter.getName();
     this.description = parameter.isAnnotationPresent(Description.class)
         ? parameter.getAnnotation(Description.class).value()
         : "N/A";
+  }
+
+  public static CommandParameter of(@Nonnull Parameter parameter) {
+    checkNotNull(parameter);
+    return new CommandParameter(parameter);
   }
 
   @Nonnull
@@ -57,5 +69,20 @@ public class CommandParameter {
   @Override
   public String toString() {
     return type.toString() + " " + name;
+  }
+
+  @Override
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+    return parameter.getAnnotation(annotationClass);
+  }
+
+  @Override
+  public Annotation[] getAnnotations() {
+    return parameter.getAnnotations();
+  }
+
+  @Override
+  public Annotation[] getDeclaredAnnotations() {
+    return parameter.getDeclaredAnnotations();
   }
 }

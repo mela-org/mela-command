@@ -57,8 +57,8 @@ public final class Parameters extends AbstractList<CommandParameter> {
     checkNotNull(bindings);
     Map<CommandParameter, MappingProcessor> parameters = new LinkedHashMap<>();
     for (Parameter parameter : method.getParameters()) {
-      CommandParameter commandParameter = new CommandParameter(parameter);
-      MappingProcessor processor = MappingProcessor.fromParameter(bindings, parameter);
+      CommandParameter commandParameter = CommandParameter.of(parameter);
+      MappingProcessor processor = MappingProcessor.fromParameter(bindings, commandParameter);
       parameters.put(commandParameter, processor);
     }
     return new Parameters(parameters);

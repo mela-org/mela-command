@@ -36,6 +36,7 @@ public final class AnnotatedTypes {
 
   @Nonnull
   public static AnnotatedType[] getActualTypeArguments(@Nonnull AnnotatedType type) {
+    checkNotNull(type);
     return type instanceof AnnotatedParameterizedType
         ? ((AnnotatedParameterizedType) type).getAnnotatedActualTypeArguments()
         : new AnnotatedType[0];

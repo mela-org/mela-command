@@ -2,6 +2,7 @@ package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
+import io.github.mela.command.bind.parameter.CommandParameter;
 import io.github.mela.command.bind.parameter.MissingMapperBindingError;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
@@ -9,7 +10,6 @@ import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Parameter;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,9 +31,8 @@ public class MappingProcessor {
   }
 
   @Nonnull
-  public static MappingProcessor fromParameter(@Nonnull CommandBindings bindings, @Nonnull Parameter parameter) {
-    return create(bindings, TargetType.create(parameter.getAnnotatedType()),
-        new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
+  public static MappingProcessor fromParameter(@Nonnull CommandBindings bindings, @Nonnull CommandParameter parameter) {
+    return create(bindings, parameter.getType(), new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
   }
 
   @Nonnull
