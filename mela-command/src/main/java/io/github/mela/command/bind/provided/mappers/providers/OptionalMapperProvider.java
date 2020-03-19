@@ -23,7 +23,7 @@ public class OptionalMapperProvider implements ArgumentMapperProvider {
 
   private static final Map<Class<?>, Function<AnnotatedType, AnnotatedType>> OPTIONAL_CONTENT_TYPES
       = Map.of(Optional.class, (type) ->
-          AnnotatedTypes.getActualTypeArguments(type).stream().findFirst().orElse(AnnotatedTypes.STRING),
+          Arrays.stream(AnnotatedTypes.getActualTypeArguments(type)).findFirst().orElse(AnnotatedTypes.STRING),
       OptionalInt.class, ($) -> AnnotatedTypes.fromType(int.class),
       OptionalLong.class, ($) -> AnnotatedTypes.fromType(long.class),
       OptionalDouble.class, ($) -> AnnotatedTypes.fromType(double.class));
