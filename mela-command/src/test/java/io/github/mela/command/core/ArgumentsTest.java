@@ -10,13 +10,13 @@ class ArgumentsTest {
   private Arguments arguments;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     arguments = Arguments.of(
         "\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" ( sed (d))iam");
   }
 
   @Test
-  public void testNext() {
+  void testNext() {
     char next = arguments.next();
     assertEquals('"', next, "next() did not return the next character");
     char previous = arguments.previous();
@@ -25,21 +25,21 @@ class ArgumentsTest {
   }
 
   @Test
-  public void testNextString() {
+  void testNextString() {
     String word = arguments.nextString();
     assertEquals("\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.", word,
         "nextWord() did not return the following word");
   }
 
   @Test
-  public void testPeek() {
+  void testPeek() {
     char peeked = arguments.peek();
     char next = arguments.next();
     assertEquals(next, peeked, "peek() did not return the next character");
   }
 
   @Test
-  public void testIndexOf() {
+  void testIndexOf() {
     int index = arguments.indexOf("sed");
     arguments.jumpTo(index);
     String sed = arguments.nextString();
@@ -47,7 +47,7 @@ class ArgumentsTest {
   }
 
   @Test
-  public void testNextScope() {
+  void testNextScope() {
     while (arguments.hasNext() && arguments.peek() != '(') {
       arguments.next();
     }

@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class DefaultDispatcherTest {
+class DefaultDispatcherTest {
 
   @Test
-  public void testSimpleCommandDispatch() {
+  void testSimpleCommandDispatch() {
     SimpleCommand command = new SimpleCommand();
     CommandGroup group = GroupBuilder.create()
         .group("foo")
@@ -30,7 +30,7 @@ public final class DefaultDispatcherTest {
     assertEquals(context, command.context, "command context was changed");
   }
 
-  private static final class SimpleCommand extends CommandCallableAdapter {
+  private static class SimpleCommand extends CommandCallableAdapter {
 
     boolean executed = false;
     Arguments arguments = null;
