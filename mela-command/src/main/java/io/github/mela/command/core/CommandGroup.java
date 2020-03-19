@@ -33,6 +33,7 @@ public interface CommandGroup {
 
   @Nonnull
   default Optional<? extends CommandGroup> findChild(@Nonnull String name) {
+    checkNotNull(name);
     return getChildren()
         .stream()
         .filter((group) -> group.getNames().stream().anyMatch(name::equalsIgnoreCase))
@@ -41,6 +42,7 @@ public interface CommandGroup {
 
   @Nonnull
   default Optional<? extends CommandCallable> findCommand(@Nonnull String name) {
+    checkNotNull(name);
     return getCommands()
         .stream()
         .filter((command) -> command.getLabels().stream().anyMatch(name::equalsIgnoreCase))
