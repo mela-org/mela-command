@@ -38,7 +38,7 @@ public final class CompilingRootGroupProvider implements Provider<CommandGroup> 
     root = rawGroups.stream()
         .reduce(UncompiledGroup::merge)
         .map((group) -> ImmutableGroup.of(group, GroupAssembler.compiling(compiler)))
-        .orElse(ImmutableGroup.empty());
+        .orElse(ImmutableGroup.EMPTY);
     return root;
   }
 }

@@ -11,7 +11,7 @@ class ImmutableGroupTest {
 
   @BeforeEach
   void setUp() {
-    group = ImmutableGroup.empty();
+    group = ImmutableGroup.EMPTY;
   }
 
   @Test
