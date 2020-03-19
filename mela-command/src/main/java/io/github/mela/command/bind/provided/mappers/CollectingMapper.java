@@ -22,7 +22,7 @@ public class CollectingMapper<A, R> implements ArgumentMapper<R> {
                           @Nonnull Collector<? super Object, A, R> collector) {
 
     this.subProcessor = checkNotNull(subProcessor);
-    this.collector = collector;
+    this.collector = checkNotNull(collector);
   }
 
   @Override

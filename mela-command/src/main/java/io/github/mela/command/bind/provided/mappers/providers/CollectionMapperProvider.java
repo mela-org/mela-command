@@ -35,9 +35,9 @@ public class CollectionMapperProvider<T extends Collection<? super Object>> impl
   @Override
   public ArgumentMapper<?> provideFor(@Nonnull TargetType type, @Nonnull CommandBindings bindings) {
     AnnotatedType listType = type.getAnnotatedType();
-    TargetType contentType = listType instanceof AnnotatedParameterizedType
-        ? TargetType.create(((AnnotatedParameterizedType) listType).getAnnotatedActualTypeArguments()[0])
-        : TargetType.create(AnnotatedTypes.fromType(String.class));
+    TargetType contentType = TargetType.create(listType instanceof AnnotatedParameterizedType
+        ? ((AnnotatedParameterizedType) listType).getAnnotatedActualTypeArguments()[0]
+        : AnnotatedTypes.STRING);
     return new CollectingMapper(MappingProcessor.fromTargetType(bindings, contentType),
         Collectors.toCollection((Supplier) factory));
   }

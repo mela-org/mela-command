@@ -12,6 +12,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public final class AnnotatedTypes {
 
+  public static final AnnotatedType STRING = fromType(String.class);
+
   private AnnotatedTypes() {}
 
   public static AnnotatedType fromType(Type type) {
@@ -92,6 +94,22 @@ public final class AnnotatedTypes {
     public AnnotatedType[] getAnnotatedActualTypeArguments() {
       return actualTypeArguments;
     }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      if (!super.equals(o)) return false;
+      UnAnnotatedParameterizedType that = (UnAnnotatedParameterizedType) o;
+      return Arrays.equals(actualTypeArguments, that.actualTypeArguments);
+    }
+
+    @Override
+    public int hashCode() {
+      int result = super.hashCode();
+      result = 31 * result + Arrays.hashCode(actualTypeArguments);
+      return result;
+    }
   }
 
   private static class UnAnnotatedArrayType extends UnAnnotatedType implements AnnotatedArrayType {
@@ -111,6 +129,20 @@ public final class AnnotatedTypes {
     @Override
     public AnnotatedType getAnnotatedGenericComponentType() {
       return componentType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      if (!super.equals(o)) return false;
+      UnAnnotatedArrayType that = (UnAnnotatedArrayType) o;
+      return Objects.equals(componentType, that.componentType);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(super.hashCode(), componentType);
     }
   }
 

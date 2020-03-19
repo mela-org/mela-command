@@ -42,7 +42,7 @@ public class MapMapperProvider<T extends Map<? super Object, ? super Object>> im
       keyType = TargetType.create(actualTypeArguments[0]);
       valueType = TargetType.create(actualTypeArguments[1]);
     } else {
-      TargetType stringType = TargetType.create(AnnotatedTypes.fromType(String.class));
+      TargetType stringType = TargetType.create(AnnotatedTypes.STRING);
       keyType = stringType;
       valueType = stringType;
     }
