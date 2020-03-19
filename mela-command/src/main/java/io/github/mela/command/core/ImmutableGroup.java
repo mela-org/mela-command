@@ -15,6 +15,8 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public final class ImmutableGroup implements CommandGroup {
 
+  private static final CommandGroup EMPTY = childlessRoot(Set.of(), Set.of());
+
   private final ImmutableGroup parent;
   private final Set<String> names;
   private final Set<CommandCallable> commands;
@@ -84,6 +86,11 @@ public final class ImmutableGroup implements CommandGroup {
   private void setChildren(Set<ImmutableGroup> children) {
     checkState(this.children == null);
     this.children = Set.copyOf(children);
+  }
+
+  @Nonnull
+  public static CommandGroup empty() {
+    return EMPTY;
   }
 
   @Nonnull

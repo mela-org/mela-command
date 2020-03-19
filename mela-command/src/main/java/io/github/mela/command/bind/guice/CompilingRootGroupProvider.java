@@ -5,7 +5,6 @@ import com.google.inject.Provider;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.UncompiledGroup;
 import io.github.mela.command.core.CommandGroup;
-import io.github.mela.command.core.EmptyGroup;
 import io.github.mela.command.core.GroupAssembler;
 import io.github.mela.command.core.ImmutableGroup;
 
@@ -39,7 +38,7 @@ public final class CompilingRootGroupProvider implements Provider<CommandGroup> 
     root = rawGroups.stream()
         .reduce(UncompiledGroup::merge)
         .map((group) -> ImmutableGroup.of(group, GroupAssembler.compiling(compiler)))
-        .orElse(EmptyGroup.INSTANCE);
+        .orElse(ImmutableGroup.empty());
     return root;
   }
 }
