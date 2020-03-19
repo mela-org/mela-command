@@ -2,7 +2,7 @@ package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
-import io.github.mela.command.bind.parameter.InvalidTypeError;
+import io.github.mela.command.bind.parameter.MissingMapperBindingError;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.ContextMap;
 
@@ -45,7 +45,7 @@ public class MappingProcessor {
     annotations.addAll(Arrays.asList(type.getAnnotatedType().getAnnotations()));
     ArgumentMapper mapper = bindings.getMapper(type);
     if (mapper == null) {
-      throw new InvalidTypeError("Invalid type: missing argument mapper for type " + type.getTypeKey());
+      throw new MissingMapperBindingError("Invalid type: missing ArgumentMapper binding for type " + type.getTypeKey());
     }
     Map<Annotation, MappingInterceptor> interceptors = getInterceptors(bindings, annotations);
     return new MappingProcessor(type, mapper, interceptors);
