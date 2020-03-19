@@ -1,6 +1,7 @@
 package io.github.mela.command.bind.provided.mappers;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
@@ -14,6 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public class CommandInputMapper implements ArgumentMapper<CommandInput> {
 
   private final CommandGroup root;

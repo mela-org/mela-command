@@ -4,6 +4,7 @@ import io.github.mela.command.bind.guice.CommandModule;
 import io.github.mela.command.bind.provided.interceptors.*;
 import io.github.mela.command.bind.provided.mappers.*;
 import io.github.mela.command.bind.provided.mappers.providers.*;
+import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.core.CommandInput;
 
 import java.util.*;
@@ -30,6 +31,7 @@ public class BasicModule extends CommandModule {
 
     bindMapper(String.class, Raw.class).to(RawStringMapper.class);
 
+    bindMapper(CommandContext.class).to(CommandContextMapper.class);
     bindMapper(CommandInput.class).to(CommandInputMapper.class);
 
     bindMappingInterceptor(Context.class).to(ContextInterceptor.class);
