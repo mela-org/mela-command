@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -30,7 +31,8 @@ public abstract class BindingCallable implements CommandCallable {
   private final Parameters parameters;
 
   protected BindingCallable(Method method, CommandBindings bindings) {
-    checkDeclaration(method);
+    checkArgument(method.isAnnotationPresent(Command.class),
+        "Invalid method argument (" + method + "); Missing @Command annotation");
     Command annotation = method.getAnnotation(Command.class);
     this.labels = Set.of(annotation.aliases());
     this.description = annotation.desc();
@@ -39,19 +41,6 @@ public abstract class BindingCallable implements CommandCallable {
     this.bindings = checkNotNull(bindings);
     this.interceptors = extractInterceptors(method, bindings);
     this.parameters = Parameters.from(method, bindings);
-  }
-
-  private void checkDeclaration(Method method) {
-    String error = null;
-    if (!method.isAnnotationPresent(Command.class)) {
-      error = "Missing @Command annotation";
-    } else if (method.getTypeParameters().length > 0) {
-      error = "Method must not have type parameters";
-    }
-
-    if (error != null) {
-      throw new InvalidCommandMethodException("Invalid command method declaration (" + method + "); " + error);
-    }
   }
 
   private Map<Annotation, CommandInterceptor> extractInterceptors(Method method, CommandBindings bindings) {
@@ -79,7 +68,7 @@ public abstract class BindingCallable implements CommandCallable {
       if (handler == null) {
         throw new RuntimeException("Unhandled exception while calling command", error);
       } else {
-        handler.handle(error, context);
+        handler.handle(error, this, context);
       }
     }
   }
@@ -117,4 +106,8 @@ public abstract class BindingCallable implements CommandCallable {
     return usage;
   }
 
+  @Nonnull
+  public Parameters getParameters() {
+    return parameters;
+  }
 }

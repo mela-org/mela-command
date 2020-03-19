@@ -10,22 +10,21 @@ import io.github.mela.command.core.ContextMap;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class Parameters {
+public final class Parameters extends AbstractList<CommandParameter> {
 
+  private final List<CommandParameter> commandParameters;
   private final Map<CommandParameter, MappingProcessor> parameters;
 
   private Parameters(Map<CommandParameter, MappingProcessor> parameters) {
-    this.parameters = Map.copyOf(parameters);
+    this.parameters = parameters;
+    this.commandParameters = List.copyOf(parameters.keySet());
   }
 
   @Nonnull
@@ -63,5 +62,15 @@ public final class Parameters {
       parameters.put(commandParameter, processor);
     }
     return new Parameters(parameters);
+  }
+
+  @Override
+  public CommandParameter get(int index) {
+    return commandParameters.get(index);
+  }
+
+  @Override
+  public int size() {
+    return commandParameters.size();
   }
 }

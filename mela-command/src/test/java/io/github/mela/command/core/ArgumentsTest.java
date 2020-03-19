@@ -11,7 +11,8 @@ class ArgumentsTest {
 
   @BeforeEach
   public void setUp() {
-    arguments = Arguments.of("\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" ( sed (d))iam");
+    arguments = Arguments.of(
+        "\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" ( sed (d))iam");
   }
 
   @Test
