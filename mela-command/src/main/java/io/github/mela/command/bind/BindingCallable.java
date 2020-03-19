@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @SuppressWarnings("rawtypes")
 public abstract class BindingCallable implements CommandCallable {
 
+  private final String primaryLabel;
   private final Set<String> labels;
   private final String description;
   private final String help;
@@ -34,7 +35,9 @@ public abstract class BindingCallable implements CommandCallable {
     checkArgument(method.isAnnotationPresent(Command.class),
         "Invalid method argument (" + method + "); Missing @Command annotation");
     Command annotation = method.getAnnotation(Command.class);
-    this.labels = Set.of(annotation.aliases());
+    String[] labels = annotation.labels();
+    this.primaryLabel = labels.length == 0 ? null : labels[0];
+    this.labels = Set.of(labels);
     this.description = annotation.desc();
     this.help = annotation.help();
     this.usage = annotation.usage();
@@ -84,6 +87,11 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   protected abstract void call(Object[] arguments) throws Throwable;
+
+  @Override
+  public String getPrimaryLabel() {
+    return primaryLabel;
+  }
 
   @Nonnull
   @Override

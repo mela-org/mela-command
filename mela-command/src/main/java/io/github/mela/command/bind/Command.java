@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
-  String[] aliases();
+  String[] labels();
   String desc() default "N/A";
   String help() default "N/A";
   String usage() default "N/A";
