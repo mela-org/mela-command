@@ -61,9 +61,7 @@ public abstract class BindingCallable implements CommandCallable {
   @Override
   public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
     try {
-      if (!intercept(context))
-        return;
-
+      intercept(arguments, context);
       Object[] methodArguments = parameters.map(arguments, context);
       call(methodArguments);
     } catch (Throwable error) {
@@ -77,13 +75,10 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   @SuppressWarnings("unchecked")
-  private boolean intercept(CommandContext context) {
+  private void intercept(Arguments arguments, CommandContext context) {
     for (Map.Entry<Annotation, CommandInterceptor> entry : interceptors.entrySet()) {
-      boolean result = entry.getValue().intercept(entry.getKey(), context);
-      if (!result)
-        return false;
+      entry.getValue().intercept(entry.getKey(), arguments, context);
     }
-    return true;
   }
 
   protected abstract void call(Object[] arguments) throws Throwable;

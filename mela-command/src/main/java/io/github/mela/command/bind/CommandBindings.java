@@ -63,7 +63,7 @@ public final class CommandBindings {
     checkNotNull(exceptionType);
     Class<? super T> current = exceptionType;
     do {
-      ExceptionHandler<T> binding = (ExceptionHandler<T>) handlers.get(exceptionType);
+      ExceptionHandler<T> binding = (ExceptionHandler<T>) handlers.get(current);
       if (binding != null)
         return binding;
       current = current.getSuperclass();
