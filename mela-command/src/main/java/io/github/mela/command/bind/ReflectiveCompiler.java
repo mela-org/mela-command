@@ -41,7 +41,8 @@ public final class ReflectiveCompiler implements CommandCompiler {
     } catch (NoSuchMethodException e) {
       throw new AssertionError("A method directly taken from a Class cannot be found anymore. Huh?", e);
     } catch (IllegalAccessException e) {
-      throw new InvalidCommandMethodException("Command methods must be public", e);
+      throw new InvalidCommandMethodException("Command method " + method
+          + " cannot be accessed. Check whether it is public", e);
     }
   }
 }

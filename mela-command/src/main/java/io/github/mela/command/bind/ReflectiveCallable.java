@@ -35,7 +35,10 @@ public final class ReflectiveCallable extends BindingCallable {
 
   @Nonnull
   public static ReflectiveCallable from(
-      @Nonnull Object object, @Nonnull Method method, @Nonnull CommandBindings bindings) throws NoSuchMethodException, IllegalAccessException {
+      @Nonnull Object object,
+      @Nonnull Method method,
+      @Nonnull CommandBindings bindings
+  ) throws NoSuchMethodException, IllegalAccessException {
     return new ReflectiveCallable(object, method, bindings);
   }
 
