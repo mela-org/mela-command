@@ -11,11 +11,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class ReflectiveCallable extends BindingCallable {
+public final class MethodHandleCallable extends BindingCallable {
 
   private final MethodHandle handle;
 
-  private ReflectiveCallable(Object delegate, Method method, CommandBindings bindings) throws NoSuchMethodException, IllegalAccessException {
+  private MethodHandleCallable(Object delegate, Method method, CommandBindings bindings) throws NoSuchMethodException, IllegalAccessException {
     super(method, bindings);
     checkNotNull(delegate);
     this.handle = constructHandle(delegate, method);
@@ -34,12 +34,12 @@ public final class ReflectiveCallable extends BindingCallable {
   }
 
   @Nonnull
-  public static ReflectiveCallable from(
+  public static MethodHandleCallable from(
       @Nonnull Object object,
       @Nonnull Method method,
       @Nonnull CommandBindings bindings
   ) throws NoSuchMethodException, IllegalAccessException {
-    return new ReflectiveCallable(object, method, bindings);
+    return new MethodHandleCallable(object, method, bindings);
   }
 
 }

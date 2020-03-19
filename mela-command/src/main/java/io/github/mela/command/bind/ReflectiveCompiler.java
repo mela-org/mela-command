@@ -28,16 +28,16 @@ public final class ReflectiveCompiler implements CommandCompiler {
 
   @Nonnull
   @Override
-  public Set<ReflectiveCallable> compile(@Nonnull Object command) {
+  public Set<MethodHandleCallable> compile(@Nonnull Object command) {
     return Arrays.stream(command.getClass().getMethods())
         .filter((method) -> method.isAnnotationPresent(Command.class))
         .map((method) -> compile(command, method))
         .collect(Collectors.toUnmodifiableSet());
   }
 
-  private ReflectiveCallable compile(Object command, Method method) {
+  private MethodHandleCallable compile(Object command, Method method) {
     try {
-      return ReflectiveCallable.from(command, method, bindings);
+      return MethodHandleCallable.from(command, method, bindings);
     } catch (NoSuchMethodException e) {
       throw new AssertionError("A method directly taken from a Class cannot be found anymore. Huh?", e);
     } catch (IllegalAccessException e) {
