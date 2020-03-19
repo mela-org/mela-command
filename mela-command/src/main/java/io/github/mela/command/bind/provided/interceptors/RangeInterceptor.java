@@ -5,7 +5,7 @@ import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.bind.provided.ArgumentValidationException;
 import io.github.mela.command.bind.provided.IllegalTargetTypeError;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
 public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
 
   @Override
-  public void postprocess(@Nonnull Range annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
+  public void postprocess(@Nonnull Range annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
     Type type = process.getTargetType().getType();
     if (type != int.class && type != Integer.class) {
       throw new IllegalTargetTypeError(type, Range.class);

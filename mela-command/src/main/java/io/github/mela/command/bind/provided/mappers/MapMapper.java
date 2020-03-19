@@ -4,7 +4,7 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.core.Arguments;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class MapMapper<T extends Map<? super Object, ? super Object>> implements
   }
 
   @Override
-  public T map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
+  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable {
     Arguments mapArguments = arguments.peek() == '{'
         ? Arguments.of(arguments.nextScope('{', '}'))
         : arguments;

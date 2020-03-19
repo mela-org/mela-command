@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.interceptors;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 public class ContextInterceptor extends MappingInterceptorAdapter<Context> {
 
   @Override
-  public void preprocess(@Nonnull Context annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
+  public void preprocess(@Nonnull Context annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
     Type type = process.getTargetType().getType();
     String key = annotation.value();
     context.get(type, key)

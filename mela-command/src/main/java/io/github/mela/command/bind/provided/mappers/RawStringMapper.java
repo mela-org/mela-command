@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.mappers;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.core.Arguments;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 
@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 public class RawStringMapper implements ArgumentMapper<String> {
 
   @Override
-  public String map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) {
+  public String map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) {
     return arguments.getRaw();
   }
 }

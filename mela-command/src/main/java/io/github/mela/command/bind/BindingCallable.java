@@ -3,7 +3,7 @@ package io.github.mela.command.bind;
 import io.github.mela.command.bind.parameter.Parameters;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandCallable;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
@@ -59,7 +59,7 @@ public abstract class BindingCallable implements CommandCallable {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void call(@Nonnull Arguments arguments, @Nonnull ContextMap context) {
+  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
     try {
       if (!intercept(context))
         return;
@@ -77,7 +77,7 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   @SuppressWarnings("unchecked")
-  private boolean intercept(ContextMap context) {
+  private boolean intercept(CommandContext context) {
     for (Map.Entry<Annotation, CommandInterceptor> entry : interceptors.entrySet()) {
       boolean result = entry.getValue().intercept(entry.getKey(), context);
       if (!result)

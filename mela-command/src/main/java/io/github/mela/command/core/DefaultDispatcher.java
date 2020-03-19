@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import io.github.mela.command.bind.guice.CommandExecutor;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -29,7 +28,7 @@ public final class DefaultDispatcher implements Dispatcher {
   }
 
   @Override
-  public boolean dispatch(@Nonnull String command, @Nonnull ContextMap context) {
+  public boolean dispatch(@Nonnull String command, @Nonnull CommandContext context) {
     CommandInput input = CommandInput.parse(root, command);
     CommandCallable callable = input.getCallable();
     if (callable != null) {

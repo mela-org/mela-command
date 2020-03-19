@@ -4,7 +4,7 @@ import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.parameter.MissingMapperBindingError;
 import io.github.mela.command.core.Arguments;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -63,7 +63,7 @@ public class MappingProcessor {
   }
 
   @Nullable
-  public Object process(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
+  public Object process(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable {
     checkNotNull(commandContext);
     MappingProcess process = MappingProcess.create(type, arguments);
     intercept(process, commandContext, true);
@@ -75,7 +75,7 @@ public class MappingProcessor {
     return finishProcess(lastMappingArgs, commandContext, process);
   }
 
-  private Object finishProcess(Arguments lastMappingArgs, ContextMap commandContext, MappingProcess process) throws Throwable {
+  private Object finishProcess(Arguments lastMappingArgs, CommandContext commandContext, MappingProcess process) throws Throwable {
     if (process.isErroneous()) {
       throw process.getError();
     } else if (!process.isSet()) {
@@ -91,7 +91,7 @@ public class MappingProcessor {
     }
   }
 
-  private void map(ContextMap commandContext, MappingProcess process) {
+  private void map(CommandContext commandContext, MappingProcess process) {
     try {
       Object value = mapper.map(process.getArgumentsToMap(), commandContext);
       process.setValue(value);
@@ -101,7 +101,7 @@ public class MappingProcessor {
   }
 
   @SuppressWarnings("unchecked")
-  private void intercept(MappingProcess process, ContextMap context, boolean before) {
+  private void intercept(MappingProcess process, CommandContext context, boolean before) {
     for (Map.Entry<Annotation, MappingInterceptor> entry : interceptors.entrySet()) {
       Annotation annotation = entry.getKey();
       MappingInterceptor interceptor = entry.getValue();

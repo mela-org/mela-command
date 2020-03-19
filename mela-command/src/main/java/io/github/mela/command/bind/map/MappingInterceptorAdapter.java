@@ -1,6 +1,6 @@
 package io.github.mela.command.bind.map;
 
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
@@ -11,12 +11,12 @@ import java.lang.annotation.Annotation;
 public abstract class MappingInterceptorAdapter<T extends Annotation> implements MappingInterceptor<T> {
 
   @Override
-  public void preprocess(@Nonnull T annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
+  public void preprocess(@Nonnull T annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
 
   }
 
   @Override
-  public void postprocess(@Nonnull T annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
+  public void postprocess(@Nonnull T annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
 
   }
 }

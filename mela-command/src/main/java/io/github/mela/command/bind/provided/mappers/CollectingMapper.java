@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.mappers;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.core.Arguments;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import java.util.stream.Collector;
@@ -26,7 +26,7 @@ public class CollectingMapper<A, R> implements ArgumentMapper<R> {
   }
 
   @Override
-  public R map(@Nonnull Arguments arguments, @Nonnull ContextMap commandContext) throws Throwable {
+  public R map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable {
     Arguments listArguments = arguments.peek() == '['
         ? Arguments.of(arguments.nextScope('[', ']'))
         : arguments;

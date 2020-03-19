@@ -4,7 +4,7 @@ import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.Arguments;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 
@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 public class DefaultInterceptor extends MappingInterceptorAdapter<Default> {
 
   @Override
-  public void postprocess(@Nonnull Default annotation, @Nonnull MappingProcess process, @Nonnull ContextMap context) {
+  public void postprocess(@Nonnull Default annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
     if (process.isErroneous() || !process.isSet() || process.getValue() == null) {
       process.fixError();
       process.requestMapping(Arguments.of(annotation.value()));

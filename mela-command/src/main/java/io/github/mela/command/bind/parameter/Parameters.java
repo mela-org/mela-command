@@ -5,7 +5,7 @@ import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.core.ArgumentException;
 import io.github.mela.command.core.Arguments;
-import io.github.mela.command.core.ContextMap;
+import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
@@ -28,7 +28,7 @@ public final class Parameters extends AbstractList<CommandParameter> {
   }
 
   @Nonnull
-  public Object[] map(@Nonnull Arguments arguments, @Nonnull ContextMap context) throws Throwable {
+  public Object[] map(@Nonnull Arguments arguments, @Nonnull CommandContext context) throws Throwable {
     List<Object> mappedArgs = new ArrayList<>();
     for (Map.Entry<CommandParameter, MappingProcessor> entry : parameters.entrySet()) {
       CommandParameter parameter = entry.getKey();

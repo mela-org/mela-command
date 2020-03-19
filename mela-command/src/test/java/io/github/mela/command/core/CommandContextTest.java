@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class ContextMapTest {
+public final class CommandContextTest {
 
   @SuppressWarnings("UnstableApiUsage")
   @Test
   public void testContextAddition() {
-    ContextMap context = ContextMap.create();
+    CommandContext context = CommandContext.create();
     context.put(int.class, "test", 42);
     assertEquals(Integer.valueOf(42), context.get(int.class, "test").orElseThrow());
 
