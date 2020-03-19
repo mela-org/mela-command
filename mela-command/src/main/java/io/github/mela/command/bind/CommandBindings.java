@@ -40,7 +40,7 @@ public final class CommandBindings {
     this.handlers = Map.copyOf(handlers);
     this.mappers = Map.copyOf(mappers);
     this.mappingInterceptors = Map.copyOf(mappingInterceptors);
-    this.argumentMapperProviders = argumentMapperProviders;
+    this.argumentMapperProviders = Set.copyOf(argumentMapperProviders);
   }
 
   @SuppressWarnings("unchecked")

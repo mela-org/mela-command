@@ -52,14 +52,14 @@ public class MappingProcessor {
   }
 
   private static Map<Annotation, MappingInterceptor> getInterceptors(CommandBindings bindings, Set<Annotation> annotations) {
-    Map<Annotation, MappingInterceptor<?>> interceptors = new LinkedHashMap<>();
+    Map<Annotation, MappingInterceptor> interceptors = new LinkedHashMap<>();
     for (Annotation annotation : annotations) {
       MappingInterceptor<?> interceptor = bindings.getMappingInterceptor(annotation.annotationType());
       if (interceptor != null) {
         interceptors.put(annotation, interceptor);
       }
     }
-    return Map.copyOf(interceptors);
+    return interceptors;
   }
 
   @Nullable

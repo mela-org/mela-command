@@ -51,7 +51,7 @@ public abstract class BindingCallable implements CommandCallable {
         interceptors.put(annotation, interceptor);
       }
     }
-    return Map.copyOf(interceptors);
+    return interceptors;
   }
 
   @SuppressWarnings("unchecked")

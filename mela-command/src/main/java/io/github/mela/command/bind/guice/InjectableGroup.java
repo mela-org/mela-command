@@ -21,10 +21,10 @@ final class InjectableGroup implements UncompiledGroup {
   private final Map<Class<?>, Object> compilables;
 
   InjectableGroup() {
-    this(null, Set.of());
+    this(Set.of());
   }
 
-  private InjectableGroup(InjectableGroup parent, Set<String> names) {
+  private InjectableGroup(Set<String> names) {
     this.names = Set.copyOf(names);
     this.children = new HashSet<>();
     this.compilables = new HashMap<>();
@@ -98,7 +98,7 @@ final class InjectableGroup implements UncompiledGroup {
       }
     }
 
-    InjectableGroup child = new InjectableGroup(this, names);
+    InjectableGroup child = new InjectableGroup(names);
     children.add(child);
     return child;
   }
