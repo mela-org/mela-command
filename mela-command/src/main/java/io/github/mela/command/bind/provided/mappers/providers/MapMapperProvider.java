@@ -10,7 +10,6 @@ import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.bind.provided.mappers.MapMapper;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -36,16 +35,12 @@ public class MapMapperProvider<T extends Map<? super Object, ? super Object>> im
   public ArgumentMapper<?> provideFor(@Nonnull TargetType type, @Nonnull CommandBindings bindings) {
     AnnotatedType mapType = type.getAnnotatedType();
     TargetType keyType, valueType;
-    if (mapType instanceof AnnotatedParameterizedType) {
-      AnnotatedParameterizedType parameterizedMapType = (AnnotatedParameterizedType) mapType;
-      AnnotatedType[] actualTypeArguments = parameterizedMapType.getAnnotatedActualTypeArguments();
-      keyType = TargetType.create(actualTypeArguments[0]);
-      valueType = TargetType.create(actualTypeArguments[1]);
-    } else {
-      TargetType stringType = TargetType.create(AnnotatedTypes.STRING);
-      keyType = stringType;
-      valueType = stringType;
+    AnnotatedType[] typeArguments = AnnotatedTypes.getActualTypeArguments(mapType);
+    if (typeArguments.length == 0) {
+      typeArguments = new AnnotatedType[] { AnnotatedTypes.STRING, AnnotatedTypes.STRING };
     }
+    keyType = TargetType.create(typeArguments[0]);
+    valueType = TargetType.create(typeArguments[1]);
     return new MapMapper<>(factory,
         MappingProcessor.fromTargetType(bindings, keyType), MappingProcessor.fromTargetType(bindings, valueType));
   }

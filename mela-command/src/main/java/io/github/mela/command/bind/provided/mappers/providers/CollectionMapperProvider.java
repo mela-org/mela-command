@@ -9,8 +9,8 @@ import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.bind.provided.mappers.CollectingMapper;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -35,9 +35,8 @@ public class CollectionMapperProvider<T extends Collection<? super Object>> impl
   @Override
   public ArgumentMapper<?> provideFor(@Nonnull TargetType type, @Nonnull CommandBindings bindings) {
     AnnotatedType listType = type.getAnnotatedType();
-    TargetType contentType = TargetType.create(listType instanceof AnnotatedParameterizedType
-        ? ((AnnotatedParameterizedType) listType).getAnnotatedActualTypeArguments()[0]
-        : AnnotatedTypes.STRING);
+    TargetType contentType = TargetType.create(
+        Arrays.stream(AnnotatedTypes.getActualTypeArguments(listType)).findFirst().orElse(AnnotatedTypes.STRING));
     return new CollectingMapper(MappingProcessor.fromTargetType(bindings, contentType),
         Collectors.toCollection((Supplier) factory));
   }

@@ -1,11 +1,13 @@
 package io.github.mela.command.bind;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -16,7 +18,9 @@ public final class AnnotatedTypes {
 
   private AnnotatedTypes() {}
 
-  public static AnnotatedType fromType(Type type) {
+  @Nonnull
+  public static AnnotatedType fromType(@Nonnull Type type) {
+    checkNotNull(type);
     checkArgument(!(type instanceof TypeVariable), "Type must not be a type variable");
     checkArgument(!(type instanceof WildcardType), "Type must not be a wildcard type");
     if (type instanceof Class) {
@@ -28,6 +32,13 @@ public final class AnnotatedTypes {
       return new UnAnnotatedArrayType((GenericArrayType) type);
     }
     throw new AssertionError();
+  }
+
+  @Nonnull
+  public static AnnotatedType[] getActualTypeArguments(@Nonnull AnnotatedType type) {
+    return type instanceof AnnotatedParameterizedType
+        ? ((AnnotatedParameterizedType) type).getAnnotatedActualTypeArguments()
+        : new AnnotatedType[0];
   }
 
   private static class UnAnnotatedType implements AnnotatedType {
