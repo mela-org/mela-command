@@ -5,6 +5,7 @@ import io.github.mela.command.bind.guice.CompilingRootGroupProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -28,7 +29,31 @@ public interface CommandGroup {
   Set<String> getNames();
 
   @Nonnull
-  Set<CommandCallable> getCommands();
+  Set<? extends CommandCallable> getCommands();
+
+  @Nonnull
+  default Optional<? extends CommandGroup> findChild(@Nonnull String name) {
+    return getChildren()
+        .stream()
+        .filter((group) -> group.getNames().stream().anyMatch(name::equalsIgnoreCase))
+        .findFirst();
+  }
+
+  @Nonnull
+  default Optional<? extends CommandCallable> findCommand(@Nonnull String name) {
+    return getCommands()
+        .stream()
+        .filter((command) -> command.getLabels().stream().anyMatch(name::equalsIgnoreCase))
+        .findFirst();
+  }
+
+  @Nonnull
+  default Optional<? extends CommandCallable> findDefaultCommand() {
+    return getCommands()
+        .stream()
+        .filter((command) -> command.getLabels().isEmpty())
+        .findFirst();
+  }
 
   default boolean matches(@Nonnull String descriptor) {
     String[] parts = SPLIT_PATTERN.split(checkNotNull(descriptor));

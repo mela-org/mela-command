@@ -37,7 +37,7 @@ public final class ImmutableGroup implements CommandGroup {
 
   @Nonnull
   @Override
-  public Set<CommandGroup> getChildren() {
+  public Set<? extends CommandGroup> getChildren() {
     return children;
   }
 

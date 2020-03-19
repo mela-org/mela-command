@@ -13,13 +13,13 @@ public final class CommandInput {
 
   private final String raw;
   private final CommandGroup group;
-  private final CommandCallable callable;
+  private final CommandCallable command;
   private final Arguments arguments;
 
-  CommandInput(@Nonnull String raw, @Nonnull CommandGroup group, @Nullable CommandCallable callable, @Nonnull Arguments arguments) {
+  CommandInput(@Nonnull String raw, @Nonnull CommandGroup group, @Nullable CommandCallable command, @Nonnull Arguments arguments) {
     this.raw = checkNotNull(raw);
     this.group = checkNotNull(group);
-    this.callable = callable;
+    this.command = command;
     this.arguments = checkNotNull(arguments);
   }
 
@@ -35,8 +35,8 @@ public final class CommandInput {
   }
 
   @Nullable
-  public CommandCallable getCallable() {
-    return callable;
+  public CommandCallable getCommand() {
+    return command;
   }
 
   @Nonnull
