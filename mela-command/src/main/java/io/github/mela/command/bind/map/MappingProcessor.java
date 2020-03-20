@@ -3,7 +3,6 @@ package io.github.mela.command.bind.map;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.parameter.CommandParameter;
-import io.github.mela.command.bind.parameter.MissingMapperBindingError;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
 

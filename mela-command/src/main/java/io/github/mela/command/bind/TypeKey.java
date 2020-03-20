@@ -1,7 +1,6 @@
 package io.github.mela.command.bind;
 
 import com.google.common.reflect.TypeToken;
-import io.github.mela.command.bind.parameter.TypeClassifier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

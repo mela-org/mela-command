@@ -1,4 +1,4 @@
-package io.github.mela.command.bind.parameter;
+package io.github.mela.command.bind.map;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
