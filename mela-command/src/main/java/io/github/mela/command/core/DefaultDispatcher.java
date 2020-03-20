@@ -1,6 +1,7 @@
 package io.github.mela.command.core;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.mela.command.bind.guice.CommandExecutor;
 
 import javax.annotation.Nonnull;
@@ -11,6 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public final class DefaultDispatcher implements Dispatcher {
 
   private final CommandGroup root;

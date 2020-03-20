@@ -47,6 +47,7 @@ public final class CommandBindingNode {
     return parent;
   }
 
+  // TODO extend to full guice compatibility
   @Nonnull
   public CommandBindingNode add(@Nonnull Class<?> commandClass) {
     checkNotNull(commandClass);
