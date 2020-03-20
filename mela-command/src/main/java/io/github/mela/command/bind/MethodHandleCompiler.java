@@ -1,5 +1,7 @@
 package io.github.mela.command.bind;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.CommandCompilerException;
 
@@ -15,17 +17,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public final class MethodHandleCompiler implements CommandCompiler {
 
   private final CommandBindings bindings;
 
-
-  private MethodHandleCompiler(CommandBindings bindings) {
-    this.bindings = bindings;
-  }
-
-  public static MethodHandleCompiler withBindings(@Nonnull CommandBindings bindings) {
-    return new MethodHandleCompiler(checkNotNull(bindings));
+  @Inject
+  public MethodHandleCompiler(@Nonnull CommandBindings bindings) {
+    this.bindings = checkNotNull(bindings);
   }
 
   @Nonnull

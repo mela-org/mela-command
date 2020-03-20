@@ -26,7 +26,7 @@ class DefaultDispatcherTest {
           .withCommand(command)
         .root()
         .build();
-    dispatcher = DefaultDispatcher.create(group);
+    dispatcher = new DefaultDispatcher(group);
   }
 
   @Test
