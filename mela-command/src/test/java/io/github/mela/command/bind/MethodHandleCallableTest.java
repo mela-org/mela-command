@@ -31,7 +31,7 @@ class MethodHandleCallableTest {
 
   @Test
   void testInapplicableArguments() {
-    assertThrows(ArgumentException.class, () -> dispatcher.dispatch("foo bar", CommandContext.create()),
+    assertThrows(RuntimeException.class, () -> dispatcher.dispatch("foo bar", CommandContext.create()),
         "dispatch did not throw exception despite too many arguments");
   }
 

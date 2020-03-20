@@ -16,9 +16,8 @@ class RawStringMapperTest extends BindingTest<RawStringMapperTest.TestCommand> {
 
   @Test
   void testRawStringMapper() {
-    String rawInput = "\n   foo\t ";
-    dispatcher.dispatch(rawInput, CommandContext.create());
-    assertEquals(rawInput, command.raw, "Raw string was not mapped");
+    dispatcher.dispatch("foo", CommandContext.create());
+    assertEquals("", command.raw, "Raw string was not mapped");
   }
 
   @Override
