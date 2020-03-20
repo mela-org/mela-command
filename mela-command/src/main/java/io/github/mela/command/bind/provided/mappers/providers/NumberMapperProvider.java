@@ -40,7 +40,7 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
           Double.class, (s, $) -> Double.valueOf(s),
           BigDecimal.class, (s, $) -> new BigDecimal(s));
 
-  private static final Map<Type, Function<BigDecimal, ?>> FROM_NUMBER =
+  private static final Map<Type, Function<BigDecimal, ? extends Number>> FROM_BIGDECIMAL =
       Map.of(Byte.class, Number::byteValue,
           Short.class, Number::shortValue,
           Integer.class, Number::intValue,
@@ -49,6 +49,16 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
           Float.class, Number::floatValue,
           Double.class, Number::doubleValue,
           BigDecimal.class, Function.identity());
+
+  private static final Map<Type, Function<? super Number, BigDecimal>> TO_BIGDECIMAL =
+      Map.of(Byte.class, (n) -> BigDecimal.valueOf(n.byteValue()),
+          Short.class, (n) -> BigDecimal.valueOf(n.shortValue()),
+          Integer.class, (n) -> BigDecimal.valueOf(n.intValue()),
+          Long.class, (n) -> BigDecimal.valueOf(n.longValue()),
+          BigInteger.class, (n) -> new BigDecimal((BigInteger) n),
+          Float.class, (n) -> BigDecimal.valueOf(n.floatValue()),
+          Double.class, (n) -> BigDecimal.valueOf(n.doubleValue()),
+          BigDecimal.class, (n) -> (BigDecimal) n);
 
   private static final Set<Type> FLOATING_POINT = Set.of(Float.class, Double.class, BigDecimal.class);
 
@@ -59,7 +69,7 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
     Class numberType = Primitives.wrap((Class) type.getType());
     Base base = type.getAnnotatedType().getAnnotation(Base.class);
     int radix = base != null ? base.value() : 10;
-    if (!FLOATING_POINT.contains(numberType) && (radix < Character.MAX_RADIX || radix > Character.MAX_RADIX)) {
+    if (!FLOATING_POINT.contains(numberType) && (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)) {
       throw new PreconditionError("Illegal @Base annotation value for target type " + type + ": " + radix
           + " (base must not be greater than Character.MAX_RADIX or smaller than Character.MIN_RADIX).");
     }
@@ -78,8 +88,9 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
       if (format instanceof DecimalFormat) {
         ((DecimalFormat) format).setParseBigDecimal(true);
       }
-      Function fromNumberFunction = FROM_NUMBER.get(numberType);
-      return new NumberFormatMapper(numberType, format, fromNumberFunction);
+      Function fromBigDecimalFunction = FROM_BIGDECIMAL.get(numberType);
+      Function toBigDecimalFunction = TO_BIGDECIMAL.get(numberType);
+      return new NumberFormatMapper(numberType, format, fromBigDecimalFunction, toBigDecimalFunction);
     } else {
       BiFunction converter = CONVERTERS.get(numberType);
       return new SimpleNumberMapper(numberType, (s) -> converter.apply(s, radix));

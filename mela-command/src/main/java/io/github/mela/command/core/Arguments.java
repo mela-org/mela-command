@@ -44,6 +44,7 @@ public final class Arguments {
       if (isNextUnescaped(scopeBegin)) {
         ++openScopes;
       } else if (isNextUnescaped(scopeEnd) && --openScopes == 0) {
+        next();
         break;
       }
       builder.append(next());

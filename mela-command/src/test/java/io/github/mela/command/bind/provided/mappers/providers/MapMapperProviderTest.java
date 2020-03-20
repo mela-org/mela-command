@@ -20,15 +20,15 @@ class MapMapperProviderTest extends BindingTest<MapMapperProviderTest.TestComman
 
   @Test
   void testMapMapper() {
-    dispatcher.dispatch("map one two three four five six seven", CommandContext.create());
-    assertEquals(Map.of("one", "two", "four", "five", "six", "seven"), command.values,
+    dispatcher.dispatch("map one two three four five six", CommandContext.create());
+    assertEquals(Map.of("one", "two", "three", "four", "five", "six"), command.values,
         "Arguments were not mapped correctly");
   }
 
   @Test
   void testMapMapperScoped() {
-    dispatcher.dispatch("map {one two three four five six seven}", CommandContext.create());
-    assertEquals(Map.of("one", "two", "four", "five", "six", "seven"), command.values,
+    dispatcher.dispatch("map {one two three four five six}", CommandContext.create());
+    assertEquals(Map.of("one", "two", "three", "four", "five", "six"), command.values,
         "Arguments were not mapped correctly");
   }
 

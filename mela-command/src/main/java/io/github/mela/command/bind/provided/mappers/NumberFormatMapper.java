@@ -14,13 +14,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class NumberFormatMapper<T extends Number> extends NumberMapper<T> {
 
   private final NumberFormat format;
-  private final Function<BigDecimal, T> fromNumberFunction;
+  private final Function<BigDecimal, T> fromBigDecimalFunction;
+  private final Function<T, BigDecimal> toBigDecimalFunction;
 
   public NumberFormatMapper(
-      @Nonnull Class<T> type, @Nonnull NumberFormat format, @Nonnull Function<BigDecimal, T> fromNumberFunction) {
+      @Nonnull Class<T> type, @Nonnull NumberFormat format, @Nonnull Function<BigDecimal, T> fromBigDecimalFunction, Function<T, BigDecimal> toBigDecimalFunction) {
     super(type);
     this.format = format;
-    this.fromNumberFunction = checkNotNull(fromNumberFunction);
+    this.fromBigDecimalFunction = checkNotNull(fromBigDecimalFunction);
+    this.toBigDecimalFunction = toBigDecimalFunction;
   }
 
   @Override
@@ -30,8 +32,9 @@ public class NumberFormatMapper<T extends Number> extends NumberMapper<T> {
     BigDecimal result = number instanceof BigDecimal
         ? (BigDecimal) number
         : BigDecimal.valueOf(number.doubleValue());
-    T value = fromNumberFunction.apply(result);
-    if (pos.getIndex() != input.length() || !number.equals(value)) {
+    T value = fromBigDecimalFunction.apply(result);
+    BigDecimal comparable = toBigDecimalFunction.apply(value);
+    if (pos.getIndex() != input.length() || !number.equals(comparable)) {
       throw new NumberFormatException("For input string: \"" + input + "\"");
     }
     return value;
