@@ -27,7 +27,7 @@ public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
 
     if (!process.isErroneous()
         && process.isSet() && process.getValue() != null) {
-      if (((String) process.getValue()).matches(annotation.value())) {
+      if (!((String) process.getValue()).matches(annotation.value())) {
         process.fail(new ArgumentValidationException("Value " + process.getValue()
             + " does not match regex " + annotation.value()));
       }
