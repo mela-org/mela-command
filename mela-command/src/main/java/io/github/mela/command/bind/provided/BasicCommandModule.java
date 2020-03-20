@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class BasicModule extends CommandModule {
+public class BasicCommandModule extends CommandModule {
 
   @Override
   protected void configureModule() {
