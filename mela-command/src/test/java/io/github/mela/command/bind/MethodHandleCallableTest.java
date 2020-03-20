@@ -19,8 +19,8 @@ class MethodHandleCallableTest {
     command = new BindingCommand();
     CommandGroup group = ImmutableGroup.builder()
         .withCommand(command)
-        .compile(new MethodHandleCompiler(CommandBindings.EMPTY));
-    dispatcher = new DefaultDispatcher(group);
+        .compile(MethodHandleCompiler.withBindings(CommandBindings.EMPTY));
+    dispatcher = DefaultDispatcher.create(group);
   }
 
   @Test

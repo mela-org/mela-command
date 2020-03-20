@@ -24,8 +24,8 @@ class ExceptionHandlerTest {
         .build();
     CommandGroup group = ImmutableGroup.builder()
         .withCommand(new TestCommand())
-        .compile(new MethodHandleCompiler(bindings));
-    dispatcher = new DefaultDispatcher(group);
+        .compile(MethodHandleCompiler.withBindings(bindings));
+    dispatcher = DefaultDispatcher.create(group);
   }
 
   @Test

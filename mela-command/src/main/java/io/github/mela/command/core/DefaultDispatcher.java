@@ -1,8 +1,5 @@
 package io.github.mela.command.core;
 
-import com.google.inject.Inject;
-import io.github.mela.command.bind.guice.CommandExecutor;
-
 import javax.annotation.Nonnull;
 import java.util.concurrent.Executor;
 
@@ -16,15 +13,17 @@ public final class DefaultDispatcher implements Dispatcher {
   private final CommandGroup root;
   private Executor executor;
 
-  @Inject
-  public DefaultDispatcher(@Nonnull CommandGroup root) {
+  private DefaultDispatcher(CommandGroup root, Executor executor) {
     this.root = root;
-    this.executor = Runnable::run;
+    this.executor = executor;
   }
 
-  @Inject(optional = true)
-  public void setExecutor(@Nonnull @CommandExecutor Executor executor) {
-    this.executor = checkNotNull(executor);
+  public static DefaultDispatcher create(@Nonnull CommandGroup root) {
+    return create(root, Runnable::run);
+  }
+
+  public static DefaultDispatcher create(@Nonnull CommandGroup root, @Nonnull Executor executor) {
+    return new DefaultDispatcher(checkNotNull(root), checkNotNull(executor));
   }
 
   @Override

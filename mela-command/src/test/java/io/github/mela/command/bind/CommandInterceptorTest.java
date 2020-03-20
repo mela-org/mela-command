@@ -30,8 +30,8 @@ class CommandInterceptorTest {
         .build();
     CommandGroup group = ImmutableGroup.builder()
         .withCommand(command)
-        .compile(new MethodHandleCompiler(bindings));
-    dispatcher = new DefaultDispatcher(group);
+        .compile(MethodHandleCompiler.withBindings(bindings));
+    dispatcher = DefaultDispatcher.create(group);
   }
 
   @Test
