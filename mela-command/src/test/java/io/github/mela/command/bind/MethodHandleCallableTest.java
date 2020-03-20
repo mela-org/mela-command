@@ -17,7 +17,7 @@ class MethodHandleCallableTest {
   @BeforeEach
   void setUp() {
     command = new BindingCommand();
-    CommandGroup group = GroupBuilder.create()
+    CommandGroup group = ImmutableGroup.builder()
         .withCommand(command)
         .compile(new MethodHandleCompiler(CommandBindings.EMPTY));
     dispatcher = new DefaultDispatcher(group);

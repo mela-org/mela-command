@@ -17,10 +17,10 @@ class ArgumentMapperTest {
   @BeforeEach
   void setUp() {
     command = new TestCommand();
-    CommandBindings bindings = BindingsBuilder.create()
+    CommandBindings bindings = CommandBindings.builder()
         .bindMapper(String.class, (a, c) -> a.nextString())
         .build();
-    CommandGroup group = GroupBuilder.create()
+    CommandGroup group = ImmutableGroup.builder()
         .withCommand(command)
         .compile(new MethodHandleCompiler(bindings));
     dispatcher = new DefaultDispatcher(group);

@@ -17,7 +17,7 @@ class CommandInputTest {
   @BeforeEach
   void setUp() {
     command = AssembledCommandCallable.builder().withLabels("bar").withAction((a, c) -> {}).build();
-    root = GroupBuilder.create().group("foo").withCommand(command).root().build();
+    root = ImmutableGroup.builder().group("foo").withCommand(command).root().build();
     child = root.findChild("foo").orElseThrow();
   }
 

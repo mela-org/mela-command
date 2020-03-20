@@ -5,19 +5,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GroupBuilderTest {
+class ImmutableGroupBuilderTest {
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
   @Test
   void testDuplicateNameRecognition() {
     assertThrows(IllegalArgumentException.class,
-        () -> GroupBuilder.create().group("foo").parent().group("foo").root().compile(IdentityCompiler.INSTANCE),
+        () -> ImmutableGroup.builder().group("foo").parent().group("foo").root().compile(IdentityCompiler.INSTANCE),
         "duplicate group name was not prevented");
   }
 
   @Test
   void testRootNode() {
-    assertThrows(IllegalStateException.class, () -> GroupBuilder.create().parent(),
+    assertThrows(IllegalStateException.class, () -> ImmutableGroup.builder().parent(),
         "going to parent from root was not met with an exception");
   }
 }

@@ -27,11 +27,11 @@ class MappingInterceptorTest {
   @BeforeEach
   void setUp() {
     interceptor = new TestInterceptor();
-    CommandBindings bindings = BindingsBuilder.create()
+    CommandBindings bindings = CommandBindings.builder()
         .bindMapper(int.class, (a, c) -> 0)
         .bindMappingInterceptor(TestAnnotation.class, interceptor)
         .build();
-    CommandGroup group = GroupBuilder.create()
+    CommandGroup group = ImmutableGroup.builder()
         .withCommand(new TestCommand())
         .compile(new MethodHandleCompiler(bindings));
     dispatcher = new DefaultDispatcher(group);

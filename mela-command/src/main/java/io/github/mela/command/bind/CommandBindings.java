@@ -6,6 +6,7 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
@@ -41,6 +42,12 @@ public final class CommandBindings {
     this.mappers = Map.copyOf(mappers);
     this.mappingInterceptors = Map.copyOf(mappingInterceptors);
     this.argumentMapperProviders = Set.copyOf(argumentMapperProviders);
+  }
+
+  @CheckReturnValue
+  @Nonnull
+  public static CommandBindingsBuilder builder() {
+    return new CommandBindingsBuilder();
   }
 
   @SuppressWarnings("unchecked")

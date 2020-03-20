@@ -19,10 +19,10 @@ class ExceptionHandlerTest {
   @BeforeEach
   void setUp() {
     handler = new TestHandler();
-    CommandBindings bindings = BindingsBuilder.create()
+    CommandBindings bindings = CommandBindings.builder()
         .bindHandler(RuntimeException.class, handler)
         .build();
-    CommandGroup group = GroupBuilder.create()
+    CommandGroup group = ImmutableGroup.builder()
         .withCommand(new TestCommand())
         .compile(new MethodHandleCompiler(bindings));
     dispatcher = new DefaultDispatcher(group);

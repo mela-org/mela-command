@@ -17,26 +17,21 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class GroupBuilder {
+public final class ImmutableGroupBuilder {
 
   private MutableGroup current;
 
-  private GroupBuilder() {
+  ImmutableGroupBuilder() {
     current = new MutableGroup(null, Collections.emptySet());
   }
 
   @Nonnull
-  public static GroupBuilder create() {
-    return new GroupBuilder();
-  }
-
-  @Nonnull
-  public GroupBuilder group(@Nonnull String... names) {
+  public ImmutableGroupBuilder group(@Nonnull String... names) {
     return group(Set.of(names));
   }
 
   @Nonnull
-  public GroupBuilder group(@Nonnull Set<String> names) {
+  public ImmutableGroupBuilder group(@Nonnull Set<String> names) {
     MutableGroup child = new MutableGroup(current, names);
     current.children.add(child);
     current = child;
@@ -44,20 +39,20 @@ public final class GroupBuilder {
   }
 
   @Nonnull
-  public GroupBuilder withCommand(@Nonnull Object command) {
+  public ImmutableGroupBuilder withCommand(@Nonnull Object command) {
     current.commands.add(checkNotNull(command));
     return this;
   }
 
   @Nonnull
-  public GroupBuilder parent() {
+  public ImmutableGroupBuilder parent() {
     checkState(current.parent != null, "Builder is at root node, no parent to step to");
     current = current.parent;
     return this;
   }
 
   @Nonnull
-  public GroupBuilder root() {
+  public ImmutableGroupBuilder root() {
     while (current.parent != null) {
       parent();
     }

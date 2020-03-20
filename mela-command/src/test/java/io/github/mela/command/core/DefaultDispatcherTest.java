@@ -21,7 +21,7 @@ class DefaultDispatcherTest {
   @BeforeEach
   void setUp() {
     command = new SimpleCommand();
-    CommandGroup group = GroupBuilder.create()
+    CommandGroup group = ImmutableGroup.builder()
         .group("foo")
           .withCommand(command)
         .root()

@@ -25,10 +25,10 @@ class CommandInterceptorTest {
   void setUp() {
     TestCommand command = new TestCommand();
     interceptor = new TestInterceptor();
-    CommandBindings bindings = BindingsBuilder.create()
+    CommandBindings bindings = CommandBindings.builder()
         .bindCommandInterceptor(TestAnnotation.class, interceptor)
         .build();
-    CommandGroup group = GroupBuilder.create()
+    CommandGroup group = ImmutableGroup.builder()
         .withCommand(command)
         .compile(new MethodHandleCompiler(bindings));
     dispatcher = new DefaultDispatcher(group);

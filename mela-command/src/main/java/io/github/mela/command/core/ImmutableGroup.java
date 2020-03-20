@@ -2,6 +2,7 @@ package io.github.mela.command.core;
 
 import com.google.common.collect.Sets;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -27,6 +28,12 @@ public final class ImmutableGroup implements CommandGroup {
     this.parent = parent;
     this.names = Set.copyOf(names);
     this.commands = Set.copyOf(commands);
+  }
+
+  @CheckReturnValue
+  @Nonnull
+  public static ImmutableGroupBuilder builder() {
+    return new ImmutableGroupBuilder();
   }
 
   @Nullable
