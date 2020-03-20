@@ -17,7 +17,7 @@ class ArgumentMapperTest {
   @BeforeEach
   void setUp() {
     command = new TestCommand();
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindMapper(String.class, (a, c) -> a.nextString())
         .build();
     CommandGroup group = GroupBuilder.create()

@@ -19,7 +19,7 @@ class ExceptionHandlerTest {
   @BeforeEach
   void setUp() {
     handler = new TestHandler();
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindHandler(RuntimeException.class, handler)
         .build();
     CommandGroup group = GroupBuilder.create()

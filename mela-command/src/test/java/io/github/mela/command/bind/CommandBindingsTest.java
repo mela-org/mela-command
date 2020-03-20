@@ -16,7 +16,7 @@ class CommandBindingsTest {
   void testArgumentMapperBinding() {
     ArgumentMapper<String> mapper = (a, c) -> "first";
     ArgumentMapperProvider provider = new TestArgumentMapperProvider();
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindMapper(String.class, mapper)
         .bindMapperProvider(provider)
         .build();
@@ -28,7 +28,7 @@ class CommandBindingsTest {
   @Test
   void testArgumentMapperProviderBinding() {
     ArgumentMapperProvider provider = new TestArgumentMapperProvider();
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindMapperProvider(provider)
         .build();
     ArgumentMapper<?> boundMapper = bindings.getMapper(TargetType.create(AnnotatedTypes.STRING));
@@ -39,7 +39,7 @@ class CommandBindingsTest {
   @Test
   void testCommandInterceptorBinding() {
     CommandInterceptor<TestAnnotation> interceptor = (t, a, c) -> {};
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindCommandInterceptor(TestAnnotation.class, interceptor)
         .build();
     CommandInterceptor<TestAnnotation> boundInterceptor = bindings.getCommandInterceptor(TestAnnotation.class);
@@ -49,7 +49,7 @@ class CommandBindingsTest {
   @Test
   void testMappingInterceptorBinding() {
     MappingInterceptor<TestAnnotation> interceptor = new TestMappingInterceptor();
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindMappingInterceptor(TestAnnotation.class, interceptor)
         .build();
     MappingInterceptor<TestAnnotation> boundInterceptor = bindings.getMappingInterceptor(TestAnnotation.class);
@@ -59,7 +59,7 @@ class CommandBindingsTest {
   @Test
   void testExceptionHandlerBinding() {
     ExceptionHandler<Throwable> handler = (a, c1, c2) -> {};
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindHandler(Throwable.class, handler)
         .build();
     ExceptionHandler<Throwable> boundHandler = bindings.getHandler(Throwable.class);

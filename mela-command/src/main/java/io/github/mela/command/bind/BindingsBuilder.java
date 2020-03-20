@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 @SuppressWarnings("rawtypes")
-public final class CommandBindingsBuilder {
+public final class BindingsBuilder {
 
   private final Map<Class, CommandInterceptor> commandInterceptors;
   private final Map<Class, ExceptionHandler> handlers;
@@ -28,7 +28,7 @@ public final class CommandBindingsBuilder {
   private final Map<Class, MappingInterceptor> mappingInterceptors;
   private final Set<ArgumentMapperProvider> argumentMapperProviders;
 
-  private CommandBindingsBuilder() {
+  private BindingsBuilder() {
     this.commandInterceptors = new HashMap<>();
     this.handlers = new HashMap<>();
     this.mappers = new HashMap<>();
@@ -37,31 +37,31 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  public static CommandBindingsBuilder create() {
-    return new CommandBindingsBuilder();
+  public static BindingsBuilder create() {
+    return new BindingsBuilder();
   }
 
   @Nonnull
-  public <T> CommandBindingsBuilder bindMapper(@Nonnull Class<T> type, @Nonnull ArgumentMapper<T> mapper) {
+  public <T> BindingsBuilder bindMapper(@Nonnull Class<T> type, @Nonnull ArgumentMapper<T> mapper) {
     return bindMapper(type, null, mapper);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  public <T> CommandBindingsBuilder bindMapper(
+  public <T> BindingsBuilder bindMapper(
       @Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType, @Nonnull ArgumentMapper<T> mapper) {
     return bindMapper(TypeToken.of(type), annotationType, mapper);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  public <T> CommandBindingsBuilder bindMapper(@Nonnull TypeToken<T> type, @Nonnull ArgumentMapper<T> mapper) {
+  public <T> BindingsBuilder bindMapper(@Nonnull TypeToken<T> type, @Nonnull ArgumentMapper<T> mapper) {
     return bindMapper(type, null, mapper);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  public <T> CommandBindingsBuilder bindMapper(
+  public <T> BindingsBuilder bindMapper(
       @Nonnull TypeToken<T> type, @Nullable Class<? extends Annotation> annotationType, @Nonnull ArgumentMapper<T> mapper) {
     checkNotNull(type);
     checkNotNull(mapper);
@@ -70,14 +70,14 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  public CommandBindingsBuilder bindMapperProvider(@Nonnull ArgumentMapperProvider provider) {
+  public BindingsBuilder bindMapperProvider(@Nonnull ArgumentMapperProvider provider) {
     checkNotNull(provider);
     argumentMapperProviders.add(provider);
     return this;
   }
 
   @Nonnull
-  public <T extends Throwable> CommandBindingsBuilder bindHandler(
+  public <T extends Throwable> BindingsBuilder bindHandler(
       @Nonnull Class<T> exceptionType, @Nonnull ExceptionHandler<T> handler) {
     checkNotNull(exceptionType);
     checkNotNull(handler);
@@ -86,7 +86,7 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  public <T extends Annotation> CommandBindingsBuilder bindCommandInterceptor(
+  public <T extends Annotation> BindingsBuilder bindCommandInterceptor(
       @Nonnull Class<T> annotationType, @Nonnull CommandInterceptor<T> interceptor) {
     checkNotNull(annotationType);
     checkNotNull(interceptor);
@@ -95,7 +95,7 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  public <T extends Annotation> CommandBindingsBuilder bindMappingInterceptor(
+  public <T extends Annotation> BindingsBuilder bindMappingInterceptor(
       @Nonnull Class<T> annotationType, @Nonnull MappingInterceptor<T> interceptor) {
     checkNotNull(annotationType);
     checkNotNull(interceptor);
@@ -104,7 +104,7 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  public CommandBindingsBuilder bindAll(@Nonnull CommandBindingsBuilder other) {
+  public BindingsBuilder bindAll(@Nonnull BindingsBuilder other) {
     checkNotNull(other);
     this.mappers.putAll(other.mappers);
     this.argumentMapperProviders.addAll(other.argumentMapperProviders);

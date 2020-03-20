@@ -25,7 +25,7 @@ class CommandInterceptorTest {
   void setUp() {
     TestCommand command = new TestCommand();
     interceptor = new TestInterceptor();
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindCommandInterceptor(TestAnnotation.class, interceptor)
         .build();
     CommandGroup group = GroupBuilder.create()

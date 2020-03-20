@@ -27,7 +27,7 @@ class MappingInterceptorTest {
   @BeforeEach
   void setUp() {
     interceptor = new TestInterceptor();
-    CommandBindings bindings = CommandBindingsBuilder.create()
+    CommandBindings bindings = BindingsBuilder.create()
         .bindMapper(int.class, (a, c) -> 0)
         .bindMappingInterceptor(TestAnnotation.class, interceptor)
         .build();
