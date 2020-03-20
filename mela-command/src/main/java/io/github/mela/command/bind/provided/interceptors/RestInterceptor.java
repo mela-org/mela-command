@@ -21,7 +21,7 @@ public class RestInterceptor extends MappingInterceptorAdapter<Rest> {
     while (arguments.hasNext()) {
       builder.append(arguments.next());
     }
-    process.requestMapping(Arguments.of("\"" + builder + "\""));
+    process.requestMapping(Arguments.of("\"" + builder.toString().trim() + "\""));
   }
 
 }

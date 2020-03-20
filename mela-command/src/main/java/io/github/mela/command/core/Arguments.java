@@ -16,8 +16,8 @@ public final class Arguments {
   private char previous;
 
   private Arguments(String arguments) {
-    this.raw = arguments;
-    this.arguments = new StringBuilder(arguments.trim());
+    this.raw = arguments.trim();
+    this.arguments = new StringBuilder(raw);
     this.position = 0;
     this.previous = 0;
   }
