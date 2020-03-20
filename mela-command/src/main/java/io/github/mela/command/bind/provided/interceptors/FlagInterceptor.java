@@ -25,6 +25,7 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
         .map("-"::concat)
         .mapToInt(arguments::indexOf)
         .filter((i) -> i != -1)
+        .filter((i) -> i == 0 || !Character.isWhitespace(arguments.charAt(i - 1)))
         .findFirst();
     flagPosition.ifPresent((pos) -> {
       arguments.jumpTo(pos);

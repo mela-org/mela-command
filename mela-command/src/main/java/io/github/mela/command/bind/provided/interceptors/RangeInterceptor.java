@@ -5,6 +5,7 @@ import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.bind.provided.ArgumentValidationException;
 import io.github.mela.command.bind.provided.IllegalTargetTypeError;
+import io.github.mela.command.bind.provided.PreconditionError;
 import io.github.mela.command.core.CommandContext;
 
 import javax.annotation.Nonnull;
@@ -21,6 +22,8 @@ public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
     Type type = process.getTargetType().getType();
     if (type != int.class && type != Integer.class) {
       throw new IllegalTargetTypeError(type, Range.class);
+    } else if (annotation.from() >= annotation.to()) {
+      throw new PreconditionError(annotation + " is not a valid range; from must be smaller than to.");
     }
 
     if (!process.isErroneous() && process.isSet() && process.getValue() != null) {

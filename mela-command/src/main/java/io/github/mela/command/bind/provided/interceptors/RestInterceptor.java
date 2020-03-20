@@ -19,6 +19,9 @@ public class RestInterceptor extends MappingInterceptorAdapter<Rest> {
     Arguments arguments = process.getArguments();
     StringBuilder builder = new StringBuilder();
     while (arguments.hasNext()) {
+      if (arguments.peek() == '"' && arguments.previous() != '\\') {
+        builder.append('\\');
+      }
       builder.append(arguments.next());
     }
     process.requestMapping(Arguments.of("\"" + builder.toString().trim() + "\""));
