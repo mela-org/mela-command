@@ -77,18 +77,6 @@ public final class AnnotatedTypes {
       return null;
     }
 
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      UnAnnotatedType that = (UnAnnotatedType) o;
-      return Objects.equals(type, that.type);
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(type);
-    }
   }
 
   private static class UnAnnotatedParameterizedType extends UnAnnotatedType implements AnnotatedParameterizedType {

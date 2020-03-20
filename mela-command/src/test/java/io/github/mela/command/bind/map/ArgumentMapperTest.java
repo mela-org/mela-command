@@ -1,5 +1,8 @@
-package io.github.mela.command.bind;
+package io.github.mela.command.bind.map;
 
+import io.github.mela.command.bind.Command;
+import io.github.mela.command.bind.CommandBindings;
+import io.github.mela.command.bind.MethodHandleCompiler;
 import io.github.mela.command.core.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

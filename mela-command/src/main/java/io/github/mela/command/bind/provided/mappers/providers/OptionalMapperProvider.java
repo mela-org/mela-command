@@ -47,7 +47,7 @@ public class OptionalMapperProvider implements ArgumentMapperProvider {
     AnnotatedType optionalType = type.getAnnotatedType();
     Class<?> rawType = type.getTypeToken().getRawType();
     AnnotatedType contentType = OPTIONAL_CONTENT_TYPES.get(rawType).apply(optionalType);
-    MappingProcessor processor = MappingProcessor.fromTargetType(bindings, TargetType.create(contentType));
+    MappingProcessor processor = MappingProcessor.fromTargetType(bindings, TargetType.of(contentType));
     return new OptionalMapper(processor, WRAPPER_FUNCTIONS.get(rawType), EMPTY_FUNCTIONS.get(rawType));
   }
 

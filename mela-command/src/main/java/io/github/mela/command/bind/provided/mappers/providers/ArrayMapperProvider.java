@@ -25,7 +25,7 @@ public class ArrayMapperProvider implements ArgumentMapperProvider {
   @Override
   public ArgumentMapper<?> provideFor(@Nonnull TargetType type, @Nonnull CommandBindings bindings) {
     AnnotatedArrayType arrayType = (AnnotatedArrayType) type.getAnnotatedType();
-    TargetType componentType = TargetType.create(arrayType.getAnnotatedGenericComponentType());
+    TargetType componentType = TargetType.of(arrayType.getAnnotatedGenericComponentType());
     Class<?> rawComponentType = componentType.getTypeToken().getRawType();
     return new CollectingMapper<>(MappingProcessor.fromTargetType(bindings, componentType),
         Collectors.collectingAndThen(Collectors.toList(),

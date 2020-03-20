@@ -36,7 +36,7 @@ public final class TargetType {
   }
 
   @Nonnull
-  public static TargetType create(@Nonnull AnnotatedType type) {
+  public static TargetType of(@Nonnull AnnotatedType type) {
     return new TargetType(type);
   }
 

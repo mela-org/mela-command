@@ -31,7 +31,7 @@ public final class MappingProcessor {
 
   @Nonnull
   public static MappingProcessor fromParameter(@Nonnull CommandBindings bindings, @Nonnull CommandParameter parameter) {
-    return create(bindings, parameter.getType(), new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
+    return create(bindings, parameter.getTargetType(), new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
   }
 
   @Nonnull

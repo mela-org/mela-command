@@ -39,8 +39,8 @@ public class MapMapperProvider<T extends Map<? super Object, ? super Object>> im
     if (typeArguments.length == 0) {
       typeArguments = new AnnotatedType[] { AnnotatedTypes.STRING, AnnotatedTypes.STRING };
     }
-    keyType = TargetType.create(typeArguments[0]);
-    valueType = TargetType.create(typeArguments[1]);
+    keyType = TargetType.of(typeArguments[0]);
+    valueType = TargetType.of(typeArguments[1]);
     return new MapMapper<>(factory,
         MappingProcessor.fromTargetType(bindings, keyType), MappingProcessor.fromTargetType(bindings, valueType));
   }

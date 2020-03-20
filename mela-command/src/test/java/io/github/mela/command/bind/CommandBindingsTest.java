@@ -21,7 +21,7 @@ class CommandBindingsTest {
         .bindMapperProvider(provider)
         .build();
 
-    ArgumentMapper<?> boundMapper = bindings.getMapper(TargetType.create(AnnotatedTypes.STRING));
+    ArgumentMapper<?> boundMapper = bindings.getMapper(TargetType.of(AnnotatedTypes.STRING));
     assertEquals(mapper, boundMapper, "Type was not bound to the correct mapper");
   }
 
@@ -31,7 +31,7 @@ class CommandBindingsTest {
     CommandBindings bindings = CommandBindings.builder()
         .bindMapperProvider(provider)
         .build();
-    ArgumentMapper<?> boundMapper = bindings.getMapper(TargetType.create(AnnotatedTypes.STRING));
+    ArgumentMapper<?> boundMapper = bindings.getMapper(TargetType.of(AnnotatedTypes.STRING));
     assertEquals(TestArgumentMapperProvider.PROVIDED_MAPPER, boundMapper,
         "Mapper was not provided by the bound ArgumentMapperProvider");
   }

@@ -18,13 +18,13 @@ public final class CommandParameter implements AnnotatedElement {
 
   private final Parameter parameter;
 
-  private final TargetType type;
+  private final TargetType targetType;
   private final String name;
   private final String description;
 
   private CommandParameter(Parameter parameter) {
     this.parameter = parameter;
-    this.type = TargetType.create(parameter.getAnnotatedType());
+    this.targetType = TargetType.of(parameter.getAnnotatedType());
     this.name = parameter.isAnnotationPresent(Named.class)
         ? parameter.getAnnotation(Named.class).value()
         : parameter.getName();
@@ -44,8 +44,8 @@ public final class CommandParameter implements AnnotatedElement {
   }
 
   @Nonnull
-  public TargetType getType() {
-    return type;
+  public TargetType getTargetType() {
+    return targetType;
   }
 
   @Nonnull
@@ -68,7 +68,7 @@ public final class CommandParameter implements AnnotatedElement {
 
   @Override
   public String toString() {
-    return type.toString() + " " + name;
+    return targetType.toString() + " " + name;
   }
 
   @Override
