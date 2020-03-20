@@ -22,7 +22,6 @@ public final class MappingProcess {
   private Object value;
   private Arguments requestedArguments;
 
-
   private MappingProcess(TargetType targetType, Arguments arguments) {
     this.targetType = targetType;
     this.isSet = false;
@@ -32,8 +31,9 @@ public final class MappingProcess {
     this.arguments = arguments;
   }
 
-  public static MappingProcess create(@Nonnull TargetType targetType, Arguments arguments) {
+  static MappingProcess create(@Nonnull TargetType targetType, @Nonnull Arguments arguments) {
     checkNotNull(targetType);
+    checkNotNull(arguments);
     return new MappingProcess(targetType, arguments);
   }
 

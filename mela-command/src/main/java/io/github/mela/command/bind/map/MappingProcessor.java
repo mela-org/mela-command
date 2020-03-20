@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 @SuppressWarnings("rawtypes")
-public class MappingProcessor {
+public final class MappingProcessor {
 
   private final TargetType type;
   private final ArgumentMapper<?> mapper;
