@@ -30,7 +30,7 @@ public final class MethodHandleCallable extends BindingCallable {
 
   @Override
   protected void call(Object[] arguments) throws Throwable {
-    handle.invoke(arguments);
+    handle.invokeWithArguments(arguments);
   }
 
   @Nonnull

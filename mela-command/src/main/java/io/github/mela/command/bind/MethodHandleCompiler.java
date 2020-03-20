@@ -18,12 +18,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 @Singleton
-public final class ReflectiveCompiler implements CommandCompiler {
+public final class MethodHandleCompiler implements CommandCompiler {
 
   private final CommandBindings bindings;
 
   @Inject
-  public ReflectiveCompiler(@Nonnull CommandBindings bindings) {
+  public MethodHandleCompiler(@Nonnull CommandBindings bindings) {
     this.bindings = checkNotNull(bindings);
   }
 

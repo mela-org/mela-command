@@ -24,7 +24,8 @@ class DefaultDispatcherTest {
         .build();
     Dispatcher dispatcher = new DefaultDispatcher(group);
     CommandContext context = CommandContext.of(Map.of("env", "test"));
-    dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
+    boolean success = dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
+    assertTrue(success, "Dispatcher did not return success");
     assertTrue(command.executed, "Command was not executed");
     assertEquals("baz", command.arguments.toString(), "command arguments were changed");
     assertEquals(context, command.context, "command context was changed");
