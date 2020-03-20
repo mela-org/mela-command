@@ -1,5 +1,6 @@
 package io.github.mela.command.core;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nonnull;
@@ -14,20 +15,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class DefaultDispatcherTest {
 
-  @Test
-  void testSimpleCommandDispatch() {
-    SimpleCommand command = new SimpleCommand();
+  private SimpleCommand command;
+  private Dispatcher dispatcher;
+
+  @BeforeEach
+  void setUp() {
+    command = new SimpleCommand();
     CommandGroup group = GroupBuilder.create()
         .group("foo")
           .withCommand(command)
         .root()
         .build();
-    Dispatcher dispatcher = new DefaultDispatcher(group);
+    dispatcher = new DefaultDispatcher(group);
+  }
+
+  @Test
+  void testSimpleCommandDispatch() {
     CommandContext context = CommandContext.of(Map.of("env", "test"));
     boolean success = dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
     assertTrue(success, "Dispatcher did not return success");
     assertTrue(command.executed, "Command was not executed");
-    assertEquals("baz", command.arguments.toString(), "command arguments were changed");
+    assertEquals("baz", command.arguments.getRaw(), "command arguments were changed");
     assertEquals(context, command.context, "command context was changed");
   }
 

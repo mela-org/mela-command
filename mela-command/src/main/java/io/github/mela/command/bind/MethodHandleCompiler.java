@@ -43,7 +43,7 @@ public final class MethodHandleCompiler implements CommandCompiler {
       throw new AssertionError("A method directly taken from a Class cannot be found anymore. Huh?", e);
     } catch (IllegalAccessException e) {
       throw new CommandCompilerException("Command method " + method
-          + " cannot be accessed. Check whether it is public", e);
+          + " cannot be accessed. Check whether it and its enclosing class are public.", e);
     }
   }
 }

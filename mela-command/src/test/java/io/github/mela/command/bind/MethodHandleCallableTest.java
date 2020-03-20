@@ -1,6 +1,7 @@
 package io.github.mela.command.bind;
 
 import io.github.mela.command.core.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,20 +9,27 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class MethodHandleCallableTest {
+class MethodHandleCallableTest {
 
-  @Test
-  void testCommandExecution() {
-    BindingCommand command = new BindingCommand();
+  private BindingCommand command;
+  private Dispatcher dispatcher;
+
+  @BeforeEach
+  void setUp() {
+    command = new BindingCommand();
     CommandGroup group = GroupBuilder.create()
         .withCommand(command)
         .compile(new MethodHandleCompiler(CommandBindings.EMPTY));
-    Dispatcher dispatcher = new DefaultDispatcher(group);
+    dispatcher = new DefaultDispatcher(group);
+  }
+
+  @Test
+  void testCommandExecution() {
     dispatcher.dispatch("foo", CommandContext.create());
     assertTrue(command.executed, "Command was not executed");
   }
 
-  public static class BindingCommand {
+  public static final class BindingCommand {
 
     private boolean executed = false;
 
