@@ -1,8 +1,8 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.core.*;
+import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandContext;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nonnull;
@@ -14,24 +14,20 @@ import java.lang.annotation.Target;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-class CommandInterceptorTest {
+class CommandInterceptorTest extends BindingTest<CommandInterceptorTest.TestCommand> {
 
   private static final int ANNOTATION_VALUE = 42;
 
   private TestInterceptor interceptor;
-  private Dispatcher dispatcher;
 
-  @BeforeEach
-  void setUp() {
-    TestCommand command = new TestCommand();
+  protected CommandInterceptorTest() {
+    super(TestCommand::new);
+  }
+
+  @Override
+  protected CommandBindingsBuilder configure(CommandBindingsBuilder builder) {
     interceptor = new TestInterceptor();
-    CommandBindings bindings = CommandBindings.builder()
-        .bindCommandInterceptor(TestAnnotation.class, interceptor)
-        .build();
-    CommandGroup group = ImmutableGroup.builder()
-        .withCommand(command)
-        .compile(new MethodHandleCompiler(bindings));
-    dispatcher = new DefaultDispatcher(group);
+    return builder.bindCommandInterceptor(TestAnnotation.class, interceptor);
   }
 
   @Test

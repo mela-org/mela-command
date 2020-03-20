@@ -1,7 +1,7 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.core.*;
-import org.junit.jupiter.api.BeforeEach;
+import io.github.mela.command.core.CommandCallable;
+import io.github.mela.command.core.CommandContext;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nonnull;
@@ -11,21 +11,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-class ExceptionHandlerTest {
+class ExceptionHandlerTest extends BindingTest<ExceptionHandlerTest.TestCommand> {
 
   private TestHandler handler;
-  private Dispatcher dispatcher;
 
-  @BeforeEach
-  void setUp() {
+  protected ExceptionHandlerTest() {
+    super(TestCommand::new);
+  }
+
+  @Override
+  protected CommandBindingsBuilder configure(CommandBindingsBuilder builder) {
     handler = new TestHandler();
-    CommandBindings bindings = CommandBindings.builder()
-        .bindHandler(RuntimeException.class, handler)
-        .build();
-    CommandGroup group = ImmutableGroup.builder()
-        .withCommand(new TestCommand())
-        .compile(new MethodHandleCompiler(bindings));
-    dispatcher = new DefaultDispatcher(group);
+    return builder.bindHandler(RuntimeException.class, handler);
   }
 
   @Test

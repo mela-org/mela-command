@@ -29,6 +29,12 @@ class MethodHandleCallableTest {
     assertTrue(command.executed, "Command was not executed");
   }
 
+  @Test
+  void testInapplicableArguments() {
+    assertThrows(ArgumentException.class, () -> dispatcher.dispatch("foo bar", CommandContext.create()),
+        "dispatch did not throw exception despite too many arguments");
+  }
+
   public static final class BindingCommand {
 
     private boolean executed = false;

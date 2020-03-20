@@ -1,0 +1,37 @@
+package io.github.mela.command.bind;
+
+import io.github.mela.command.core.CommandGroup;
+import io.github.mela.command.core.DefaultDispatcher;
+import io.github.mela.command.core.Dispatcher;
+import io.github.mela.command.core.ImmutableGroup;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.util.function.Supplier;
+
+/**
+ * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
+ */
+public abstract class BindingTest<T> {
+
+  private final Supplier<T> factory;
+
+  protected T command;
+  protected Dispatcher dispatcher;
+
+  protected BindingTest(Supplier<T> factory) {
+    this.factory = factory;
+  }
+
+  protected abstract CommandBindingsBuilder configure(CommandBindingsBuilder builder);
+
+  @BeforeEach
+  void setUp() {
+    command = factory.get();
+    CommandBindings bindings = configure(CommandBindings.builder()).build();
+    CommandGroup group = ImmutableGroup.builder()
+        .withCommand(command)
+        .compile(new MethodHandleCompiler(bindings));
+    dispatcher = new DefaultDispatcher(group);
+  }
+
+}
