@@ -31,8 +31,8 @@ public final class Arguments {
     int startIndex = indexOf(word);
     int endIndex = startIndex + word.length();
     return startIndex != -1
-        &&(startIndex == 0 || isWhitespace(charAt(startIndex - 1)))
-        && (endIndex == length() || isWhitespace(charAt(endIndex + 1)))
+        && (startIndex == 0 || isWhitespace(charAt(startIndex - 1)))
+        && (endIndex == length() || isWhitespace(charAt(endIndex)))
         ? startIndex : -1;
   }
 
