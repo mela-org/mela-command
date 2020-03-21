@@ -9,7 +9,7 @@ class IdentityCompilerTest {
 
   @Test
   void testDifferentCommandTypeRejection() {
-    assertThrows(CommandCompilerException.class, () -> IdentityCompiler.INSTANCE.compile(new Object()),
+    assertThrows(CommandCompilerException.class, () -> new IdentityCompiler().compile(new Object()),
         "IdentityCompiler does not recognise invalid Objects");
   }
 }
