@@ -1,5 +1,7 @@
 package io.github.mela.command.bind.map;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.parameter.CommandParameter;
@@ -31,12 +33,13 @@ public final class MappingProcessor {
 
   @Nonnull
   public static MappingProcessor fromParameter(@Nonnull CommandBindings bindings, @Nonnull CommandParameter parameter) {
-    return create(bindings, parameter.getTargetType(), new LinkedHashSet<>(Arrays.asList(parameter.getAnnotations())));
+    return create(bindings, parameter.getTargetType(),
+        Sets.newLinkedHashSet(Arrays.asList(parameter.getAnnotations())));
   }
 
   @Nonnull
   public static MappingProcessor fromTargetType(@Nonnull CommandBindings bindings, @Nonnull TargetType type) {
-    return create(bindings, type, new LinkedHashSet<>());
+    return create(bindings, type, Sets.newLinkedHashSet());
   }
 
   private static MappingProcessor create(CommandBindings bindings, TargetType type, Set<Annotation> annotations) {
@@ -50,7 +53,7 @@ public final class MappingProcessor {
   }
 
   private static Map<Annotation, MappingInterceptor> getInterceptors(CommandBindings bindings, Set<Annotation> annotations) {
-    Map<Annotation, MappingInterceptor> interceptors = new LinkedHashMap<>();
+    Map<Annotation, MappingInterceptor> interceptors = Maps.newLinkedHashMap();
     for (Annotation annotation : annotations) {
       MappingInterceptor<?> interceptor = bindings.getMappingInterceptor(annotation.annotationType());
       if (interceptor != null) {

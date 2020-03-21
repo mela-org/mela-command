@@ -1,11 +1,11 @@
 package io.github.mela.command.core;
 
+import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public final class CommandContext {
   private final Map<Object, Object> map;
 
   private CommandContext() {
-    this(new HashMap<>());
+    this(Maps.newHashMap());
   }
 
   private CommandContext(Map<Object, Object> map) {
@@ -108,6 +108,6 @@ public final class CommandContext {
 
   @Nonnull
   public static CommandContext of(@Nonnull Map<?, ?> map) {
-    return new CommandContext(new HashMap<>(map));
+    return new CommandContext(Maps.newHashMap(map));
   }
 }

@@ -101,12 +101,14 @@ public final class CommandBindings {
     CommandBindings that = (CommandBindings) o;
     return Objects.equals(commandInterceptors, that.commandInterceptors) &&
         Objects.equals(handlers, that.handlers) &&
-        Objects.equals(mappers, that.mappers);
+        Objects.equals(mappers, that.mappers) &&
+        Objects.equals(mappingInterceptors, that.mappingInterceptors) &&
+        Objects.equals(argumentMapperProviders, that.argumentMapperProviders);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(commandInterceptors, handlers, mappers);
+    return Objects.hash(commandInterceptors, handlers, mappers, mappingInterceptors, argumentMapperProviders);
   }
 
   @Override

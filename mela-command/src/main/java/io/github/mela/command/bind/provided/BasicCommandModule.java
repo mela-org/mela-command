@@ -1,5 +1,8 @@
 package io.github.mela.command.bind.provided;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import io.github.mela.command.bind.guice.CommandModule;
 import io.github.mela.command.bind.provided.interceptors.*;
 import io.github.mela.command.bind.provided.mappers.*;
@@ -23,10 +26,10 @@ public class BasicCommandModule extends CommandModule {
     bindMapper(Boolean.class).to(BooleanMapper.class);
 
     bindMapperProvider().to(NumberMapperProvider.class);
-    bindMapperProvider().toInstance(new CollectionMapperProvider<>(ArrayList.class, ArrayList::new));
-    bindMapperProvider().toInstance(new CollectionMapperProvider<>(LinkedHashSet.class, LinkedHashSet::new));
+    bindMapperProvider().toInstance(new CollectionMapperProvider<>(ArrayList.class, Lists::newArrayList));
+    bindMapperProvider().toInstance(new CollectionMapperProvider<>(LinkedHashSet.class, Sets::newLinkedHashSet));
     bindMapperProvider().to(ArrayMapperProvider.class);
-    bindMapperProvider().toInstance(new MapMapperProvider<>(LinkedHashMap.class, LinkedHashMap::new));
+    bindMapperProvider().toInstance(new MapMapperProvider<>(LinkedHashMap.class, Maps::newLinkedHashMap));
     bindMapperProvider().to(OptionalMapperProvider.class);
 
     bindMapper(String.class, Raw.class).to(RawStringMapper.class);

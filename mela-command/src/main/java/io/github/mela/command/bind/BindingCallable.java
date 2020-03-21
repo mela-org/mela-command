@@ -1,5 +1,6 @@
 package io.github.mela.command.bind;
 
+import com.google.common.collect.Maps;
 import io.github.mela.command.bind.parameter.Parameters;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandCallable;
@@ -8,7 +9,6 @@ import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,7 +47,7 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   private Map<Annotation, CommandInterceptor> extractInterceptors(Method method, CommandBindings bindings) {
-    Map<Annotation, CommandInterceptor> interceptors = new LinkedHashMap<>();
+    Map<Annotation, CommandInterceptor> interceptors = Maps.newLinkedHashMap();
     for (Annotation annotation : method.getAnnotations()) {
       CommandInterceptor<?> interceptor = bindings.getCommandInterceptor(annotation.annotationType());
       if (interceptor != null) {

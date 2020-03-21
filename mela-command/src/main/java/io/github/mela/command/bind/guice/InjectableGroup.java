@@ -1,5 +1,7 @@
 package io.github.mela.command.bind.guice;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import io.github.mela.command.compile.UncompiledGroup;
 
@@ -26,8 +28,8 @@ final class InjectableGroup implements UncompiledGroup {
 
   private InjectableGroup(Set<String> names) {
     this.names = Set.copyOf(names);
-    this.children = new HashSet<>();
-    this.compilables = new HashMap<>();
+    this.children = Sets.newHashSet();
+    this.compilables = Maps.newHashMap();
   }
 
   @Nonnull

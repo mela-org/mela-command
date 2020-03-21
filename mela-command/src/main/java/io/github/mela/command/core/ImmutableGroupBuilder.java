@@ -1,5 +1,6 @@
 package io.github.mela.command.core;
 
+import com.google.common.collect.Sets;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.IdentityCompiler;
 import io.github.mela.command.compile.UncompiledGroup;
@@ -8,7 +9,6 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -81,8 +81,8 @@ public final class ImmutableGroupBuilder {
     private MutableGroup(MutableGroup parent, Set<String> names) {
       this.parent = parent;
       this.names = Set.copyOf(names);
-      children = new HashSet<>();
-      commands = new HashSet<>();
+      children = Sets.newHashSet();
+      commands = Sets.newHashSet();
     }
 
     @Nonnull

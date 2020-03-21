@@ -1,5 +1,7 @@
 package io.github.mela.command.bind.parameter;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
@@ -29,7 +31,7 @@ public final class Parameters extends AbstractList<CommandParameter> {
 
   @Nonnull
   public Object[] map(@Nonnull Arguments arguments, @Nonnull CommandContext context) throws Throwable {
-    List<Object> mappedArgs = new ArrayList<>();
+    List<Object> mappedArgs = Lists.newArrayList();
     for (Map.Entry<CommandParameter, MappingProcessor> entry : parameters.entrySet()) {
       CommandParameter parameter = entry.getKey();
       MappingProcessor processor = entry.getValue();
@@ -55,7 +57,7 @@ public final class Parameters extends AbstractList<CommandParameter> {
   public static Parameters from(@Nonnull Method method, @Nonnull CommandBindings bindings) {
     checkNotNull(method);
     checkNotNull(bindings);
-    Map<CommandParameter, MappingProcessor> parameters = new LinkedHashMap<>();
+    Map<CommandParameter, MappingProcessor> parameters = Maps.newLinkedHashMap();
     for (Parameter parameter : method.getParameters()) {
       CommandParameter commandParameter = CommandParameter.of(parameter);
       MappingProcessor processor = MappingProcessor.fromParameter(bindings, commandParameter);

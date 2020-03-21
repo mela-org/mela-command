@@ -26,6 +26,7 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
         .mapToInt(arguments::indexOfWord)
         .filter((i) -> i != -1)
         .findFirst();
+
     flagPosition.ifPresent((pos) -> {
       arguments.jumpTo(pos);
       arguments.nextString();

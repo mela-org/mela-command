@@ -1,5 +1,7 @@
 package io.github.mela.command.bind;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
@@ -9,8 +11,6 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,11 +29,11 @@ public final class CommandBindingsBuilder {
   private final Set<ArgumentMapperProvider> argumentMapperProviders;
 
   CommandBindingsBuilder() {
-    this.commandInterceptors = new HashMap<>();
-    this.handlers = new HashMap<>();
-    this.mappers = new HashMap<>();
-    this.mappingInterceptors = new HashMap<>();
-    this.argumentMapperProviders = new HashSet<>();
+    this.commandInterceptors = Maps.newHashMap();
+    this.handlers = Maps.newHashMap();
+    this.mappers = Maps.newHashMap();
+    this.mappingInterceptors = Maps.newHashMap();
+    this.argumentMapperProviders = Sets.newHashSet();
   }
 
   @Nonnull
