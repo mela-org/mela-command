@@ -1,11 +1,14 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import com.google.common.collect.Maps;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.bind.ArgumentValidationException;
 import io.github.mela.command.bind.IllegalTargetTypeError;
 import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 /**
@@ -13,7 +16,7 @@ import javax.annotation.Nonnull;
  */
 public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
 
-  // TODO: 28.11.2019 cache regex
+  private final Map<String, Pattern> patterns = Maps.newHashMap();
 
   @Override
   public void postprocess(
@@ -28,7 +31,8 @@ public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
 
     if (!process.isErroneous()
         && process.isSet() && process.getValue() != null) {
-      if (!((String) process.getValue()).matches(annotation.value())) {
+      Pattern pattern = patterns.computeIfAbsent(annotation.value(), Pattern::compile);
+      if (!pattern.matcher((String) process.getValue()).matches()) {
         process.fail(new ArgumentValidationException("Value " + process.getValue()
             + " does not match regex " + annotation.value()));
       }
