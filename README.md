@@ -1,10 +1,46 @@
 # Commands
-`mela-command` is a general purpose command parsing framework for Java. 
-Like other `mela` modules, its aim is to reduce boilerplate code as much as possible.
+*mela-command* is a general purpose command parsing framework for Java. 
+Like other *mela* modules, its aim is to reduce boilerplate code as much as possible.
 
 The framework is inspired by [Intake](https://github.com/EngineHub/Intake) and implements 
 similar ideas as [Aikar](https://github.com/aikar/commands), but seeks to eliminate their 
 downsides and to be much more extensible and flexible.
+
+*mela-command* provides new, declarative ways of defining commands. 
+This is what commands written using the bind framework look like:
+
+```java
+public class UserCommands {
+  @Command(
+    labels = "ban",  
+    desc = "Bans a user.", 
+    help = "Use \"ban @User\" to ban the mentioned user.",
+    usage = "ban @User [--permanent] [--time <value>] <reason>"
+  )
+  @Requires(permission = "user.ban")
+  public void ban(
+    @Context("server")            Server server,
+    @Flag("-permanent")           boolean permanent, 
+    @Flag("-time") @Default("1d") Duration time,
+                                  User target,
+    @Maybe                        String reason
+  ) {
+    if (permanent) {
+      server.banUser(target);
+    } else {
+      server.banUser(target, time);
+    }
+    target.sendMessage("You have been banned.");
+    if (reason != null) {
+      target.sendMessage("Reason: " + reason);
+    }
+  }
+}
+```
+The body of this command only focuses on the command logic. Everything else that would 
+usually be part of the command code (such as argument parsing, permission checks, 
+error handling etc.) is determined by the method and parameter declarations.
+
 
 ## What is a command parsing framework?
 A command in this context refers to a textual message sent by users in a simple, non-graphical 
@@ -16,19 +52,21 @@ A command parsing framework takes an incoming command, parses its arguments - if
 to a format that is easy to use in code and executes its corresponding action.
 
 ## Quick Overview
-`mela-command` consists of two major base parts, the `io.github.mela.command.core` framework and the `io.github.mela.command.compile` API.
+*mela-command* consists of two major base parts, the core framework and the 
+compile API. Both are found in the core module. 
 The latter is used to connect higher-level command parsers with the lower-level 
-`io.github.mela.command.core` framework. The default implementation of this API is provided by the `bind` framework.
+core framework. The default implementation of this API is provided by the bind framework 
+(found in the bind module).
 
 ### Core Framework
-The `io.github.mela.command.core` framework (found in the package with the same name) is described by three main
-interfaces: `CommandCallable`, `CommandGroup` and `CommandDispatcher`.
+The core framework is described by three main interfaces: 
+`CommandCallable`, `CommandGroup` and `CommandDispatcher`.
 
-A `CommandCallable` is the actual command interface. Every implementation contains information
-about a specific type of command, such as its labels (names), a description and a help message
-as well as the code to execute when the command is called 
-(`CommandCallable#call(CommandArguments, CommandContext)`). This is supposed to be implemented 
-by users of this framework.
+A `CommandCallable` is the actual command interface. Every implementation contains 
+information about a specific type of command, such as its labels (names), 
+a description and a help message as well as the code to execute when the command is called 
+(`CommandCallable#call(CommandArguments, CommandContext)`). This is supposed to be 
+implemented by users of this framework.
 
 A `CommandGroup` is a tree-like structure where each instance is a node containing a set of
 names, `CommandCallable`s and children. It is used to group commands in a way that makes
