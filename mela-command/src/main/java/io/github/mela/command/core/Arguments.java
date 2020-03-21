@@ -3,6 +3,7 @@ package io.github.mela.command.core;
 import javax.annotation.Nonnull;
 
 import static com.google.common.base.Preconditions.*;
+import static java.lang.Character.isWhitespace;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -24,6 +25,15 @@ public final class Arguments {
 
   public static Arguments of(@Nonnull String arguments) {
     return new Arguments(checkNotNull(arguments));
+  }
+
+  public int indexOfWord(String word) {
+    int startIndex = indexOf(word);
+    int endIndex = startIndex + word.length();
+    return startIndex != -1
+        &&(startIndex == 0 || isWhitespace(charAt(startIndex - 1)))
+        && (endIndex == length() || isWhitespace(charAt(endIndex + 1)))
+        ? startIndex : -1;
   }
 
   public int indexOf(String substring) {
@@ -92,7 +102,7 @@ public final class Arguments {
   }
 
   private boolean isNextWhiteSpace() {
-    return Character.isWhitespace(peek());
+    return isWhitespace(peek());
   }
 
   public boolean hasNext() {
@@ -137,6 +147,10 @@ public final class Arguments {
 
   public void jumpTo(int position) {
     this.position = checkPositionIndex(position, arguments.length());
+  }
+
+  public int length() {
+    return arguments.length();
   }
 
   @Override

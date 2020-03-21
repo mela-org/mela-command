@@ -20,6 +20,7 @@ public class CommandInputMapper implements ArgumentMapper<CommandInput> {
 
   private final CommandGroup root;
 
+  // TODO see if this even works (cyclic dependency?)
   @Inject
   public CommandInputMapper(@Nonnull CommandGroup root) {
     this.root = checkNotNull(root);
