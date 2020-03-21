@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 import com.google.inject.Inject;
-import io.github.mela.command.guice.core.CommandExecutor;
+import io.github.mela.command.guice.CommandExecutor;
 import java.util.concurrent.Executor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

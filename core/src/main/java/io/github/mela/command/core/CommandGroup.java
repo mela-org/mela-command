@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 import com.google.inject.ProvidedBy;
-import io.github.mela.command.guice.compile.CompilingRootGroupProvider;
+import io.github.mela.command.guice.CompilingRootGroupProvider;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;

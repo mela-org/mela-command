@@ -1,6 +1,6 @@
 version = "1.0.0"
 
 dependencies {
-    compileOnly(project(":guice"))
+    compileOnly(Dependencies.guice)
     implementation(Dependencies.guava)
 }

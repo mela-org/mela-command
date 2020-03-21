@@ -1,4 +1,4 @@
-package io.github.mela.command.guice.compile;
+package io.github.mela.command.guice;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;

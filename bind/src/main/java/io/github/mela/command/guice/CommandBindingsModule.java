@@ -1,4 +1,4 @@
-package io.github.mela.command.guice.bind;
+package io.github.mela.command.guice;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

@@ -24,7 +24,9 @@ public final class CommandParameter implements AnnotatedElement {
   private CommandParameter(Parameter parameter) {
     this.parameter = parameter;
     this.targetType = TargetType.of(parameter.getAnnotatedType());
-    this.name = parameter.getName();
+    this.name = parameter.isAnnotationPresent(Name.class)
+        ? parameter.getAnnotation(Name.class).value()
+        : parameter.getName();
     this.description = parameter.isAnnotationPresent(Description.class)
         ? parameter.getAnnotation(Description.class).value()
         : "N/A";
