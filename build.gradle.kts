@@ -6,16 +6,24 @@ plugins {
 group = "io.github.mela"
 version = "1.0.0"
 
+object Deps {
+    const val guice = "com.google.inject:guice:4.2.3"
+    const val guava = "com.google.guava:guava:28.2-jre"
+    const val junitApi = "org.junit.jupiter:junit-jupiter-api:5.6.0"
+    const val junitEngine = "org.junit.jupiter:junit-jupiter-engine:5.6.0"
+}
+
 repositories {
     jcenter()
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("com.google.inject:guice:4.2.3")
-    api("com.google.guava:guava:28.2-jre")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    compileOnly(Deps.guice)
+    api(Deps.guava)
+    testImplementation(Deps.junitApi)
+    testImplementation(Deps.junitEngine)
+    testImplementation(Deps.guice)
 }
 
 tasks {
