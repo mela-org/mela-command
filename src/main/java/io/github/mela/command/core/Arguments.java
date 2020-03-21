@@ -1,9 +1,12 @@
 package io.github.mela.command.core;
 
-import javax.annotation.Nonnull;
-
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkPositionIndex;
 import static java.lang.Character.isWhitespace;
+
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

@@ -1,13 +1,16 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 import io.github.mela.command.bind.BindingTest;
 import io.github.mela.command.bind.Command;
 import io.github.mela.command.bind.CommandBindingsBuilder;
 import io.github.mela.command.bind.provided.mappers.StringMapper;
 import io.github.mela.command.core.CommandContext;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FlagInterceptorTest extends BindingTest<FlagInterceptorTest.TestCommand> {
 

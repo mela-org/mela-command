@@ -7,11 +7,10 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.bind.provided.mappers.CollectingMapper;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.Array;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

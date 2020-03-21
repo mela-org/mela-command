@@ -1,14 +1,14 @@
 package io.github.mela.command.bind.provided.mappers;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-
-import javax.annotation.Nonnull;
 import java.util.stream.Collector;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -26,7 +26,8 @@ public class CollectingMapper<A, R> implements ArgumentMapper<R> {
   }
 
   @Override
-  public R map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable {
+  public R map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext)
+      throws Throwable {
     Arguments listArguments = arguments.peek() == '['
         ? Arguments.of(arguments.nextScope('[', ']'))
         : arguments;

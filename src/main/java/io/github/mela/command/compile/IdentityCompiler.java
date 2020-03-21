@@ -1,10 +1,9 @@
 package io.github.mela.command.compile;
 
 import io.github.mela.command.core.CommandCallable;
-
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Set;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -13,7 +12,8 @@ public final class IdentityCompiler implements CommandCompiler {
 
   public static final IdentityCompiler INSTANCE = new IdentityCompiler();
 
-  private IdentityCompiler() {}
+  private IdentityCompiler() {
+  }
 
   @Nonnull
   @Override

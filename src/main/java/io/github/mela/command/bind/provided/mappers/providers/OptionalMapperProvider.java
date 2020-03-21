@@ -8,12 +8,16 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.bind.provided.mappers.OptionalMapper;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.AnnotatedType;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -23,10 +27,11 @@ public class OptionalMapperProvider implements ArgumentMapperProvider {
 
   private static final Map<Class<?>, Function<AnnotatedType, AnnotatedType>> OPTIONAL_CONTENT_TYPES
       = Map.of(Optional.class, (type) ->
-          Arrays.stream(AnnotatedTypes.getActualTypeArguments(type)).findFirst().orElse(AnnotatedTypes.STRING),
-      OptionalInt.class, ($) -> AnnotatedTypes.fromType(int.class),
-      OptionalLong.class, ($) -> AnnotatedTypes.fromType(long.class),
-      OptionalDouble.class, ($) -> AnnotatedTypes.fromType(double.class));
+          Arrays.stream(AnnotatedTypes.getActualTypeArguments(type))
+              .findFirst().orElse(AnnotatedTypes.STRING),
+      OptionalInt.class, (v) -> AnnotatedTypes.fromType(int.class),
+      OptionalLong.class, (v) -> AnnotatedTypes.fromType(long.class),
+      OptionalDouble.class, (v) -> AnnotatedTypes.fromType(double.class));
 
   private static final Map<Class<?>, Function<? super Object, ?>> WRAPPER_FUNCTIONS
       = Map.of(Optional.class, Optional::of,
@@ -47,8 +52,13 @@ public class OptionalMapperProvider implements ArgumentMapperProvider {
     AnnotatedType optionalType = type.getAnnotatedType();
     Class<?> rawType = type.getTypeToken().getRawType();
     AnnotatedType contentType = OPTIONAL_CONTENT_TYPES.get(rawType).apply(optionalType);
-    MappingProcessor processor = MappingProcessor.fromTargetType(bindings, TargetType.of(contentType));
-    return new OptionalMapper(processor, WRAPPER_FUNCTIONS.get(rawType), EMPTY_FUNCTIONS.get(rawType));
+    MappingProcessor processor =
+        MappingProcessor.fromTargetType(bindings, TargetType.of(contentType));
+    return new OptionalMapper(
+        processor,
+        WRAPPER_FUNCTIONS.get(rawType),
+        EMPTY_FUNCTIONS.get(rawType)
+    );
   }
 
   @SuppressWarnings("UnstableApiUsage")

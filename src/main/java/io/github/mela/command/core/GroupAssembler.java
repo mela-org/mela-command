@@ -1,25 +1,16 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.common.collect.Sets;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.UncompiledGroup;
-
-import javax.annotation.Nonnull;
 import java.util.Set;
 import java.util.function.Function;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 public interface GroupAssembler<T> {
-
-  @Nonnull
-  Set<? extends T> getChildren(@Nonnull T group);
-
-  @Nonnull
-  Set<String> getNames(@Nonnull T group);
-
-  @Nonnull
-  Set<? extends CommandCallable> getCommands(@Nonnull T group);
 
   @Nonnull
   static GroupAssembler<UncompiledGroup> compiling(@Nonnull CommandCompiler compiler) {
@@ -31,7 +22,8 @@ public interface GroupAssembler<T> {
     );
   }
 
-  private static Set<CommandCallable> shallowCompile(CommandCompiler compiler, UncompiledGroup group) {
+  private static Set<CommandCallable> shallowCompile(
+      CommandCompiler compiler, UncompiledGroup group) {
     return group.getUncompiledCommands().stream()
         .map(compiler::compile)
         .collect(Sets::newHashSet, Set::addAll, Set::addAll);
@@ -39,13 +31,16 @@ public interface GroupAssembler<T> {
 
   @Nonnull
   static GroupAssembler<CommandGroup> forGroup() {
-    return GroupAssembler.of(CommandGroup::getChildren, CommandGroup::getNames, CommandGroup::getCommands);
+    return GroupAssembler.of(CommandGroup::getChildren,
+        CommandGroup::getNames, CommandGroup::getCommands);
   }
 
   @Nonnull
-  static <T> GroupAssembler<T> of(@Nonnull Function<T, Set<? extends T>> childrenFunction,
-                                  @Nonnull Function<T, Set<String>> namesFunction,
-                                  @Nonnull Function<T, Set<? extends CommandCallable>> commandsFunction) {
+  static <T> GroupAssembler<T> of(
+      @Nonnull Function<T, Set<? extends T>> childrenFunction,
+      @Nonnull Function<T, Set<String>> namesFunction,
+      @Nonnull Function<T, Set<? extends CommandCallable>> commandsFunction
+  ) {
     checkNotNull(childrenFunction);
     checkNotNull(namesFunction);
     checkNotNull(commandsFunction);
@@ -69,4 +64,13 @@ public interface GroupAssembler<T> {
       }
     };
   }
+
+  @Nonnull
+  Set<? extends T> getChildren(@Nonnull T group);
+
+  @Nonnull
+  Set<String> getNames(@Nonnull T group);
+
+  @Nonnull
+  Set<? extends CommandCallable> getCommands(@Nonnull T group);
 }

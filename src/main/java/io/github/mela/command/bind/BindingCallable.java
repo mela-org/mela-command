@@ -1,19 +1,19 @@
 package io.github.mela.command.bind;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.common.collect.Maps;
 import io.github.mela.command.bind.parameter.Parameters;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.CommandContext;
-
-import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -46,10 +46,12 @@ public abstract class BindingCallable implements CommandCallable {
     this.parameters = Parameters.from(method, bindings);
   }
 
-  private Map<Annotation, CommandInterceptor> extractInterceptors(Method method, CommandBindings bindings) {
+  private Map<Annotation, CommandInterceptor> extractInterceptors(
+      Method method, CommandBindings bindings) {
     Map<Annotation, CommandInterceptor> interceptors = Maps.newLinkedHashMap();
     for (Annotation annotation : method.getAnnotations()) {
-      CommandInterceptor<?> interceptor = bindings.getCommandInterceptor(annotation.annotationType());
+      CommandInterceptor<?> interceptor =
+          bindings.getCommandInterceptor(annotation.annotationType());
       if (interceptor != null) {
         interceptors.put(annotation, interceptor);
       }

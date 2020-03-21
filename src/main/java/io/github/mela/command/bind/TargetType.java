@@ -1,8 +1,9 @@
 package io.github.mela.command.bind;
 
-import com.google.common.reflect.TypeToken;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
+
+import com.google.common.reflect.TypeToken;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
@@ -10,8 +11,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -26,6 +26,11 @@ public final class TargetType {
     this.key = getKey(annotatedType);
   }
 
+  @Nonnull
+  public static TargetType of(@Nonnull AnnotatedType type) {
+    return new TargetType(type);
+  }
+
   @SuppressWarnings("UnstableApiUsage")
   private TypeKey<?> getKey(AnnotatedType type) {
     return TypeKey.get(TypeToken.of(type.getType()), Arrays.stream(type.getAnnotations())
@@ -33,11 +38,6 @@ public final class TargetType {
         .filter((annotation) -> annotation.isAnnotationPresent(TypeClassifier.class))
         .findFirst()
         .orElse(null));
-  }
-
-  @Nonnull
-  public static TargetType of(@Nonnull AnnotatedType type) {
-    return new TargetType(type);
   }
 
   @SuppressWarnings("UnstableApiUsage")
@@ -63,8 +63,12 @@ public final class TargetType {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     TargetType that = (TargetType) o;
     return Objects.equals(annotatedType, that.annotatedType);
   }
@@ -81,7 +85,9 @@ public final class TargetType {
 
   private String toString(AnnotatedType type) {
     String annotationsString = type.getAnnotations().length > 0
-        ? Arrays.stream(type.getAnnotations()).map(Object::toString).collect(Collectors.joining(" ", "", " "))
+        ? Arrays.stream(type.getAnnotations())
+          .map(Object::toString)
+          .collect(Collectors.joining(" ", "", " "))
         : "";
     String typeString = type instanceof AnnotatedParameterizedType
         ? toString((AnnotatedParameterizedType) type)

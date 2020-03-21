@@ -4,9 +4,8 @@ import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.DefaultDispatcher;
 import io.github.mela.command.core.Dispatcher;
 import io.github.mela.command.core.ImmutableGroup;
-import org.junit.jupiter.api.BeforeEach;
-
 import java.util.function.Supplier;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

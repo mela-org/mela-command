@@ -1,13 +1,21 @@
 package io.github.mela.command.bind;
 
-import javax.annotation.Nonnull;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.Objects;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedArrayType;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+import java.util.Arrays;
+import java.util.Objects;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -16,7 +24,8 @@ public final class AnnotatedTypes {
 
   public static final AnnotatedType STRING = fromType(String.class);
 
-  private AnnotatedTypes() {}
+  private AnnotatedTypes() {
+  }
 
   @Nonnull
   public static AnnotatedType fromType(@Nonnull Type type) {
@@ -79,7 +88,8 @@ public final class AnnotatedTypes {
 
   }
 
-  private static class UnAnnotatedParameterizedType extends UnAnnotatedType implements AnnotatedParameterizedType {
+  private static class UnAnnotatedParameterizedType
+      extends UnAnnotatedType implements AnnotatedParameterizedType {
 
     private final AnnotatedType[] actualTypeArguments;
 
@@ -97,9 +107,15 @@ public final class AnnotatedTypes {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      if (!super.equals(o)) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      if (!super.equals(o)) {
+        return false;
+      }
       UnAnnotatedParameterizedType that = (UnAnnotatedParameterizedType) o;
       return Arrays.equals(actualTypeArguments, that.actualTypeArguments);
     }
@@ -133,9 +149,15 @@ public final class AnnotatedTypes {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      if (!super.equals(o)) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      if (!super.equals(o)) {
+        return false;
+      }
       UnAnnotatedArrayType that = (UnAnnotatedArrayType) o;
       return Objects.equals(componentType, that.componentType);
     }

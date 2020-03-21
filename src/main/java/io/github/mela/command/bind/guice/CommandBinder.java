@@ -1,10 +1,10 @@
 package io.github.mela.command.bind.guice;
 
-import com.google.inject.Binder;
-
-import javax.annotation.Nonnull;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+
+import com.google.inject.Binder;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

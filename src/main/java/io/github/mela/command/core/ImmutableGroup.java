@@ -1,15 +1,15 @@
 package io.github.mela.command.core;
 
-import com.google.common.collect.Sets;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
+
+import com.google.common.collect.Sets;
+import java.util.Objects;
+import java.util.Set;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
-import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -24,7 +24,8 @@ public final class ImmutableGroup implements CommandGroup {
 
   private Set<CommandGroup> children;
 
-  private ImmutableGroup(ImmutableGroup parent, Set<String> names, Set<? extends CommandCallable> commands) {
+  private ImmutableGroup(
+      ImmutableGroup parent, Set<String> names, Set<? extends CommandCallable> commands) {
     this.parent = parent;
     this.names = Set.copyOf(names);
     this.commands = Set.copyOf(commands);
@@ -36,67 +37,9 @@ public final class ImmutableGroup implements CommandGroup {
     return new ImmutableGroupBuilder();
   }
 
-  @Nullable
-  @Override
-  public CommandGroup getParent() {
-    return parent;
-  }
-
   @Nonnull
-  @Override
-  public Set<? extends CommandGroup> getChildren() {
-    return children;
-  }
-
-  @Nonnull
-  @Override
-  public Set<String> getNames() {
-    return names;
-  }
-
-  @Nonnull
-  @Override
-  public Set<CommandCallable> getCommands() {
-    return commands;
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder pathBuilder = new StringBuilder();
-    ImmutableGroup group = this;
-    while (group != null) {
-      pathBuilder.insert(0, group.names);
-      if (group.parent != null)
-        pathBuilder.insert(0, " - ");
-      group = group.parent;
-    }
-    return pathBuilder.toString();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    ImmutableGroup that = (ImmutableGroup) o;
-    return Objects.equals(names, that.names) &&
-        Objects.equals(commands, that.commands) &&
-        Objects.equals(children, that.children);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(names, commands, children);
-  }
-
-  private void setChildren(Set<ImmutableGroup> children) {
-    checkState(this.children == null);
-    this.children = Set.copyOf(children);
-  }
-
-  @Nonnull
-  public static CommandGroup childlessRoot(@Nonnull Set<String> names, @Nonnull Set<CommandCallable> commands) {
+  public static CommandGroup childlessRoot(
+      @Nonnull Set<String> names, @Nonnull Set<CommandCallable> commands) {
     ImmutableGroup group = new ImmutableGroup(null, names, commands);
     group.setChildren(Set.of());
     return group;
@@ -132,7 +75,8 @@ public final class ImmutableGroup implements CommandGroup {
     return children;
   }
 
-  private static void checkForDuplicateNames(Set<ImmutableGroup> children, Set<String> namesToCheck) {
+  private static void checkForDuplicateNames(
+      Set<ImmutableGroup> children, Set<String> namesToCheck) {
     for (CommandGroup child : children) {
       for (String name : child.getNames()) {
         if (namesToCheck.contains(name)) {
@@ -141,5 +85,67 @@ public final class ImmutableGroup implements CommandGroup {
         }
       }
     }
+  }
+
+  @Nullable
+  @Override
+  public CommandGroup getParent() {
+    return parent;
+  }
+
+  @Nonnull
+  @Override
+  public Set<? extends CommandGroup> getChildren() {
+    return children;
+  }
+
+  private void setChildren(Set<ImmutableGroup> children) {
+    checkState(this.children == null);
+    this.children = Set.copyOf(children);
+  }
+
+  @Nonnull
+  @Override
+  public Set<String> getNames() {
+    return names;
+  }
+
+  @Nonnull
+  @Override
+  public Set<CommandCallable> getCommands() {
+    return commands;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder pathBuilder = new StringBuilder();
+    ImmutableGroup group = this;
+    while (group != null) {
+      pathBuilder.insert(0, group.names);
+      if (group.parent != null) {
+        pathBuilder.insert(0, " - ");
+      }
+      group = group.parent;
+    }
+    return pathBuilder.toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ImmutableGroup that = (ImmutableGroup) o;
+    return Objects.equals(names, that.names)
+        && Objects.equals(commands, that.commands)
+        && Objects.equals(children, that.children);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(names, commands, children);
   }
 }

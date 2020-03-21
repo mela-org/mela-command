@@ -7,9 +7,8 @@ import io.github.mela.command.bind.provided.ArgumentValidationException;
 import io.github.mela.command.bind.provided.IllegalTargetTypeError;
 import io.github.mela.command.bind.provided.PreconditionError;
 import io.github.mela.command.core.CommandContext;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -18,12 +17,17 @@ import java.lang.reflect.Type;
 public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
 
   @Override
-  public void postprocess(@Nonnull Range annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
+  public void postprocess(
+      @Nonnull Range annotation,
+      @Nonnull MappingProcess process,
+      @Nonnull CommandContext context
+  ) {
     Type type = process.getTargetType().getType();
     if (type != int.class && type != Integer.class) {
       throw new IllegalTargetTypeError(type, Range.class);
     } else if (annotation.from() >= annotation.to()) {
-      throw new PreconditionError(annotation + " is not a valid range; from must be smaller than to.");
+      throw new PreconditionError(annotation
+          + " is not a valid range; from must be smaller than to.");
     }
 
     if (!process.isErroneous() && process.isSet() && process.getValue() != null) {
@@ -31,7 +35,8 @@ public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
       int from = annotation.from();
       int to = annotation.to();
       if (value < from || value >= to) {
-        process.fail(new ArgumentValidationException("Value " + value + " is out of range " + from + "-" + to));
+        process.fail(new ArgumentValidationException("Value " + value
+            + " is out of range " + from + "-" + to));
       }
     }
   }

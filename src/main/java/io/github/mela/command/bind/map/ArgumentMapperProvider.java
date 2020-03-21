@@ -2,7 +2,6 @@ package io.github.mela.command.bind.map;
 
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
-
 import javax.annotation.Nonnull;
 
 /**

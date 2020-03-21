@@ -25,7 +25,8 @@ public class MappingProcessException extends RuntimeException {
     super(cause);
   }
 
-  protected MappingProcessException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected MappingProcessException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 

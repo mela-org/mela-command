@@ -7,9 +7,8 @@ import io.github.mela.command.compile.UncompiledGroup;
 import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.GroupAssembler;
 import io.github.mela.command.core.ImmutableGroup;
-
-import javax.annotation.Nonnull;
 import java.util.Set;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

@@ -2,14 +2,13 @@ package io.github.mela.command.bind;
 
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import javax.annotation.Nonnull;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javax.annotation.Nonnull;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -37,6 +36,12 @@ class CommandInterceptorTest extends BindingTest<CommandInterceptorTest.TestComm
         "CommandInterceptor was incorrectly called or not called at all");
   }
 
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.METHOD)
+  private @interface TestAnnotation {
+    int value();
+  }
+
   public static final class TestCommand {
 
     @Command(labels = "foo")
@@ -45,12 +50,6 @@ class CommandInterceptorTest extends BindingTest<CommandInterceptorTest.TestComm
 
     }
 
-  }
-
-  @Retention(RetentionPolicy.RUNTIME)
-  @Target(ElementType.METHOD)
-  private @interface TestAnnotation {
-    int value();
   }
 
   private static class TestInterceptor implements CommandInterceptor<TestAnnotation> {
@@ -63,7 +62,6 @@ class CommandInterceptorTest extends BindingTest<CommandInterceptorTest.TestComm
       annotationValue = annotation.value();
     }
   }
-
 
 
 }

@@ -1,7 +1,6 @@
 package io.github.mela.command.core;
 
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

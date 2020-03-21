@@ -1,10 +1,11 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -23,6 +24,11 @@ public final class CommandInput {
     this.arguments = checkNotNull(arguments);
   }
 
+  @Nonnull
+  @CheckReturnValue
+  public static CommandInput parse(@Nonnull CommandGroup root, @Nonnull String input) {
+    return new CommandInputParser(root, input).parse();
+  }
 
   @Nonnull
   public String getRaw() {
@@ -42,12 +48,6 @@ public final class CommandInput {
   @Nonnull
   public Arguments getArguments() {
     return arguments;
-  }
-
-  @Nonnull
-  @CheckReturnValue
-  public static CommandInput parse(@Nonnull CommandGroup root, @Nonnull String input) {
-    return new CommandInputParser(root, input).parse();
   }
 
 }

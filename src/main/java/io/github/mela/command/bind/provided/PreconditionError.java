@@ -5,7 +5,8 @@ package io.github.mela.command.bind.provided;
  */
 public class PreconditionError extends Error {
 
-  public static final String APPENDIX = "\nPlease resolve this error in your command method declaration.";
+  public static final String APPENDIX =
+      "\nPlease resolve this error in your command method declaration.";
 
   public PreconditionError() {
     super();
@@ -23,7 +24,8 @@ public class PreconditionError extends Error {
     super(cause);
   }
 
-  protected PreconditionError(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected PreconditionError(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message + APPENDIX, cause, enableSuppression, writableStackTrace);
   }
 }

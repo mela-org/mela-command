@@ -1,12 +1,13 @@
 package io.github.mela.command.bind.provided.mappers;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 import io.github.mela.command.bind.BindingTest;
 import io.github.mela.command.bind.Command;
 import io.github.mela.command.bind.CommandBindingsBuilder;
 import io.github.mela.command.core.CommandContext;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BooleanMapperTest extends BindingTest<BooleanMapperTest.TestCommand> {
 

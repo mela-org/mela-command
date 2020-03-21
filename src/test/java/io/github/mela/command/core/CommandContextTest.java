@@ -1,11 +1,11 @@
 package io.github.mela.command.core;
 
-import com.google.common.reflect.TypeToken;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+import com.google.common.reflect.TypeToken;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

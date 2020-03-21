@@ -1,12 +1,13 @@
 package io.github.mela.command.bind.provided.mappers;
 
-import javax.annotation.Nonnull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.function.Function;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -18,11 +19,14 @@ public class NumberFormatMapper<T extends Number> extends NumberMapper<T> {
   private final Function<T, BigDecimal> toBigDecimalFunction;
 
   public NumberFormatMapper(
-      @Nonnull Class<T> type, @Nonnull NumberFormat format, @Nonnull Function<BigDecimal, T> fromBigDecimalFunction, Function<T, BigDecimal> toBigDecimalFunction) {
+      @Nonnull Class<T> type,
+      @Nonnull NumberFormat format,
+      @Nonnull Function<BigDecimal, T> fromBigDecimalFunction,
+      @Nonnull Function<T, BigDecimal> toBigDecimalFunction) {
     super(type);
     this.format = format;
     this.fromBigDecimalFunction = checkNotNull(fromBigDecimalFunction);
-    this.toBigDecimalFunction = toBigDecimalFunction;
+    this.toBigDecimalFunction = checkNotNull(toBigDecimalFunction);
   }
 
   @Override

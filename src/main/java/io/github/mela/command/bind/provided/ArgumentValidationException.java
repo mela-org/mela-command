@@ -23,7 +23,8 @@ public class ArgumentValidationException extends MappingProcessException {
     super(cause);
   }
 
-  protected ArgumentValidationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected ArgumentValidationException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

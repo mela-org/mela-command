@@ -1,5 +1,8 @@
 package io.github.mela.command.bind.provided.mappers.providers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 import io.github.mela.command.bind.BindingTest;
 import io.github.mela.command.bind.Command;
 import io.github.mela.command.bind.CommandBindingsBuilder;
@@ -7,8 +10,6 @@ import io.github.mela.command.bind.provided.Base;
 import io.github.mela.command.bind.provided.Localized;
 import io.github.mela.command.core.CommandContext;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NumberMapperProviderTest extends BindingTest<NumberMapperProviderTest.TestCommand> {
 

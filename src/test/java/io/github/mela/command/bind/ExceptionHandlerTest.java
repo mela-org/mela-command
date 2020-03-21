@@ -1,12 +1,12 @@
 package io.github.mela.command.bind;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.CommandContext;
-import org.junit.jupiter.api.Test;
-
 import javax.annotation.Nonnull;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

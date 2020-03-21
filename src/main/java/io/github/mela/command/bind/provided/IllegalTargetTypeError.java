@@ -10,6 +10,6 @@ public class IllegalTargetTypeError extends PreconditionError {
 
   public IllegalTargetTypeError(Type type, Class<? extends Annotation> interceptorAnnotation) {
     super("Illegal target type: @" + interceptorAnnotation.getName()
-        + " interceptor cannot be applied to " + type + ".");
+        + " annotation cannot be applied to " + type + ".");
   }
 }

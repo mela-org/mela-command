@@ -1,15 +1,15 @@
 package io.github.mela.command.bind.provided.mappers;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-
-import javax.annotation.Nonnull;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -31,7 +31,7 @@ public class OptionalMapper<T> implements ArgumentMapper<T> {
   }
 
   @Override
-  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable {
+  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) {
     try {
       Object mapped = subProcessor.process(arguments, commandContext);
       return successFunction.apply(mapped);

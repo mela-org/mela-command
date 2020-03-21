@@ -1,14 +1,14 @@
 package io.github.mela.command.bind.guice;
 
-import io.github.mela.command.compile.UncompiledGroup;
-import com.google.inject.Binder;
-import com.google.inject.multibindings.Multibinder;
-
-import javax.annotation.Nonnull;
-import java.util.Set;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+
+
+import com.google.inject.Binder;
+import com.google.inject.multibindings.Multibinder;
+import io.github.mela.command.compile.UncompiledGroup;
+import java.util.Set;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -43,7 +43,8 @@ public final class CommandBindingNode {
 
   @Nonnull
   public CommandBindingNode parent() {
-    checkState(parent != null, "Cannot go to parent, this is the highest node");
+    checkState(parent != null,
+        "Cannot go to parent, this is the highest node");
     return parent;
   }
 

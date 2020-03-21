@@ -1,13 +1,13 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.guice.CommandExecutor;
-
-import javax.annotation.Nonnull;
 import java.util.concurrent.Executor;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

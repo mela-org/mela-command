@@ -1,14 +1,14 @@
 package io.github.mela.command.core;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import javax.annotation.Nonnull;
-import java.util.Map;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+import java.util.Map;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -23,7 +23,7 @@ class DefaultDispatcherTest {
     command = new SimpleCommand();
     CommandGroup group = ImmutableGroup.builder()
         .group("foo")
-          .withCommand(command)
+        .withCommand(command)
         .root()
         .build();
     dispatcher = new DefaultDispatcher(group);

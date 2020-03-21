@@ -1,9 +1,10 @@
 package io.github.mela.command.bind.provided.mappers;
 
-import javax.annotation.Nonnull;
-import java.util.function.Function;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+
+import java.util.function.Function;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

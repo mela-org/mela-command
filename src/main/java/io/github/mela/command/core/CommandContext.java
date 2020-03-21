@@ -1,16 +1,16 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -25,6 +25,16 @@ public final class CommandContext {
 
   private CommandContext(Map<Object, Object> map) {
     this.map = map;
+  }
+
+  @Nonnull
+  public static CommandContext create() {
+    return new CommandContext();
+  }
+
+  @Nonnull
+  public static CommandContext of(@Nonnull Map<?, ?> map) {
+    return new CommandContext(Maps.newHashMap(map));
   }
 
   public void put(@Nullable Object key, @Nullable Object value) {
@@ -51,7 +61,7 @@ public final class CommandContext {
     put(new CompositeKey(type.getType(), key), value);
   }
 
-  @SuppressWarnings({"unchecked", "UnstableApiUsage"})
+  @SuppressWarnings( {"unchecked", "UnstableApiUsage"})
   @Nonnull
   public <T> Optional<T> get(@Nonnull TypeToken<T> type, @Nullable Object key) {
     return (Optional<T>) get(type.getType(), key);
@@ -77,11 +87,6 @@ public final class CommandContext {
   @Override
   public int hashCode() {
     return Objects.hashCode(map);
-  }
-
-  @Nonnull
-  public static CommandContext create() {
-    return new CommandContext();
   }
 
   private static final class CompositeKey {
@@ -110,10 +115,5 @@ public final class CommandContext {
     public int hashCode() {
       return Objects.hash(type, key);
     }
-  }
-
-  @Nonnull
-  public static CommandContext of(@Nonnull Map<?, ?> map) {
-    return new CommandContext(Maps.newHashMap(map));
   }
 }

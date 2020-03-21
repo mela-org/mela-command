@@ -1,8 +1,8 @@
 package io.github.mela.command.compile;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Set;
+import javax.annotation.Nonnull;
 
 public interface UncompiledGroup {
 

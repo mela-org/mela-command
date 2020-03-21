@@ -21,7 +21,8 @@ public class MissingMapperBindingError extends Error {
     super(cause);
   }
 
-  protected MissingMapperBindingError(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected MissingMapperBindingError(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

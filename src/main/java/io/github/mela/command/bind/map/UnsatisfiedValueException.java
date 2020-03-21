@@ -21,7 +21,8 @@ public class UnsatisfiedValueException extends MappingProcessException {
     super(cause);
   }
 
-  protected UnsatisfiedValueException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected UnsatisfiedValueException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

@@ -1,19 +1,23 @@
 package io.github.mela.command.bind.map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 import io.github.mela.command.bind.Command;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.MethodHandleCompiler;
-import io.github.mela.command.core.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import javax.annotation.Nonnull;
+import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.CommandGroup;
+import io.github.mela.command.core.DefaultDispatcher;
+import io.github.mela.command.core.Dispatcher;
+import io.github.mela.command.core.ImmutableGroup;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import javax.annotation.Nonnull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -47,18 +51,18 @@ class MappingInterceptorTest {
         "postprocess method was incorrectly called or not called at all");
   }
 
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target( {ElementType.TYPE_USE, ElementType.PARAMETER})
+  private @interface TestAnnotation {
+    int value();
+  }
+
   public static final class TestCommand {
 
     @Command(labels = "foo")
     public void execute(@TestAnnotation(ANNOTATION_VALUE) int i) {
 
     }
-  }
-
-  @Retention(RetentionPolicy.RUNTIME)
-  @Target({ElementType.TYPE_USE, ElementType.PARAMETER})
-  private @interface TestAnnotation {
-    int value();
   }
 
   private static class TestInterceptor implements MappingInterceptor<TestAnnotation> {
@@ -74,7 +78,7 @@ class MappingInterceptorTest {
     @Override
     public void postprocess(
         @Nonnull TestAnnotation annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
-        postProcessedValue = annotation.value();
+      postProcessedValue = annotation.value();
     }
   }
 

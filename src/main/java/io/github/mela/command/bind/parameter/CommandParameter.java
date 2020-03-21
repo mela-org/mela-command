@@ -1,15 +1,15 @@
 package io.github.mela.command.bind.parameter;
 
-import io.github.mela.command.bind.TargetType;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.inject.Named;
+
+import io.github.mela.command.bind.TargetType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Parameter;
 import java.util.Objects;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.inject.Named;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -55,8 +55,12 @@ public final class CommandParameter implements AnnotatedElement {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     CommandParameter that = (CommandParameter) o;
     return Objects.equals(parameter, that.parameter);
   }

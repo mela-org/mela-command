@@ -5,10 +5,9 @@ import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-
-import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -19,14 +18,16 @@ public class MapMapper<T extends Map<? super Object, ? super Object>> implements
   private final MappingProcessor keyProcessor;
   private final MappingProcessor valueProcessor;
 
-  public MapMapper(Supplier<T> factory, MappingProcessor keyProcessor, MappingProcessor valueProcessor) {
+  public MapMapper(
+      Supplier<T> factory, MappingProcessor keyProcessor, MappingProcessor valueProcessor) {
     this.factory = factory;
     this.keyProcessor = keyProcessor;
     this.valueProcessor = valueProcessor;
   }
 
   @Override
-  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable {
+  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext)
+      throws Throwable {
     Arguments mapArguments = arguments.peek() == '{'
         ? Arguments.of(arguments.nextScope('{', '}'))
         : arguments;

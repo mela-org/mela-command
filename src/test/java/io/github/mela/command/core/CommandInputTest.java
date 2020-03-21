@@ -1,10 +1,11 @@
 package io.github.mela.command.core;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class CommandInputTest {
 
@@ -16,7 +17,8 @@ class CommandInputTest {
 
   @BeforeEach
   void setUp() {
-    command = AssembledCommandCallable.builder().withLabels("bar").withAction((a, c) -> {}).build();
+    command = AssembledCommandCallable.builder().withLabels("bar").withAction((a, c) -> {
+    }).build();
     root = ImmutableGroup.builder().group("foo").withCommand(command).root().build();
     child = root.findChild("foo").orElseThrow();
   }

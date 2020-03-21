@@ -7,12 +7,11 @@ import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.provided.Base;
+import io.github.mela.command.bind.provided.IllegalTargetTypeError;
 import io.github.mela.command.bind.provided.Localized;
 import io.github.mela.command.bind.provided.PreconditionError;
 import io.github.mela.command.bind.provided.mappers.NumberFormatMapper;
 import io.github.mela.command.bind.provided.mappers.SimpleNumberMapper;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -62,16 +62,23 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
 
   private static final Set<Type> FLOATING_POINT = Set.of(Float.class, Double.class, BigDecimal.class);
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings( {"unchecked", "rawtypes"})
   @Nonnull
   @Override
   public ArgumentMapper<?> provideFor(@Nonnull TargetType type, @Nonnull CommandBindings bindings) {
     Class numberType = Primitives.wrap((Class) type.getType());
     Base base = type.getAnnotatedType().getAnnotation(Base.class);
+    if (base != null && FLOATING_POINT.contains(numberType)) {
+      throw new IllegalTargetTypeError(numberType, Base.class);
+    }
+
     int radix = base != null ? base.value() : 10;
-    if (!FLOATING_POINT.contains(numberType) && (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)) {
-      throw new PreconditionError("Illegal @Base annotation value for target type " + type + ": " + radix
-          + " (base must not be greater than Character.MAX_RADIX or smaller than Character.MIN_RADIX).");
+    if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX) {
+      throw new PreconditionError(
+          "Illegal @Base annotation value for target type " + type + ": " + radix
+              + " (base must not be greater than Character.MAX_RADIX " +
+              "or smaller than Character.MIN_RADIX)."
+      );
     }
 
     Localized localized = type.getAnnotatedType().getAnnotation(Localized.class);
@@ -90,7 +97,8 @@ public class NumberMapperProvider implements ArgumentMapperProvider {
       }
       Function fromBigDecimalFunction = FROM_BIGDECIMAL.get(numberType);
       Function toBigDecimalFunction = TO_BIGDECIMAL.get(numberType);
-      return new NumberFormatMapper(numberType, format, fromBigDecimalFunction, toBigDecimalFunction);
+      return new NumberFormatMapper(numberType, format,
+          fromBigDecimalFunction, toBigDecimalFunction);
     } else {
       BiFunction converter = CONVERTERS.get(numberType);
       return new SimpleNumberMapper(numberType, (s) -> converter.apply(s, radix));

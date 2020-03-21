@@ -6,11 +6,10 @@ import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.ArgumentException;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.OptionalInt;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -19,7 +18,11 @@ import java.util.OptionalInt;
 public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
 
   @Override
-  public void preprocess(@Nonnull Flag annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
+  public void preprocess(
+      @Nonnull Flag annotation,
+      @Nonnull MappingProcess process,
+      @Nonnull CommandContext context
+  ) {
     Arguments arguments = process.getArguments();
     OptionalInt flagPosition = Arrays.stream(annotation.value())
         .map("-"::concat)
@@ -36,12 +39,17 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
     if (type == boolean.class || type == Boolean.class) {
       process.setValue(flagPosition.isPresent());
     } else if (flagPosition.isEmpty()) {
-      process.fail(new ArgumentException("Missing flag; could not find flag matching annotation " + annotation));
+      process.fail(new ArgumentException("Missing flag; could not find flag matching annotation "
+          + annotation));
     }
   }
 
   @Override
-  public void postprocess(@Nonnull Flag annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
+  public void postprocess(
+      @Nonnull Flag annotation,
+      @Nonnull MappingProcess process,
+      @Nonnull CommandContext context
+  ) {
     process.getArguments().resetPosition();
   }
 }

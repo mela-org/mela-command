@@ -21,7 +21,8 @@ public class CommandCompilerException extends RuntimeException {
     super(cause);
   }
 
-  protected CommandCompilerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected CommandCompilerException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

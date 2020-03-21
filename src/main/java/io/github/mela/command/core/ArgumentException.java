@@ -21,7 +21,8 @@ public class ArgumentException extends RuntimeException {
     super(cause);
   }
 
-  protected ArgumentException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected ArgumentException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

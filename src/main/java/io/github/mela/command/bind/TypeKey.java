@@ -1,14 +1,14 @@
 package io.github.mela.command.bind;
 
-import com.google.common.reflect.TypeToken;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.lang.annotation.Annotation;
-import java.util.Objects;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+
+
+import com.google.common.reflect.TypeToken;
+import java.lang.annotation.Annotation;
+import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -26,11 +26,12 @@ public final class TypeKey<T> {
 
   @Nonnull
   public static <T> TypeKey<T> get(@Nonnull Class<T> type) {
-    return get(type);
+    return get(type, null);
   }
 
   @Nonnull
-  public static <T> TypeKey<T> get(@Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
+  public static <T> TypeKey<T> get(
+      @Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType) {
     return get(TypeToken.of(type), annotationType);
   }
 
@@ -61,13 +62,15 @@ public final class TypeKey<T> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
     TypeKey<?> that = (TypeKey<?>) o;
-    return Objects.equals(typeToken, that.typeToken) &&
-        Objects.equals(annotationType, that.annotationType);
+    return Objects.equals(typeToken, that.typeToken)
+        && Objects.equals(annotationType, that.annotationType);
   }
 
   @Override

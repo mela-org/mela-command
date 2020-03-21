@@ -1,9 +1,10 @@
 package io.github.mela.command.core;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
 import io.github.mela.command.compile.IdentityCompiler;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ImmutableGroupBuilderTest {
 

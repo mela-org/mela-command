@@ -23,7 +23,8 @@ public class MissingContextException extends MappingProcessException {
     super(cause);
   }
 
-  protected MissingContextException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  protected MissingContextException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

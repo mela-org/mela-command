@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.CommandContext;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -16,7 +15,11 @@ public class MaybeInterceptor extends MappingInterceptorAdapter<Maybe> {
 
   @SuppressWarnings("UnstableApiUsage")
   @Override
-  public void postprocess(@Nonnull Maybe annotation, @Nonnull MappingProcess process, @Nonnull CommandContext context) {
+  public void postprocess(
+      @Nonnull Maybe annotation,
+      @Nonnull MappingProcess process,
+      @Nonnull CommandContext context
+  ) {
     if (process.isErroneous()) {
       process.fixError();
       TypeToken<?> type = process.getTargetType().getTypeToken();

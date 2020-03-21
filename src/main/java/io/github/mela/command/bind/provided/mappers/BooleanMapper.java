@@ -4,7 +4,6 @@ import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-
 import javax.annotation.Nonnull;
 
 /**

@@ -1,11 +1,11 @@
 package io.github.mela.command.bind.parameter;
 
-import org.junit.jupiter.api.Test;
-
-import javax.inject.Named;
-import java.lang.reflect.Parameter;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+import java.lang.reflect.Parameter;
+import javax.inject.Named;
+import org.junit.jupiter.api.Test;
 
 class CommandParameterTest {
 

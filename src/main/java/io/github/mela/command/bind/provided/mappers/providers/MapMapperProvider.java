@@ -1,5 +1,8 @@
 package io.github.mela.command.bind.provided.mappers.providers;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.AnnotatedTypes;
 import io.github.mela.command.bind.CommandBindings;
@@ -8,19 +11,17 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.bind.provided.mappers.MapMapper;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 import java.util.function.Supplier;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 @Singleton
-public class MapMapperProvider<T extends Map<? super Object, ? super Object>> implements ArgumentMapperProvider {
+public class MapMapperProvider<T extends Map<? super Object, ? super Object>>
+    implements ArgumentMapperProvider {
 
   private final Class<T> type;
   private final Supplier<T> factory;
@@ -34,15 +35,19 @@ public class MapMapperProvider<T extends Map<? super Object, ? super Object>> im
   @Override
   public ArgumentMapper<?> provideFor(@Nonnull TargetType type, @Nonnull CommandBindings bindings) {
     AnnotatedType mapType = type.getAnnotatedType();
-    TargetType keyType, valueType;
+    TargetType keyType;
+    TargetType valueType;
     AnnotatedType[] typeArguments = AnnotatedTypes.getActualTypeArguments(mapType);
     if (typeArguments.length == 0) {
-      typeArguments = new AnnotatedType[] { AnnotatedTypes.STRING, AnnotatedTypes.STRING };
+      typeArguments = new AnnotatedType[] {AnnotatedTypes.STRING, AnnotatedTypes.STRING};
     }
     keyType = TargetType.of(typeArguments[0]);
     valueType = TargetType.of(typeArguments[1]);
-    return new MapMapper<>(factory,
-        MappingProcessor.fromTargetType(bindings, keyType), MappingProcessor.fromTargetType(bindings, valueType));
+    return new MapMapper<>(
+        factory,
+        MappingProcessor.fromTargetType(bindings, keyType),
+        MappingProcessor.fromTargetType(bindings, valueType)
+    );
   }
 
   @SuppressWarnings("UnstableApiUsage")

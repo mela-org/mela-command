@@ -1,5 +1,8 @@
 package io.github.mela.command.bind.guice;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
@@ -12,13 +15,10 @@ import io.github.mela.command.bind.TypeKey;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -35,19 +35,28 @@ public abstract class CommandModule extends AbstractModule {
 
   @Override
   protected final void configure() {
-    this.mapperBinder = MapBinder.newMapBinder(binder(), TypeKey.class, ArgumentMapper.class);
-    this.mappingInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, MappingInterceptor.class);
-    this.commandInterceptorBinder = MapBinder.newMapBinder(binder(), Class.class, CommandInterceptor.class);
-    this.handlerBinder = MapBinder.newMapBinder(binder(), Class.class, ExceptionHandler.class);
-    this.mapperProviderBinder = Multibinder.newSetBinder(binder(), ArgumentMapperProvider.class);
-    this.commandBinder = CommandBinder.create(binder());
+    this.mapperBinder =
+        MapBinder.newMapBinder(binder(), TypeKey.class, ArgumentMapper.class);
+    this.mappingInterceptorBinder =
+        MapBinder.newMapBinder(binder(), Class.class, MappingInterceptor.class);
+    this.commandInterceptorBinder =
+        MapBinder.newMapBinder(binder(), Class.class, CommandInterceptor.class);
+    this.handlerBinder =
+        MapBinder.newMapBinder(binder(), Class.class, ExceptionHandler.class);
+    this.mapperProviderBinder =
+        Multibinder.newSetBinder(binder(), ArgumentMapperProvider.class);
+    this.commandBinder =
+        CommandBinder.create(binder());
     configureModule();
   }
 
-  protected void configureModule() {};
+  protected void configureModule() {
+  }
+
 
   @Nonnull
-  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull Class<T> type) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
+      @Nonnull Class<T> type) {
     return bindMapper(type, null);
   }
 
@@ -58,7 +67,8 @@ public abstract class CommandModule extends AbstractModule {
   }
 
   @Nonnull
-  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeLiteral<T> type) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
+      @Nonnull TypeLiteral<T> type) {
     return bindMapper(type.getType(), null);
   }
 
@@ -68,7 +78,7 @@ public abstract class CommandModule extends AbstractModule {
     return bindMapper(type.getType(), annotationType);
   }
 
-  @SuppressWarnings({"unchecked", "UnstableApiUsage"})
+  @SuppressWarnings( {"unchecked", "UnstableApiUsage"})
   private <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
       Type type, Class<? extends Annotation> annotationType) {
     checkNotNull(type);
@@ -78,7 +88,8 @@ public abstract class CommandModule extends AbstractModule {
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(@Nonnull TypeKey<T> key) {
+  protected final <T> LinkedBindingBuilder<ArgumentMapper<? extends T>> bindMapper(
+      @Nonnull TypeKey<T> key) {
     checkNotNull(key);
     return ((MapBinder<TypeKey, ArgumentMapper<? extends T>>) mapperBinder)
         .addBinding(key);
@@ -91,7 +102,8 @@ public abstract class CommandModule extends AbstractModule {
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  protected final <T extends Throwable> LinkedBindingBuilder<ExceptionHandler<? extends T>> bindHandler(
+  protected final <T extends Throwable>
+  LinkedBindingBuilder<ExceptionHandler<? extends T>> bindHandler(
       @Nonnull Class<T> exceptionType) {
     checkNotNull(exceptionType);
     return ((MapBinder<Class<?>, ExceptionHandler<? extends T>>) handlerBinder)
@@ -100,7 +112,8 @@ public abstract class CommandModule extends AbstractModule {
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  protected final <T extends Annotation> LinkedBindingBuilder<CommandInterceptor<? extends T>> bindCommandInterceptor(
+  protected final <T extends Annotation>
+  LinkedBindingBuilder<CommandInterceptor<? extends T>> bindCommandInterceptor(
       @Nonnull Class<T> annotationType) {
     checkNotNull(annotationType);
     return ((MapBinder<Class<?>, CommandInterceptor<? extends T>>) commandInterceptorBinder)
@@ -109,7 +122,8 @@ public abstract class CommandModule extends AbstractModule {
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  protected final <T extends Annotation> LinkedBindingBuilder<MappingInterceptor<? extends T>> bindMappingInterceptor(
+  protected final <T extends Annotation>
+  LinkedBindingBuilder<MappingInterceptor<? extends T>> bindMappingInterceptor(
       @Nonnull Class<T> annotationType) {
     checkNotNull(annotationType);
     return ((MapBinder<Class<?>, MappingInterceptor<? extends T>>) mappingInterceptorBinder)

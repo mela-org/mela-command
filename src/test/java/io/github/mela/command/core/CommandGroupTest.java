@@ -1,9 +1,10 @@
 package io.github.mela.command.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CommandGroupTest {
 
@@ -14,8 +15,10 @@ class CommandGroupTest {
 
   @BeforeEach
   void setUp() {
-    defaultCommand = AssembledCommandCallable.builder().withAction((a, c) -> {}).build();
-    barCommand = AssembledCommandCallable.builder().withLabels("bar").withAction((a, c) -> {}).build();
+    defaultCommand = AssembledCommandCallable.builder().withAction((a, c) -> {
+    }).build();
+    barCommand = AssembledCommandCallable.builder().withLabels("bar").withAction((a, c) -> {
+    }).build();
     root = ImmutableGroup.builder()
         .withCommand(barCommand)
         .withCommand(defaultCommand)

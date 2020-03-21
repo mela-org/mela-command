@@ -1,13 +1,13 @@
 package io.github.mela.command.bind.map;
 
-import io.github.mela.command.bind.TargetType;
-import io.github.mela.command.core.Arguments;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+
+
+import io.github.mela.command.bind.TargetType;
+import io.github.mela.command.core.Arguments;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -48,12 +48,6 @@ public final class MappingProcess {
     this.error = null;
   }
 
-  public void setValue(@Nullable Object value) {
-    checkState(!isErroneous(), "You may not set a value before resolving existing errors");
-    this.value = value;
-    this.isSet = true;
-  }
-
   public boolean isSet() {
     return isSet;
   }
@@ -62,6 +56,13 @@ public final class MappingProcess {
   public Object getValue() {
     checkState(isSet, "No value set!");
     return value;
+  }
+
+  public void setValue(@Nullable Object value) {
+    checkState(!isErroneous(),
+        "You may not set a value before resolving existing errors");
+    this.value = value;
+    this.isSet = true;
   }
 
   public boolean isErroneous() {

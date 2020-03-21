@@ -1,13 +1,14 @@
 package io.github.mela.command.bind.provided.interceptors;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
 import io.github.mela.command.bind.BindingTest;
 import io.github.mela.command.bind.Command;
 import io.github.mela.command.bind.CommandBindingsBuilder;
 import io.github.mela.command.bind.provided.mappers.SimpleNumberMapper;
 import io.github.mela.command.core.CommandContext;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RangeInterceptorTest extends BindingTest<RangeInterceptorTest.TestCommand> {
 

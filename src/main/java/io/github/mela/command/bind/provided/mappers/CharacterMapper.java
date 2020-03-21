@@ -5,7 +5,6 @@ import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -20,7 +19,8 @@ public class CharacterMapper implements ArgumentMapper<Character> {
     if (next.length() == 1) {
       return next.charAt(0);
     } else {
-      throw new MappingProcessException("Invalid argument: \"" + next + "\" is not a single character");
+      throw new MappingProcessException("Invalid argument: \""
+          + next + "\" is not a single character");
     }
   }
 }

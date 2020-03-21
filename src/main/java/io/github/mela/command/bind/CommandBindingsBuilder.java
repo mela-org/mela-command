@@ -1,20 +1,20 @@
 package io.github.mela.command.bind;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
-
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -37,27 +37,35 @@ public final class CommandBindingsBuilder {
   }
 
   @Nonnull
-  public <T> CommandBindingsBuilder bindMapper(@Nonnull Class<T> type, @Nonnull ArgumentMapper<T> mapper) {
+  public <T> CommandBindingsBuilder bindMapper(
+      @Nonnull Class<T> type, @Nonnull ArgumentMapper<T> mapper) {
     return bindMapper(type, null, mapper);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   public <T> CommandBindingsBuilder bindMapper(
-      @Nonnull Class<T> type, @Nullable Class<? extends Annotation> annotationType, @Nonnull ArgumentMapper<T> mapper) {
+      @Nonnull Class<T> type,
+      @Nullable Class<? extends Annotation> annotationType,
+      @Nonnull ArgumentMapper<T> mapper
+  ) {
     return bindMapper(TypeToken.of(type), annotationType, mapper);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  public <T> CommandBindingsBuilder bindMapper(@Nonnull TypeToken<T> type, @Nonnull ArgumentMapper<T> mapper) {
+  public <T> CommandBindingsBuilder bindMapper(
+      @Nonnull TypeToken<T> type, @Nonnull ArgumentMapper<T> mapper) {
     return bindMapper(type, null, mapper);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   public <T> CommandBindingsBuilder bindMapper(
-      @Nonnull TypeToken<T> type, @Nullable Class<? extends Annotation> annotationType, @Nonnull ArgumentMapper<T> mapper) {
+      @Nonnull TypeToken<T> type,
+      @Nullable Class<? extends Annotation> annotationType,
+      @Nonnull ArgumentMapper<T> mapper
+  ) {
     checkNotNull(type);
     checkNotNull(mapper);
     mappers.put(TypeKey.get(type, annotationType), mapper);

@@ -1,10 +1,16 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.core.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.CommandGroup;
+import io.github.mela.command.core.DefaultDispatcher;
+import io.github.mela.command.core.Dispatcher;
+import io.github.mela.command.core.ImmutableGroup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

@@ -1,5 +1,8 @@
 package io.github.mela.command.bind.map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.github.mela.command.bind.CommandBindings;
@@ -7,13 +10,12 @@ import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.parameter.CommandParameter;
 import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
-
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.annotation.Annotation;
-import java.util.*;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -25,24 +27,31 @@ public final class MappingProcessor {
   private final ArgumentMapper<?> mapper;
   private final Map<Annotation, MappingInterceptor> interceptors;
 
-  private MappingProcessor(TargetType type, ArgumentMapper<?> mapper, Map<Annotation, MappingInterceptor> interceptors) {
+  private MappingProcessor(
+      TargetType type,
+      ArgumentMapper<?> mapper,
+      Map<Annotation, MappingInterceptor> interceptors
+  ) {
     this.type = type;
     this.mapper = mapper;
     this.interceptors = interceptors;
   }
 
   @Nonnull
-  public static MappingProcessor fromParameter(@Nonnull CommandBindings bindings, @Nonnull CommandParameter parameter) {
+  public static MappingProcessor fromParameter(
+      @Nonnull CommandBindings bindings, @Nonnull CommandParameter parameter) {
     return create(bindings, parameter.getTargetType(),
         Sets.newLinkedHashSet(Arrays.asList(parameter.getAnnotations())));
   }
 
   @Nonnull
-  public static MappingProcessor fromTargetType(@Nonnull CommandBindings bindings, @Nonnull TargetType type) {
+  public static MappingProcessor fromTargetType(
+      @Nonnull CommandBindings bindings, @Nonnull TargetType type) {
     return create(bindings, type, Sets.newLinkedHashSet());
   }
 
-  private static MappingProcessor create(CommandBindings bindings, TargetType type, Set<Annotation> annotations) {
+  private static MappingProcessor create(
+      CommandBindings bindings, TargetType type, Set<Annotation> annotations) {
     annotations.addAll(Arrays.asList(type.getAnnotatedType().getAnnotations()));
     ArgumentMapper mapper = bindings.getMapper(type);
     if (mapper == null) {
@@ -52,10 +61,12 @@ public final class MappingProcessor {
     return new MappingProcessor(type, mapper, interceptors);
   }
 
-  private static Map<Annotation, MappingInterceptor> getInterceptors(CommandBindings bindings, Set<Annotation> annotations) {
+  private static Map<Annotation, MappingInterceptor> getInterceptors(
+      CommandBindings bindings, Set<Annotation> annotations) {
     Map<Annotation, MappingInterceptor> interceptors = Maps.newLinkedHashMap();
     for (Annotation annotation : annotations) {
-      MappingInterceptor<?> interceptor = bindings.getMappingInterceptor(annotation.annotationType());
+      MappingInterceptor<?> interceptor =
+          bindings.getMappingInterceptor(annotation.annotationType());
       if (interceptor != null) {
         interceptors.put(annotation, interceptor);
       }
@@ -64,7 +75,8 @@ public final class MappingProcessor {
   }
 
   @Nullable
-  public Object process(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable {
+  public Object process(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext)
+      throws Throwable {
     checkNotNull(commandContext);
     MappingProcess process = MappingProcess.create(type, arguments);
     intercept(process, commandContext, true);
@@ -76,7 +88,11 @@ public final class MappingProcessor {
     return finishProcess(lastMappingArgs, commandContext, process);
   }
 
-  private Object finishProcess(Arguments lastMappingArgs, CommandContext commandContext, MappingProcess process) throws Throwable {
+  private Object finishProcess(
+      Arguments lastMappingArgs,
+      CommandContext commandContext,
+      MappingProcess process
+  ) throws Throwable {
     if (process.isErroneous()) {
       throw process.getError();
     } else if (!process.isSet()) {

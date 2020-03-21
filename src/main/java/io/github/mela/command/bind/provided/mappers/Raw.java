@@ -1,7 +1,6 @@
 package io.github.mela.command.bind.provided.mappers;
 
 import io.github.mela.command.bind.TypeClassifier;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

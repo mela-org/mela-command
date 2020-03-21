@@ -1,18 +1,18 @@
 package io.github.mela.command.core;
 
-import java.util.Optional;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+
+import java.util.Optional;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 final class CommandInputParser {
 
+  private final String initialInput;
   private String currentWord;
   private String remaining;
-
-  private final String initialInput;
   private CommandGroup group;
   private CommandCallable command;
 
@@ -53,7 +53,9 @@ final class CommandInputParser {
 
   private void nextWord() {
     int whitespaceIndex = nextWhitespace();
-    currentWord = whitespaceIndex == remaining.length() ? remaining : remaining.substring(0, whitespaceIndex);
+    currentWord = whitespaceIndex == remaining.length()
+        ? remaining
+        : remaining.substring(0, whitespaceIndex);
   }
 
   private void stripCurrentWord() {
@@ -63,8 +65,11 @@ final class CommandInputParser {
   private int nextWhitespace() {
     int nextWhiteSpace;
     for (nextWhiteSpace = 0;
-         nextWhiteSpace < remaining.length() && !Character.isWhitespace(remaining.charAt(nextWhiteSpace));
-         ++nextWhiteSpace);
+         nextWhiteSpace < remaining.length()
+             && !Character.isWhitespace(remaining.charAt(nextWhiteSpace));
+         ++nextWhiteSpace) {
+      ;
+    }
     return nextWhiteSpace;
   }
 }

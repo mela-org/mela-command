@@ -1,18 +1,18 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+
+
 import com.google.common.collect.Sets;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.IdentityCompiler;
 import io.github.mela.command.compile.UncompiledGroup;
-
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -46,7 +46,8 @@ public final class ImmutableGroupBuilder {
 
   @Nonnull
   public ImmutableGroupBuilder parent() {
-    checkState(current.parent != null, "Builder is at root node, no parent to step to");
+    checkState(current.parent != null,
+        "Builder is at root node, no parent to step to");
     current = current.parent;
     return this;
   }

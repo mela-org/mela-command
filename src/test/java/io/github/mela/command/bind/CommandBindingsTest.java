@@ -1,14 +1,14 @@
 package io.github.mela.command.bind;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
 import io.github.mela.command.bind.map.MappingInterceptor;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
-import org.junit.jupiter.api.Test;
-
 import javax.annotation.Nonnull;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 class CommandBindingsTest {
 
@@ -38,7 +38,8 @@ class CommandBindingsTest {
 
   @Test
   void testCommandInterceptorBinding() {
-    CommandInterceptor<TestAnnotation> interceptor = (t, a, c) -> {};
+    CommandInterceptor<TestAnnotation> interceptor = (t, a, c) -> {
+    };
     CommandBindings bindings = CommandBindings.builder()
         .bindCommandInterceptor(TestAnnotation.class, interceptor)
         .build();
@@ -58,7 +59,8 @@ class CommandBindingsTest {
 
   @Test
   void testExceptionHandlerBinding() {
-    ExceptionHandler<Throwable> handler = (a, c1, c2) -> {};
+    ExceptionHandler<Throwable> handler = (a, c1, c2) -> {
+    };
     CommandBindings bindings = CommandBindings.builder()
         .bindHandler(Throwable.class, handler)
         .build();
@@ -69,9 +71,11 @@ class CommandBindingsTest {
         "Subclass Exception type was not bound to the correct ExceptionHandler");
   }
 
-  private @interface TestAnnotation {}
+  private @interface TestAnnotation {
+  }
 
-  private static class TestMappingInterceptor extends MappingInterceptorAdapter<TestAnnotation> {}
+  private static class TestMappingInterceptor extends MappingInterceptorAdapter<TestAnnotation> {
+  }
 
   private static class TestArgumentMapperProvider implements ArgumentMapperProvider {
 

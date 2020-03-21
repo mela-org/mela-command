@@ -1,5 +1,8 @@
 package io.github.mela.command.bind.provided.mappers;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.ArgumentMapper;
@@ -7,10 +10,7 @@ import io.github.mela.command.core.Arguments;
 import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.CommandInput;
-
 import javax.annotation.Nonnull;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)

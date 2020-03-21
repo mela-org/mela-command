@@ -1,12 +1,13 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
+import java.util.Set;
+import java.util.function.BiConsumer;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Set;
-import java.util.function.BiConsumer;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -15,21 +16,26 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
 
   private final BiConsumer<Arguments, CommandContext> action;
 
-  private AssembledCommandCallable(@Nonnull Set<String> labels, @Nullable String primaryLabel, @Nullable String help,
-                                   @Nullable String description, @Nullable String usage,
-                                   @Nonnull BiConsumer<Arguments, CommandContext> action) {
+  private AssembledCommandCallable(
+      @Nonnull Set<String> labels,
+      @Nullable String primaryLabel,
+      @Nullable String help,
+      @Nullable String description,
+      @Nullable String usage,
+      @Nonnull BiConsumer<Arguments, CommandContext> action
+  ) {
     super(labels, primaryLabel, description, help, usage);
     this.action = checkNotNull(action);
-  }
-
-  @Override
-  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
-    action.accept(arguments, context);
   }
 
   @Nonnull
   public static Builder builder() {
     return new Builder();
+  }
+
+  @Override
+  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
+    action.accept(arguments, context);
   }
 
   public static final class Builder {
@@ -39,7 +45,8 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
     private String help = null;
     private String description = null;
     private String usage = null;
-    private BiConsumer<Arguments, CommandContext> action = (s, c) -> {};
+    private BiConsumer<Arguments, CommandContext> action = (s, c) -> {
+    };
 
     @Nonnull
     public Builder withLabels(@Nonnull String... labels) {
