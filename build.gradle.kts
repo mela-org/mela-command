@@ -1,7 +1,6 @@
 plugins {
     `java-library`
     checkstyle
-    id("com.github.spotbugs") version "1.7.1"
 }
 
 group = "io.github.mela"
@@ -17,7 +16,6 @@ dependencies {
     api("com.google.guava:guava:28.2-jre")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.6.0")
-    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
 }
 
 tasks {
@@ -61,17 +59,6 @@ tasks {
     checkstyleMain {
         configFile = file("$rootDir/config/checkstyle/google_checks.xml")
         configProperties = mapOf("config_loc" to "${rootProject.projectDir}/config/checkstyle")
-    }
-
-    spotbugs {
-        toolVersion = "4.0.0-beta1"
-    }
-
-    spotbugsMain {
-        reports {
-            html.isEnabled = true
-            xml.isEnabled = false
-        }
     }
 
 }
