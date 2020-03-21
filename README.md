@@ -125,13 +125,13 @@ public class Main {
 ```
 
 ### Bind framework
-Although the io.github.mela.command.core framework is efficient, simple, convenient to use and sufficient 
+Although the core framework is efficient, simple, convenient to use and sufficient 
 in many cases, it is not the main attraction of mela-command. 
 
-The `bind` framework is a very high level abstraction of writing commands on
-top of the io.github.mela.command.core framework. 
+The bind framework is a very high level abstraction of writing commands on
+top of the core framework. 
 
-The framework's io.github.mela.command.core paradigm is **aspect-oriented programming (AOP)**. This means that
+The framework's core paradigm is **aspect-oriented programming (AOP)**. This means that
 **argument mapping** (i.e., converting arguments to Java objects), **argument validation** 
 (i.e., checking whether an argument fulfills certain conditions), **command interception** 
 (i.e., checking whether the command can be executed in the first place) and 
