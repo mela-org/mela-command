@@ -1,106 +1,83 @@
 plugins {
-  `java-library`
-  pmd
-  checkstyle
-  id("com.github.spotbugs") version "1.7.1"
-  id("io.spring.dependency-management") version "1.0.7.RELEASE"
+    `java-library`
+    checkstyle
+    id("com.github.spotbugs") version "1.7.1"
 }
 
-group = "com.github.stupremee"
+group = "io.github.mela"
 version = "1.0.0"
 
-subprojects {
-  apply(plugin = "java-library")
-  apply(plugin = "pmd")
-  apply(plugin = "checkstyle")
-  apply(plugin = "com.github.spotbugs")
-  apply(plugin = "io.spring.dependency-management")
-
-  group = "com.github.stupremee"
-  version = "1.0.0"
-
-  repositories {
-    maven("https://repo.spring.io/milestone")
+repositories {
     jcenter()
     mavenCentral()
-  }
+}
 
-  dependencyManagement {
-    imports {
-      mavenBom("io.projectreactor:reactor-bom:${Versions.reactor_bom}")
-    }
-  }
-
-  dependencies {
+dependencies {
+    compileOnly("com.google.inject:guice:4.2.3")
+    api("com.google.guava:guava:28.2-jre")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
-  }
+}
 
-  tasks {
+tasks {
     val sourceSets: SourceSetContainer by project
 
     val sourcesJar by registering(Jar::class) {
-      dependsOn(JavaPlugin.CLASSES_TASK_NAME)
-      archiveClassifier.set("sources")
-      from(sourceSets["main"].allSource)
+        dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+        archiveClassifier.set("sources")
+        from(sourceSets["main"].allSource)
     }
 
     val javadocJar by registering(Jar::class) {
-      dependsOn(JavaPlugin.JAVADOC_TASK_NAME)
-      archiveClassifier.set("javadoc")
-      from(javadoc)
+        dependsOn(JavaPlugin.JAVADOC_TASK_NAME)
+        archiveClassifier.set("javadoc")
+        from(javadoc)
     }
 
     artifacts {
-      add("archives", javadocJar)
-      add("archives", sourcesJar)
+        add("archives", javadocJar)
+        add("archives", sourcesJar)
     }
 
     build {
-      dependsOn(jar)
-      dependsOn(sourcesJar)
-      dependsOn(javadocJar)
+        dependsOn(jar)
+        dependsOn(sourcesJar)
+        dependsOn(javadocJar)
 
-      jar.get().mustRunAfter(clean)
-      sourcesJar.get().mustRunAfter(jar)
+        jar.get().mustRunAfter(clean)
+        sourcesJar.get().mustRunAfter(jar)
     }
 
     test {
-      useJUnitPlatform()
+        useJUnitPlatform()
     }
 
     checkstyle {
-      checkstyleTest.get().enabled = false
-      toolVersion = "8.19"
+        checkstyleTest.get().enabled = false
+        toolVersion = "8.19"
     }
 
     checkstyleMain {
-      configFile = file("$rootDir/config/checkstyle/google_checks.xml")
-      configProperties = mapOf("config_loc" to "${rootProject.projectDir}/config/checkstyle")
+        configFile = file("$rootDir/config/checkstyle/google_checks.xml")
+        configProperties = mapOf("config_loc" to "${rootProject.projectDir}/config/checkstyle")
     }
 
     spotbugs {
-      toolVersion = "4.0.0-beta1"
+        toolVersion = "4.0.0-beta1"
     }
 
     spotbugsMain {
-      reports {
-        html.isEnabled = true
-        xml.isEnabled = false
-      }
+        reports {
+            html.isEnabled = true
+            xml.isEnabled = false
+        }
     }
 
-    pmd {
-      pmdTest.get().enabled = false
-    }
+}
 
-    pmdMain {
-      ignoreFailures = true
-      ruleSetConfig = this@subprojects.resources.text.fromFile(file("${rootProject.projectDir}/config/pmd/ruleset.xml"))
-    }
-  }
-
-  configure<JavaPluginConvention> {
+configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
-  }
 }
+
