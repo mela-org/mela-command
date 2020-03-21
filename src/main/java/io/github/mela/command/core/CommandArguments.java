@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class Arguments {
+public final class CommandArguments {
 
   private final String raw;
   private final StringBuilder arguments;
@@ -19,15 +19,15 @@ public final class Arguments {
   private int position;
   private char previous;
 
-  private Arguments(String arguments) {
+  private CommandArguments(String arguments) {
     this.raw = arguments.trim();
     this.arguments = new StringBuilder(raw);
     this.position = 0;
     this.previous = 0;
   }
 
-  public static Arguments of(@Nonnull String arguments) {
-    return new Arguments(checkNotNull(arguments));
+  public static CommandArguments of(@Nonnull String arguments) {
+    return new CommandArguments(checkNotNull(arguments));
   }
 
   public int indexOfWord(String word) {

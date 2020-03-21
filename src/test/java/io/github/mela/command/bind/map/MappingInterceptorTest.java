@@ -9,7 +9,7 @@ import io.github.mela.command.bind.MethodHandleCompiler;
 import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.DefaultDispatcher;
-import io.github.mela.command.core.Dispatcher;
+import io.github.mela.command.core.CommandDispatcher;
 import io.github.mela.command.core.ImmutableGroup;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -27,7 +27,7 @@ class MappingInterceptorTest {
   private static final int ANNOTATION_VALUE = 35;
 
   private TestInterceptor interceptor;
-  private Dispatcher dispatcher;
+  private CommandDispatcher dispatcher;
 
   @BeforeEach
   void setUp() {
@@ -37,7 +37,7 @@ class MappingInterceptorTest {
         .bindMappingInterceptor(TestAnnotation.class, interceptor)
         .build();
     CommandGroup group = ImmutableGroup.builder()
-        .withCommand(new TestCommand())
+        .add(new TestCommand())
         .compile(new MethodHandleCompiler(bindings));
     dispatcher = new DefaultDispatcher(group);
   }

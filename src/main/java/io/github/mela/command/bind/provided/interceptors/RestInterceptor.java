@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.interceptors;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 
@@ -19,7 +19,7 @@ public class RestInterceptor extends MappingInterceptorAdapter<Rest> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
-    Arguments arguments = process.getArguments();
+    CommandArguments arguments = process.getArguments();
     StringBuilder builder = new StringBuilder();
     while (arguments.hasNext()) {
       if (arguments.peek() == '"' && arguments.previous() != '\\') {
@@ -27,7 +27,7 @@ public class RestInterceptor extends MappingInterceptorAdapter<Rest> {
       }
       builder.append(arguments.next());
     }
-    process.requestMapping(Arguments.of("\"" + builder.toString().trim() + "\""));
+    process.requestMapping(CommandArguments.of("\"" + builder.toString().trim() + "\""));
   }
 
 }

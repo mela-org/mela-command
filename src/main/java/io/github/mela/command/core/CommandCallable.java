@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 public interface CommandCallable {
 
-  void call(@Nonnull Arguments arguments, @Nonnull CommandContext context);
+  void call(@Nonnull CommandArguments arguments, @Nonnull CommandContext context);
 
   @Nonnull
   Set<String> getLabels();

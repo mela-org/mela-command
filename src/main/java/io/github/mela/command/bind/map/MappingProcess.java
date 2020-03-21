@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 
 import io.github.mela.command.bind.TargetType;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,14 +15,14 @@ import javax.annotation.Nullable;
 public final class MappingProcess {
 
   private final TargetType targetType;
-  private final Arguments arguments;
+  private final CommandArguments arguments;
 
   private boolean isSet;
   private Throwable error;
   private Object value;
-  private Arguments requestedArguments;
+  private CommandArguments requestedArguments;
 
-  private MappingProcess(TargetType targetType, Arguments arguments) {
+  private MappingProcess(TargetType targetType, CommandArguments arguments) {
     this.targetType = targetType;
     this.isSet = false;
     this.value = null;
@@ -31,7 +31,7 @@ public final class MappingProcess {
     this.arguments = arguments;
   }
 
-  static MappingProcess create(@Nonnull TargetType targetType, @Nonnull Arguments arguments) {
+  static MappingProcess create(@Nonnull TargetType targetType, @Nonnull CommandArguments arguments) {
     checkNotNull(targetType);
     checkNotNull(arguments);
     return new MappingProcess(targetType, arguments);
@@ -80,16 +80,16 @@ public final class MappingProcess {
     return targetType;
   }
 
-  public Arguments getArguments() {
+  public CommandArguments getArguments() {
     return arguments;
   }
 
   // TODO make more easy to understand
-  public Arguments getArgumentsToMap() {
+  public CommandArguments getArgumentsToMap() {
     return requestedArguments != null ? requestedArguments : arguments;
   }
 
-  public void requestMapping(Arguments arguments) {
+  public void requestMapping(CommandArguments arguments) {
     this.requestedArguments = arguments;
   }
 }

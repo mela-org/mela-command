@@ -6,7 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.ArgumentMapper;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.CommandInput;
@@ -27,7 +27,7 @@ public class CommandInputMapper implements ArgumentMapper<CommandInput> {
   }
 
   @Override
-  public CommandInput map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) {
+  public CommandInput map(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext) {
     return CommandInput.parse(root, arguments.nextString());
   }
 }

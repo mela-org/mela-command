@@ -6,7 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Maps;
 import io.github.mela.command.bind.parameter.Parameters;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.CommandContext;
 import java.lang.annotation.Annotation;
@@ -61,7 +61,7 @@ public abstract class BindingCallable implements CommandCallable {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
+  public void call(@Nonnull CommandArguments arguments, @Nonnull CommandContext context) {
     try {
       intercept(arguments, context);
       Object[] methodArguments = parameters.map(arguments, context);
@@ -77,7 +77,7 @@ public abstract class BindingCallable implements CommandCallable {
   }
 
   @SuppressWarnings("unchecked")
-  private void intercept(Arguments arguments, CommandContext context) {
+  private void intercept(CommandArguments arguments, CommandContext context) {
     for (Map.Entry<Annotation, CommandInterceptor> entry : interceptors.entrySet()) {
       entry.getValue().intercept(entry.getKey(), arguments, context);
     }

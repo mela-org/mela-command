@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.interceptors;
 import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 
@@ -21,7 +21,7 @@ public class DefaultInterceptor extends MappingInterceptorAdapter<Default> {
   ) {
     if (process.isErroneous() || !process.isSet() || process.getValue() == null) {
       process.fixError();
-      process.requestMapping(Arguments.of(annotation.value()));
+      process.requestMapping(CommandArguments.of(annotation.value()));
     }
   }
 }

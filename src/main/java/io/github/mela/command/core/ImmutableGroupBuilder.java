@@ -39,7 +39,7 @@ public final class ImmutableGroupBuilder {
   }
 
   @Nonnull
-  public ImmutableGroupBuilder withCommand(@Nonnull Object command) {
+  public ImmutableGroupBuilder add(@Nonnull Object command) {
     current.commands.add(checkNotNull(command));
     return this;
   }

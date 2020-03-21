@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 @Singleton
-public final class DefaultDispatcher implements Dispatcher {
+public final class DefaultDispatcher implements CommandDispatcher {
 
   private final CommandGroup root;
   private Executor executor;

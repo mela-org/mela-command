@@ -1,6 +1,6 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.lang.annotation.Annotation;
 import javax.annotation.Nonnull;
@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 public interface CommandInterceptor<T extends Annotation> {
 
   void intercept(@Nonnull T annotation,
-                 @Nonnull Arguments arguments,
+                 @Nonnull CommandArguments arguments,
                  @Nonnull CommandContext context);
 
 }

@@ -16,14 +16,14 @@ import org.junit.jupiter.api.Test;
 class DefaultDispatcherTest {
 
   private SimpleCommand command;
-  private Dispatcher dispatcher;
+  private CommandDispatcher dispatcher;
 
   @BeforeEach
   void setUp() {
     command = new SimpleCommand();
     CommandGroup group = ImmutableGroup.builder()
         .group("foo")
-        .withCommand(command)
+        .add(command)
         .root()
         .build();
     dispatcher = new DefaultDispatcher(group);
@@ -42,7 +42,7 @@ class DefaultDispatcherTest {
   private static class SimpleCommand extends CommandCallableAdapter {
 
     boolean executed = false;
-    Arguments arguments = null;
+    CommandArguments arguments = null;
     CommandContext context = null;
 
     SimpleCommand() {
@@ -50,7 +50,7 @@ class DefaultDispatcherTest {
     }
 
     @Override
-    public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
+    public void call(@Nonnull CommandArguments arguments, @Nonnull CommandContext context) {
       this.executed = true;
       this.arguments = arguments;
       this.context = context;

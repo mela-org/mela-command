@@ -26,7 +26,7 @@ final class CommandInputParser {
   CommandInput parse() {
     stripGroup();
     stripCommand();
-    return new CommandInput(initialInput, group, command, Arguments.of(remaining));
+    return new CommandInput(initialInput, group, command, CommandArguments.of(remaining));
   }
 
   private void stripGroup() {

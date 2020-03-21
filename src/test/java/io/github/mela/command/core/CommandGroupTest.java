@@ -20,8 +20,8 @@ class CommandGroupTest {
     barCommand = AssembledCommandCallable.builder().withLabels("bar").withAction((a, c) -> {
     }).build();
     root = ImmutableGroup.builder()
-        .withCommand(barCommand)
-        .withCommand(defaultCommand)
+        .add(barCommand)
+        .add(defaultCommand)
         .group("foo")
         .root()
         .build();

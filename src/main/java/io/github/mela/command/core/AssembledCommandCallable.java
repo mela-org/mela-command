@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
  */
 public final class AssembledCommandCallable extends CommandCallableAdapter {
 
-  private final BiConsumer<Arguments, CommandContext> action;
+  private final BiConsumer<CommandArguments, CommandContext> action;
 
   private AssembledCommandCallable(
       @Nonnull Set<String> labels,
@@ -22,7 +22,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
       @Nullable String help,
       @Nullable String description,
       @Nullable String usage,
-      @Nonnull BiConsumer<Arguments, CommandContext> action
+      @Nonnull BiConsumer<CommandArguments, CommandContext> action
   ) {
     super(labels, primaryLabel, description, help, usage);
     this.action = checkNotNull(action);
@@ -34,7 +34,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
   }
 
   @Override
-  public void call(@Nonnull Arguments arguments, @Nonnull CommandContext context) {
+  public void call(@Nonnull CommandArguments arguments, @Nonnull CommandContext context) {
     action.accept(arguments, context);
   }
 
@@ -45,7 +45,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
     private String help = null;
     private String description = null;
     private String usage = null;
-    private BiConsumer<Arguments, CommandContext> action = (s, c) -> {
+    private BiConsumer<CommandArguments, CommandContext> action = (s, c) -> {
     };
 
     @Nonnull
@@ -84,7 +84,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
     }
 
     @Nonnull
-    public Builder withAction(@Nonnull BiConsumer<Arguments, CommandContext> action) {
+    public Builder withAction(@Nonnull BiConsumer<CommandArguments, CommandContext> action) {
       this.action = action;
       return this;
     }

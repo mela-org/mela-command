@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessor;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -31,7 +31,7 @@ public class OptionalMapper<T> implements ArgumentMapper<T> {
   }
 
   @Override
-  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) {
+  public T map(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext) {
     try {
       Object mapped = subProcessor.process(arguments, commandContext);
       return successFunction.apply(mapped);

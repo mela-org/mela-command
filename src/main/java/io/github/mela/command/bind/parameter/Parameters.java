@@ -9,7 +9,7 @@ import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
 import io.github.mela.command.core.ArgumentException;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -45,7 +45,7 @@ public final class Parameters extends AbstractList<CommandParameter> {
   }
 
   @Nonnull
-  public Object[] map(@Nonnull Arguments arguments, @Nonnull CommandContext context)
+  public Object[] map(@Nonnull CommandArguments arguments, @Nonnull CommandContext context)
       throws Throwable {
     List<Object> mappedArgs = Lists.newArrayList();
     for (Map.Entry<CommandParameter, MappingProcessor> entry : parameters.entrySet()) {

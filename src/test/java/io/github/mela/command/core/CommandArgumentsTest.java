@@ -6,13 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ArgumentsTest {
+class CommandArgumentsTest {
 
-  private Arguments arguments;
+  private CommandArguments arguments;
 
   @BeforeEach
   void setUp() {
-    arguments = Arguments.of(
+    arguments = CommandArguments.of(
         "\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" ( sed (d))iam");
   }
 

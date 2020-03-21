@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.DefaultDispatcher;
-import io.github.mela.command.core.Dispatcher;
+import io.github.mela.command.core.CommandDispatcher;
 import io.github.mela.command.core.ImmutableGroup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,13 +18,13 @@ import org.junit.jupiter.api.Test;
 class MethodHandleCallableTest {
 
   private BindingCommand command;
-  private Dispatcher dispatcher;
+  private CommandDispatcher dispatcher;
 
   @BeforeEach
   void setUp() {
     command = new BindingCommand();
     CommandGroup group = ImmutableGroup.builder()
-        .withCommand(command)
+        .add(command)
         .compile(new MethodHandleCompiler(CommandBindings.EMPTY));
     dispatcher = new DefaultDispatcher(group);
   }

@@ -3,7 +3,7 @@ package io.github.mela.command.bind.provided.mappers;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -26,10 +26,10 @@ public class MapMapper<T extends Map<? super Object, ? super Object>> implements
   }
 
   @Override
-  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext)
+  public T map(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext)
       throws Throwable {
-    Arguments mapArguments = arguments.peek() == '{'
-        ? Arguments.of(arguments.nextScope('{', '}'))
+    CommandArguments mapArguments = arguments.peek() == '{'
+        ? CommandArguments.of(arguments.nextScope('{', '}'))
         : arguments;
     T map = factory.get();
     while (mapArguments.hasNext()) {

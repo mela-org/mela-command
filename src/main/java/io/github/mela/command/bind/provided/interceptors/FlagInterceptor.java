@@ -4,7 +4,7 @@ import com.google.inject.Singleton;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.ArgumentException;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -23,7 +23,7 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
-    Arguments arguments = process.getArguments();
+    CommandArguments arguments = process.getArguments();
     OptionalInt flagPosition = Arrays.stream(annotation.value())
         .map("-"::concat)
         .mapToInt(arguments::indexOfWord)

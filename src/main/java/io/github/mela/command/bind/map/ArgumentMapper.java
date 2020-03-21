@@ -1,6 +1,6 @@
 package io.github.mela.command.bind.map;
 
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,5 +13,5 @@ public interface ArgumentMapper<T> {
     return ((argument, commandContext) -> instance);
   }
 
-  T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) throws Throwable;
+  T map(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext) throws Throwable;
 }

@@ -8,7 +8,7 @@ import com.google.common.collect.Sets;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.parameter.CommandParameter;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -75,12 +75,12 @@ public final class MappingProcessor {
   }
 
   @Nullable
-  public Object process(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext)
+  public Object process(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext)
       throws Throwable {
     checkNotNull(commandContext);
     MappingProcess process = MappingProcess.create(type, arguments);
     intercept(process, commandContext, true);
-    Arguments lastMappingArgs = process.getArgumentsToMap();
+    CommandArguments lastMappingArgs = process.getArgumentsToMap();
     if (!process.isErroneous() && !process.isSet()) {
       map(commandContext, process);
     }
@@ -89,7 +89,7 @@ public final class MappingProcessor {
   }
 
   private Object finishProcess(
-      Arguments lastMappingArgs,
+      CommandArguments lastMappingArgs,
       CommandContext commandContext,
       MappingProcess process
   ) throws Throwable {

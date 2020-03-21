@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.MappingProcessException;
-import io.github.mela.command.core.Arguments;
+import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 
@@ -21,7 +21,7 @@ public abstract class NumberMapper<T extends Number> implements ArgumentMapper<T
   }
 
   @Override
-  public T map(@Nonnull Arguments arguments, @Nonnull CommandContext commandContext) {
+  public T map(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext) {
     String next = arguments.nextString();
     try {
       return convert(next);
