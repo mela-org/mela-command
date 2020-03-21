@@ -22,7 +22,7 @@ The latter is used to connect higher-level command parsers with the lower-level
 
 ### Core Framework
 The `core` framework (found in the package with the same name) is described by three main
-interfaces: `CommandGroup`, `CommandCallable` and `CommandDispatcher`.
+interfaces: `CommandCallable`, `CommandGroup` and `CommandDispatcher`.
 
 A `CommandCallable` is the actual command interface. Every implementation contains information
 about a specific type of command, such as its labels (names), a description and a help message
@@ -58,8 +58,8 @@ public class EchoCommand extends CommandCallableAdapter {
 }
 ```
 Using this additional code, you could run the command in your console with 
-`example echo <arguments>`. If you type anything else, you will get an error message saying
-"Unknown command.".
+`example echo <arguments>`. If you typed anything else, you would get an error message saying
+"Unknown command.":
 ```java
 public class Main {
 
@@ -85,4 +85,21 @@ public class Main {
   }   
 }
 ```
+
+### Bind framework
+Although the core framework is efficient, simple, convenient to use and sufficient 
+in many cases, it is not the main attraction of mela-command. 
+
+The `bind` framework is a very high level abstraction of writing commands on
+top of the core framework. 
+
+The framework's core paradigm is **aspect-oriented programming (AOP)**. This means that
+**argument mapping** (i.e., converting arguments to Java objects), **argument validation** 
+(i.e., checking whether an argument fulfills certain conditions), **command interception** 
+(i.e., checking whether the command can be executed in the first place) and 
+**exception handling** (i.e., reacting to errors occurring along the way) are all done 
+**separately** and do not happen in the execution code of a command. The framework instead 
+looks at command method declarations and creates fitting `CommandCallable`s dynamically.
+
+
  
