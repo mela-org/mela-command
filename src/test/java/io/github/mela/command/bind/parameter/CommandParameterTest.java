@@ -22,6 +22,7 @@ class CommandParameterTest {
     assertEquals(DESCRIPTION, commandParameter.getDescription(), "Description was not recognised");
   }
 
-  public void method(@Named(NAME) @Description(DESCRIPTION) String object) {}
+  public void method(@Named(NAME) @Description(DESCRIPTION) String object) {
+  }
 
 }

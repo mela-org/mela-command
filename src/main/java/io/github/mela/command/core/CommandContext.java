@@ -64,10 +64,12 @@ public final class CommandContext {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
     CommandContext that = (CommandContext) o;
     return Objects.equals(map, that.map);
   }
@@ -93,11 +95,15 @@ public final class CommandContext {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
       CompositeKey that = (CompositeKey) o;
-      return Objects.equals(type, that.type) &&
-          Objects.equals(key, that.key);
+      return Objects.equals(type, that.type)
+          && Objects.equals(key, that.key);
     }
 
     @Override

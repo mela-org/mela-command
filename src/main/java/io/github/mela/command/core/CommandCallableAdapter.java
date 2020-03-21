@@ -1,8 +1,9 @@
 package io.github.mela.command.core;
 
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Set;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
