@@ -1,6 +1,5 @@
 rootProject.name = 'mela-command'
 include 'core'
-include 'guice'
 include 'bind'
 include 'buildSrc'
 include 'provided'
