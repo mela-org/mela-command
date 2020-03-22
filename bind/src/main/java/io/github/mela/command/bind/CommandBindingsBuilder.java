@@ -33,7 +33,7 @@ public final class CommandBindingsBuilder {
     this.handlers = Maps.newHashMap();
     this.mappers = Maps.newHashMap();
     this.mappingInterceptors = Maps.newHashMap();
-    this.argumentMapperProviders = Sets.newHashSet();
+    this.argumentMapperProviders = Sets.newLinkedHashSet();
   }
 
   @Nonnull
@@ -120,7 +120,8 @@ public final class CommandBindingsBuilder {
   @CheckReturnValue
   @Nonnull
   public CommandBindings build() {
-    return CommandBindings.of(commandInterceptors, handlers, mappers, mappingInterceptors, argumentMapperProviders);
+    return CommandBindings.of(commandInterceptors, handlers, mappers,
+        mappingInterceptors, argumentMapperProviders);
   }
 
 }

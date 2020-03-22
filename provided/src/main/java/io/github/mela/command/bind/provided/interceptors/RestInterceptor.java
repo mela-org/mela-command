@@ -20,12 +20,24 @@ public class RestInterceptor extends MappingInterceptorAdapter<Rest> {
     CommandArguments arguments = process.getArguments();
     StringBuilder builder = new StringBuilder();
     while (arguments.hasNext()) {
-      if (arguments.peek() == '"' && arguments.previous() != '\\') {
-        builder.append('\\');
-      }
       builder.append(arguments.next());
     }
-    process.requestMapping(CommandArguments.of("\"" + builder.toString().trim() + "\""));
+    process.requestMapping(new RestArguments(builder.toString().trim()));
+  }
+
+  private static class RestArguments extends CommandArguments {
+
+    RestArguments(String arguments) {
+      super(arguments);
+    }
+
+    @Override
+    public String nextString() {
+      while (hasNext()) {
+        next();
+      }
+      return getRaw();
+    }
   }
 
 }

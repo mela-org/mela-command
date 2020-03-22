@@ -86,6 +86,7 @@ public final class ImmutableGroupBuilder {
       commands = Sets.newHashSet();
     }
 
+    // TODO implement
     @Nonnull
     @Override
     public UncompiledGroup merge(@Nonnull UncompiledGroup other) {

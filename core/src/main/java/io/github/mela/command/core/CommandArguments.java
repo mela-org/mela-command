@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class CommandArguments {
+public class CommandArguments {
 
   private final String raw;
   private final StringBuilder arguments;
@@ -19,7 +19,7 @@ public final class CommandArguments {
   private int position;
   private char previous;
 
-  private CommandArguments(String arguments) {
+  protected CommandArguments(String arguments) {
     this.raw = arguments.trim();
     this.arguments = new StringBuilder(raw);
     this.position = 0;

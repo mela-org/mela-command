@@ -135,7 +135,38 @@ The framework's core paradigm is **aspect-oriented programming (AOP)**. This mea
 **separately** and do not happen in the execution code of a command. The framework instead 
 looks at command method declarations and creates fitting `CommandCallable`s dynamically.
 
+You've seen one hypothetical example of this at the top of this readme. 
 
+This would be the bind framework equivalent of the simple command we made 
+in the core framework:
 
+```java
+public class EchoCommand {
+  @Command(labels = "echo")
+  public void echo(@Rest String arguments) {
+    System.out.println(arguments);
+  }
+}
+```
 
- 
+Registering it is similar to before, but with an additional step:
+```java
+CommandBindings bindings = CommandBindings.builder()
+    .bindMapper(String.class, new StringMapper())
+    .bindMappingInterceptor(Rest.class, new RestInterceptor())
+    .build();
+CommandCompiler compiler = MethodHandleCompiler.withBindings(bindings);
+CommandGroup group = ImmutableGroup.builder()
+    .group("example")
+      .add(new EchoCommand())
+    .parent()
+    .compile(compiler);
+// ...
+```
+
+As you can see, to use the bind framework, you need to provide a `CommandCompiler` that
+transforms the `EchoCommand` object into a `CommandCallable`. `CommandBindings` contains
+everything needed to resolve parameter types (in this case, only `String`) and annotations
+(in this case, only `@Rest` - there to )
+
+To learn more about the bind framework, please refer to the [Wiki]().

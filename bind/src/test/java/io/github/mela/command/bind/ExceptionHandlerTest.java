@@ -3,7 +3,6 @@ package io.github.mela.command.bind;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 import org.junit.jupiter.api.Test;
@@ -45,7 +44,10 @@ class ExceptionHandlerTest extends BindingTest<ExceptionHandlerTest.TestCommand>
 
     @Override
     public void handle(
-        @Nonnull RuntimeException exception, @Nonnull CommandCallable command, @Nonnull CommandContext context) {
+        @Nonnull RuntimeException exception,
+        @Nonnull BindingCallable command,
+        @Nonnull CommandContext context
+    ) {
       executed = true;
     }
   }

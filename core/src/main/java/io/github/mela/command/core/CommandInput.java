@@ -15,10 +15,10 @@ public final class CommandInput {
   private final String raw;
   private final CommandGroup group;
   private final CommandCallable command;
-  private final CommandArguments arguments;
+  private final String arguments;
 
   CommandInput(@Nonnull String raw, @Nonnull CommandGroup group,
-               @Nullable CommandCallable command, @Nonnull CommandArguments arguments) {
+               @Nullable CommandCallable command, @Nonnull String arguments) {
     this.raw = checkNotNull(raw);
     this.group = checkNotNull(group);
     this.command = command;
@@ -47,7 +47,7 @@ public final class CommandInput {
   }
 
   @Nonnull
-  public CommandArguments getArguments() {
+  public String getArguments() {
     return arguments;
   }
 

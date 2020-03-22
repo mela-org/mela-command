@@ -38,7 +38,8 @@ public final class DefaultDispatcher implements CommandDispatcher {
     CommandInput input = CommandInput.parse(root, command);
     CommandCallable callable = input.getCommand();
     if (callable != null) {
-      executor.execute(() -> callable.call(input.getArguments(), context));
+      CommandArguments arguments = CommandArguments.of(input.getArguments());
+      executor.execute(() -> callable.call(arguments, context));
       return true;
     } else {
       return false;

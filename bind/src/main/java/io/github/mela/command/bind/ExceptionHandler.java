@@ -1,6 +1,5 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.core.CommandCallable;
 import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
 
@@ -8,7 +7,7 @@ import javax.annotation.Nonnull;
 public interface ExceptionHandler<T extends Throwable> {
 
   void handle(@Nonnull T exception,
-              @Nonnull CommandCallable command,
+              @Nonnull BindingCallable command,
               @Nonnull CommandContext context);
 
 }
