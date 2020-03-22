@@ -81,11 +81,10 @@ meaning that the target `CommandCallable` is chosen and the arguments are wrappe
 Mela comes with a default implementation `DefaultDispatcher`, but it can be implemented 
 individually.
 
-This is what a command might look like that converts each of its arguments to an int and
-prints it to the console in a new line:
+This is what a command might look like that converts each of its arguments to an int (or 0,
+if conversion fails), evaluates their sum and prints it to the console in a new line:
 ```java
 public class PrintCommand extends CommandCallableAdapter {
-
   public PrintCommand() {
     // labels, description, help, usage (the last three are nullable and not required here)
     super(Set.of("print"), null, null, null);
@@ -93,10 +92,19 @@ public class PrintCommand extends CommandCallableAdapter {
 
   @Override
   public void call(CommandArguments arguments, CommandContext context) {
+    int sum = 0;
     while (arguments.hasNext()) {
       String next = arguments.nextString();
-      int value = Integer.parseInt(next);
-      System.out.println(value);
+      sum += convert(next);
+    }
+    System.out.println("Sum: " + sum);
+  }
+
+  private int convert(String s) {
+    try {
+      return Integer.parseInt(s);
+    } catch (NumberFormatException e) {
+      return 0;
     }
   }
 }
@@ -110,7 +118,7 @@ public class Main {
   public static void main(String[] args) {
     CommandGroup group = ImmutableGroup.builder()
         .group("example")
-          .add(new EchoCommand())
+          .add(new PrintCommand())
         .parent()
         .build();
     CommandDispatcher dispatcher = DefaultDispatcher.create(group);
@@ -153,15 +161,18 @@ in the core framework:
 ```java
 public class Commands {
   @Command(labels = "print")
-  public void echo(int[] arguments) {
+  public void echo(@Maybe int[] arguments) {
+    int sum = 0;
     for (int value : arguments) {
-      System.out.println(value);
+      sum += value;
     }
+    System.out.println("Sum: " + sum);
   }
 }
 ```
 Instead of figuring out the arguments inside the method, we just declare
-the parameters as what we need them to be.
+the parameters as what we need them to be: a variable amount of ints (=> `int[]`) 
+that default to 0 if anything goes wrong (=> `@Maybe`).
 
 Registering it is similar to before, but with an additional step:
 ```java
