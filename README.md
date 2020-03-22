@@ -175,8 +175,8 @@ contains everything needed to resolve parameter types (in this case, only `Strin
 and annotations (in this case, only `@Rest` - meaning "all remaining arguments").
 
 ## Relation to Google Guice
-This has built-in components that make integration with the Dependency Injection framework
-[Guice](https://github.com/google/guice) very simple.
+This module has built-in components that make integration with the Dependency Injection 
+framework [Guice](https://github.com/google/guice) very simple.
 
 While no dependency on Guice is required to use any of mela-command's features, it is
 recommended, as it aligns closely with mela's principles.
