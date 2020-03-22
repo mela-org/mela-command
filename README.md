@@ -81,23 +81,28 @@ meaning that the target `CommandCallable` is chosen and the arguments are wrappe
 Mela comes with a default implementation `DefaultDispatcher`, but it can be implemented 
 individually.
 
-This is what a command might look like that just prints its arguments to the console:
+This is what a command might look like that converts each of its arguments to an int and
+prints it to the console in a new line:
 ```java
-public class EchoCommand extends CommandCallableAdapter {
+public class PrintCommand extends CommandCallableAdapter {
 
-  public EchoCommand() {
+  public PrintCommand() {
     // labels, description, help, usage (the last three are nullable and not required here)
-    super(Set.of("echo"), null, null, null);
+    super(Set.of("print"), null, null, null);
   }
 
   @Override
   public void call(CommandArguments arguments, CommandContext context) {
-    System.out.println(arguments.getRaw());
+    while (arguments.hasNext()) {
+      String next = arguments.nextString();
+      int value = Integer.parseInt(next);
+      System.out.println(value);
+    }
   }
 }
 ```
 Using this additional code, you could run the command in your console with 
-`example echo <arguments>`. If you typed anything else, you would get an error message saying
+`example print <arguments>`. If you typed anything else, you would get an error message saying
 "Unknown command.":
 ```java
 public class Main {
@@ -108,7 +113,7 @@ public class Main {
           .add(new EchoCommand())
         .parent()
         .build();
-    CommandDispatcher dispatcher = new DefaultDispatcher(group);
+    CommandDispatcher dispatcher = DefaultDispatcher.create(group);
     listenForCommands(dispatcher);
   }
   
@@ -146,33 +151,40 @@ This would be the bind framework equivalent of the simple command we made
 in the core framework:
 
 ```java
-public class EchoCommand {
-  @Command(labels = "echo")
-  public void echo(@Rest String arguments) {
-    System.out.println(arguments);
+public class Commands {
+  @Command(labels = "print")
+  public void echo(int[] arguments) {
+    for (int value : arguments) {
+      System.out.println(value);
+    }
   }
 }
 ```
+Instead of figuring out the arguments inside the method, we just declare
+the parameters as what we need them to be.
 
 Registering it is similar to before, but with an additional step:
 ```java
-CommandBindings bindings = CommandBindings.builder()
-    .bindMapper(String.class, new StringMapper())
-    .bindMappingInterceptor(Rest.class, new RestInterceptor())
-    .build();
+CommandBindings bindings = ProvidedBindings.createBuilder().build();
 CommandCompiler compiler = MethodHandleCompiler.withBindings(bindings);
 CommandGroup group = ImmutableGroup.builder()
     .group("example")
-      .add(new EchoCommand())
+      .add(new Commands())
     .parent()
     .compile(compiler);
 // ...
 ```
 
-As you can see, to use the bind framework, you need to provide a `CommandCompiler` that
-transforms the `EchoCommand` object into a `CommandCallable`. `CommandBindings` in turn
-contains everything needed to resolve parameter types (in this case, only `String`) 
-and annotations (in this case, only `@Rest` - meaning "all remaining arguments").
+To use the bind framework, we need to provide a `CommandCompiler` that
+transforms the `Commands` object into a `CommandCallable` (or more, if there are multiple
+command methods). `MethodHandleCompiler` is currently the only compiler that supports 
+the bind framework.
+
+`CommandBindings` in turn contain everything needed to resolve parameter types and 
+annotations in the command declaration. In this case, we're simply applying the standard 
+library bindings (`ProvidedBindings`) found in the `provided` module. It has bindings for 
+all primitive types, collections, maps, arrays as well as bindings for commonly used 
+argument validation and many more.
 
 ## Relation to Google Guice
 This module has built-in components that make integration with the Dependency Injection 
