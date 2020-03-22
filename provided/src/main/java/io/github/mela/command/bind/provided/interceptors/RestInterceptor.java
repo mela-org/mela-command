@@ -4,6 +4,7 @@ import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
+import io.github.mela.command.core.SingleStringArgument;
 import javax.annotation.Nonnull;
 
 /**
@@ -22,22 +23,7 @@ public class RestInterceptor extends MappingInterceptorAdapter<Rest> {
     while (arguments.hasNext()) {
       builder.append(arguments.next());
     }
-    process.requestMapping(new RestArguments(builder.toString().trim()));
-  }
-
-  private static class RestArguments extends CommandArguments {
-
-    RestArguments(String arguments) {
-      super(arguments);
-    }
-
-    @Override
-    public String nextString() {
-      while (hasNext()) {
-        next();
-      }
-      return getRaw();
-    }
+    process.requestMapping(SingleStringArgument.of(builder.toString().trim()));
   }
 
 }
