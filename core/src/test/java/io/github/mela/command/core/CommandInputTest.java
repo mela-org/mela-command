@@ -34,7 +34,7 @@ class CommandInputTest {
     CommandInput input = CommandInput.parse(root, "foo bar " + ARGUMENTS);
     assertEquals(child, input.getGroup(), "Group was not parsed correctly");
     assertEquals(command, input.getCommand(), "Command was not parsed correctly");
-    assertEquals(ARGUMENTS, input.getArguments().getRaw(), "Arguments were not parsed correctly");
+    assertEquals(ARGUMENTS, input.getArguments(), "Arguments were not parsed correctly");
   }
 
   @Test
@@ -42,7 +42,7 @@ class CommandInputTest {
     CommandInput input = CommandInput.parse(root, "foo baz " + ARGUMENTS);
     assertEquals(child, input.getGroup(), "Group was not parsed correctly");
     assertNull(input.getCommand(), "Command was falsely recognised");
-    assertEquals("baz " + ARGUMENTS, input.getArguments().getRaw(),
+    assertEquals("baz " + ARGUMENTS, input.getArguments(),
         "Arguments were not parsed correctly");
   }
 
@@ -51,7 +51,7 @@ class CommandInputTest {
     CommandInput input = CommandInput.parse(root, "bar foo " + ARGUMENTS);
     assertEquals(root, input.getGroup(), "Group was falsely recognised");
     assertNull(input.getCommand(), "Command was falsely recognised");
-    assertEquals("bar foo " + ARGUMENTS, input.getArguments().getRaw(),
+    assertEquals("bar foo " + ARGUMENTS, input.getArguments(),
         "Arguments were not parsed correctly");
   }
 }

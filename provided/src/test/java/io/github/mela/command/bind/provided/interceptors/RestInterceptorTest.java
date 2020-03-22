@@ -19,7 +19,7 @@ class RestInterceptorTest extends BindingTest<RestInterceptorTest.TestCommand> {
   @Test
   void testRestInterceptor() {
     dispatcher.dispatch("foo some more arguments \"that go\" here", CommandContext.create());
-    assertEquals("some more arguments \\\"that go\\\" here", command.value,
+    assertEquals("some more arguments \"that go\" here", command.value,
         "Rest arguments were not mapped correctly");
   }
 
