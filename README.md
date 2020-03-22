@@ -15,21 +15,16 @@ public class UserCommands {
     labels = "ban",  
     desc = "Bans a user.", 
     help = "Use \"ban @User\" to ban the mentioned user.",
-    usage = "ban @User [--permanent] [--time <value>] <reason>"
+    usage = "ban @User [--time <value>] <reason>"
   )
   @Requires(permission = "user.ban")
   public void ban(
-    @Context("server")            Server server,
-    @Flag("-permanent")           boolean permanent, 
-    @Flag("-time") @Default("1d") Duration time,
-                                  User target,
-    @Maybe                        String reason
+    @Context("server") Server server,
+    @Flag("-time") @Default("1y") Duration time,
+    User target,
+    @Maybe String reason
   ) {
-    if (permanent) {
-      server.banUser(target);
-    } else {
-      server.banUser(target, time);
-    }
+    server.ban(target, time);
     target.sendMessage("You have been banned.");
     if (reason != null) {
       target.sendMessage("Reason: " + reason);
@@ -38,8 +33,9 @@ public class UserCommands {
 }
 ```
 The body of this command only focuses on the command logic. Everything else that would 
-usually be part of the command code (such as argument parsing, permission checks, 
-error handling etc.) is determined by the method and parameter declarations.
+usually be part of the command code (such as parsing the Duration or the User, 
+checking whether the required permission "ban.user" is present, handling wrong arguments 
+etc.) is determined by the method and parameter declarations and done externally.
 
 
 ## What is a command parsing framework?
