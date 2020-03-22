@@ -38,9 +38,9 @@ public abstract class BindingCallable implements CommandCallable {
     String[] labels = annotation.labels();
     this.primaryLabel = labels.length == 0 ? null : labels[0];
     this.labels = Set.of(labels);
-    this.description = annotation.desc();
-    this.help = annotation.help();
-    this.usage = annotation.usage();
+    this.description = annotation.desc().isEmpty() ? null : annotation.desc();
+    this.help = annotation.help().isEmpty() ? null : annotation.help();
+    this.usage = annotation.usage().isEmpty() ? null : annotation.usage();
     this.bindings = checkNotNull(bindings);
     this.interceptors = extractInterceptors(method, bindings);
     this.parameters = Parameters.from(method, bindings);

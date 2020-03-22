@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
 public @interface Command {
   String[] labels();
 
-  String desc() default "N/A";
+  String desc() default "";
 
-  String help() default "N/A";
+  String help() default "";
 
-  String usage() default "N/A";
+  String usage() default "";
 }

@@ -9,6 +9,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Parameter;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -29,7 +30,7 @@ public final class CommandParameter implements AnnotatedElement {
         : parameter.getName();
     this.description = parameter.isAnnotationPresent(Description.class)
         ? parameter.getAnnotation(Description.class).value()
-        : "N/A";
+        : null;
   }
 
   public static CommandParameter of(@Nonnull Parameter parameter) {
@@ -47,7 +48,7 @@ public final class CommandParameter implements AnnotatedElement {
     return targetType;
   }
 
-  @Nonnull
+  @Nullable
   public String getDescription() {
     return description;
   }
