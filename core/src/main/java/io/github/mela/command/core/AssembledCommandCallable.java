@@ -3,6 +3,8 @@ package io.github.mela.command.core;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
+import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckReturnValue;
@@ -40,7 +42,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
 
   public static final class Builder {
 
-    private Set<String> labels = Set.of();
+    private Set<String> labels = ImmutableSet.of();
     private String primaryLabel = null;
     private String help = null;
     private String description = null;
@@ -50,12 +52,12 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
 
     @Nonnull
     public Builder withLabels(@Nonnull String... labels) {
-      return withLabels(Set.of(labels));
+      return withLabels(ImmutableSet.copyOf(labels));
     }
 
     @Nonnull
-    public Builder withLabels(@Nonnull Set<String> labels) {
-      this.labels = Set.copyOf(labels);
+    public Builder withLabels(@Nonnull Collection<String> labels) {
+      this.labels = ImmutableSet.copyOf(labels);
       return this;
     }
 

@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -26,11 +27,11 @@ final class InjectableGroup implements UncompiledGroup {
   private final Map<Class<?>, Object> compilables;
 
   InjectableGroup() {
-    this(Set.of());
+    this(ImmutableSet.of());
   }
 
   private InjectableGroup(Set<String> names) {
-    this.names = Set.copyOf(names);
+    this.names = ImmutableSet.copyOf(names);
     this.children = Sets.newHashSet();
     this.compilables = Maps.newHashMap();
   }

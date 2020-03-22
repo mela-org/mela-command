@@ -1,5 +1,6 @@
 package io.github.mela.command.bind.provided.mappers.providers;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.mela.command.bind.AnnotatedTypes;
 import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.TargetType;
@@ -24,7 +25,7 @@ import javax.annotation.Nonnull;
 public class OptionalMapperProvider implements ArgumentMapperProvider {
 
   private static final Map<Class<?>, Function<AnnotatedType, AnnotatedType>> OPTIONAL_CONTENT_TYPES
-      = Map.of(Optional.class, (type) ->
+      = ImmutableMap.of(Optional.class, (type) ->
           Arrays.stream(AnnotatedTypes.getActualTypeArguments(type))
               .findFirst().orElse(AnnotatedTypes.STRING),
       OptionalInt.class, (v) -> AnnotatedTypes.fromType(int.class),
@@ -32,13 +33,13 @@ public class OptionalMapperProvider implements ArgumentMapperProvider {
       OptionalDouble.class, (v) -> AnnotatedTypes.fromType(double.class));
 
   private static final Map<Class<?>, Function<? super Object, ?>> WRAPPER_FUNCTIONS
-      = Map.of(Optional.class, Optional::of,
+      = ImmutableMap.of(Optional.class, Optional::of,
       OptionalInt.class, (o) -> OptionalInt.of((int) o),
       OptionalLong.class, (o) -> OptionalLong.of((long) o),
       OptionalDouble.class, (o) -> OptionalDouble.of((double) o));
 
   private static final Map<Class<?>, Supplier<?>> EMPTY_FUNCTIONS
-      = Map.of(Optional.class, Optional::empty,
+      = ImmutableMap.of(Optional.class, Optional::empty,
       OptionalInt.class, OptionalInt::empty,
       OptionalLong.class, OptionalLong::empty,
       OptionalDouble.class, OptionalDouble::empty);

@@ -14,7 +14,7 @@ public final class IdentityCompiler implements CommandCompiler {
   @Override
   public Set<? extends CommandCallable> compile(@Nonnull Object command) {
     if (!(command instanceof CommandCallable)) {
-      throw new CommandCompilerException("Could not io.github.mela.command.compile command using IdentityCompiler: Object "
+      throw new CommandCompilerException("Could not compile command using IdentityCompiler: Object "
           + command + " is not an instance of CommandCallable");
     }
     return Collections.singleton((CommandCallable) command);

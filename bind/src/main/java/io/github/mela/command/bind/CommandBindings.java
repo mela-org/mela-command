@@ -3,6 +3,8 @@ package io.github.mela.command.bind;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
@@ -22,7 +24,8 @@ import javax.annotation.Nullable;
 public final class CommandBindings {
 
   public static final CommandBindings EMPTY = of(
-      Map.of(), Map.of(), Map.of(), Map.of(), Set.of());
+      ImmutableMap.of(), ImmutableMap.of(), ImmutableMap.of(),
+      ImmutableMap.of(), ImmutableSet.of());
 
   private final Map<Class, CommandInterceptor> commandInterceptors;
   private final Map<Class, ExceptionHandler> handlers;
@@ -36,11 +39,11 @@ public final class CommandBindings {
                   Map<TypeKey, ArgumentMapper> mappers,
                   Map<Class, MappingInterceptor> mappingInterceptors,
                   Set<ArgumentMapperProvider> argumentMapperProviders) {
-    this.commandInterceptors = Map.copyOf(commandInterceptors);
-    this.handlers = Map.copyOf(handlers);
-    this.mappers = Map.copyOf(mappers);
-    this.mappingInterceptors = Map.copyOf(mappingInterceptors);
-    this.argumentMapperProviders = Set.copyOf(argumentMapperProviders);
+    this.commandInterceptors = commandInterceptors;
+    this.handlers = handlers;
+    this.mappers = mappers;
+    this.mappingInterceptors = mappingInterceptors;
+    this.argumentMapperProviders = argumentMapperProviders;
   }
 
   @CheckReturnValue
@@ -57,8 +60,10 @@ public final class CommandBindings {
       @Nonnull Map<Class, MappingInterceptor> mappingInterceptors,
       @Nonnull Set<ArgumentMapperProvider> argumentMapperProviders
   ) {
-    return new CommandBindings(commandInterceptors, handlers,
-        mappers, mappingInterceptors, argumentMapperProviders);
+    return new CommandBindings(
+        ImmutableMap.copyOf(commandInterceptors), ImmutableMap.copyOf(handlers),
+        ImmutableMap.copyOf(mappers), ImmutableMap.copyOf(mappingInterceptors),
+        ImmutableSet.copyOf(argumentMapperProviders));
   }
 
   @SuppressWarnings("unchecked")
@@ -130,13 +135,13 @@ public final class CommandBindings {
 
   @Override
   public String toString() {
-    return "CommandBindings{" +
-        "commandInterceptors=" + commandInterceptors +
-        ", handlers=" + handlers +
-        ", mappers=" + mappers +
-        ", mappingInterceptors=" + mappingInterceptors +
-        ", argumentMapperProviders=" + argumentMapperProviders +
-        '}';
+    return "CommandBindings{"
+        + "commandInterceptors=" + commandInterceptors
+        + ", handlers=" + handlers
+        + ", mappers=" + mappers
+        + ", mappingInterceptors=" + mappingInterceptors
+        + ", argumentMapperProviders=" + argumentMapperProviders
+        + '}';
   }
 }
 

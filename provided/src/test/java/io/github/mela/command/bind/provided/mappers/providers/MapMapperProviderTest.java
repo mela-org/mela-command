@@ -3,9 +3,10 @@ package io.github.mela.command.bind.provided.mappers.providers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-import io.github.mela.command.bind.provided.BindingTest;
+import com.google.common.collect.ImmutableMap;
 import io.github.mela.command.bind.Command;
 import io.github.mela.command.bind.CommandBindingsBuilder;
+import io.github.mela.command.bind.provided.BindingTest;
 import io.github.mela.command.bind.provided.mappers.StringMapper;
 import io.github.mela.command.core.CommandContext;
 import java.util.HashMap;
@@ -21,15 +22,15 @@ class MapMapperProviderTest extends BindingTest<MapMapperProviderTest.TestComman
   @Test
   void testMapMapper() {
     dispatcher.dispatch("map one two three four five six", CommandContext.create());
-    assertEquals(Map.of("one", "two", "three", "four", "five", "six"), command.values,
-        "Arguments were not mapped correctly");
+    assertEquals(ImmutableMap.of("one", "two", "three", "four", "five", "six"),
+        command.values, "Arguments were not mapped correctly");
   }
 
   @Test
   void testMapMapperScoped() {
     dispatcher.dispatch("map {one two three four five six}", CommandContext.create());
-    assertEquals(Map.of("one", "two", "three", "four", "five", "six"), command.values,
-        "Arguments were not mapped correctly");
+    assertEquals(ImmutableMap.of("one", "two", "three", "four", "five", "six"),
+        command.values, "Arguments were not mapped correctly");
   }
 
   @Override

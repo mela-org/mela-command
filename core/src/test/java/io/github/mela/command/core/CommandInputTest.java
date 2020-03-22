@@ -20,7 +20,7 @@ class CommandInputTest {
     command = AssembledCommandCallable.builder().withLabels("bar").withAction((a, c) -> {
     }).build();
     root = ImmutableGroup.builder().group("foo").add(command).root().build();
-    child = root.findChild("foo").orElseThrow();
+    child = root.findChild("foo").orElseThrow(AssertionError::new);
   }
 
   @Test

@@ -4,10 +4,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Binder;
 import com.google.inject.multibindings.Multibinder;
 import io.github.mela.command.compile.UncompiledGroup;
-import java.util.Set;
 import javax.annotation.Nonnull;
 
 /**
@@ -37,7 +37,7 @@ public final class CommandBindingNode {
   @Nonnull
   public CommandBindingNode group(@Nonnull String... aliases) {
     checkNotNull(aliases);
-    InjectableGroup child = group.createChildIfNotExists(Set.of(aliases));
+    InjectableGroup child = group.createChildIfNotExists(ImmutableSet.copyOf(aliases));
     return new CommandBindingNode(this, child);
   }
 

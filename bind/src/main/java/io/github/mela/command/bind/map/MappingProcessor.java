@@ -55,7 +55,8 @@ public final class MappingProcessor {
     annotations.addAll(Arrays.asList(type.getAnnotatedType().getAnnotations()));
     ArgumentMapper mapper = bindings.getMapper(type);
     if (mapper == null) {
-      throw new MissingMapperBindingError("Invalid type: missing ArgumentMapper binding for type " + type.getTypeKey());
+      throw new MissingMapperBindingError(
+          "Invalid type: missing ArgumentMapper binding for type " + type.getTypeKey());
     }
     Map<Annotation, MappingInterceptor> interceptors = getInterceptors(bindings, annotations);
     return new MappingProcessor(type, mapper, interceptors);

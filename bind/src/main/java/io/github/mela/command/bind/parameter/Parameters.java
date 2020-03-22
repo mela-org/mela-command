@@ -3,6 +3,7 @@ package io.github.mela.command.bind.parameter;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.github.mela.command.bind.CommandBindings;
@@ -28,7 +29,7 @@ public final class Parameters extends AbstractList<CommandParameter> {
 
   private Parameters(Map<CommandParameter, MappingProcessor> parameters) {
     this.parameters = parameters;
-    this.commandParameters = List.copyOf(parameters.keySet());
+    this.commandParameters = ImmutableList.copyOf(parameters.keySet());
   }
 
   @Nonnull

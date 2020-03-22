@@ -13,5 +13,6 @@ public interface ArgumentMapper<T> {
     return ((argument, commandContext) -> instance);
   }
 
-  T map(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext) throws Throwable;
+  T map(@Nonnull CommandArguments arguments, @Nonnull CommandContext commandContext)
+      throws Throwable;
 }

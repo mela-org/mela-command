@@ -4,6 +4,7 @@ import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.CommandContext;
 import java.lang.reflect.Type;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 
 /**
@@ -19,11 +20,12 @@ public class ContextInterceptor extends MappingInterceptorAdapter<Context> {
   ) {
     Type type = process.getTargetType().getType();
     String key = annotation.value();
-    context.get(type, key)
-        .ifPresentOrElse(
-            process::setValue,
-            () -> process.fail(new MissingContextException("Context of type " + type
-                + " and key " + key + " is missing"))
-        );
+    Optional<?> value = context.get(type, key);
+    if (value.isPresent()) {
+      process.setValue(value.get());
+    } else {
+      process.fail(new MissingContextException("Context of type " + type
+          + " and key " + key + " is missing"));
+    }
   }
 }

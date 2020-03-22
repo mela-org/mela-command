@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-import java.util.Map;
-import java.util.Set;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import javax.annotation.Nonnull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class DefaultDispatcherTest {
 
   @Test
   void testSimpleCommandDispatch() {
-    CommandContext context = CommandContext.of(Map.of("env", "test"));
+    CommandContext context = CommandContext.of(ImmutableMap.of("env", "test"));
     boolean success = dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
     assertTrue(success, "Dispatcher did not return success");
     assertTrue(command.executed, "Command was not executed");
@@ -46,7 +46,7 @@ class DefaultDispatcherTest {
     CommandContext context = null;
 
     SimpleCommand() {
-      super(Set.of("bar"), "executes a simple command", "baz", "bar");
+      super(ImmutableSet.of("bar"), "executes a simple command", "baz", "bar");
     }
 
     @Override

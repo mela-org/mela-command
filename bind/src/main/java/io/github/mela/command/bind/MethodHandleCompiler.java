@@ -3,13 +3,13 @@ package io.github.mela.command.bind;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.CommandCompilerException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 
@@ -36,7 +36,7 @@ public final class MethodHandleCompiler implements CommandCompiler {
     return Arrays.stream(command.getClass().getMethods())
         .filter((method) -> method.isAnnotationPresent(Command.class))
         .map((method) -> compile(command, method))
-        .collect(Collectors.toUnmodifiableSet());
+        .collect(ImmutableSet.toImmutableSet());
   }
 
   private MethodHandleCallable compile(Object command, Method method) {

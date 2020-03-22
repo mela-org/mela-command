@@ -33,7 +33,7 @@ final class CommandInputParser {
     while (!remaining.isEmpty()) {
       nextWord();
       Optional<? extends CommandGroup> child = group.findChild(currentWord);
-      if (child.isEmpty()) {
+      if (!child.isPresent()) {
         return;
       }
       stripCurrentWord();
@@ -44,8 +44,7 @@ final class CommandInputParser {
   @SuppressWarnings("unchecked")
   private void stripCommand() {
     command = ((Optional<CommandCallable>) group.findCommand(currentWord))
-        .or(group::findDefaultCommand)
-        .orElse(null);
+        .orElseGet(() -> group.findDefaultCommand().orElse(null));
     if (command != null) {
       stripCurrentWord();
     }

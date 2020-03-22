@@ -4,10 +4,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.IdentityCompiler;
 import io.github.mela.command.compile.UncompiledGroup;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -27,11 +29,11 @@ public final class ImmutableGroupBuilder {
 
   @Nonnull
   public ImmutableGroupBuilder group(@Nonnull String... names) {
-    return group(Set.of(names));
+    return group(Arrays.asList(names));
   }
 
   @Nonnull
-  public ImmutableGroupBuilder group(@Nonnull Set<String> names) {
+  public ImmutableGroupBuilder group(@Nonnull Collection<String> names) {
     MutableGroup child = new MutableGroup(current, names);
     current.children.add(child);
     current = child;
@@ -79,9 +81,9 @@ public final class ImmutableGroupBuilder {
     private final Set<MutableGroup> children;
     private final Set<Object> commands;
 
-    private MutableGroup(MutableGroup parent, Set<String> names) {
+    private MutableGroup(MutableGroup parent, Collection<String> names) {
       this.parent = parent;
-      this.names = Set.copyOf(names);
+      this.names = ImmutableSet.copyOf(names);
       children = Sets.newHashSet();
       commands = Sets.newHashSet();
     }

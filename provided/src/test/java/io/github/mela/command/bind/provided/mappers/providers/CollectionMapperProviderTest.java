@@ -3,6 +3,8 @@ package io.github.mela.command.bind.provided.mappers.providers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import io.github.mela.command.bind.provided.BindingTest;
 import io.github.mela.command.bind.Command;
 import io.github.mela.command.bind.CommandBindingsBuilder;
@@ -24,28 +26,28 @@ class CollectionMapperProviderTest extends BindingTest<CollectionMapperProviderT
   @Test
   void testSetMapper() {
     dispatcher.dispatch("set one two three", CommandContext.create());
-    assertEquals(Set.of("one", "two", "three"), command.value,
+    assertEquals(ImmutableSet.of("one", "two", "three"), command.value,
         "Arguments were not mapped correctly");
   }
 
   @Test
   void testSetMapperScoped() {
     dispatcher.dispatch("set [four five six]", CommandContext.create());
-    assertEquals(Set.of("four", "five", "six"), command.value,
+    assertEquals(ImmutableSet.of("four", "five", "six"), command.value,
         "Arguments were not mapped correctly");
   }
 
   @Test
   void testListMapper() {
     dispatcher.dispatch("list one two three", CommandContext.create());
-    assertEquals(List.of("one", "two", "three"), command.value,
+    assertEquals(ImmutableList.of("one", "two", "three"), command.value,
         "Arguments were not mapped correctly");
   }
 
   @Test
   void testListMapperScoped() {
     dispatcher.dispatch("list [four five six]", CommandContext.create());
-    assertEquals(List.of("four", "five", "six"), command.value,
+    assertEquals(ImmutableList.of("four", "five", "six"), command.value,
         "Arguments were not mapped correctly");
   }
 

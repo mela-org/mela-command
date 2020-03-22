@@ -31,7 +31,8 @@ public final class MappingProcess {
     this.arguments = arguments;
   }
 
-  static MappingProcess create(@Nonnull TargetType targetType, @Nonnull CommandArguments arguments) {
+  static MappingProcess create(
+      @Nonnull TargetType targetType, @Nonnull CommandArguments arguments) {
     checkNotNull(targetType);
     checkNotNull(arguments);
     return new MappingProcess(targetType, arguments);

@@ -1,5 +1,6 @@
 package io.github.mela.command.core;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,7 +28,7 @@ public abstract class CommandCallableAdapter implements CommandCallable {
                                    @Nullable String description,
                                    @Nullable String help,
                                    @Nullable String usage) {
-    this.labels = Set.copyOf(labels);
+    this.labels = ImmutableSet.copyOf(labels);
     this.primaryLabel = primaryLabel;
     this.description = description;
     this.help = help;

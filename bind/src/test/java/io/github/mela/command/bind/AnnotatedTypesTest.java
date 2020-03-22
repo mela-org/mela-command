@@ -18,20 +18,23 @@ class AnnotatedTypesTest {
   void testRawType() {
     AnnotatedType type = AnnotatedTypes.fromType(Object.class);
     assertEquals(Object.class, type.getType(), "AnnotatedType did not return correct type");
-    assertFalse(type instanceof AnnotatedParameterizedType || type instanceof AnnotatedArrayType,
+    assertFalse(type instanceof AnnotatedParameterizedType
+            || type instanceof AnnotatedArrayType,
         "Raw type was assigned an incorrect subtype of AnnotatedType");
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Test
   void testParameterizedType() {
-    TypeToken<List<Object>> token = new TypeToken<>() {
+    TypeToken<List<Object>> token = new TypeToken<List<Object>>() {
     };
     AnnotatedType type = AnnotatedTypes.fromType(token.getType());
-    assertEquals(token.getType(), type.getType(), "AnnotatedType did not return correct type");
+    assertEquals(token.getType(), type.getType(),
+        "AnnotatedType did not return correct type");
     assertTrue(type instanceof AnnotatedParameterizedType,
         "Parameterized type was assigned an incorrect subtype of AnnotatedType");
-    assertEquals(Object.class, ((AnnotatedParameterizedType) type).getAnnotatedActualTypeArguments()[0].getType(),
+    assertEquals(Object.class, ((AnnotatedParameterizedType) type)
+            .getAnnotatedActualTypeArguments()[0].getType(),
         "Actual type argument of AnnotatedType and provided type differ");
   }
 
@@ -48,13 +51,13 @@ class AnnotatedTypesTest {
   @SuppressWarnings("UnstableApiUsage")
   @Test
   void testGenericArrayType() {
-    TypeToken<List<Object>[]> token = new TypeToken<>() {
+    TypeToken<List<Object>[]> token = new TypeToken<List<Object>[]>() {
     };
     AnnotatedType type = AnnotatedTypes.fromType(token.getType());
     assertEquals(token.getType(), type.getType(), "AnnotatedType did not return correct type");
     assertTrue(type instanceof AnnotatedArrayType,
         "Array type was assigned an incorrect subtype of AnnotatedType");
-    TypeToken<List<Object>> componentToken = new TypeToken<>() {
+    TypeToken<List<Object>> componentToken = new TypeToken<List<Object>>() {
     };
     assertEquals(componentToken.getType(), ((AnnotatedArrayType) type).getAnnotatedGenericComponentType().getType(),
         "Component type of AnnotatedType and provided type differ");

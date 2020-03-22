@@ -81,11 +81,6 @@ public final class AnnotatedTypes {
       return EMPTY;
     }
 
-    @Override
-    public AnnotatedType getAnnotatedOwnerType() {
-      return null;
-    }
-
   }
 
   private static class UnAnnotatedParameterizedType

@@ -36,7 +36,7 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
     Type type = process.getTargetType().getType();
     if (type == boolean.class || type == Boolean.class) {
       process.setValue(flagPosition.isPresent());
-    } else if (flagPosition.isEmpty()) {
+    } else if (!flagPosition.isPresent()) {
       process.fail(new ArgumentException("Missing flag; could not find flag matching annotation "
           + annotation));
     }

@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.Objects;
 import java.util.Set;
@@ -16,7 +17,7 @@ import javax.annotation.Nullable;
  */
 public final class ImmutableGroup implements CommandGroup {
 
-  public static final CommandGroup EMPTY = childlessRoot(Set.of(), Set.of());
+  public static final CommandGroup EMPTY = childlessRoot(ImmutableSet.of(), ImmutableSet.of());
 
   private final ImmutableGroup parent;
   private final Set<String> names;
@@ -27,8 +28,8 @@ public final class ImmutableGroup implements CommandGroup {
   private ImmutableGroup(
       ImmutableGroup parent, Set<String> names, Set<? extends CommandCallable> commands) {
     this.parent = parent;
-    this.names = Set.copyOf(names);
-    this.commands = Set.copyOf(commands);
+    this.names = ImmutableSet.copyOf(names);
+    this.commands = ImmutableSet.copyOf(commands);
   }
 
   @CheckReturnValue
@@ -41,7 +42,7 @@ public final class ImmutableGroup implements CommandGroup {
   public static CommandGroup childlessRoot(
       @Nonnull Set<String> names, @Nonnull Set<CommandCallable> commands) {
     ImmutableGroup group = new ImmutableGroup(null, names, commands);
-    group.setChildren(Set.of());
+    group.setChildren(ImmutableSet.of());
     return group;
   }
 
@@ -101,7 +102,7 @@ public final class ImmutableGroup implements CommandGroup {
 
   private void setChildren(Set<ImmutableGroup> children) {
     checkState(this.children == null);
-    this.children = Set.copyOf(children);
+    this.children = ImmutableSet.copyOf(children);
   }
 
   @Nonnull

@@ -18,15 +18,10 @@ public interface GroupAssembler<T> {
     return GroupAssembler.of(
         UncompiledGroup::getChildren,
         UncompiledGroup::getNames,
-        (group) -> shallowCompile(compiler, group)
+        (group) -> group.getUncompiledCommands().stream()
+                .map(compiler::compile)
+                .collect(Sets::newHashSet, Set::addAll, Set::addAll)
     );
-  }
-
-  private static Set<CommandCallable> shallowCompile(
-      CommandCompiler compiler, UncompiledGroup group) {
-    return group.getUncompiledCommands().stream()
-        .map(compiler::compile)
-        .collect(Sets::newHashSet, Set::addAll, Set::addAll);
   }
 
   @Nonnull
@@ -44,7 +39,7 @@ public interface GroupAssembler<T> {
     checkNotNull(childrenFunction);
     checkNotNull(namesFunction);
     checkNotNull(commandsFunction);
-    return new GroupAssembler<>() {
+    return new GroupAssembler<T>() {
       @Nonnull
       @Override
       public Set<? extends T> getChildren(@Nonnull T group) {

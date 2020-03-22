@@ -25,21 +25,24 @@ class CommandGroupTest {
         .group("foo")
         .root()
         .build();
-    child = root.findChild("foo").orElseThrow();
+    child = root.findChild("foo").orElseThrow(AssertionError::new);
   }
 
   @Test
   void testFindChild() {
-    assertEquals(child, root.findChild("foo").orElseThrow(), "Correct child was not found");
+    assertEquals(child, root.findChild("foo").orElseThrow(AssertionError::new),
+        "Correct child was not found");
   }
 
   @Test
   void testFindCommand() {
-    assertEquals(barCommand, root.findCommand("bar").orElseThrow(), "Correct command was not found");
+    assertEquals(barCommand, root.findCommand("bar").orElseThrow(AssertionError::new),
+        "Correct command was not found");
   }
 
   @Test
   void testFindDefaultCommand() {
-    assertEquals(defaultCommand, root.findDefaultCommand().orElseThrow(), "Correct command was not found");
+    assertEquals(defaultCommand, root.findDefaultCommand().orElseThrow(AssertionError::new),
+        "Correct command was not found");
   }
 }
