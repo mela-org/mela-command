@@ -180,3 +180,11 @@ framework [Guice](https://github.com/google/guice) very simple.
 
 While no dependency on Guice is required to use any of mela-command's features, it is
 recommended, as it aligns closely with mela's principles.
+
+## Issues and Contributing
+Contributions, requests and issue reports are always welcome.
+
+The project is still in very early stages, so contribution guidelines and similar things
+are not set up yet. If you are interested in helping with this project (by adding a 
+feature, writing documentation or creating an extension) or if you just want to learn
+more about, you may send me a message on Discord (Johnny#3826).
