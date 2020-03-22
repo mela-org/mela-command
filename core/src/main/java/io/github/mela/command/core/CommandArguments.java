@@ -67,12 +67,12 @@ public class CommandArguments {
   }
 
   public String nextString() {
-    String string = isNextUnescaped('"') ? nextStringWithQuotationMarks() : nextWord();
+    String string = isNextUnescaped('"') ? nextSection('"') : nextWord();
     skipLeadingWhitespace();
     return string.trim();
   }
 
-  private String nextWord() {
+  public String nextWord() {
     StringBuilder builder = new StringBuilder();
     while (hasNext() && !isNextWhiteSpace() && !isNextUnescaped('"')) {
       builder.append(next());
@@ -80,11 +80,11 @@ public class CommandArguments {
     return builder.toString();
   }
 
-  private String nextStringWithQuotationMarks() {
+  public String nextSection(char delimiter) {
     next();
     StringBuilder builder = new StringBuilder();
     while (hasNext()) {
-      if (isNextUnescaped('"')) {
+      if (isNextUnescaped(delimiter)) {
         next();
         break;
       } else {
@@ -100,11 +100,11 @@ public class CommandArguments {
     }
   }
 
-  private boolean isNextUnescaped(char c) {
+  public boolean isNextUnescaped(char c) {
     return peek() == c && previous != '\\';
   }
 
-  private boolean isNextWhiteSpace() {
+  public boolean isNextWhiteSpace() {
     return isWhitespace(peek());
   }
 
