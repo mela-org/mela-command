@@ -27,6 +27,7 @@ import io.github.mela.command.bind.provided.mappers.StringMapper;
 import io.github.mela.command.bind.provided.mappers.providers.ArrayMapperProvider;
 import io.github.mela.command.bind.provided.mappers.providers.CollectionMapperProvider;
 import io.github.mela.command.bind.provided.mappers.providers.MapMapperProvider;
+import io.github.mela.command.bind.provided.mappers.providers.NeverReachMapperProvider;
 import io.github.mela.command.bind.provided.mappers.providers.NumberMapperProvider;
 import io.github.mela.command.bind.provided.mappers.providers.OptionalMapperProvider;
 import io.github.mela.command.core.CommandContext;
@@ -48,6 +49,9 @@ public class ProvidedBindingsModule extends CommandBindingsModule {
     bindMapper(boolean.class).to(BooleanMapper.class);
     bindMapper(Boolean.class).to(BooleanMapper.class);
 
+    bindMapperProvider()
+        .toInstance(new NeverReachMapperProvider(
+            (type) -> type.getAnnotatedType().isAnnotationPresent(Context.class)));
     bindMapperProvider().to(NumberMapperProvider.class);
     bindMapperProvider()
         .toInstance(new CollectionMapperProvider<>(ArrayList.class, Lists::newArrayList));
