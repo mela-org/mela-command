@@ -6,6 +6,15 @@ The framework is inspired by [Intake](https://github.com/EngineHub/Intake) and i
 similar ideas as [Aikar](https://github.com/aikar/commands), but seeks to eliminate their 
 downsides and to be much more extensible and flexible.
 
+## What is a command parsing framework?
+A command in this context refers to a textual message sent by users in a simple, non-graphical 
+user interface, that is translated to some action in code.
+Commands are used in many applications: CLI (command line interfaces), social 
+media or messenger bots, games and many more.
+
+A command parsing framework takes an incoming command, parses its arguments - if any -
+to a format that is easy to use in code and executes its corresponding action.
+
 *mela-command* provides new, declarative ways of defining commands. 
 This is what commands written using the bind framework look like:
 
@@ -33,19 +42,12 @@ public class UserCommands {
 }
 ```
 The body of this command only focuses on the command logic. Everything else that would 
-usually be part of the command code (such as parsing the Duration or the User, 
+usually be part of the command code (such as parsing the Duration and the User, 
 checking whether the required permission "ban.user" is present, handling wrong arguments 
 etc.) is determined by the method and parameter declarations and done externally.
 
-
-## What is a command parsing framework?
-A command in this context refers to a textual message sent by users in a simple, non-graphical 
-user interface, that is translated to some action in code.
-Commands are used in many applications: CLI (command line interfaces), social 
-media or messenger bots, games and many more.
-
-A command parsing framework takes an incoming command, parses its arguments - if any -
-to a format that is easy to use in code and executes its corresponding action.
+## Maven/Gradle
+TBA
 
 ## Quick Overview
 *mela-command* consists of two major base parts, the core framework and the 
@@ -53,6 +55,9 @@ compile API. Both are found in the core module.
 The latter is used to connect higher-level command parsers with the lower-level 
 core framework. The default implementation of this API is provided by the bind framework 
 (found in the bind module).
+
+This is just an extremely simplified overview of the features - reading the 
+[Wiki]() to get started is recommended.
 
 ### Core Framework
 The core framework is described by three main interfaces: 
@@ -165,8 +170,13 @@ CommandGroup group = ImmutableGroup.builder()
 ```
 
 As you can see, to use the bind framework, you need to provide a `CommandCompiler` that
-transforms the `EchoCommand` object into a `CommandCallable`. `CommandBindings` contains
-everything needed to resolve parameter types (in this case, only `String`) and annotations
-(in this case, only `@Rest` - there to )
+transforms the `EchoCommand` object into a `CommandCallable`. `CommandBindings` in turn
+contains everything needed to resolve parameter types (in this case, only `String`) 
+and annotations (in this case, only `@Rest` - meaning "all remaining arguments").
 
-To learn more about the bind framework, please refer to the [Wiki]().
+## Relation to Google Guice
+This has built-in components that make integration with the Dependency Injection framework
+[Guice](https://github.com/google/guice) very simple.
+
+While no dependency on Guice is required to use any of mela-command's features, it is
+recommended, as it aligns closely with mela's principles.
