@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.mela.command.compile.CommandCompiler;
 import io.github.mela.command.compile.CommandCompilerException;
 import java.lang.reflect.Method;
@@ -16,6 +17,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+@Singleton
 public final class MethodHandleCompiler implements CommandCompiler {
 
   private final CommandBindings bindings;
