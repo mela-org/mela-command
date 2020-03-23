@@ -1,5 +1,6 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -72,7 +73,14 @@ public final class ImmutableGroup implements CommandGroup {
     checkForDuplicateNames(children, assembler::getNames);
     for (T child : children) {
       Set<String> names = assembler.getNames(child);
+      checkArgument(!names.isEmpty(),
+          "No group except for the root group may have an empty set of names");
       Set<? extends CommandCallable> commands = assembler.getCommands(child);
+      checkArgument(commands.stream()
+              .map(CommandCallable::getLabels)
+              .filter(Set::isEmpty)
+              .count() <= 1,
+          "There must not be more than one command with empty labels in one group");
       checkForDuplicateNames(commands, CommandCallable::getLabels);
       ImmutableGroup next = new ImmutableGroup(current, names, commands);
       next.setChildren(deepChildrenCopy(child, assembler, next));

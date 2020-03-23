@@ -33,4 +33,58 @@ class ImmutableGroupTest {
         "children set is not immutable");
   }
 
+  @Test
+  void testGroupNameDuplicateReaction() {
+    assertThrows(IllegalArgumentException.class,
+        () -> ImmutableGroup.builder()
+            .group("foo", "bar", "baz", "w")
+            .parent()
+            .group("lig", "wer", "bar")
+            .parent().build(),
+        "ImmutableGroup did not throw for duplicate group names");
+  }
+
+  @Test
+  void testCommandLabelDuplicateReaction() {
+    CommandCallable one = AssembledCommandCallable.builder()
+        .withLabels("foo", "bar", "baz", "w")
+        .withAction((a, c) -> {
+        })
+        .build();
+    CommandCallable two = AssembledCommandCallable.builder()
+        .withLabels("lig", "wer", "bar")
+        .withAction((a, c) -> {
+        })
+        .build();
+    assertThrows(IllegalArgumentException.class,
+        () -> ImmutableGroup.builder()
+            .add(one)
+            .add(two)
+            .build(), "ImmutableGroup did not throw for duplicate command labels");
+  }
+
+  @Test
+  void testEmptyGroupNamesReaction() {
+    assertThrows(IllegalArgumentException.class, () -> ImmutableGroup.builder().group().build(),
+        "ImmutableGroup did not throw for empty group names");
+  }
+
+  @Test
+  void testMultipleEmptyCommandLabelsReaction() {
+    CommandCallable one = AssembledCommandCallable.builder()
+        .withLabels()
+        .withAction((a, c) -> {
+        })
+        .build();
+    CommandCallable two = AssembledCommandCallable.builder()
+        .withLabels()
+        .withAction((a, c) -> {
+        })
+        .build();
+    assertThrows(IllegalArgumentException.class,
+        () -> ImmutableGroup.builder()
+            .add(one)
+            .add(two)
+            .build(), "ImmutableGroup did not throw for multiple empty command labels");
+  }
 }
