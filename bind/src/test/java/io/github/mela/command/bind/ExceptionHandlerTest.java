@@ -45,7 +45,6 @@ class ExceptionHandlerTest extends BindingTest<ExceptionHandlerTest.TestCommand>
     @Override
     public void handle(
         @Nonnull RuntimeException exception,
-        @Nonnull BindingCallable command,
         @Nonnull CommandContext context
     ) {
       executed = true;

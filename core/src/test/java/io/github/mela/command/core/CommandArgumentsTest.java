@@ -28,7 +28,7 @@ class CommandArgumentsTest {
   @Test
   void testNextString() {
     String word = arguments.nextString();
-    assertEquals("\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.", word,
+    assertEquals("\"Lorem ipsum dolor sit amet\" consetetur \"sadipscing\" elitr.", word,
         "nextWord() did not return the following word");
   }
 

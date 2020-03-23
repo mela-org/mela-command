@@ -1,6 +1,5 @@
 package io.github.mela.command.bind;
 
-import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -58,7 +57,7 @@ class CommandInterceptorTest extends BindingTest<CommandInterceptorTest.TestComm
 
     @Override
     public void intercept(
-        @Nonnull TestAnnotation annotation, @Nonnull CommandArguments arguments, @Nonnull CommandContext context) {
+        @Nonnull TestAnnotation annotation, @Nonnull CommandContext context) {
       annotationValue = annotation.value();
     }
   }
