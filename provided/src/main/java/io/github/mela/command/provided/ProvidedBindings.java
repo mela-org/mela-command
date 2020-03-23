@@ -1,8 +1,10 @@
-package io.github.mela.command.guice;
+package io.github.mela.command.provided;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import io.github.mela.command.bind.CommandBindings;
+import io.github.mela.command.bind.CommandBindingsBuilder;
 import io.github.mela.command.provided.interceptors.Context;
 import io.github.mela.command.provided.interceptors.ContextInterceptor;
 import io.github.mela.command.provided.interceptors.Default;
@@ -20,7 +22,6 @@ import io.github.mela.command.provided.interceptors.RestInterceptor;
 import io.github.mela.command.provided.mappers.BooleanMapper;
 import io.github.mela.command.provided.mappers.CharacterMapper;
 import io.github.mela.command.provided.mappers.CommandContextMapper;
-import io.github.mela.command.provided.mappers.CommandInputMapper;
 import io.github.mela.command.provided.mappers.Raw;
 import io.github.mela.command.provided.mappers.RawStringMapper;
 import io.github.mela.command.provided.mappers.StringMapper;
@@ -31,7 +32,6 @@ import io.github.mela.command.provided.mappers.providers.NeverReachMapperProvide
 import io.github.mela.command.provided.mappers.providers.NumberMapperProvider;
 import io.github.mela.command.provided.mappers.providers.OptionalMapperProvider;
 import io.github.mela.command.core.CommandContext;
-import io.github.mela.command.core.CommandInput;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -39,41 +39,37 @@ import java.util.LinkedHashSet;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class ProvidedBindingsModule extends CommandBindingsModule {
+public final class ProvidedBindings {
 
-  // unbound: log interceptor
-  @Override
-  protected void configure() {
-    bindMapper(String.class).to(StringMapper.class);
-    bindMapper(char.class).to(CharacterMapper.class);
-    bindMapper(Character.class).to(CharacterMapper.class);
-    bindMapper(boolean.class).to(BooleanMapper.class);
-    bindMapper(Boolean.class).to(BooleanMapper.class);
+  private ProvidedBindings() {}
 
-    bindMapperProvider()
-        .toInstance(new NeverReachMapperProvider(
-            (type) -> type.getAnnotatedType().isAnnotationPresent(Context.class)));
-    bindMapperProvider().to(NumberMapperProvider.class);
-    bindMapperProvider()
-        .toInstance(new CollectionMapperProvider<>(ArrayList.class, Lists::newArrayList));
-    bindMapperProvider()
-        .toInstance(new CollectionMapperProvider<>(LinkedHashSet.class, Sets::newLinkedHashSet));
-    bindMapperProvider().to(ArrayMapperProvider.class);
-    bindMapperProvider()
-        .toInstance(new MapMapperProvider<>(LinkedHashMap.class, Maps::newLinkedHashMap));
-    bindMapperProvider().to(OptionalMapperProvider.class);
-
-    bindMapper(String.class, Raw.class).to(RawStringMapper.class);
-
-    bindMapper(CommandContext.class).to(CommandContextMapper.class);
-    bindMapper(CommandInput.class).to(CommandInputMapper.class);
-
-    bindMappingInterceptor(Context.class).to(ContextInterceptor.class);
-    bindMappingInterceptor(Default.class).to(DefaultInterceptor.class);
-    bindMappingInterceptor(Flag.class).to(FlagInterceptor.class);
-    bindMappingInterceptor(Match.class).to(MatchInterceptor.class);
-    bindMappingInterceptor(Maybe.class).to(MaybeInterceptor.class);
-    bindMappingInterceptor(Range.class).to(RangeInterceptor.class);
-    bindMappingInterceptor(Rest.class).to(RestInterceptor.class);
+  // unbound: CommandInputMapper and LogInterceptor
+  public static CommandBindingsBuilder createBuilder() {
+    return CommandBindings.builder()
+        .bindMapper(String.class, new StringMapper())
+        .bindMapper(char.class, new CharacterMapper())
+        .bindMapper(Character.class, new CharacterMapper())
+        .bindMapper(boolean.class, new BooleanMapper())
+        .bindMapper(String.class, Raw.class, new RawStringMapper())
+        .bindMapper(CommandContext.class, new CommandContextMapper())
+        .bindMapperProvider(new NeverReachMapperProvider(
+            (type) -> type.getAnnotatedType().isAnnotationPresent(Context.class)))
+        .bindMapperProvider(new NumberMapperProvider())
+        .bindMapperProvider(new CollectionMapperProvider<>(ArrayList.class, Lists::newArrayList))
+        .bindMapperProvider(new CollectionMapperProvider<>(
+            LinkedHashSet.class, Sets::newLinkedHashSet))
+        .bindMapperProvider(new ArrayMapperProvider())
+        .bindMapperProvider(new MapMapperProvider<>(LinkedHashMap.class, Maps::newLinkedHashMap))
+        .bindMapperProvider(new OptionalMapperProvider())
+        .bindMappingInterceptor(Context.class, new ContextInterceptor())
+        .bindMappingInterceptor(Default.class, new DefaultInterceptor())
+        .bindMappingInterceptor(Flag.class, new FlagInterceptor())
+        .bindMappingInterceptor(Match.class, new MatchInterceptor())
+        .bindMappingInterceptor(Maybe.class, new MaybeInterceptor())
+        .bindMappingInterceptor(Range.class, new RangeInterceptor())
+        .bindMappingInterceptor(Rest.class, new RestInterceptor());
   }
+
+
+
 }
