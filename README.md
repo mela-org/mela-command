@@ -161,7 +161,7 @@ in the core framework:
 ```java
 public class Commands {
   @Command(labels = "print")
-  public void echo(@Maybe int[] arguments) {
+  public void print(@Maybe int[] arguments) {
     int sum = 0;
     for (int value : arguments) {
       sum += value;

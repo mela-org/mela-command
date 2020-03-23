@@ -87,9 +87,10 @@ public class CommandArguments {
       if (isNextUnescaped(delimiter)) {
         next();
         break;
-      } else {
-        builder.append(next());
+      } else if (peek() == '"' && previous == '\\') {
+        builder.deleteCharAt(builder.length() - 1);
       }
+      builder.append(next());
     }
     return builder.toString();
   }
