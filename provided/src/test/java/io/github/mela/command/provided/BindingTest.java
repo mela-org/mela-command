@@ -18,6 +18,7 @@ public abstract class BindingTest<T> {
   private final Supplier<T> factory;
 
   protected T command;
+  protected CommandGroup root;
   protected CommandDispatcher dispatcher;
 
   protected BindingTest(Supplier<T> factory) {
@@ -30,10 +31,10 @@ public abstract class BindingTest<T> {
   void setUp() {
     command = factory.get();
     CommandBindings bindings = configure(CommandBindings.builder()).build();
-    CommandGroup group = ImmutableGroup.builder()
+    root = ImmutableGroup.builder()
         .add(command)
         .compile(MethodHandleCompiler.withBindings(bindings));
-    dispatcher = DefaultDispatcher.create(group);
+    dispatcher = DefaultDispatcher.create(root);
   }
 
 }
