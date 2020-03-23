@@ -116,4 +116,9 @@ public abstract class BindingCallable implements CommandCallable {
   public Parameters getParameters() {
     return parameters;
   }
+
+  @Override
+  public String toString() {
+    return "BindingCallable(" + labels + ")";
+  }
 }

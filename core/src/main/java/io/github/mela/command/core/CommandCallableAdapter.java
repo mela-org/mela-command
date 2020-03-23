@@ -1,5 +1,8 @@
 package io.github.mela.command.core;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import javax.annotation.Nonnull;
@@ -29,6 +32,11 @@ public abstract class CommandCallableAdapter implements CommandCallable {
                                    @Nullable String help,
                                    @Nullable String usage) {
     this.labels = ImmutableSet.copyOf(labels);
+    if (primaryLabel != null) {
+      checkArgument(labels.contains(primaryLabel),
+          "Primary label \"" + primaryLabel + "\" is not part of the command's labels"
+              + " (" + labels + ")");
+    }
     this.primaryLabel = primaryLabel;
     this.description = description;
     this.help = help;
@@ -37,29 +45,34 @@ public abstract class CommandCallableAdapter implements CommandCallable {
 
   @Nonnull
   @Override
-  public Set<String> getLabels() {
+  public final Set<String> getLabels() {
     return labels;
   }
 
   @Override
-  public String getPrimaryLabel() {
+  public final String getPrimaryLabel() {
     return primaryLabel == null
         ? (labels.isEmpty() ? null : labels.iterator().next())
         : primaryLabel;
   }
 
   @Override
-  public String getDescription() {
+  public final String getDescription() {
     return description;
   }
 
   @Override
-  public String getHelp() {
+  public final String getHelp() {
     return help;
   }
 
   @Override
-  public String getUsage() {
+  public final String getUsage() {
     return usage;
+  }
+
+  @Override
+  public String toString() {
+    return "CommandCallable(" + labels + ")";
   }
 }

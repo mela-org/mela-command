@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -55,38 +56,48 @@ public final class ImmutableGroup implements CommandGroup {
 
   // TODO check for duplicate command names
   @Nonnull
-  public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> accumulator) {
+  public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> assembler) {
     checkNotNull(root);
-    checkNotNull(accumulator);
-    ImmutableGroup group = new ImmutableGroup(null, accumulator.getNames(root),
-        accumulator.getCommands(root));
-    group.setChildren(deepChildrenCopy(root, accumulator, group));
+    checkNotNull(assembler);
+    ImmutableGroup group = new ImmutableGroup(null, assembler.getNames(root),
+        assembler.getCommands(root));
+    group.setChildren(deepChildrenCopy(root, assembler, group));
     return group;
   }
 
-  private static <T> Set<ImmutableGroup> deepChildrenCopy(T template, GroupAssembler<T> accumulator,
+  private static <T> Set<ImmutableGroup> deepChildrenCopy(T template, GroupAssembler<T> assembler,
                                                           ImmutableGroup current) {
-    Set<ImmutableGroup> children = Sets.newHashSet();
-    for (T child : accumulator.getChildren(template)) {
-      Set<String> names = accumulator.getNames(child);
-      checkForDuplicateNames(children, names);
-      ImmutableGroup next = new ImmutableGroup(current, names, accumulator.getCommands(child));
-      next.setChildren(deepChildrenCopy(child, accumulator, next));
-      children.add(next);
+    Set<ImmutableGroup> groupChildren = Sets.newHashSet();
+    Set<? extends T> children = assembler.getChildren(template);
+    checkForDuplicateNames(children, assembler::getNames);
+    for (T child : children) {
+      Set<String> names = assembler.getNames(child);
+      Set<? extends CommandCallable> commands = assembler.getCommands(child);
+      checkForDuplicateNames(commands, CommandCallable::getLabels);
+      ImmutableGroup next = new ImmutableGroup(current, names, commands);
+      next.setChildren(deepChildrenCopy(child, assembler, next));
+      groupChildren.add(next);
     }
-    return children;
+    return groupChildren;
   }
 
-  private static void checkForDuplicateNames(
-      Set<ImmutableGroup> children, Set<String> namesToCheck) {
-    for (CommandGroup child : children) {
-      for (String name : child.getNames()) {
-        if (namesToCheck.contains(name)) {
-          throw new IllegalArgumentException("Group "
-              + namesToCheck + " has duplicate uses already bound name: " + name);
+  private static <T> void checkForDuplicateNames(
+      Set<T> subjects, Function<T, Set<String>> nameFunction) {
+    for (T subject : subjects) {
+      for (T check : subjects) {
+        boolean hasDuplicate = check != subject && nameFunction.apply(check)
+            .stream().anyMatch((name) -> nameFunction.apply(subject).contains(name));
+        if (hasDuplicate) {
+          throw new IllegalArgumentException("Duplicate name: the names of "
+              + subject + " and " + check + " are not completely distinct");
         }
       }
     }
+  }
+
+  private void setChildren(Set<ImmutableGroup> children) {
+    checkState(this.children == null);
+    this.children = ImmutableSet.copyOf(children);
   }
 
   @Nullable
@@ -99,11 +110,6 @@ public final class ImmutableGroup implements CommandGroup {
   @Override
   public Set<? extends CommandGroup> getChildren() {
     return children;
-  }
-
-  private void setChildren(Set<ImmutableGroup> children) {
-    checkState(this.children == null);
-    this.children = ImmutableSet.copyOf(children);
   }
 
   @Nonnull
