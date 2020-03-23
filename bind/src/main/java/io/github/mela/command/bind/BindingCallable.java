@@ -64,7 +64,7 @@ public abstract class BindingCallable implements CommandCallable {
   @Override
   public void call(@Nonnull CommandArguments arguments, @Nonnull CommandContext context) {
     try {
-      intercept(arguments, context);
+      intercept(context);
       Object[] methodArguments = parameters.map(arguments, context);
       call(methodArguments);
     } catch (Throwable error) {
@@ -72,15 +72,15 @@ public abstract class BindingCallable implements CommandCallable {
       if (handler == null) {
         throw new RuntimeException("Unhandled exception while calling command", error);
       } else {
-        handler.handle(error, this, context);
+        handler.handle(error, context);
       }
     }
   }
 
   @SuppressWarnings("unchecked")
-  private void intercept(CommandArguments arguments, CommandContext context) {
+  private void intercept(CommandContext context) {
     for (Map.Entry<Annotation, CommandInterceptor> entry : interceptors.entrySet()) {
-      entry.getValue().intercept(entry.getKey(), arguments, context);
+      entry.getValue().intercept(entry.getKey(), context);
     }
   }
 

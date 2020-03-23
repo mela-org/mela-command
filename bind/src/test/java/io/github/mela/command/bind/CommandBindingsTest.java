@@ -38,7 +38,7 @@ class CommandBindingsTest {
 
   @Test
   void testCommandInterceptorBinding() {
-    CommandInterceptor<TestAnnotation> interceptor = (t, a, c) -> {
+    CommandInterceptor<TestAnnotation> interceptor = (a, c) -> {
     };
     CommandBindings bindings = CommandBindings.builder()
         .bindCommandInterceptor(TestAnnotation.class, interceptor)
@@ -59,7 +59,7 @@ class CommandBindingsTest {
 
   @Test
   void testExceptionHandlerBinding() {
-    ExceptionHandler<Throwable> handler = (a, c1, c2) -> {
+    ExceptionHandler<Throwable> handler = (t, c) -> {
     };
     CommandBindings bindings = CommandBindings.builder()
         .bindHandler(Throwable.class, handler)

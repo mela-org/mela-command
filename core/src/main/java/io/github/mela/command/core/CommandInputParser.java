@@ -17,7 +17,7 @@ final class CommandInputParser {
   private CommandCallable command;
 
   CommandInputParser(CommandGroup root, String input) {
-    this.initialInput = checkNotNull(input);
+    this.initialInput = checkNotNull(input.trim());
     this.remaining = input.trim();
     this.currentWord = "";
     this.group = checkNotNull(root);
