@@ -53,6 +53,7 @@ public final class ImmutableGroup implements CommandGroup {
         : of(group, GroupAssembler.forGroup());
   }
 
+  // TODO check for duplicate command names
   @Nonnull
   public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> accumulator) {
     checkNotNull(root);
