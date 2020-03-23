@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 import com.google.common.collect.ImmutableSet;
-import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckReturnValue;
@@ -26,7 +25,7 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
       @Nullable String usage,
       @Nonnull BiConsumer<CommandArguments, CommandContext> action
   ) {
-    super(labels, primaryLabel, description, help, usage);
+    super(labels, description, help, usage);
     this.action = checkNotNull(action);
   }
 
@@ -56,14 +55,8 @@ public final class AssembledCommandCallable extends CommandCallableAdapter {
     }
 
     @Nonnull
-    public Builder withLabels(@Nonnull Collection<String> labels) {
+    public Builder withLabels(@Nonnull Iterable<String> labels) {
       this.labels = ImmutableSet.copyOf(labels);
-      return this;
-    }
-
-    @Nonnull
-    public Builder withPrimaryLabel(@Nullable String label) {
-      this.primaryLabel = label;
       return this;
     }
 

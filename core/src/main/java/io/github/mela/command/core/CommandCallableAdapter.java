@@ -1,8 +1,5 @@
 package io.github.mela.command.core;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
-
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import javax.annotation.Nonnull;
@@ -19,25 +16,12 @@ public abstract class CommandCallableAdapter implements CommandCallable {
   private final String help;
   private final String usage;
 
-  protected CommandCallableAdapter(@Nonnull Set<String> labels,
-                                   @Nullable String description,
-                                   @Nullable String help,
-                                   @Nullable String usage) {
-    this(labels, null, description, help, usage);
-  }
-
-  protected CommandCallableAdapter(@Nonnull Set<String> labels,
-                                   @Nullable String primaryLabel,
+  protected CommandCallableAdapter(@Nonnull Iterable<String> labels,
                                    @Nullable String description,
                                    @Nullable String help,
                                    @Nullable String usage) {
     this.labels = ImmutableSet.copyOf(labels);
-    if (primaryLabel != null) {
-      checkArgument(labels.contains(primaryLabel),
-          "Primary label \"" + primaryLabel + "\" is not part of the command's labels"
-              + " (" + labels + ")");
-    }
-    this.primaryLabel = primaryLabel;
+    this.primaryLabel = this.labels.isEmpty() ? null : labels.iterator().next();
     this.description = description;
     this.help = help;
     this.usage = usage;
