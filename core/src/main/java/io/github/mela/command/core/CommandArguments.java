@@ -19,11 +19,14 @@ public class CommandArguments {
   private int position;
   private char previous;
 
+  private char stringDelimiter;
+
   protected CommandArguments(String arguments) {
     this.raw = arguments.trim();
     this.arguments = new StringBuilder(raw);
     this.position = 0;
     this.previous = 0;
+    this.stringDelimiter = '"';
   }
 
   public static CommandArguments of(@Nonnull String arguments) {
@@ -67,14 +70,14 @@ public class CommandArguments {
   }
 
   public String nextString() {
-    String string = isNextUnescaped('"') ? nextSection('"') : nextWord();
+    String string = isNextUnescaped(stringDelimiter) ? nextSection(stringDelimiter) : nextWord();
     skipLeadingWhitespace();
     return string.trim();
   }
 
   public String nextWord() {
     StringBuilder builder = new StringBuilder();
-    while (hasNext() && !isNextWhiteSpace() && !isNextUnescaped('"')) {
+    while (hasNext() && !isNextWhiteSpace()) {
       builder.append(next());
     }
     return builder.toString();
@@ -87,7 +90,7 @@ public class CommandArguments {
       if (isNextUnescaped(delimiter)) {
         next();
         break;
-      } else if (peek() == '"' && previous == '\\') {
+      } else if (peek() == stringDelimiter && previous == '\\') {
         builder.deleteCharAt(builder.length() - 1);
       }
       builder.append(next());
@@ -149,8 +152,16 @@ public class CommandArguments {
     return position;
   }
 
-  public void jumpTo(int position) {
+  public void setPosition(int position) {
     this.position = checkPositionIndex(position, arguments.length());
+  }
+
+  public char getStringDelimiter() {
+    return stringDelimiter;
+  }
+
+  public void setStringDelimiter(char stringDelimiter) {
+    this.stringDelimiter = stringDelimiter;
   }
 
   public int length() {

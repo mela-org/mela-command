@@ -29,7 +29,7 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
         .findFirst();
 
     flagPosition.ifPresent((pos) -> {
-      arguments.jumpTo(pos);
+      arguments.setPosition(pos);
       arguments.nextString();
     });
 

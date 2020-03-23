@@ -42,7 +42,7 @@ class CommandArgumentsTest {
   @Test
   void testIndexOf() {
     int index = arguments.indexOf("sed");
-    arguments.jumpTo(index);
+    arguments.setPosition(index);
     String sed = arguments.nextString();
     assertEquals("sed", sed, "indexOf() did not return the correct index of the given substring");
   }
