@@ -57,7 +57,7 @@ core framework. The default implementation of this API is provided by the bind f
 (found in the bind module).
 
 This is just an extremely simplified overview of the features - reading the 
-[Wiki]() to get started is recommended.
+[Wiki](https://github.com/mela-org/commands/wiki) to get started is recommended.
 
 ### Core Framework
 The core framework is described by three main interfaces: 
