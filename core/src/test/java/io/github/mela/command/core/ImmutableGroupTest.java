@@ -65,7 +65,8 @@ class ImmutableGroupTest {
 
   @Test
   void testEmptyGroupNamesReaction() {
-    assertThrows(IllegalArgumentException.class, () -> ImmutableGroup.builder().group().build(),
+    assertThrows(IllegalArgumentException.class,
+        () -> ImmutableGroup.builder().group().parent().build(),
         "ImmutableGroup did not throw for empty group names");
   }
 

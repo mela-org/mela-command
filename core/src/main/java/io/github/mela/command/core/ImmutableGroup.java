@@ -60,8 +60,11 @@ public final class ImmutableGroup implements CommandGroup {
   public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> assembler) {
     checkNotNull(root);
     checkNotNull(assembler);
+    Set<? extends CommandCallable> commands = assembler.getCommands(root);
+    checkForDuplicateNames(commands, CommandCallable::getLabels);
+    checkOnlyOneEmptyLabelCommand(commands);
     ImmutableGroup group = new ImmutableGroup(null, assembler.getNames(root),
-        assembler.getCommands(root));
+        commands);
     group.setChildren(deepChildrenCopy(root, assembler, group));
     return group;
   }
@@ -76,17 +79,21 @@ public final class ImmutableGroup implements CommandGroup {
       checkArgument(!names.isEmpty(),
           "No group except for the root group may have an empty set of names");
       Set<? extends CommandCallable> commands = assembler.getCommands(child);
-      checkArgument(commands.stream()
-              .map(CommandCallable::getLabels)
-              .filter(Set::isEmpty)
-              .count() <= 1,
-          "There must not be more than one command with empty labels in one group");
+      checkOnlyOneEmptyLabelCommand(commands);
       checkForDuplicateNames(commands, CommandCallable::getLabels);
       ImmutableGroup next = new ImmutableGroup(current, names, commands);
       next.setChildren(deepChildrenCopy(child, assembler, next));
       groupChildren.add(next);
     }
     return groupChildren;
+  }
+
+  private static void checkOnlyOneEmptyLabelCommand(Set<? extends CommandCallable> commands) {
+    checkArgument(commands.stream()
+            .map(CommandCallable::getLabels)
+            .filter(Set::isEmpty)
+            .count() <= 1,
+        "There must not be more than one command with empty labels in one group");
   }
 
   private static <T> void checkForDuplicateNames(
