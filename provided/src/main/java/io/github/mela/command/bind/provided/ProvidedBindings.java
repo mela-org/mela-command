@@ -43,6 +43,7 @@ public final class ProvidedBindings {
 
   private ProvidedBindings() {}
 
+  // unbound: CommandInputMapper and LogInterceptor
   public static CommandBindingsBuilder createBuilder() {
     return CommandBindings.builder()
         .bindMapper(String.class, new StringMapper())

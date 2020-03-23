@@ -89,6 +89,11 @@ public final class CommandContext {
     return Objects.hashCode(map);
   }
 
+  @Override
+  public String toString() {
+    return map.toString();
+  }
+
   private static final class CompositeKey {
     final Type type;
     final Object key;

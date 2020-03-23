@@ -3,4 +3,5 @@ object Dependencies {
     const val guava = "com.google.guava:guava:28.2-jre"
     const val junitApi = "org.junit.jupiter:junit-jupiter-api:5.6.0"
     const val junitEngine = "org.junit.jupiter:junit-jupiter-engine:5.6.0"
+    const val slf4jApi = "org.slf4j:slf4j-api:1.7.30"
 }

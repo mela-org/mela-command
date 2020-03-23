@@ -41,6 +41,7 @@ import java.util.LinkedHashSet;
  */
 public class ProvidedBindingsModule extends CommandBindingsModule {
 
+  // unbound: log interceptor
   @Override
   protected void configure() {
     bindMapper(String.class).to(StringMapper.class);
