@@ -108,6 +108,8 @@ public class CommandArguments {
     return peek() == c && previous != '\\';
   }
 
+  // TODO consider using different whitespace specification,
+  //  such as guava CharMatcher.breakingWhitespace()
   public boolean isNextWhiteSpace() {
     return isWhitespace(peek());
   }
