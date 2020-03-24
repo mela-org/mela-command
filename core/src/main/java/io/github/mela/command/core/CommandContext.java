@@ -42,7 +42,7 @@ public final class CommandContext {
   }
 
   @Nonnull
-  public Optional<Object> get(@Nullable Object key) {
+  public Optional<?> get(@Nullable Object key) {
     return Optional.ofNullable(map.get(key));
   }
 
