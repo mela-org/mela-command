@@ -42,6 +42,7 @@ public final class MappingProcess {
     checkNotNull(error);
     if (this.error == null) {
       this.error = error;
+      this.isSet = false;
     }
   }
 

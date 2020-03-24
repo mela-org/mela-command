@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
  */
 public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
 
-  private final Map<String, Pattern> patterns = Maps.newHashMap();
+  private final Map<String, Pattern> patternCache = Maps.newHashMap();
 
   @Override
   public void postprocess(
@@ -25,11 +25,8 @@ public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
-
-
-    if (!process.isErroneous()
-        && process.isSet() && process.getValue() != null) {
-      Pattern pattern = patterns.computeIfAbsent(annotation.value(), Pattern::compile);
+    if (process.isSet() && process.getValue() != null) {
+      Pattern pattern = patternCache.computeIfAbsent(annotation.value(), Pattern::compile);
       if (!pattern.matcher((String) process.getValue()).matches()) {
         process.fail(new ArgumentValidationException("Value " + process.getValue()
             + " does not match regex " + annotation.value()));
