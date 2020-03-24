@@ -50,6 +50,7 @@ public final class MappingProcessor {
     return create(bindings, type, Sets.newLinkedHashSet());
   }
 
+  @SuppressWarnings("unchecked")
   private static MappingProcessor create(
       CommandBindings bindings, TargetType type, Set<Annotation> annotations) {
     annotations.addAll(Arrays.asList(type.getAnnotatedType().getAnnotations()));
@@ -59,6 +60,7 @@ public final class MappingProcessor {
           "Invalid type: missing ArgumentMapper binding for type " + type.getTypeKey());
     }
     Map<Annotation, MappingInterceptor> interceptors = getInterceptors(bindings, annotations);
+    interceptors.forEach((annotation, interceptor) -> interceptor.verify(annotation, type));
     return new MappingProcessor(type, mapper, interceptors);
   }
 

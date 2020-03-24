@@ -32,8 +32,7 @@ class DefaultDispatcherTest {
   @Test
   void testSimpleCommandDispatch() {
     CommandContext context = CommandContext.of(ImmutableMap.of("env", "test"));
-    boolean success = dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
-    assertTrue(success, "Dispatcher did not return success");
+    dispatcher.dispatch("foo\n \t  bar   \nbaz", context);
     assertTrue(command.executed, "Command was not executed");
     assertEquals("baz", command.arguments.getRaw(), "command arguments were changed");
     assertEquals(context, command.context, "command context was changed");

@@ -36,16 +36,15 @@ public final class DefaultDispatcher implements CommandDispatcher {
   }
 
   @Override
-  public boolean dispatch(@Nonnull String command, @Nonnull CommandContext context) {
+  public void dispatch(@Nonnull String command, @Nonnull CommandContext context) {
     CommandInput input = CommandInput.parse(root, command);
     context.put(CommandInput.class, "input", input);
     CommandCallable callable = input.getCommand();
     if (callable != null) {
       CommandArguments arguments = CommandArguments.of(input.getRemaining());
       executor.execute(() -> callable.call(arguments, context));
-      return true;
     } else {
-      return false;
+      throw new UnknownCommandException("Could not find command for input \"" + input + "\"");
     }
   }
 

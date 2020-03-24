@@ -7,6 +7,6 @@ import javax.annotation.Nonnull;
 @ImplementedBy(DefaultDispatcher.class)
 public interface CommandDispatcher {
 
-  boolean dispatch(@Nonnull String command, @Nonnull CommandContext context);
+  void dispatch(@Nonnull String command, @Nonnull CommandContext context);
 
 }

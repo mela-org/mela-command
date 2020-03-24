@@ -1,6 +1,7 @@
 package io.github.mela.command.provided.interceptors;
 
 import com.google.common.collect.Maps;
+import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.CommandContext;
@@ -24,10 +25,7 @@ public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
-    Type type = process.getTargetType().getType();
-    if (type != String.class) {
-      throw new IllegalTargetTypeError(type, Match.class);
-    }
+
 
     if (!process.isErroneous()
         && process.isSet() && process.getValue() != null) {
@@ -36,6 +34,14 @@ public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
         process.fail(new ArgumentValidationException("Value " + process.getValue()
             + " does not match regex " + annotation.value()));
       }
+    }
+  }
+
+  @Override
+  public void verify(@Nonnull Match annotation, @Nonnull TargetType targetType) {
+    Type type = targetType.getType();
+    if (type != String.class) {
+      throw new IllegalTargetTypeError(type, Match.class);
     }
   }
 }
