@@ -17,8 +17,8 @@ import io.github.mela.command.provided.interceptors.Maybe;
 import io.github.mela.command.provided.interceptors.MaybeInterceptor;
 import io.github.mela.command.provided.interceptors.Range;
 import io.github.mela.command.provided.interceptors.RangeInterceptor;
-import io.github.mela.command.provided.interceptors.Rest;
-import io.github.mela.command.provided.interceptors.RestInterceptor;
+import io.github.mela.command.provided.interceptors.Remaining;
+import io.github.mela.command.provided.interceptors.RemainingInterceptor;
 import io.github.mela.command.provided.mappers.BooleanMapper;
 import io.github.mela.command.provided.mappers.CharacterMapper;
 import io.github.mela.command.provided.mappers.CommandContextMapper;
@@ -67,7 +67,7 @@ public final class ProvidedBindings {
         .bindMappingInterceptor(Match.class, new MatchInterceptor())
         .bindMappingInterceptor(Maybe.class, new MaybeInterceptor())
         .bindMappingInterceptor(Range.class, new RangeInterceptor())
-        .bindMappingInterceptor(Rest.class, new RestInterceptor());
+        .bindMappingInterceptor(Remaining.class, new RemainingInterceptor());
   }
 
 

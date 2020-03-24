@@ -9,11 +9,11 @@ import javax.annotation.Nonnull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class RestInterceptor extends MappingInterceptorAdapter<Rest> {
+public class RemainingInterceptor extends MappingInterceptorAdapter<Remaining> {
 
   @Override
   public void preprocess(
-      @Nonnull Rest annotation,
+      @Nonnull Remaining annotation,
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {

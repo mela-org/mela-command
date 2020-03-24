@@ -15,8 +15,8 @@ import io.github.mela.command.provided.interceptors.Maybe;
 import io.github.mela.command.provided.interceptors.MaybeInterceptor;
 import io.github.mela.command.provided.interceptors.Range;
 import io.github.mela.command.provided.interceptors.RangeInterceptor;
-import io.github.mela.command.provided.interceptors.Rest;
-import io.github.mela.command.provided.interceptors.RestInterceptor;
+import io.github.mela.command.provided.interceptors.Remaining;
+import io.github.mela.command.provided.interceptors.RemainingInterceptor;
 import io.github.mela.command.provided.mappers.BooleanMapper;
 import io.github.mela.command.provided.mappers.CharacterMapper;
 import io.github.mela.command.provided.mappers.CommandContextMapper;
@@ -74,6 +74,6 @@ public class ProvidedBindingsModule extends CommandBindingsModule {
     bindMappingInterceptor(Match.class).to(MatchInterceptor.class);
     bindMappingInterceptor(Maybe.class).to(MaybeInterceptor.class);
     bindMappingInterceptor(Range.class).to(RangeInterceptor.class);
-    bindMappingInterceptor(Rest.class).to(RestInterceptor.class);
+    bindMappingInterceptor(Remaining.class).to(RemainingInterceptor.class);
   }
 }

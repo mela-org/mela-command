@@ -112,6 +112,14 @@ public class CommandArguments {
     return isWhitespace(peek());
   }
 
+  public String remaining() {
+    StringBuilder builder = new StringBuilder();
+    while (hasNext()) {
+      builder.append(next());
+    }
+    return builder.toString().trim();
+  }
+
   public boolean hasNext() {
     return position < arguments.length();
   }

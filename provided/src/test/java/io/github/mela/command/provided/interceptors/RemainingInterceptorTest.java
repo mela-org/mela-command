@@ -10,9 +10,9 @@ import io.github.mela.command.provided.mappers.StringMapper;
 import io.github.mela.command.core.CommandContext;
 import org.junit.jupiter.api.Test;
 
-class RestInterceptorTest extends BindingTest<RestInterceptorTest.TestCommand> {
+class RemainingInterceptorTest extends BindingTest<RemainingInterceptorTest.TestCommand> {
 
-  protected RestInterceptorTest() {
+  protected RemainingInterceptorTest() {
     super(TestCommand::new);
   }
 
@@ -27,14 +27,14 @@ class RestInterceptorTest extends BindingTest<RestInterceptorTest.TestCommand> {
   protected CommandBindingsBuilder configure(CommandBindingsBuilder builder) {
     return builder
         .bindMapper(String.class, new StringMapper())
-        .bindMappingInterceptor(Rest.class, new RestInterceptor());
+        .bindMappingInterceptor(Remaining.class, new RemainingInterceptor());
   }
 
   public static final class TestCommand {
     private String value;
 
     @Command(labels = "foo")
-    public void execute(@Rest String value) {
+    public void execute(@Remaining String value) {
       this.value = value;
     }
   }

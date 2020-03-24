@@ -7,5 +7,4 @@ repositories {
 dependencies {
     compileOnly(Dependencies.guice)
     api(project(":core"))
-    api(Dependencies.guava)
 }
