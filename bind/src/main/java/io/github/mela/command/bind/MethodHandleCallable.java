@@ -12,11 +12,11 @@ import javax.annotation.Nonnull;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public final class MethodHandleCallable extends BindingCallable {
+public class MethodHandleCallable extends BindingCallable {
 
   private final MethodHandle handle;
 
-  private MethodHandleCallable(Object delegate, Method method, CommandBindings bindings)
+  protected MethodHandleCallable(Object delegate, Method method, CommandBindings bindings)
       throws NoSuchMethodException, IllegalAccessException {
     super(method, bindings);
     checkNotNull(delegate);

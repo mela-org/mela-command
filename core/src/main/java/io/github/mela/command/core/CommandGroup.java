@@ -69,6 +69,7 @@ public interface CommandGroup {
     return getParent() == null && getNames().isEmpty();
   }
 
+  @Nonnull
   default String getQualifiedName() {
     StringBuilder pathBuilder = new StringBuilder();
     for (CommandGroup group = this; group != null; group = group.getParent()) {
