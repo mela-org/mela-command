@@ -7,6 +7,7 @@ import com.google.inject.ProvidedBy;
 import io.github.mela.command.guice.CompilingRootGroupProvider;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -55,6 +56,21 @@ public interface CommandGroup {
         .stream()
         .filter((command) -> command.getLabels().isEmpty())
         .findFirst();
+  }
+
+  default void walk(@Nonnull Consumer<? super CommandGroup> action) {
+    action.accept(this);
+    for (CommandGroup child : getChildren()) {
+      child.walk(action);
+    }
+  }
+
+  default int depth() {
+    int depth = 0;
+    for (CommandGroup current = this; current.getParent() != null; current = current.getParent()) {
+      ++depth;
+    }
+    return depth;
   }
 
   default boolean isRoot() {
