@@ -7,9 +7,6 @@ import javax.annotation.Nonnull;
 public interface UncompiledGroup {
 
   @Nonnull
-  UncompiledGroup merge(@Nonnull UncompiledGroup other);
-
-  @Nonnull
   Collection<?> getUncompiledCommands();
 
   @Nonnull

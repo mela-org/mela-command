@@ -37,7 +37,7 @@ public final class CommandBindingNode {
   @Nonnull
   public CommandBindingNode group(@Nonnull String... aliases) {
     checkNotNull(aliases);
-    InjectableGroup child = group.createChildIfNotExists(ImmutableSet.copyOf(aliases));
+    InjectableGroup child = group.createChild(ImmutableSet.copyOf(aliases));
     return new CommandBindingNode(this, child);
   }
 

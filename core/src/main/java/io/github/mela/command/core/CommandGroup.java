@@ -57,6 +57,10 @@ public interface CommandGroup {
         .findFirst();
   }
 
+  default boolean isRoot() {
+    return getParent() == null && getNames().isEmpty();
+  }
+
   default boolean matches(@Nonnull String descriptor) {
     String[] parts = SPLIT_PATTERN.split(checkNotNull(descriptor));
     CommandGroup current = this;

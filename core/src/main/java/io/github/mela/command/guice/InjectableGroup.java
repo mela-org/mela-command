@@ -1,9 +1,5 @@
 package io.github.mela.command.guice;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -34,31 +30,6 @@ final class InjectableGroup implements UncompiledGroup {
     this.names = ImmutableSet.copyOf(names);
     this.children = Sets.newHashSet();
     this.compilables = Maps.newHashMap();
-  }
-
-  @Nonnull
-  @Override
-  public UncompiledGroup merge(@Nonnull UncompiledGroup other) {
-    checkArgument(checkNotNull(other) instanceof InjectableGroup,
-        "Group to assimilate must be of the same type as this group");
-    InjectableGroup root = (InjectableGroup) other;
-    InjectableGroup copy = this.copy();
-    assimilate(copy, root);
-    return copy;
-  }
-
-  private InjectableGroup copy() {
-    InjectableGroup copy = new InjectableGroup();
-    this.assimilate(copy, this);
-    return copy;
-  }
-
-  private void assimilate(InjectableGroup own, InjectableGroup other) {
-    own.compilables.putAll(other.compilables);
-    for (InjectableGroup otherChild : other.children) {
-      InjectableGroup ownChild = own.createChildIfNotExists(otherChild.names);
-      assimilate(ownChild, otherChild);
-    }
   }
 
   @Nonnull
@@ -97,13 +68,7 @@ final class InjectableGroup implements UncompiledGroup {
     compilables.put(commandClass, COMMAND_PLACEHOLDER);
   }
 
-  InjectableGroup createChildIfNotExists(@Nonnull Set<String> names) {
-    for (InjectableGroup child : children) {
-      if (child.names.equals(names)) {
-        return child;
-      }
-    }
-
+  InjectableGroup createChild(@Nonnull Set<String> names) {
     InjectableGroup child = new InjectableGroup(names);
     children.add(child);
     return child;

@@ -21,10 +21,10 @@ import javax.annotation.Nonnull;
  */
 public final class ImmutableGroupBuilder {
 
-  private MutableGroup current;
+  private BuildingGroup current;
 
   ImmutableGroupBuilder() {
-    current = new MutableGroup(null, Collections.emptySet());
+    current = new BuildingGroup(null, Collections.emptySet());
   }
 
   @Nonnull
@@ -34,7 +34,7 @@ public final class ImmutableGroupBuilder {
 
   @Nonnull
   public ImmutableGroupBuilder group(@Nonnull Collection<String> names) {
-    MutableGroup child = new MutableGroup(current, names);
+    BuildingGroup child = new BuildingGroup(current, names);
     current.children.add(child);
     current = child;
     return this;
@@ -74,25 +74,18 @@ public final class ImmutableGroupBuilder {
     return ImmutableGroup.of(current, GroupAssembler.compiling(compiler));
   }
 
-  private static final class MutableGroup implements UncompiledGroup {
+  private static final class BuildingGroup implements UncompiledGroup {
 
-    private final MutableGroup parent;
+    private final BuildingGroup parent;
     private final Set<String> names;
-    private final Set<MutableGroup> children;
+    private final Set<BuildingGroup> children;
     private final Set<Object> commands;
 
-    private MutableGroup(MutableGroup parent, Collection<String> names) {
+    private BuildingGroup(BuildingGroup parent, Collection<String> names) {
       this.parent = parent;
       this.names = ImmutableSet.copyOf(names);
       children = Sets.newHashSet();
       commands = Sets.newHashSet();
-    }
-
-    // TODO implement
-    @Nonnull
-    @Override
-    public UncompiledGroup merge(@Nonnull UncompiledGroup other) {
-      throw new UnsupportedOperationException();
     }
 
     @Nonnull

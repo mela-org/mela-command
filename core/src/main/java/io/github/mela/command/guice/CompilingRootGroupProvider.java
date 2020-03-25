@@ -8,6 +8,7 @@ import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.GroupAssembler;
 import io.github.mela.command.core.ImmutableGroup;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 /**
@@ -27,9 +28,8 @@ public final class CompilingRootGroupProvider implements Provider<CommandGroup> 
   @Nonnull
   @Override
   public CommandGroup get() {
-    return rawGroups.stream()
-        .reduce(UncompiledGroup::merge)
+    return ImmutableGroup.merge(rawGroups.stream()
         .map((group) -> ImmutableGroup.of(group, GroupAssembler.compiling(compiler)))
-        .orElse(ImmutableGroup.EMPTY);
+        .collect(Collectors.toList()));
   }
 }

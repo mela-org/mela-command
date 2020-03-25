@@ -7,9 +7,13 @@ import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,7 +23,7 @@ import javax.annotation.Nullable;
  */
 public final class ImmutableGroup implements CommandGroup {
 
-  public static final CommandGroup EMPTY = childlessRoot(ImmutableSet.of(), ImmutableSet.of());
+  public static final CommandGroup EMPTY = childlessRoot(ImmutableSet.of());
 
   private final ImmutableGroup parent;
   private final Set<String> names;
@@ -34,6 +38,88 @@ public final class ImmutableGroup implements CommandGroup {
     this.commands = ImmutableSet.copyOf(commands);
   }
 
+  @Nonnull
+  public static CommandGroup merge(@Nonnull CommandGroup... rootGroups) {
+    return merge(Arrays.asList(rootGroups));
+  }
+
+  @Nonnull
+  public static CommandGroup merge(@Nonnull Collection<? extends CommandGroup> rootGroups) {
+    checkArgument(rootGroups.stream().allMatch(CommandGroup::isRoot),
+        "Provided groups must all be root root groups");
+    return rootGroups.stream().map(MutableGroup::new)
+        .reduce((one, two) -> {
+          assimilate(one, two);
+          return one;
+        }).map(ImmutableGroup::copyOf)
+        .orElse(ImmutableGroup.EMPTY);
+  }
+
+  private static void assimilate(MutableGroup one, MutableGroup two) {
+    one.commands.addAll(two.commands);
+    for (MutableGroup otherChild : two.children) {
+      MutableGroup ownChild = new MutableGroup(one);
+      one.children.add(ownChild);
+      assimilate(ownChild, otherChild);
+    }
+  }
+
+  private static class MutableGroup implements CommandGroup {
+
+    private final MutableGroup parent;
+    private final Set<MutableGroup> children;
+    private final Set<String> names;
+    private final Set<CommandCallable> commands;
+
+    // creates empty
+    MutableGroup(MutableGroup parent) {
+      this.parent = parent;
+      commands = Sets.newHashSet();
+      names = Sets.newLinkedHashSet();
+      children = Sets.newHashSet();
+    }
+
+    // copies group
+    MutableGroup(CommandGroup group) {
+      this(null, group);
+    }
+
+    // copies group with parent
+    MutableGroup(MutableGroup parent, CommandGroup group) {
+      this.parent = parent;
+      commands = Sets.newHashSet(group.getCommands());
+      names = group.getNames();
+      children = group.getChildren().stream()
+          .map(MutableGroup::new)
+          .collect(Collectors.toCollection(HashSet::new));
+    }
+
+    @Nullable
+    @Override
+    public CommandGroup getParent() {
+      return parent;
+    }
+
+    @Nonnull
+    @Override
+    public Set<MutableGroup> getChildren() {
+      return children;
+    }
+
+    @Nonnull
+    @Override
+    public Set<String> getNames() {
+      return names;
+    }
+
+    @Nonnull
+    @Override
+    public Set<CommandCallable> getCommands() {
+      return commands;
+    }
+  }
+
+
   @CheckReturnValue
   @Nonnull
   public static ImmutableGroupBuilder builder() {
@@ -41,9 +127,8 @@ public final class ImmutableGroup implements CommandGroup {
   }
 
   @Nonnull
-  public static CommandGroup childlessRoot(
-      @Nonnull Set<String> names, @Nonnull Set<CommandCallable> commands) {
-    ImmutableGroup group = new ImmutableGroup(null, names, commands);
+  public static CommandGroup childlessRoot(@Nonnull Set<CommandCallable> commands) {
+    ImmutableGroup group = new ImmutableGroup(null, ImmutableSet.of(), commands);
     group.setChildren(ImmutableSet.of());
     return group;
   }
@@ -55,7 +140,6 @@ public final class ImmutableGroup implements CommandGroup {
         : of(group, GroupAssembler.forGroup());
   }
 
-  // TODO check for duplicate command names
   @Nonnull
   public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> assembler) {
     checkNotNull(root);
