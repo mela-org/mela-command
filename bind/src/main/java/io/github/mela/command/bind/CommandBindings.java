@@ -5,6 +5,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import io.github.mela.command.bind.map.ArgumentMapper;
 import io.github.mela.command.bind.map.ArgumentMapperProvider;
@@ -64,6 +66,25 @@ public final class CommandBindings {
         ImmutableMap.copyOf(commandInterceptors), ImmutableMap.copyOf(handlers),
         ImmutableMap.copyOf(mappers), ImmutableMap.copyOf(mappingInterceptors),
         ImmutableSet.copyOf(argumentMapperProviders));
+  }
+
+  @Nonnull
+  public static CommandBindings allOf(@Nonnull CommandBindings... bindings) {
+    checkNotNull(bindings);
+    Map<Class, CommandInterceptor> commandInterceptors = Maps.newHashMap();
+    Map<Class, ExceptionHandler> handlers = Maps.newHashMap();
+    Map<TypeKey, ArgumentMapper> mappers = Maps.newHashMap();
+    Map<Class, MappingInterceptor> mappingInterceptors = Maps.newHashMap();
+    Set<ArgumentMapperProvider> argumentMapperProviders = Sets.newHashSet();
+    for (CommandBindings instance : bindings) {
+      checkNotNull(instance);
+      commandInterceptors.putAll(instance.commandInterceptors);
+      handlers.putAll(instance.handlers);
+      mappers.putAll(instance.mappers);
+      mappingInterceptors.putAll(instance.mappingInterceptors);
+      argumentMapperProviders.addAll(instance.argumentMapperProviders);
+    }
+    return of(commandInterceptors, handlers, mappers, mappingInterceptors, argumentMapperProviders);
   }
 
   @SuppressWarnings("unchecked")

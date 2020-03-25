@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.github.mela.command.bind.CommandBindings;
-import io.github.mela.command.bind.CommandBindingsBuilder;
+import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.provided.interceptors.Context;
 import io.github.mela.command.provided.interceptors.ContextInterceptor;
 import io.github.mela.command.provided.interceptors.Default;
@@ -31,7 +31,6 @@ import io.github.mela.command.provided.mappers.providers.MapMapperProvider;
 import io.github.mela.command.provided.mappers.providers.NeverReachMapperProvider;
 import io.github.mela.command.provided.mappers.providers.NumberMapperProvider;
 import io.github.mela.command.provided.mappers.providers.OptionalMapperProvider;
-import io.github.mela.command.core.CommandContext;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -44,7 +43,7 @@ public final class ProvidedBindings {
   private ProvidedBindings() {}
 
   // unbound: CommandInputMapper and LogInterceptor
-  public static CommandBindingsBuilder createBuilder() {
+  public static CommandBindings get() {
     return CommandBindings.builder()
         .bindMapper(String.class, new StringMapper())
         .bindMapper(char.class, new CharacterMapper())
@@ -67,7 +66,8 @@ public final class ProvidedBindings {
         .bindMappingInterceptor(Match.class, new MatchInterceptor())
         .bindMappingInterceptor(Maybe.class, new MaybeInterceptor())
         .bindMappingInterceptor(Range.class, new RangeInterceptor())
-        .bindMappingInterceptor(Remaining.class, new RemainingInterceptor());
+        .bindMappingInterceptor(Remaining.class, new RemainingInterceptor())
+        .build();
   }
 
 

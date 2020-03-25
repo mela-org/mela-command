@@ -106,17 +106,6 @@ public final class CommandBindingsBuilder {
     return this;
   }
 
-  @Nonnull
-  public CommandBindingsBuilder bindAll(@Nonnull CommandBindingsBuilder other) {
-    checkNotNull(other);
-    this.mappers.putAll(other.mappers);
-    this.argumentMapperProviders.addAll(other.argumentMapperProviders);
-    this.handlers.putAll(other.handlers);
-    this.commandInterceptors.putAll(other.commandInterceptors);
-    this.mappingInterceptors.putAll(other.mappingInterceptors);
-    return this;
-  }
-
   @CheckReturnValue
   @Nonnull
   public CommandBindings build() {
