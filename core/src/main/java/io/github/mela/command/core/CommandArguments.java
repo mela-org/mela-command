@@ -83,6 +83,8 @@ public class CommandArguments {
   }
 
   public String nextSection(char delimiter) {
+    checkArgument(isNextUnescaped(delimiter),
+        "The next character must indicate a section begin to parse the next section");
     next();
     StringBuilder builder = new StringBuilder();
     while (hasNext()) {
