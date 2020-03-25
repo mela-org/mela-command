@@ -70,9 +70,7 @@ public class CommandArguments {
   }
 
   public String nextString() {
-    String string = isNextUnescaped(stringDelimiter) ? nextSection(stringDelimiter) : nextWord();
-    skipLeadingWhitespace();
-    return string.trim();
+    return isNextUnescaped(stringDelimiter) ? nextSection(stringDelimiter) : nextWord();
   }
 
   public String nextWord() {
@@ -80,6 +78,7 @@ public class CommandArguments {
     while (hasNext() && !isNextWhiteSpace()) {
       builder.append(next());
     }
+    skipLeadingWhitespace();
     return builder.toString();
   }
 
@@ -95,7 +94,8 @@ public class CommandArguments {
       }
       builder.append(next());
     }
-    return builder.toString();
+    skipLeadingWhitespace();
+    return builder.toString().trim();
   }
 
   public void skipLeadingWhitespace() {
