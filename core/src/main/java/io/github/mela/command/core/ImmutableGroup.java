@@ -228,9 +228,9 @@ public final class ImmutableGroup implements CommandGroup {
     StringBuilder pathBuilder = new StringBuilder();
     ImmutableGroup group = this;
     while (group != null) {
-      pathBuilder.insert(0, group.names);
+      pathBuilder.insert(0, group.getPrimaryName());
       if (group.parent != null) {
-        pathBuilder.insert(0, " - ");
+        pathBuilder.insert(0, " ");
       }
       group = group.parent;
     }
