@@ -69,16 +69,14 @@ public interface CommandGroup {
     return getParent() == null && getNames().isEmpty();
   }
 
-  default boolean matches(@Nonnull String descriptor) {
-    String[] parts = SPLIT_PATTERN.split(checkNotNull(descriptor));
-    CommandGroup current = this;
-    for (int i = parts.length - 1; i >= 0; i--) {
-      if (current == null || !current.getNames().contains(parts[i])) {
-        return false;
-      }
-      current = current.getParent();
+  default String getQualifiedName() {
+    StringBuilder pathBuilder = new StringBuilder();
+    for (CommandGroup group = this; group != null; group = group.getParent()) {
+      String primaryName = group.getPrimaryName();
+      pathBuilder.insert(0, primaryName == null ? "" : primaryName);
+      pathBuilder.insert(0, " ");
     }
-    return true;
+    return pathBuilder.toString().trim();
   }
 
   @Nullable

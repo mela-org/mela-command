@@ -226,15 +226,13 @@ public final class ImmutableGroup implements CommandGroup {
   @Override
   public String toString() {
     StringBuilder pathBuilder = new StringBuilder();
-    ImmutableGroup group = this;
-    while (group != null) {
-      pathBuilder.insert(0, group.getPrimaryName());
+    for (ImmutableGroup group = this; group != null; group = group.parent) {
+      pathBuilder.insert(0, group.names);
       if (group.parent != null) {
-        pathBuilder.insert(0, " ");
+        pathBuilder.insert(0, " - ");
       }
-      group = group.parent;
     }
-    return pathBuilder.toString();
+    return pathBuilder.insert(0, "ImmutableGroup(").append(")").toString();
   }
 
   @Override
