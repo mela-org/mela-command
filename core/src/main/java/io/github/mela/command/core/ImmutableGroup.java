@@ -74,9 +74,9 @@ public final class ImmutableGroup implements CommandGroup {
     // creates empty
     MutableGroup(MutableGroup parent) {
       this.parent = parent;
-      commands = Sets.newHashSet();
+      commands = Sets.newLinkedHashSet();
       names = Sets.newLinkedHashSet();
-      children = Sets.newHashSet();
+      children = Sets.newLinkedHashSet();
     }
 
     // copies group
@@ -87,7 +87,7 @@ public final class ImmutableGroup implements CommandGroup {
     // copies group with parent
     MutableGroup(MutableGroup parent, CommandGroup group) {
       this.parent = parent;
-      commands = Sets.newHashSet(group.getCommands());
+      commands = Sets.newLinkedHashSet(group.getCommands());
       names = group.getNames();
       children = group.getChildren().stream()
           .map(MutableGroup::new)
@@ -144,25 +144,25 @@ public final class ImmutableGroup implements CommandGroup {
   public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> assembler) {
     checkNotNull(root);
     checkNotNull(assembler);
-    Set<? extends CommandCallable> commands = assembler.getCommands(root);
+    Set<? extends CommandCallable> commands = ImmutableSet.copyOf(assembler.getCommands(root));
     checkForDuplicateNames(commands, CommandCallable::getLabels);
     checkOnlyOneEmptyLabelCommand(commands);
-    ImmutableGroup group = new ImmutableGroup(null, assembler.getNames(root),
-        commands);
+    ImmutableGroup group = new ImmutableGroup(null,
+        ImmutableSet.copyOf(assembler.getNames(root)), commands);
     group.setChildren(deepChildrenCopy(root, assembler, group));
     return group;
   }
 
   private static <T> Set<ImmutableGroup> deepChildrenCopy(T template, GroupAssembler<T> assembler,
                                                           ImmutableGroup current) {
-    Set<ImmutableGroup> groupChildren = Sets.newHashSet();
+    Set<ImmutableGroup> groupChildren = Sets.newLinkedHashSet();
     Set<? extends T> children = assembler.getChildren(template);
     checkForDuplicateNames(children, assembler::getNames);
     for (T child : children) {
-      Set<String> names = assembler.getNames(child);
+      Set<String> names = ImmutableSet.copyOf(assembler.getNames(child));
       checkArgument(!names.isEmpty(),
           "No group except for the root group may have an empty set of names");
-      Set<? extends CommandCallable> commands = assembler.getCommands(child);
+      Set<? extends CommandCallable> commands = ImmutableSet.copyOf(assembler.getCommands(child));
       checkOnlyOneEmptyLabelCommand(commands);
       checkForDuplicateNames(commands, CommandCallable::getLabels);
       ImmutableGroup next = new ImmutableGroup(current, names, commands);

@@ -84,8 +84,8 @@ public final class ImmutableGroupBuilder {
     private BuildingGroup(BuildingGroup parent, Collection<String> names) {
       this.parent = parent;
       this.names = ImmutableSet.copyOf(names);
-      children = Sets.newHashSet();
-      commands = Sets.newHashSet();
+      children = Sets.newLinkedHashSet();
+      commands = Sets.newLinkedHashSet();
     }
 
     @Nonnull
