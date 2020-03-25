@@ -65,14 +65,6 @@ public interface CommandGroup {
     }
   }
 
-  default int depth() {
-    int depth = 0;
-    for (CommandGroup current = this; current.getParent() != null; current = current.getParent()) {
-      ++depth;
-    }
-    return depth;
-  }
-
   default boolean isRoot() {
     return getParent() == null && getNames().isEmpty();
   }
