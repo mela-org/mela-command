@@ -1,35 +1,25 @@
-package io.github.mela.command.example.core;
+package io.github.mela.command.example.bind;
 
-import com.google.common.collect.ImmutableList;
-import io.github.mela.command.core.CommandArguments;
+import io.github.mela.command.bind.Command;
 import io.github.mela.command.core.CommandCallable;
-import io.github.mela.command.core.CommandCallableAdapter;
-import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.core.CommandGroup;
 import io.github.mela.command.core.CommandInput;
-import javax.annotation.Nonnull;
+import io.github.mela.command.provided.interceptors.Remaining;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-public class HelpCommand extends CommandCallableAdapter {
+public class HelpCommand {
 
-  private CommandGroup group;
-
-  public HelpCommand() {
-    super(
-        ImmutableList.of("help"),
-        "Displays general help or help for a command",
-        "Type \"help\" to see all available commands. Type \"help <command>\""
-            + " to receive help for a specific command.",
-        "help <command>"
-    );
-  }
-
-  @Override
-  public void call(@Nonnull CommandArguments arguments, @Nonnull CommandContext context) {
-    CommandInput helpInput = CommandInput.parse(group, arguments.remaining());
-    CommandCallable command = helpInput.getCommand();
+  @Command(
+      labels = "help",
+      desc = "Displays general help or help for a command",
+      help = "Type \"help\" to see all available commands. Type \"help <command>\""
+          + " to receive help for a specific command.",
+      usage = "help <command>"
+  )
+  public void help(@Remaining CommandInput input) {
+    CommandCallable command = input.getCommand();
     if (command == null) {
       CommandGroup group = input.getGroup();
       System.out.print("Here is a list of all available commands");
@@ -41,6 +31,7 @@ public class HelpCommand extends CommandCallableAdapter {
           command.getPrimaryLabel(), command.getLabels(), command.getDescription(),
           command.getUsage(), command.getHelp());
     }
+
   }
 
   private void displayCommands(CommandGroup group) {
@@ -49,10 +40,6 @@ public class HelpCommand extends CommandCallableAdapter {
           group.isRoot() ? "" : group.getQualifiedName() + " ", command.getPrimaryLabel(),
           command.getDescription());
     }
-  }
-
-  public void setGroup(CommandGroup group) {
-    this.group = group;
   }
 
 }

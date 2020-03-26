@@ -32,7 +32,10 @@ public class Main {
         .build();
     helpCommand.setGroup(root);
     CommandDispatcher dispatcher = DefaultDispatcher.create(root);
+    run(dispatcher);
+  }
 
+  private static void run(CommandDispatcher dispatcher) {
     System.out.println(
         "Welcome to simple-cli. Type \"help\" to see a list of all available commands.");
     Scanner scanner = new Scanner(System.in);

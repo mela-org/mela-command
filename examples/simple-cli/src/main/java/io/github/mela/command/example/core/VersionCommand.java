@@ -8,8 +8,12 @@ public class VersionCommand extends CommandCallableAdapter {
   private static final String VERSION = "1.0.0";
 
   public VersionCommand() {
-    super(ImmutableList.of("version", "v"),
-        "Displays the version of the application", null, "\"version\" or \"v\"");
+    super(
+        ImmutableList.of("version", "v"),
+        "Displays the version of the application",
+        "Simply type \"version\" or \"v\"",
+        "[version|v]"
+    );
   }
 
   @Override

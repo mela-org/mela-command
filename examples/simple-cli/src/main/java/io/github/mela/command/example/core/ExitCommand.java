@@ -16,7 +16,7 @@ public class ExitCommand extends CommandCallableAdapter {
         ImmutableList.of("exit", "bye"),
         "Exits the application",
         "Type \"exit\" and the programme will stop.",
-        "\"exit\" or \"bye\""
+        "[exit|bye]"
     );
   }
 
