@@ -32,10 +32,10 @@ public class FileCommands {
       Files.createDirectories(parent);
     }
     Files.createFile(path);
+    System.out.printf("Created file %s%n", path);
     if (content != null) {
       edit(path, content);
     }
-    System.out.printf("Created file %s%n", path);
   }
 
   @Command(
