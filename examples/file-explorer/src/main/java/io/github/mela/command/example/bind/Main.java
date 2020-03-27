@@ -83,13 +83,13 @@ public class Main {
         .bindMappingInterceptor(Directory.class,
             new PathValidator<>(Files::isDirectory, "Path must point to a directory"))
         .bindHandler(AccessDeniedException.class,
-            (e, c) -> System.out.printf("Access denied: %s%n", e.getMessage()))
+            new PrintExceptionHandler<>("Access denied"))
         .bindHandler(MappingProcessException.class,
-            (e, c) -> System.out.printf("Invalid argument: %s%n", e.getMessage()))
+            new PrintExceptionHandler<>("Invalid argument"))
         .bindHandler(ArgumentException.class,
-            (e, c) -> System.out.println("Wrong number of arguments provided - use \"help <command>\" for help"))
+            new PrintExceptionHandler<>("Wrong number of arguments provided"))
         .bindHandler(IOException.class,
-            (e, c) -> System.out.printf("An I/O problem occurred: %s%n", e.getMessage()))
+            new PrintExceptionHandler<>("An I/O problem occurred"))
         .build();
   }
 }
