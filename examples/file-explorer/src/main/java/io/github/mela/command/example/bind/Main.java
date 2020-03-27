@@ -13,6 +13,7 @@ import io.github.mela.command.core.ImmutableGroup;
 import io.github.mela.command.core.UnknownCommandException;
 import io.github.mela.command.provided.ProvidedBindings;
 import io.github.mela.command.provided.mappers.CommandInputMapper;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,6 +85,8 @@ public class Main {
             (e, c) -> System.out.printf("Access denied: %s%n", e.getMessage()))
         .bindHandler(MappingProcessException.class,
             (e, c) -> System.out.printf("Invalid argument: %s%n", e.getMessage()))
+        .bindHandler(IOException.class,
+            (e, c) -> System.out.printf("An I/O problem occurred: %s%n", e.getMessage()))
         .build();
   }
 }
