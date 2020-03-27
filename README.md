@@ -3,8 +3,15 @@
 Like other *mela* modules, its aim is to reduce boilerplate code as much as possible.
 
 The framework is inspired by [Intake](https://github.com/EngineHub/Intake) and implements 
-similar ideas as [Aikar](https://github.com/aikar/commands), but seeks to eliminate their 
+similar ideas as [ACF](https://github.com/aikar/commands), but seeks to eliminate their 
 downsides and to be much more extensible and flexible.
+
+**Get started here:**
+ - [Wiki Home](../../wiki)
+ - [Setup](../../wiki/Setup) and [Quick Start](../../wiki/Quick_Start)
+ - Guides:
+   - [Core Framework](../../wiki/Core-Framework-Guide)
+   - [Bind Framework](../../wiki/Bind-Framework-Guide)
 
 ## What is a command parsing framework?
 A command in this context refers to a textual message sent by users in a simple, non-graphical 
@@ -50,7 +57,7 @@ etc.) is determined by the method and parameter declarations and done externally
 TBA
 
 ## Quick Overview
-*mela-command* consists of two major base parts, the core framework and the 
+*mela-command* consists of two base parts, the core framework and the 
 compile API. Both are found in the core module. 
 The latter is used to connect higher-level command parsers with the lower-level 
 core framework. The default implementation of this API is provided by the bind framework 
@@ -109,34 +116,6 @@ public class PrintCommand extends CommandCallableAdapter {
   }
 }
 ```
-Using this additional code, you could run the command in your console with 
-`example print <arguments>`. If you typed anything else, you would get an error message saying
-"Unknown command.":
-```java
-public class Main {
-
-  public static void main(String[] args) {
-    CommandGroup group = ImmutableGroup.builder()
-        .group("example")
-          .add(new PrintCommand())
-        .parent()
-        .build();
-    CommandDispatcher dispatcher = DefaultDispatcher.create(group);
-    listenForCommands(dispatcher);
-  }
-  
-  private static void listenForCommands(CommandDispatcher dispatcher) {
-    Scanner scanner = new Scanner(System.in);
-    while (scanner.hasNext()) {
-      String line = scanner.nextLine();
-      boolean knownCommand = dispatcher.dispatch(knownCommand, CommandContext.create());
-      if (!knownCommand) {
-        System.err.println("Unknown command.");
-      }
-    }
-  }   
-}
-```
 
 ### Bind framework
 Although the core framework is efficient, simple, convenient to use and sufficient 
@@ -173,29 +152,6 @@ public class Commands {
 Instead of figuring out the arguments inside the method, we just declare
 the parameters as what we need them to be: a variable amount of ints (=> `int[]`) 
 that default to 0 if anything goes wrong (=> `@Maybe`).
-
-Registering it is similar to before, but with an additional step:
-```java
-CommandBindings bindings = ProvidedBindings.createBuilder().build();
-CommandCompiler compiler = MethodHandleCompiler.withBindings(bindings);
-CommandGroup group = ImmutableGroup.builder()
-    .group("example")
-      .add(new Commands())
-    .parent()
-    .compile(compiler);
-// ...
-```
-
-To use the bind framework, we need to provide a `CommandCompiler` that
-transforms the `Commands` object into a `CommandCallable` (or more, if there are multiple
-command methods). `MethodHandleCompiler` is currently the only compiler that supports 
-the bind framework.
-
-`CommandBindings` in turn contain everything needed to resolve parameter types and 
-annotations in the command declaration. In this case, we're simply applying the standard 
-library bindings (`ProvidedBindings`) found in the `provided` module. It has bindings for 
-all primitive types, collections, maps, arrays as well as bindings for commonly used 
-argument validation and many more.
 
 ## Relation to Google Guice
 This module has built-in components that make integration with the Dependency Injection 
