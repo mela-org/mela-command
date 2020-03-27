@@ -1,10 +1,10 @@
 package io.github.mela.command.example.bind;
 
+import io.github.mela.command.bind.ArgumentValidationException;
 import io.github.mela.command.bind.IllegalTargetTypeError;
 import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
-import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.core.CommandContext;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
@@ -32,7 +32,7 @@ public class PathValidator<T extends Annotation> extends MappingInterceptorAdapt
   ) {
     if (process.isSet() && process.getValue() != null) {
       if (!predicate.test((Path) process.getValue())) {
-        throw new MappingProcessException("Invalid path; " + errorMessage);
+        throw new ArgumentValidationException("Invalid path; " + errorMessage);
       }
     }
   }
