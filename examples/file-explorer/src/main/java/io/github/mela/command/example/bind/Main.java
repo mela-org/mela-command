@@ -4,6 +4,7 @@ import io.github.mela.command.bind.CommandBindings;
 import io.github.mela.command.bind.MethodHandleCompiler;
 import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.compile.CommandCompiler;
+import io.github.mela.command.core.ArgumentException;
 import io.github.mela.command.core.CommandContext;
 import io.github.mela.command.core.CommandDispatcher;
 import io.github.mela.command.core.CommandGroup;
@@ -85,6 +86,8 @@ public class Main {
             (e, c) -> System.out.printf("Access denied: %s%n", e.getMessage()))
         .bindHandler(MappingProcessException.class,
             (e, c) -> System.out.printf("Invalid argument: %s%n", e.getMessage()))
+        .bindHandler(ArgumentException.class,
+            (e, c) -> System.out.println("Wrong number of arguments provided - use \"help <command>\" for help"))
         .bindHandler(IOException.class,
             (e, c) -> System.out.printf("An I/O problem occurred: %s%n", e.getMessage()))
         .build();
