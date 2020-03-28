@@ -1,5 +1,6 @@
 package io.github.mela.command.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -87,5 +88,49 @@ class ImmutableGroupTest {
             .add(one)
             .add(two)
             .build(), "ImmutableGroup did not throw for multiple empty command labels");
+  }
+
+  @Test
+  void testMerge() {
+    CommandCallable first = AssembledCommandCallable.builder()
+        .withLabels("first")
+        .withAction((a, c) -> {})
+        .build();
+    CommandCallable second = AssembledCommandCallable.builder()
+        .withLabels("second")
+        .withAction((a, c) -> {})
+        .build();
+    CommandCallable third = AssembledCommandCallable.builder()
+        .withLabels("third")
+        .withAction((a, c) -> {})
+        .build();
+    CommandGroup one = ImmutableGroup.builder()
+        .group("foo")
+          .add(first)
+          .group("bar")
+          .parent()
+        .parent()
+        .build();
+    CommandGroup two = ImmutableGroup.builder()
+        .group("foo")
+          .add(second)
+        .parent()
+        .group("baz")
+        .parent()
+        .add(third)
+        .build();
+    CommandGroup expected = ImmutableGroup.builder()
+        .group("foo")
+          .add(first)
+          .add(second)
+          .group("bar")
+          .parent()
+        .parent()
+        .group("baz")
+        .parent()
+        .add(third)
+        .build();
+    CommandGroup actual = ImmutableGroup.merge(one, two);
+    assertEquals(expected, actual, "Groups were not merged correctly");
   }
 }

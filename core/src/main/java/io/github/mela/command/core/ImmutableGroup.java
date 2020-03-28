@@ -9,8 +9,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -58,9 +59,14 @@ public final class ImmutableGroup implements CommandGroup {
   private static void assimilate(MutableGroup one, MutableGroup two) {
     one.commands.addAll(two.commands);
     for (MutableGroup otherChild : two.children) {
-      MutableGroup ownChild = new MutableGroup(one);
-      one.children.add(ownChild);
-      assimilate(ownChild, otherChild);
+      Optional<MutableGroup> ownChild = one.children.stream()
+          .filter((g) -> g.names.equals(otherChild.names))
+          .findFirst();
+      if (ownChild.isPresent()) {
+        assimilate(ownChild.get(), otherChild);
+      } else {
+        one.children.add(otherChild);
+      }
     }
   }
 
@@ -91,7 +97,7 @@ public final class ImmutableGroup implements CommandGroup {
       names = group.getNames();
       children = group.getChildren().stream()
           .map(MutableGroup::new)
-          .collect(Collectors.toCollection(HashSet::new));
+          .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Nullable
