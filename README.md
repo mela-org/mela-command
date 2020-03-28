@@ -102,7 +102,7 @@ public class PrintCommand extends CommandCallableAdapter {
       String next = arguments.nextString();
       sum += convert(next);
     }
-    System.out.println("Sum: " + sum);
+    System.out.printf("Sum: %d%n", sum);
   }
 
   private int convert(String s) {
@@ -143,7 +143,7 @@ public class Commands {
     for (int value : arguments) {
       sum += value;
     }
-    System.out.println("Sum: " + sum);
+    System.out.printf("Sum: %d%n", sum);
   }
 }
 ```
