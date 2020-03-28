@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+// TODO select consistent Optional usage
 @ProvidedBy(CompilingRootGroupProvider.class)
 public interface CommandGroup {
 
