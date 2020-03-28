@@ -26,25 +26,23 @@ to a format that is easy to use in code and executes its corresponding action.
 This is what commands written using the bind framework look like:
 
 ```java
-public class UserCommands {
-  @Command(
-    labels = "ban",  
-    desc = "Bans a user.", 
-    help = "Use \"ban @User\" to ban the mentioned user.",
-    usage = "ban @User [--time <value>] <reason>"
-  )
-  @Requires(permission = "user.ban")
-  public void ban(
-    @Context("server") Server server,
-    @Flag("-time") @Default("1y") Duration time,
-    User target,
-    @Maybe String reason
-  ) {
-    server.ban(target, time);
-    target.sendMessage("You have been banned.");
-    if (reason != null) {
-      target.sendMessage("Reason: " + reason);
-    }
+@Command(
+  labels = "ban",  
+  desc = "Bans a user.", 
+  help = "Use \"ban @User\" to ban the mentioned user.",
+  usage = "ban @User [--time <value>] <reason>"
+)
+@Requires(permission = "user.ban")
+public void ban(
+  @Context("server") Server server,
+  @Flag("-time") @Default("1y") Duration time,
+  User target,
+  @Maybe String reason
+) {
+  server.ban(target, time);
+  target.sendMessage("You have been banned.");
+  if (reason != null) {
+    target.sendMessage("Reason: " + reason);
   }
 }
 ```
