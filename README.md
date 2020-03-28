@@ -1,4 +1,4 @@
-# Commands
+# mela-command
 *mela-command* is a general purpose command parsing framework for Java. 
 Like other *mela* modules, its aim is to reduce boilerplate code as much as possible.
 
