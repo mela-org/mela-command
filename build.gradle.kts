@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     checkstyle
+    `maven-publish`
 }
 
 group = "io.github.mela"
@@ -10,6 +11,7 @@ subprojects {
 
     group = "io.github.mela"
 
+    apply(plugin = "maven-publish")
     apply(plugin = "java-library")
     apply(plugin = "checkstyle")
 
@@ -66,6 +68,18 @@ subprojects {
             configProperties = mapOf("config_loc" to "${rootProject.projectDir}/config/checkstyle")
         }
 
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>(name) {
+                groupId = "io.github.mela"
+                artifactId = "mela-command-$name"
+                version = version
+
+                from(components["java"])
+            }
+        }
     }
 
     configure<JavaPluginConvention> {
