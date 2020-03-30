@@ -65,28 +65,7 @@ This is just an extremely simplified overview of the features - reading the
 [Wiki](../../wiki) to get started is recommended.
 
 ### Core Framework
-The core framework is described by three main interfaces: 
-`CommandCallable`, `CommandGroup` and `CommandDispatcher`.
-
-A `CommandCallable` is the actual command interface. Every implementation contains 
-information about a specific type of command, such as its labels (names), 
-a description and a help message as well as the code to execute when the command is called 
-(`CommandCallable#call(CommandArguments, CommandContext)`). This is supposed to be 
-implemented by users of this framework.
-
-A `CommandGroup` is a tree-like structure where each instance is a node containing a set of
-names, `CommandCallable`s and children. It is used to group commands in a way that makes
-sense. E.g., consider a CLI-application that has a command to create and a command to delete
-files. Instead of having two separate commands `file-create` and `file-delete`, you could 
-instead have a group `file` that contains two commands `create` and `delete`, so that they
-could be called using `file create`/`file delete`. This is also known as "sub-commands".
-
-The `CommandDispatcher` is the central instance where commands (text) can be dispatched,
-meaning that the target `CommandCallable` is chosen and the arguments are wrapped.
-Mela comes with a default implementation `DefaultDispatcher`, but it can be implemented 
-individually.
-
-This is what a command might look like that converts each of its arguments to an int (or 0,
+This is what a core framework command might look like that converts each of its arguments to an int (or 0,
 if conversion fails), evaluates their sum and prints it to the console in a new line:
 ```java
 public class PrintCommand extends CommandCallableAdapter {
