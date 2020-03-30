@@ -4,9 +4,6 @@ plugins {
     `maven-publish`
 }
 
-group = "io.github.mela"
-version = "1.0.0"
-
 subprojects {
 
     group = "io.github.mela"
@@ -75,7 +72,7 @@ subprojects {
             create<MavenPublication>(name) {
                 groupId = "io.github.mela"
                 artifactId = "mela-command-$name"
-                version = version
+                version = this@subprojects.version.toString()
 
                 from(components["java"])
             }
