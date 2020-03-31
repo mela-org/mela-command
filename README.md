@@ -82,7 +82,7 @@ dependencies {
   implementation("io.github.mela:mela-command-MODULE:VERSION")
 }
 ```
-(Replace `MODULE` with the module you need (i.e. "core", "bind" or "provided") and `VERSION` with the version (as long as mela-command isn't published, it's `1.0.0` by default.)
+(Replace `MODULE` with the module you need (i.e. `core`, `bind` or `provided`) and `VERSION` with the version (as long as mela-command isn't published, it's `1.0.0` by default.)
 
 ## Quick Overview
 *mela-command* consists of two base parts, the core framework and the 
