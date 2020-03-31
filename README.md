@@ -51,8 +51,38 @@ usually be part of the command code (such as parsing the Duration and the User,
 checking whether the required permission "ban.user" is present, handling wrong arguments 
 etc.) is determined by the method and parameter declarations and done externally.
 
-## Maven/Gradle
-TBA
+## Dependency
+*Still under construction...*
+
+To try and use mela-command now, clone this repository and build it yourself:
+```
+git clone https://github.com/mela-org/mela-command.git
+cd mela-command
+gradlew publishToMavenLocal
+```
+Then you can add it as a dependency in your project.
+
+Maven:
+```xml
+<depencies>
+  <dependency>
+    <groupId>io.github.mela</groupId>
+    <artifactId>mela-command-MODULE</artifactId>
+    <version>VERSION</version>
+  </dependency>
+</dependencies>
+```
+Gradle:
+```gradle
+repositories {
+  mavenLocal()
+}
+
+dependencies {
+  implementation("io.github.mela:mela-command-MODULE:VERSION")
+}
+```
+(Replace `MODULE` with the module you need (i.e. "core", "bind" or "provided") and `VERSION` with the version (as long as mela-command isn't published, it's `1.0.0` by default.)
 
 ## Quick Overview
 *mela-command* consists of two base parts, the core framework and the 
