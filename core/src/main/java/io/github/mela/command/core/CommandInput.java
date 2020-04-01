@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 import java.util.Objects;
+import java.util.Optional;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,14 +16,14 @@ public final class CommandInput {
 
   private final String raw;
   private final CommandGroup group;
-  private final CommandCallable command;
+  private final Optional<CommandCallable> command;
   private final String remaining;
 
   CommandInput(@Nonnull String raw, @Nonnull CommandGroup group,
                @Nullable CommandCallable command, @Nonnull String remaining) {
     this.raw = checkNotNull(raw);
     this.group = checkNotNull(group);
-    this.command = command;
+    this.command = Optional.ofNullable(command);
     this.remaining = checkNotNull(remaining);
   }
 
@@ -42,8 +43,8 @@ public final class CommandInput {
     return group;
   }
 
-  @Nullable
-  public CommandCallable getCommand() {
+  @Nonnull
+  public Optional<CommandCallable> getCommand() {
     return command;
   }
 

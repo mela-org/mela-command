@@ -1,8 +1,8 @@
 package io.github.mela.command.core;
 
+import java.util.Optional;
 import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public interface CommandCallable {
 
@@ -11,19 +11,21 @@ public interface CommandCallable {
   @Nonnull
   Set<String> getLabels();
 
-  @Nullable
-  default String getPrimaryLabel() {
+  @Nonnull
+  default Optional<String> getPrimaryLabel() {
     Set<String> labels = getLabels();
-    return labels.isEmpty() ? null : labels.iterator().next();
+    return labels.isEmpty()
+        ? Optional.empty()
+        : Optional.of(labels.iterator().next());
   }
 
-  @Nullable
-  String getDescription();
+  @Nonnull
+  Optional<String> getDescription();
 
-  @Nullable
-  String getHelp();
+  @Nonnull
+  Optional<String> getHelp();
 
-  @Nullable
-  String getUsage();
+  @Nonnull
+  Optional<String> getUsage();
 
 }

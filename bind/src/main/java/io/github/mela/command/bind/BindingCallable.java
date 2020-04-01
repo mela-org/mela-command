@@ -13,6 +13,7 @@ import io.github.mela.command.core.CommandContext;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import javax.annotation.Nonnull;
 
@@ -22,11 +23,11 @@ import javax.annotation.Nonnull;
 @SuppressWarnings("rawtypes")
 public abstract class BindingCallable implements CommandCallable {
 
-  private final String primaryLabel;
+  private final Optional<String> primaryLabel;
   private final Set<String> labels;
-  private final String description;
-  private final String help;
-  private final String usage;
+  private final Optional<String> description;
+  private final Optional<String> help;
+  private final Optional<String> usage;
 
   private final CommandBindings bindings;
   private final Map<Annotation, CommandInterceptor> interceptors;
@@ -37,11 +38,15 @@ public abstract class BindingCallable implements CommandCallable {
         "Invalid method argument (" + method + "); Missing @Command annotation");
     Command annotation = method.getAnnotation(Command.class);
     String[] labels = annotation.labels();
-    this.primaryLabel = labels.length == 0 ? null : labels[0];
+    this.primaryLabel = labels.length == 0
+        ? Optional.empty() : Optional.of(labels[0]);
     this.labels = ImmutableSet.copyOf(labels);
-    this.description = annotation.desc().isEmpty() ? null : annotation.desc();
-    this.help = annotation.help().isEmpty() ? null : annotation.help();
-    this.usage = annotation.usage().isEmpty() ? null : annotation.usage();
+    this.description = annotation.desc().isEmpty()
+        ? Optional.empty() : Optional.of(annotation.desc());
+    this.help = annotation.help().isEmpty()
+        ? Optional.empty() : Optional.of(annotation.help());
+    this.usage = annotation.usage().isEmpty()
+        ? Optional.empty() : Optional.of(annotation.usage());
     this.bindings = checkNotNull(bindings);
     this.interceptors = extractInterceptors(method, bindings);
     this.parameters = Parameters.from(method, bindings);
@@ -86,8 +91,9 @@ public abstract class BindingCallable implements CommandCallable {
 
   protected abstract void call(Object[] arguments) throws Throwable;
 
+  @Nonnull
   @Override
-  public String getPrimaryLabel() {
+  public Optional<String> getPrimaryLabel() {
     return primaryLabel;
   }
 
@@ -97,18 +103,21 @@ public abstract class BindingCallable implements CommandCallable {
     return labels;
   }
 
+  @Nonnull
   @Override
-  public String getDescription() {
+  public Optional<String> getDescription() {
     return description;
   }
 
+  @Nonnull
   @Override
-  public String getHelp() {
+  public Optional<String> getHelp() {
     return help;
   }
 
+  @Nonnull
   @Override
-  public String getUsage() {
+  public Optional<String> getUsage() {
     return usage;
   }
 

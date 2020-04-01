@@ -8,21 +8,16 @@ import io.github.mela.command.guice.CompilingRootGroupProvider;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
-// TODO select consistent Optional usage
 @ProvidedBy(CompilingRootGroupProvider.class)
 public interface CommandGroup {
 
-  Pattern SPLIT_PATTERN = Pattern.compile("\\s+");
-
-  @Nullable
-  CommandGroup getParent();
+  @Nonnull
+  Optional<CommandGroup> getParent();
 
   @Nonnull
   Set<? extends CommandGroup> getChildren();
@@ -67,23 +62,25 @@ public interface CommandGroup {
   }
 
   default boolean isRoot() {
-    return getParent() == null && getNames().isEmpty();
+    return !getParent().isPresent() && getNames().isEmpty();
   }
 
   @Nonnull
   default String getQualifiedName() {
     StringBuilder pathBuilder = new StringBuilder();
-    for (CommandGroup group = this; group != null; group = group.getParent()) {
-      String primaryName = group.getPrimaryName();
-      pathBuilder.insert(0, primaryName == null ? "" : primaryName);
+    for (CommandGroup group = this; group != null; group = group.getParent().orElse(null)) {
+      String primaryName = group.getPrimaryName().orElse("");
+      pathBuilder.insert(0, primaryName);
       pathBuilder.insert(0, " ");
     }
     return pathBuilder.toString().trim();
   }
 
-  @Nullable
-  default String getPrimaryName() {
+  @Nonnull
+  default Optional<String> getPrimaryName() {
     Set<String> names = getNames();
-    return names.isEmpty() ? null : names.iterator().next();
+    return names.isEmpty()
+        ? Optional.empty()
+        : Optional.of(names.iterator().next());
   }
 }

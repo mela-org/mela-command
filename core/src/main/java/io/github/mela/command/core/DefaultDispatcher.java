@@ -39,13 +39,12 @@ public final class DefaultDispatcher implements CommandDispatcher {
   public void dispatch(@Nonnull String command, @Nonnull CommandContext context) {
     CommandInput input = CommandInput.parse(root, command);
     context.put(CommandInput.class, "input", input);
-    CommandCallable callable = input.getCommand();
-    if (callable != null) {
-      CommandArguments arguments = CommandArguments.of(input.getRemaining());
-      executor.execute(() -> callable.call(arguments, context));
-    } else {
-      throw new UnknownCommandException("Could not find command for input \"" + input + "\"");
-    }
+    CommandCallable callable = input.getCommand()
+        .orElseThrow(() -> new UnknownCommandException(
+            "Could not find command for input \"" + input + "\""
+        ));
+    CommandArguments arguments = CommandArguments.of(input.getRemaining());
+    executor.execute(() -> callable.call(arguments, context));
   }
 
 }

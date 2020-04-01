@@ -17,7 +17,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
@@ -100,10 +99,10 @@ public final class ImmutableGroup implements CommandGroup {
           .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    @Nullable
+    @Nonnull
     @Override
-    public CommandGroup getParent() {
-      return parent;
+    public Optional<CommandGroup> getParent() {
+      return Optional.ofNullable(parent);
     }
 
     @Nonnull
@@ -205,10 +204,10 @@ public final class ImmutableGroup implements CommandGroup {
     this.children = ImmutableSet.copyOf(children);
   }
 
-  @Nullable
+  @Nonnull
   @Override
-  public CommandGroup getParent() {
-    return parent;
+  public Optional<CommandGroup> getParent() {
+    return Optional.ofNullable(parent);
   }
 
   @Nonnull
