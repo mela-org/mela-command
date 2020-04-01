@@ -72,6 +72,7 @@ subprojects {
             create<MavenPublication>(name) {
                 groupId = "io.github.mela"
                 artifactId = "mela-command-$name"
+                println(this@subprojects.version.toString())
                 version = this@subprojects.version.toString()
 
                 from(components["java"])
