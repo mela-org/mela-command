@@ -5,6 +5,7 @@ import io.github.mela.command.bind.parameter.CommandParameter;
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
+// TODO more information, make more convenient to use
 public class MappingProcessException extends RuntimeException {
 
   private CommandParameter parameter;

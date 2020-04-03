@@ -1,7 +1,9 @@
 package io.github.mela.command.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +35,8 @@ class CommandInputTest {
   void testFullInput() {
     CommandInput input = CommandInput.parse(root, "foo bar " + ARGUMENTS);
     assertEquals(child, input.getGroup(), "Group was not parsed correctly");
-    assertEquals(command, input.getCommand(), "Command was not parsed correctly");
+    assertTrue(input.getCommand().isPresent(), "Command was not recognised");
+    assertSame(command, input.getCommand().get(), "Command was not parsed correctly");
     assertEquals(ARGUMENTS, input.getRemaining(), "Arguments were not parsed correctly");
   }
 
@@ -41,7 +44,7 @@ class CommandInputTest {
   void testUnknownCommandInput() {
     CommandInput input = CommandInput.parse(root, "foo baz " + ARGUMENTS);
     assertEquals(child, input.getGroup(), "Group was not parsed correctly");
-    assertNull(input.getCommand(), "Command was falsely recognised");
+    assertFalse(input.getCommand().isPresent(), "Command was falsely recognised");
     assertEquals("baz " + ARGUMENTS, input.getRemaining(),
         "Arguments were not parsed correctly");
   }
@@ -50,7 +53,7 @@ class CommandInputTest {
   void testUnknownGroupInput() {
     CommandInput input = CommandInput.parse(root, "bar foo " + ARGUMENTS);
     assertEquals(root, input.getGroup(), "Group was falsely recognised");
-    assertNull(input.getCommand(), "Command was falsely recognised");
+    assertFalse(input.getCommand().isPresent(), "Command was falsely recognised");
     assertEquals("bar foo " + ARGUMENTS, input.getRemaining(),
         "Arguments were not parsed correctly");
   }
