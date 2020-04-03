@@ -16,6 +16,7 @@ public class CommandArguments {
   private final String raw;
   private final StringBuilder arguments;
 
+  private int rawCursor;
   private int position;
   private char previous;
 
@@ -24,6 +25,7 @@ public class CommandArguments {
   protected CommandArguments(String arguments) {
     this.raw = arguments.trim();
     this.arguments = new StringBuilder(raw);
+    this.rawCursor = 0;
     this.position = 0;
     this.previous = 0;
     this.stringDelimiter = '"';
@@ -57,11 +59,11 @@ public class CommandArguments {
     StringBuilder builder = new StringBuilder();
     int openScopes = 1;
     while (hasNext()) {
-      if (isNextUnescaped(scopeBegin)) {
-        ++openScopes;
-      } else if (isNextUnescaped(scopeEnd) && --openScopes == 0) {
+      if (isNextUnescaped(scopeEnd) && --openScopes == 0) {
         next();
         break;
+      } else if (isNextUnescaped(scopeBegin)) {
+        ++openScopes;
       }
       builder.append(next());
     }
@@ -82,7 +84,7 @@ public class CommandArguments {
     return builder.toString();
   }
 
-  // TODO nextUntil
+  // TODO rename to nextUntil - remove argument check
   public String nextSection(char delimiter) {
     checkArgument(isNextUnescaped(delimiter),
         "The next character must indicate a section begin to parse the next section");
@@ -134,10 +136,12 @@ public class CommandArguments {
     try {
       next = charAt(position);
     } catch (IndexOutOfBoundsException e) {
-      throw new ArgumentException("Reached end of arguments while trying to consume the next character", e);
+      throw ArgumentException.create(
+          "Missing argument: Reached end of arguments while parsing", this);
     }
     previous = next;
     arguments.deleteCharAt(position);
+    ++rawCursor;
     return next;
   }
 
@@ -145,7 +149,8 @@ public class CommandArguments {
     try {
       return peek(0);
     } catch (IndexOutOfBoundsException e) {
-      throw new ArgumentException("Reached end of arguments while trying to peek the next character", e);
+      throw ArgumentException.create(
+          "Missing argument: Reached end of arguments while parsing", this);
     }
   }
 
@@ -166,7 +171,9 @@ public class CommandArguments {
   }
 
   public void setPosition(int position) {
-    this.position = checkPositionIndex(position, arguments.length());
+    checkPositionIndex(position, arguments.length());
+    rawCursor -= this.position - position;
+    this.position = position;
   }
 
   public char getStringDelimiter() {
@@ -175,6 +182,10 @@ public class CommandArguments {
 
   public void setStringDelimiter(char stringDelimiter) {
     this.stringDelimiter = stringDelimiter;
+  }
+
+  public int getRawCursor() {
+    return rawCursor;
   }
 
   public int length() {

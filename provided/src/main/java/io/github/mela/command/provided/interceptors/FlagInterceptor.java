@@ -1,5 +1,7 @@
 package io.github.mela.command.provided.interceptors;
 
+import io.github.mela.command.bind.PreconditionError;
+import io.github.mela.command.bind.TargetType;
 import io.github.mela.command.bind.map.MappingInterceptorAdapter;
 import io.github.mela.command.bind.map.MappingProcess;
 import io.github.mela.command.core.ArgumentException;
@@ -22,7 +24,8 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
       @Nonnull CommandContext context
   ) {
     CommandArguments arguments = process.getArguments();
-    OptionalInt flagPosition = Arrays.stream(annotation.value())
+    String[] names = annotation.value();
+    OptionalInt flagPosition = Arrays.stream(names)
         .map("-"::concat)
         .mapToInt(arguments::indexOfWord)
         .filter((i) -> i != -1)
@@ -37,8 +40,7 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
     if (type == boolean.class || type == Boolean.class) {
       process.setValue(flagPosition.isPresent());
     } else if (!flagPosition.isPresent()) {
-      process.fail(new ArgumentException("Missing flag; could not find flag matching annotation "
-          + annotation));
+      process.fail(ArgumentException.create("Missing flag: " + names[0], arguments));
     }
   }
 
@@ -49,5 +51,13 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
       @Nonnull CommandContext context
   ) {
     process.getArguments().resetPosition();
+  }
+
+  @Override
+  public void verify(@Nonnull Flag annotation, @Nonnull TargetType type) {
+    if (annotation.value().length == 0) {
+      throw new PreconditionError("Invalid flag annotation " + annotation
+          + ": Flag values must not be empty");
+    }
   }
 }

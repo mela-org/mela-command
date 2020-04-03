@@ -64,10 +64,8 @@ public final class Parameters extends AbstractList<CommandParameter> {
     }
 
     if (arguments.hasNext()) {
-      throw new ArgumentException(
-          "Invalid amount of arguments; some arguments were not processed.\n"
-              + "(original arguments: \"" + arguments.getRaw() + "\"\narguments left: \""
-              + arguments + "\")");
+      throw ArgumentException.create(
+          "Invalid amount of arguments; Some arguments were not processed.", arguments);
     }
     return mappedArgs.toArray();
   }
