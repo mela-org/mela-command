@@ -15,7 +15,7 @@ public class ArgumentException extends RuntimeException {
   private final String remainingArguments;
   private final int cursor;
 
-  private ArgumentException(String message, CommandArguments arguments, Throwable cause) {
+  protected ArgumentException(String message, CommandArguments arguments, Throwable cause) {
     super(message, cause);
     this.originalArguments = arguments.getRaw();
     this.remainingArguments = arguments.toString();
