@@ -25,13 +25,12 @@ public class MatchInterceptor extends MappingInterceptorAdapter<Match> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
-    // TODO throw if null
     if (process.isSet() && process.getValue() != null) {
       String regex = annotation.value();
       Pattern pattern = patternCache.computeIfAbsent(regex, Pattern::compile);
       String value = (String) process.getValue();
       if (!pattern.matcher(value).matches()) {
-        process.fail(ArgumentValidationException.create("Value " + value
+        process.fail(ArgumentValidationException.create("Invalid argument; Value " + value
             + " does not match regex " + regex, String.class, value));
       }
     }
