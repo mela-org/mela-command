@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 import io.github.mela.command.bind.map.ArgumentMapper;
-import io.github.mela.command.bind.map.MappingProcessException;
+import io.github.mela.command.bind.map.ArgumentMappingException;
 import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import javax.annotation.Nonnull;
@@ -26,8 +26,8 @@ public abstract class NumberMapper<T extends Number> implements ArgumentMapper<T
     try {
       return convert(next);
     } catch (NumberFormatException e) {
-      throw new MappingProcessException("Invalid argument: could not convert \""
-          + next + "\" to a number (" + type + ")", e);
+      throw ArgumentMappingException.create("Invalid argument: could not convert \""
+          + next + "\" to a number (" + type.getSimpleName() + ")", type, next, e);
     }
   }
 

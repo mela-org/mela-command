@@ -1,30 +1,41 @@
 package io.github.mela.command.bind;
 
 import io.github.mela.command.bind.map.MappingProcessException;
+import java.lang.reflect.Type;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 public class ArgumentValidationException extends MappingProcessException {
 
-  public ArgumentValidationException() {
-    super();
-  }
-
-  public ArgumentValidationException(String message) {
-    super(message);
-  }
-
-  public ArgumentValidationException(String message, Throwable cause) {
-    super(message, cause);
-  }
-
-  public ArgumentValidationException(Throwable cause) {
-    super(cause);
-  }
+  private final Object value;
 
   protected ArgumentValidationException(
-      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-    super(message, cause, enableSuppression, writableStackTrace);
+      @Nonnull String message, @Nonnull Type type,
+      @Nullable Object value, @Nullable Throwable cause
+  ) {
+    super(message, type, cause);
+    this.value = value;
+  }
+
+  public static ArgumentValidationException create(
+      @Nonnull String message, @Nonnull Type type,
+      @Nullable Object value, @Nullable Throwable cause
+  ) {
+    return new ArgumentValidationException(message, type, value, cause);
+  }
+
+  public static ArgumentValidationException create(
+      @Nonnull String message, @Nonnull Type type,
+      @Nullable Object value
+  ) {
+    return create(message, type, value, null);
+  }
+
+  @Nullable
+  public Object getValue() {
+    return value;
   }
 }

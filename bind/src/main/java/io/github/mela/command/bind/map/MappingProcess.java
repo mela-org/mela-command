@@ -82,16 +82,18 @@ public final class MappingProcess {
     return targetType;
   }
 
+  @Nonnull
   public CommandArguments getArguments() {
     return arguments;
   }
 
   // TODO make more easy to understand
+  @Nonnull
   public CommandArguments getArgumentsToMap() {
     return requestedArguments != null ? requestedArguments : arguments;
   }
 
-  public void requestMapping(CommandArguments arguments) {
-    this.requestedArguments = arguments;
+  public void requestMapping(@Nonnull CommandArguments arguments) {
+    this.requestedArguments = checkNotNull(arguments);
   }
 }

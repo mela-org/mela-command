@@ -24,8 +24,9 @@ public class ContextInterceptor extends MappingInterceptorAdapter<Context> {
     if (value.isPresent()) {
       process.setValue(value.get());
     } else {
-      process.fail(new MissingContextException("Context of type " + type
-          + " and key " + key + " is missing"));
+      process.fail(MissingContextException.create(
+          "Missing context value: could not find context of type "
+              + type + " and key " + key, type, key));
     }
   }
 }

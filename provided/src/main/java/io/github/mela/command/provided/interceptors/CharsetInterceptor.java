@@ -25,12 +25,15 @@ public class CharsetInterceptor extends MappingInterceptorAdapter<Charset> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
+    // TODO throw if null
     if (process.isSet() && process.getValue() != null) {
-      CharsetEncoder encoder = encoderCache.computeIfAbsent(annotation.value(),
+      String charset = annotation.value();
+      CharsetEncoder encoder = encoderCache.computeIfAbsent(charset,
           (n) -> java.nio.charset.Charset.forName(n).newEncoder());
-      if (!encoder.canEncode((String) process.getValue())) {
-        process.fail(new ArgumentValidationException("Value " + process.getValue()
-            + " is not compatible with the required charset " + annotation.value()));
+      String value = (String) process.getValue();
+      if (!encoder.canEncode(value)) {
+        process.fail(ArgumentValidationException.create("Value " + value
+            + " is not compatible with the required charset " + charset, String.class, value));
       }
     }
   }

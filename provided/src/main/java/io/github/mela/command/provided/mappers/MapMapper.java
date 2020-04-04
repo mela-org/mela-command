@@ -1,8 +1,8 @@
 package io.github.mela.command.provided.mappers;
 
 import io.github.mela.command.bind.map.ArgumentMapper;
-import io.github.mela.command.bind.map.MappingProcessException;
 import io.github.mela.command.bind.map.MappingProcessor;
+import io.github.mela.command.core.ArgumentException;
 import io.github.mela.command.core.CommandArguments;
 import io.github.mela.command.core.CommandContext;
 import java.util.Map;
@@ -35,7 +35,10 @@ public class MapMapper<T extends Map<? super Object, ? super Object>> implements
     while (mapArguments.hasNext()) {
       Object key = keyProcessor.process(mapArguments, commandContext);
       if (!mapArguments.hasNext()) {
-        throw new MappingProcessException("Reached end of arguments while parsing map; Missing value for key " + key);
+        throw ArgumentException.create(
+            "Reached end of arguments while parsing map; Missing value for key "
+                + key, arguments
+        );
       }
       Object value = valueProcessor.process(mapArguments, commandContext);
       map.put(key, value);

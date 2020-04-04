@@ -21,13 +21,14 @@ public class RangeInterceptor extends MappingInterceptorAdapter<Range> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
+    // TODO throw if null
     if (!process.isErroneous() && process.isSet() && process.getValue() != null) {
       int value = (int) process.getValue();
       int from = annotation.from();
       int to = annotation.to();
       if (value < from || value >= to) {
-        process.fail(new ArgumentValidationException("Value " + value
-            + " is out of range " + from + "-" + to));
+        process.fail(ArgumentValidationException.create("Value " + value
+            + " is out of range " + from + ".." + to, process.getTargetType().getType(), value));
       }
     }
   }

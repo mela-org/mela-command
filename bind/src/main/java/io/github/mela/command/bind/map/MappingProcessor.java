@@ -103,8 +103,8 @@ public final class MappingProcessor {
         map(commandContext, process);
         return finishProcess(process.getArguments(), commandContext, process);
       } else {
-        throw new UnsatisfiedValueException("Unsatisfied value; no value set for " + type
-            + " during the mapping process");
+        throw MappingProcessException.create("Unsatisfied value: No value was set for "
+            + type + ". The cause is most likely a logic error in the program.", type.getType());
       }
     } else {
       return process.getValue();
