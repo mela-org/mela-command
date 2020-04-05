@@ -43,16 +43,16 @@ public class CommandArguments {
   }
 
   @Nonnull
-  public static CommandArguments singleString(@Nonnull String arguments) {
-    return singleString(arguments, DEFAULT_STRING_DELIMITER);
+  public static CommandArguments singleString(@Nonnull String string) {
+    return singleString(string, DEFAULT_STRING_DELIMITER);
   }
 
   @Nonnull
-  public static CommandArguments singleString(@Nonnull String arguments, char stringDelimiter) {
-    checkNotNull(arguments);
+  public static CommandArguments singleString(@Nonnull String string, char stringDelimiter) {
+    checkNotNull(string);
     StringBuilder escaped = new StringBuilder();
     escaped.append(stringDelimiter);
-    for (char c : arguments.toCharArray()) {
+    for (char c : string.toCharArray()) {
       if (c == stringDelimiter) {
         escaped.append('\\');
       }

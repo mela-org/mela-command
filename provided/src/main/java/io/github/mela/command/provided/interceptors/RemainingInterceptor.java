@@ -18,14 +18,8 @@ public class RemainingInterceptor extends MappingInterceptorAdapter<Remaining> {
       @Nonnull CommandContext context
   ) {
     CommandArguments arguments = process.getArguments();
-    StringBuilder builder = new StringBuilder();
-    while (arguments.hasNext()) {
-      if (arguments.isNextUnescaped('"')) {
-        builder.append('\\');
-      }
-      builder.append(arguments.next());
-    }
-    process.requestMapping(CommandArguments.of("\"" + builder.toString().trim() + "\""));
+    process.requestMapping(CommandArguments.singleString(
+        arguments.remaining().trim(), arguments.getStringDelimiter()));
   }
 
 }
