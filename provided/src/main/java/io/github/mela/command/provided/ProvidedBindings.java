@@ -27,6 +27,7 @@ import io.github.mela.command.provided.mappers.RawStringMapper;
 import io.github.mela.command.provided.mappers.StringMapper;
 import io.github.mela.command.provided.mappers.providers.ArrayMapperProvider;
 import io.github.mela.command.provided.mappers.providers.CollectionMapperProvider;
+import io.github.mela.command.provided.mappers.providers.EnumMapperProvider;
 import io.github.mela.command.provided.mappers.providers.MapMapperProvider;
 import io.github.mela.command.provided.mappers.providers.NeverReachMapperProvider;
 import io.github.mela.command.provided.mappers.providers.NumberMapperProvider;
@@ -60,6 +61,7 @@ public final class ProvidedBindings {
         .bindMapperProvider(new ArrayMapperProvider())
         .bindMapperProvider(new MapMapperProvider<>(LinkedHashMap.class, Maps::newLinkedHashMap))
         .bindMapperProvider(new OptionalMapperProvider())
+        .bindMapperProvider(new EnumMapperProvider())
         .bindMappingInterceptor(Context.class, new ContextInterceptor())
         .bindMappingInterceptor(Default.class, new DefaultInterceptor())
         .bindMappingInterceptor(Flag.class, new FlagInterceptor())
