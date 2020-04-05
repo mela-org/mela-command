@@ -190,7 +190,7 @@ public class CommandArguments {
   }
 
   public void resetPosition() {
-    position = 0;
+    setPosition(0);
   }
 
   public int position() {

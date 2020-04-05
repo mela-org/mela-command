@@ -17,6 +17,33 @@ class CommandArgumentsTest {
   }
 
   @Test
+  void testCursor() {
+    assertEquals(0, arguments.getRawCursor(),
+        "Cursor was not in the correct start position");
+    arguments.nextString();
+    assertEquals(
+        "\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" ".length(),
+        arguments.getRawCursor(), "Cursor was not moved along correctly"
+    );
+    arguments.setPosition("( sed (".length());
+    assertEquals(
+        "\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" ( sed ("
+            .length(), arguments.getRawCursor(), "Cursor was not moved forward correctly");
+    arguments.resetPosition();
+    assertEquals("\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\" "
+        .length(), arguments.getRawCursor(), "Cursor was not moved back correctly");
+  }
+
+  @Test
+  void testSingleStringArguments() {
+    CommandArguments single = CommandArguments.singleString(arguments.nextString());
+    assertEquals(
+        "\"\\\"Lorem ipsum dolor sit amet\\\" consetetur \\\"sadipscing\\\" elitr.\"",
+        single.getRaw(), "Single string arguments were not created correctly"
+    );
+  }
+
+  @Test
   void testNext() {
     char next = arguments.next();
     assertEquals('"', next, "next() did not return the next character");
