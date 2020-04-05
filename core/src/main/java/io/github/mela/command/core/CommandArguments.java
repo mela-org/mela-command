@@ -205,6 +205,10 @@ public class CommandArguments {
     return rawCursor;
   }
 
+  public char getStringDelimiter() {
+    return stringDelimiter;
+  }
+
   public int length() {
     return arguments.length();
   }
