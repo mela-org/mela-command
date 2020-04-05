@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.mela.command.guice.CommandExecutor;
+import io.github.mela.command.guice.StringDelimiter;
 import java.util.concurrent.Executor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,21 +19,40 @@ public final class DefaultDispatcher implements CommandDispatcher {
 
   private final CommandGroup root;
   private final Executor executor;
+  private final char stringDelimiter;
 
   @Inject
-  DefaultDispatcher(CommandGroup root, @Nullable @CommandExecutor Executor executor) {
+  DefaultDispatcher(
+      CommandGroup root,
+      @Nullable @StringDelimiter Character stringDelimiter,
+      @Nullable @CommandExecutor Executor executor
+  ) {
     this.root = root;
-    this.executor = executor == null ? Runnable::run : executor;
+    this.stringDelimiter = stringDelimiter == null
+        ? CommandArguments.DEFAULT_STRING_DELIMITER : stringDelimiter;
+    this.executor = executor == null
+        ? Runnable::run : executor;
   }
 
   @Nonnull
   public static CommandDispatcher create(@Nonnull CommandGroup root) {
-    return create(root, Runnable::run);
+    return new DefaultDispatcher(checkNotNull(root), null, null);
+  }
+
+  @Nonnull
+  public static CommandDispatcher create(@Nonnull CommandGroup root, char stringDelimiter) {
+    return new DefaultDispatcher(checkNotNull(root), stringDelimiter, null);
   }
 
   @Nonnull
   public static CommandDispatcher create(@Nonnull CommandGroup root, @Nonnull Executor executor) {
-    return new DefaultDispatcher(checkNotNull(root), checkNotNull(executor));
+    return new DefaultDispatcher(checkNotNull(root), null, checkNotNull(executor));
+  }
+
+  @Nonnull
+  public static CommandDispatcher create(
+      @Nonnull CommandGroup root, char stringDelimiter, @Nonnull Executor executor) {
+    return new DefaultDispatcher(checkNotNull(root), stringDelimiter, checkNotNull(executor));
   }
 
   @Override
@@ -43,7 +63,7 @@ public final class DefaultDispatcher implements CommandDispatcher {
         .orElseThrow(() -> new UnknownCommandException(
             "Could not find command for input \"" + input + "\""
         ));
-    CommandArguments arguments = CommandArguments.of(input.getRemaining());
+    CommandArguments arguments = CommandArguments.of(input.getRemaining(), stringDelimiter);
     executor.execute(() -> callable.call(arguments, context));
   }
 
