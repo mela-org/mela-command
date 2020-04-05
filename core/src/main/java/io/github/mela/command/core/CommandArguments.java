@@ -13,26 +13,51 @@ import javax.annotation.Nonnull;
  */
 public class CommandArguments {
 
+  public static final char DEFAULT_STRING_DELIMITER = '"';
+
   private final String raw;
   private final StringBuilder arguments;
+  private final char stringDelimiter;
 
   private int rawCursor;
   private int position;
   private char previous;
 
-  private char stringDelimiter;
-
-  protected CommandArguments(String arguments) {
+  protected CommandArguments(@Nonnull String arguments, char stringDelimiter) {
     this.raw = arguments.trim();
     this.arguments = new StringBuilder(raw);
     this.rawCursor = 0;
     this.position = 0;
     this.previous = 0;
-    this.stringDelimiter = '"';
+    this.stringDelimiter = stringDelimiter;
   }
 
+  @Nonnull
   public static CommandArguments of(@Nonnull String arguments) {
-    return new CommandArguments(checkNotNull(arguments));
+    return of(arguments, DEFAULT_STRING_DELIMITER);
+  }
+
+  @Nonnull
+  public static CommandArguments of(@Nonnull String arguments, char stringDelimiter) {
+    return new CommandArguments(checkNotNull(arguments), stringDelimiter);
+  }
+
+  @Nonnull
+  public static CommandArguments escapeStrings(@Nonnull String arguments) {
+    return escapeStrings(arguments, DEFAULT_STRING_DELIMITER);
+  }
+
+  @Nonnull
+  public static CommandArguments escapeStrings(@Nonnull String arguments, char stringDelimiter) {
+    checkNotNull(arguments);
+    StringBuilder escaped = new StringBuilder();
+    for (char c : arguments.toCharArray()) {
+      if (c == stringDelimiter) {
+        escaped.append('\\');
+      }
+      escaped.append(c);
+    }
+    return of(escaped.toString(), stringDelimiter);
   }
 
   public int indexOfWord(String word) {
@@ -174,14 +199,6 @@ public class CommandArguments {
     checkPositionIndex(position, arguments.length());
     rawCursor -= this.position - position;
     this.position = position;
-  }
-
-  public char getStringDelimiter() {
-    return stringDelimiter;
-  }
-
-  public void setStringDelimiter(char stringDelimiter) {
-    this.stringDelimiter = stringDelimiter;
   }
 
   public int getRawCursor() {
