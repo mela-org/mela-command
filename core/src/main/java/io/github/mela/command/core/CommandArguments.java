@@ -43,20 +43,22 @@ public class CommandArguments {
   }
 
   @Nonnull
-  public static CommandArguments escapeStrings(@Nonnull String arguments) {
-    return escapeStrings(arguments, DEFAULT_STRING_DELIMITER);
+  public static CommandArguments singleString(@Nonnull String arguments) {
+    return singleString(arguments, DEFAULT_STRING_DELIMITER);
   }
 
   @Nonnull
-  public static CommandArguments escapeStrings(@Nonnull String arguments, char stringDelimiter) {
+  public static CommandArguments singleString(@Nonnull String arguments, char stringDelimiter) {
     checkNotNull(arguments);
     StringBuilder escaped = new StringBuilder();
+    escaped.append(stringDelimiter);
     for (char c : arguments.toCharArray()) {
       if (c == stringDelimiter) {
         escaped.append('\\');
       }
       escaped.append(c);
     }
+    escaped.append(stringDelimiter);
     return of(escaped.toString(), stringDelimiter);
   }
 
