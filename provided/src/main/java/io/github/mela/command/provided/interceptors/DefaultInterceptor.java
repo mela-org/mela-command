@@ -17,9 +17,10 @@ public class DefaultInterceptor extends MappingInterceptorAdapter<Default> {
       @Nonnull MappingProcess process,
       @Nonnull CommandContext context
   ) {
-    if (process.isErroneous() || !process.isSet() || process.getValue() == null) {
+    if (!process.isSet() || process.getValue() == null) {
       process.fixError();
-      process.requestMapping(CommandArguments.of(annotation.value()));
+      process.requestMapping(CommandArguments.of(annotation.value(),
+          process.getArguments().getStringDelimiter()));
     }
   }
 }
