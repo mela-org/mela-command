@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 public interface CommandGroup {
 
   @Nonnull
-  Optional<CommandGroup> getParent();
+  Optional<? extends CommandGroup> getParent();
 
   @Nonnull
   Set<? extends CommandGroup> getChildren();

@@ -23,13 +23,13 @@ import javax.annotation.Nonnull;
  */
 public final class ImmutableGroup implements CommandGroup {
 
-  public static final CommandGroup EMPTY = childlessRoot(ImmutableSet.of());
+  public static final ImmutableGroup EMPTY = childlessRoot(ImmutableSet.of());
 
   private final ImmutableGroup parent;
   private final Set<String> names;
   private final Set<CommandCallable> commands;
 
-  private Set<CommandGroup> children;
+  private Set<ImmutableGroup> children;
 
   private ImmutableGroup(
       ImmutableGroup parent, Set<String> names, Set<? extends CommandCallable> commands) {
@@ -101,7 +101,7 @@ public final class ImmutableGroup implements CommandGroup {
 
     @Nonnull
     @Override
-    public Optional<CommandGroup> getParent() {
+    public Optional<MutableGroup> getParent() {
       return Optional.ofNullable(parent);
     }
 
@@ -132,21 +132,21 @@ public final class ImmutableGroup implements CommandGroup {
   }
 
   @Nonnull
-  public static CommandGroup childlessRoot(@Nonnull Set<CommandCallable> commands) {
+  public static ImmutableGroup childlessRoot(@Nonnull Set<CommandCallable> commands) {
     ImmutableGroup group = new ImmutableGroup(null, ImmutableSet.of(), commands);
     group.setChildren(ImmutableSet.of());
     return group;
   }
 
   @Nonnull
-  public static CommandGroup copyOf(@Nonnull CommandGroup group) {
+  public static ImmutableGroup copyOf(@Nonnull CommandGroup group) {
     return checkNotNull(group) instanceof ImmutableGroup
-        ? group
+        ? (ImmutableGroup) group
         : of(group, GroupAssembler.forGroup());
   }
 
   @Nonnull
-  public static <T> CommandGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> assembler) {
+  public static <T> ImmutableGroup of(@Nonnull T root, @Nonnull GroupAssembler<T> assembler) {
     checkNotNull(root);
     checkNotNull(assembler);
     Set<? extends CommandCallable> commands = ImmutableSet.copyOf(assembler.getCommands(root));
@@ -206,13 +206,13 @@ public final class ImmutableGroup implements CommandGroup {
 
   @Nonnull
   @Override
-  public Optional<CommandGroup> getParent() {
+  public Optional<ImmutableGroup> getParent() {
     return Optional.ofNullable(parent);
   }
 
   @Nonnull
   @Override
-  public Set<? extends CommandGroup> getChildren() {
+  public Set<ImmutableGroup> getChildren() {
     return children;
   }
 
@@ -224,7 +224,7 @@ public final class ImmutableGroup implements CommandGroup {
 
   @Nonnull
   @Override
-  public Set<CommandCallable> getCommands() {
+  public Set<? extends CommandCallable> getCommands() {
     return commands;
   }
 
