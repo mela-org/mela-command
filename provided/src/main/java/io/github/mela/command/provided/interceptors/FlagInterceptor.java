@@ -25,8 +25,9 @@ public class FlagInterceptor extends MappingInterceptorAdapter<Flag> {
   ) {
     CommandArguments arguments = process.getArguments();
     String[] names = annotation.value();
+    String prefix = annotation.prefix();
     OptionalInt flagPosition = Arrays.stream(names)
-        .map("-"::concat)
+        .map(prefix::concat)
         .mapToInt(arguments::indexOfWord)
         .filter((i) -> i != -1)
         .findFirst();

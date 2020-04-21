@@ -11,4 +11,6 @@ public @interface Flag {
 
   String[] value();
 
+  String prefix() default "-";
+
 }
