@@ -11,6 +11,14 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 
 /**
+ * {@code CommandGroup}s are used to group commands that have a common word prefix.
+ * For example, a command labelled "bar" in a group named "foo" could be dispatched via
+ * "foo bar" starting from the root group.
+ *
+ * A group may contain any amount of child groups, meaning that each group is essentially
+ * a node in a command tree.
+ * In every command tree, there is a root group that has no names and no parent group.
+ *
  * @author Johnny_JayJay (https://www.github.com/JohnnyJayJay)
  */
 @ProvidedBy(CompilingRootGroupProvider.class)
